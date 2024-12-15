@@ -1,0 +1,40 @@
+{
+  "name": "lightweight-charts-react-components",
+  "version": "0.0.1",
+  "description": "React components for Lightweight Charts",
+  "repository": "https://github.com/ukorvl/lightweight-charts-react-components",
+  "homepage": "https://github.com/ukorvl/lightweight-charts-react-components#readme",
+  "bugs": {
+    "url": "https://github.com/ukorvl/lightweight-charts-react-components/issues"
+  },
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ukorvl",
+  "license": "MIT",
+  "peerDependencies": {
+    "lightweight-charts": ">=4.0.0 < 5",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "publishConfig": {
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@rsbuild/plugin-react": "^1.1.0",
+    "@rslib/core": "^0.1.4",
+    "@types/lodash.debounce": "^4.0.9",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8"
+  }
+}
