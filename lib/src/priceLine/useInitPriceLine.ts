@@ -1,7 +1,6 @@
 import { useContext, useLayoutEffect, useRef } from "react";
 import { PriceLineApiRef, PriceLineProps } from "./types";
 import { SeriesContext } from "../series/SeriesContext";
-import { priceLineDefaultOptions } from "./priceLineDefaultOptions";
 
 export const useInitPriceLine = ({ options, price }: PriceLineProps) => {
   const series = useContext(SeriesContext);
@@ -22,7 +21,6 @@ export const useInitPriceLine = ({ options, price }: PriceLineProps) => {
 
         this._priceLine = seriesApi.createPriceLine({
           price,
-          ...priceLineDefaultOptions,
           ...options,
         });
       }

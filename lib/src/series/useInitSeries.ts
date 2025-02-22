@@ -1,13 +1,12 @@
 import { useContext, useLayoutEffect, useRef } from "react";
 import { SeriesApiRef, SeriesTemplateProps, SeriesType } from "./types";
 import { ChartContext } from "../ChartContext";
-import { getSeriesDefaultOptions } from "./seriesDefaultOptions";
 import { IChartApi, ISeriesApi } from "lightweight-charts";
 
 export const useInitSeries = <T extends SeriesType>({
   type,
   data,
-  options,
+  options = {},
   reactive,
   markers,
 }: Omit<SeriesTemplateProps<T>, "children">) => {
@@ -29,10 +28,7 @@ export const useInitSeries = <T extends SeriesType>({
 
         this._series = addSeries(chartApi, type);
 
-        this._series.applyOptions({
-          ...getSeriesDefaultOptions(type),
-          ...options,
-        });
+        this._series.applyOptions(options);
 
         this._series.setData(data);
 

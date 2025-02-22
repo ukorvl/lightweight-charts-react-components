@@ -1,7 +1,6 @@
 import { useContext, useLayoutEffect, useRef } from "react";
 import { ChartContext } from "../ChartContext";
 import { TimeScaleApiRef, TimeScaleProps } from "./types";
-import { timeScaleDefaultOptions } from "./scalesDefaultOptions";
 
 export const useInitTimeScale = ({
   onVisibleTimeRangeChange,
@@ -9,7 +8,7 @@ export const useInitTimeScale = ({
   onSizeChange,
   visibleRange,
   visibleLogicalRange,
-  options,
+  options = {},
 }: TimeScaleProps) => {
   const chart = useContext(ChartContext);
 
@@ -29,10 +28,7 @@ export const useInitTimeScale = ({
 
         this._timeScale = chartApi.timeScale();
 
-        this._timeScale.applyOptions({
-          ...timeScaleDefaultOptions,
-          ...options,
-        });
+        this._timeScale.applyOptions(options);
 
         if (visibleRange) {
           this._timeScale.setVisibleRange(visibleRange);
@@ -86,12 +82,16 @@ export const useInitTimeScale = ({
     if (!chart) return;
 
     if (onVisibleLogicalRangeChange) {
-      timeScaleApiRef.current?.api()?.subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
+      timeScaleApiRef.current
+        ?.api()
+        ?.subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
     }
 
     return () => {
       if (onVisibleLogicalRangeChange) {
-        timeScaleApiRef.current?.api()?.unsubscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
+        timeScaleApiRef.current
+          ?.api()
+          ?.unsubscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
       }
     };
   }, [onVisibleLogicalRangeChange]);
@@ -100,12 +100,16 @@ export const useInitTimeScale = ({
     if (!chart) return;
 
     if (onVisibleTimeRangeChange) {
-      timeScaleApiRef.current?.api()?.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
+      timeScaleApiRef.current
+        ?.api()
+        ?.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
     }
 
     return () => {
       if (onVisibleTimeRangeChange) {
-        timeScaleApiRef.current?.api()?.unsubscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
+        timeScaleApiRef.current
+          ?.api()
+          ?.unsubscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
       }
     };
   }, [onVisibleTimeRangeChange]);
@@ -122,7 +126,9 @@ export const useInitTimeScale = ({
     if (!chart) return;
 
     if (visibleLogicalRange) {
-      timeScaleApiRef.current?.api()?.setVisibleLogicalRange(visibleLogicalRange);
+      timeScaleApiRef.current
+        ?.api()
+        ?.setVisibleLogicalRange(visibleLogicalRange);
     }
   }, [visibleLogicalRange]);
 

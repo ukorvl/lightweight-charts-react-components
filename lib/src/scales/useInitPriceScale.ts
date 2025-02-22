@@ -1,9 +1,8 @@
 import { useContext, useLayoutEffect, useRef } from "react";
 import { ChartContext } from "../ChartContext";
 import { PriceScaleProps, PriceScaleApiRef } from "./types";
-import { priceScaleDefaultOptions } from "./scalesDefaultOptions";
 
-export const useInitPriceScale = ({ options, id }: PriceScaleProps) => {
+export const useInitPriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const chart = useContext(ChartContext);
 
   if (!chart) {
@@ -23,7 +22,6 @@ export const useInitPriceScale = ({ options, id }: PriceScaleProps) => {
         this._priceScale = chartApi.priceScale(id);
 
         this._priceScale.applyOptions({
-          ...priceScaleDefaultOptions,
           ...options,
         });
       }
