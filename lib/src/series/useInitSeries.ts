@@ -1,7 +1,8 @@
-import { useContext, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { SeriesApiRef, SeriesTemplateProps, SeriesType } from "./types";
-import { ChartContext } from "../ChartContext";
 import { IChartApi, ISeriesApi } from "lightweight-charts";
+import { useSafeContext } from "@/shared/useSafeContext";
+import { ChartContext } from "@/chart/ChartContext";
 
 export const useInitSeries = <T extends SeriesType>({
   type,
@@ -10,11 +11,7 @@ export const useInitSeries = <T extends SeriesType>({
   reactive,
   markers,
 }: Omit<SeriesTemplateProps<T>, "children">) => {
-  const chart = useContext(ChartContext);
-
-  if (!chart) {
-    throw new Error("Chart context not found");
-  }
+  const chart = useSafeContext(ChartContext);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
     _series: null,

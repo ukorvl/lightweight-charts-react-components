@@ -1,13 +1,10 @@
-import { useContext, useLayoutEffect, useRef } from "react";
-import { ChartContext } from "../ChartContext";
+import { useLayoutEffect, useRef } from "react";
 import { PriceScaleProps, PriceScaleApiRef } from "./types";
+import { useSafeContext } from "@/shared/useSafeContext";
+import { ChartContext } from "@/chart/ChartContext";
 
 export const useInitPriceScale = ({ options = {}, id }: PriceScaleProps) => {
-  const chart = useContext(ChartContext);
-
-  if (!chart) {
-    throw new Error("Chart context not found");
-  }
+  const chart = useSafeContext(ChartContext);
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
@@ -33,7 +30,6 @@ export const useInitPriceScale = ({ options = {}, id }: PriceScaleProps) => {
         return;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this._priceScale = chart.api()!.priceScale(id);
     },
     clear() {

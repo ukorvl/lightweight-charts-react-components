@@ -1,13 +1,10 @@
-import { useContext, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { PriceLineApiRef, PriceLineProps } from "./types";
-import { SeriesContext } from "../series/SeriesContext";
+import { useSafeContext } from "@/shared/useSafeContext";
+import { SeriesContext } from "@/series/SeriesContext";
 
 export const useInitPriceLine = ({ options, price }: PriceLineProps) => {
-  const series = useContext(SeriesContext);
-
-  if (!series) {
-    throw new Error("Series context not found");
-  }
+  const series = useSafeContext(SeriesContext);
 
   const priceLineApiRef = useRef<PriceLineApiRef>({
     _priceLine: null,

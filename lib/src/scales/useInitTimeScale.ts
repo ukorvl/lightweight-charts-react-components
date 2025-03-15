@@ -1,6 +1,7 @@
-import { useContext, useLayoutEffect, useRef } from "react";
-import { ChartContext } from "../ChartContext";
+import { useLayoutEffect, useRef } from "react";
 import { TimeScaleApiRef, TimeScaleProps } from "./types";
+import { useSafeContext } from "@/shared/useSafeContext";
+import { ChartContext } from "@/chart/ChartContext";
 
 export const useInitTimeScale = ({
   onVisibleTimeRangeChange,
@@ -10,7 +11,7 @@ export const useInitTimeScale = ({
   visibleLogicalRange,
   options = {},
 }: TimeScaleProps) => {
-  const chart = useContext(ChartContext);
+  const chart = useSafeContext(ChartContext);
 
   if (!chart) {
     throw new Error("Chart context not found");

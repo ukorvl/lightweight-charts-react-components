@@ -14,17 +14,25 @@ const banner = `
 */
 `;
 
+const removeDistPrefix = (path: string) => path.replace(/^dist\//, "");
+
 export default defineConfig({
+  source: {
+    entry: {
+      index: "src/index.ts"
+    },
+  },
   lib: [
     {
       format: "esm",
       syntax: "es2021",
       banner: {
         js: banner,
+        dts: banner,
       },
       output: {
         filename: {
-          js: packageJson.module,
+          js: removeDistPrefix(packageJson.module),
         }
       },
     },
@@ -36,7 +44,7 @@ export default defineConfig({
       },
       output: {
         filename: {
-          js: packageJson.main,
+          js: removeDistPrefix(packageJson.main),
         },
       },
     },
@@ -51,7 +59,7 @@ export default defineConfig({
         minify: false,
         sourceMap: false,
         filename: {
-          js: packageJson.unpkg,
+          js: removeDistPrefix(packageJson.unpkg),
         },
       },
     }
@@ -62,7 +70,7 @@ export default defineConfig({
     distPath: {
       root: "dist",
     },
-    cleanDistPath: true,
+    cleanDistPath: false,
     sourceMap: true,
   },
   plugins: [pluginReact()],

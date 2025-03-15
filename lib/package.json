@@ -15,7 +15,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/typings.d.ts",
+      "types": "./dist/lightweight-charts-react-components.d.ts",
       "import": "./dist/lightweight-charts-react-components.js",
       "require": "./dist/ightweight-charts-react-components.cjs"
     }

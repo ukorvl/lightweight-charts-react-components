@@ -27,11 +27,11 @@ coverage/
 jest-html-reporters-*/ 
 
 # Environment variables
-.env
 .env.*.local
 
 # Editor and system files
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
 *.iml
 Thumbs.db
@@ -45,3 +45,5 @@ Thumbs.db
 *.log
 *.gz
 *.log.*
+
+*.tsbuildinfo
