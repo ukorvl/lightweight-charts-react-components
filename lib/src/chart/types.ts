@@ -2,7 +2,6 @@ import type {
   ChartOptions as ChartNativeOptions,
   DeepPartial,
   IChartApi,
-  LineData,
   MouseEventHandler,
   Time,
 } from "lightweight-charts";
@@ -11,10 +10,8 @@ import { ReactNode } from "react";
 export type ChartOptions = {
   onClick?: MouseEventHandler<Time>;
   onCrosshairMove?: MouseEventHandler<Time>;
-  onInit?: ChartInitHandler;
+  onInit?: (chart: IChartApi) => void;
 } & DeepPartial<ChartNativeOptions>;
-
-export type ChartInitHandler = (chart: IChartApi) => void;
 
 export type ChartProps = {
   children?: ReactNode;
@@ -27,8 +24,3 @@ export type ChartApiRef = {
   clear: () => void;
   destroyed: boolean;
 };
-
-export type ChartWidgetProps = {
-  data: LineData[];
-  color?: string;
-} & Omit<ChartProps, "children" | "onCrosshairMove">;

@@ -1,6 +1,6 @@
 import { defineConfig } from "@rslib/core";
 import { pluginReact } from "@rsbuild/plugin-react";
-//import { RsdoctorRspackPlugin } from "@rsdoctor/rspack-plugin";
+import { pluginDts } from "rsbuild-plugin-dts";
 import packageJson from "./package.json" with { type: "json" };
 
 const banner = `
@@ -19,7 +19,7 @@ const removeDistPrefix = (path: string) => path.replace(/^dist\//, "");
 export default defineConfig({
   source: {
     entry: {
-      index: "src/index.ts"
+      index: "src/index.ts",
     },
   },
   lib: [
@@ -33,8 +33,20 @@ export default defineConfig({
       output: {
         filename: {
           js: removeDistPrefix(packageJson.module),
-        }
+        },
       },
+      plugins: [
+        pluginDts({
+          bundle: true,
+          autoExternal: {
+            dependencies: true,
+            peerDependencies: true,
+            devDependencies: true,
+          },
+          banner,
+          distPath: "dist",
+        }),
+      ],
     },
     {
       format: "cjs",
@@ -62,7 +74,7 @@ export default defineConfig({
           js: removeDistPrefix(packageJson.unpkg),
         },
       },
-    }
+    },
   ],
   output: {
     target: "web",
@@ -70,7 +82,7 @@ export default defineConfig({
     distPath: {
       root: "dist",
     },
-    cleanDistPath: false,
+    cleanDistPath: true,
     sourceMap: true,
   },
   plugins: [pluginReact()],

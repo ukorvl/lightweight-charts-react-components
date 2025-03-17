@@ -28,6 +28,7 @@ jest-html-reporters-*/
 
 # Environment variables
 .env.*.local
+.env.local
 
 # Editor and system files
 .vscode/*

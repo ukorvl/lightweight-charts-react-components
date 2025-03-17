@@ -10,12 +10,12 @@
   "type": "module",
   "main": "lightweight-charts-react-components.cjs",
   "module": "lightweight-charts-react-components.js",
-  "types": "typings.d.ts",
+  "types": "index.d.ts",
   "unpkg": "lightweight-charts-react-components.standalone.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/lightweight-charts-react-components.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/lightweight-charts-react-components.js",
       "require": "./dist/ightweight-charts-react-components.cjs"
     }
@@ -39,8 +39,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.52.1",
     "@rsbuild/plugin-react": "^1.1.0",
-    "@rsdoctor/rspack-plugin": "^0.4.11",
     "@rslib/core": "^0.1.4",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",

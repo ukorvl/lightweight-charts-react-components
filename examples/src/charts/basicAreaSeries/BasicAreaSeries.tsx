@@ -1,1 +1,1 @@
-import {} from 'lightweight-charts-react-components';
+import {Chart} from 'lightweight-charts-react-components';
