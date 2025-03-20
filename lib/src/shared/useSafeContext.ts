@@ -1,6 +1,6 @@
 import { Context, useContext } from "react";
 
-export const useSafeContext = <T extends unknown>(context: Context<T>) => {
+export const useSafeContext = <T>(context: Context<T>) => {
   const currentContextValue = useContext(context);
 
   if (!currentContextValue) {

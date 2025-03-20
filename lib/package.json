@@ -30,7 +30,7 @@
   "author": "ukorvl",
   "license": "MIT",
   "peerDependencies": {
-    "lightweight-charts": ">=4 < 5",
+    "lightweight-charts": ">=5 < 6",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
@@ -46,8 +46,5 @@
     "@types/react-dom": "^19.0.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
-  },
-  "engines": {
-    "node": ">=16"
   }
 }

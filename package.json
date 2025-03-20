@@ -1,6 +1,11 @@
 {
   "name": "lightweight-charts-react-components-monorepo",
   "private": true,
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "build": "npm run build --workspaces --if-present"
+  },
   "version": "0.1.0",
   "workspaces": [
     "lib",
@@ -10,6 +15,8 @@
   "author": "ukorvl",
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.21.0",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
@@ -22,17 +29,19 @@
     "typescript-eslint": "^8.24.1"
   },
   "simple-git-hooks": {
-    "pre-commit": "npm run lint"
+    "pre-commit": "npm run lint",
+    "commit-msg": "npx --no-install -- commitlint --edit $1",
+    "preserveUnused": [
+      "commit-msg"
+    ]
   },
   "directories": {
     "example": "examples",
     "doc": "docs",
     "lib": "lib"
   },
-  "scripts": {
-    "lint": "eslint . --ext .ts,.tsx --workspaces --if-present",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix --workspaces --if-present",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build --workspaces --parallel --if-present"
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
   }
 }
