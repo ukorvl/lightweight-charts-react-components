@@ -1,0 +1,50 @@
+{
+  "name": "lightweight-charts-react-components",
+  "version": "0.0.1",
+  "description": "React components for Lightweight Charts",
+  "repository": "https://github.com/ukorvl/lightweight-charts-react-components",
+  "homepage": "https://github.com/ukorvl/lightweight-charts-react-components#readme",
+  "bugs": {
+    "url": "https://github.com/ukorvl/lightweight-charts-react-components/issues"
+  },
+  "type": "module",
+  "main": "lightweight-charts-react-components.cjs",
+  "module": "lightweight-charts-react-components.js",
+  "types": "index.d.ts",
+  "unpkg": "lightweight-charts-react-components.standalone.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/lightweight-charts-react-components.js",
+      "require": "./dist/ightweight-charts-react-components.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rslib build"
+  },
+  "author": "ukorvl",
+  "license": "MIT",
+  "peerDependencies": {
+    "lightweight-charts": ">=4 < 5",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "publishConfig": {
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.52.1",
+    "@rsbuild/plugin-react": "^1.1.0",
+    "@rslib/core": "^0.1.4",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
+  }
+}

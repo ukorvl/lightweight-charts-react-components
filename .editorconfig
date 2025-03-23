@@ -1,0 +1,18 @@
+# This file is for unifying the coding style for different editors and IDEs
+# For vscode support install EditorConfig for VS Code plugin
+# editorconfig.org
+
+root = true
+
+[*]
+insert_final_newline = true
+
+[*.{js,jsx,ts,tsx,json,mjs}]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = true
+
+[**/node_modules/**]
+ignore = true

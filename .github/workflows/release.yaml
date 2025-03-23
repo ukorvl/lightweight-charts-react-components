@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: 22
+
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          check-commits: false
+
+      - name: Create a new release
+        uses: ./.github/actions/create-release
+
+      - name: Deploy
+        uses: ./.github/actions/deploy-examples
+        with:
+          keep_files: true
+          branch: gh-pages

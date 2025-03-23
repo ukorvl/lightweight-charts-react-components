@@ -1,0 +1,52 @@
+{
+  "name": "lightweight-charts-react-components-monorepo",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "lint:commits": "bash ./scripts/lint-commits.sh",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "install-git-hooks": "npx --no-install simple-git-hooks",
+    "prepare": "npm run install-git-hooks"
+  },
+  "version": "0.1.0",
+  "workspaces": [
+    "lib",
+    "examples"
+  ],
+  "author": "ukorvl",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.2",
+    "simple-git-hooks": "^2.11.1",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.1"
+  },
+  "dependencies": {
+    "lightweight-charts": "4.2.3"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run lint",
+    "commit-msg": "npx --no-install commitlint --edit $1",
+    "preserveUnused": [
+      "commit-msg"
+    ]
+  },
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  }
+}
