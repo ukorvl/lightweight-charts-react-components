@@ -8,7 +8,9 @@
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "install-git-hooks": "npx --no-install simple-git-hooks",
-    "prepare": "npm run install-git-hooks"
+    "prepare": "npm run install-git-hooks",
+    "snyk": "snyk test --all-projects",
+    "knip": "knip --production"
   },
   "version": "0.1.0",
   "workspaces": [
@@ -21,15 +23,18 @@
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.11",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^16.0.0",
+    "knip": "^5.46.0",
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.2",
     "simple-git-hooks": "^2.11.1",
-    "typescript": "^5.7.3",
+    "snyk": "^1.1296.0",
+    "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^5.4.14"
   },
