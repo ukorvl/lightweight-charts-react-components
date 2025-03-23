@@ -7,6 +7,11 @@ inputs:
     required: false
     type: "boolean"
     default: false
+  base-path:
+    description: "Base path for the project assets"
+    required: false
+    default: "/"
+    type: "string"
 
 runs:
   using: "composite"
@@ -25,5 +30,7 @@ runs:
       shell: bash
 
     - name: Build
-      run: npm run build
+      run: |
+        export VITE_BASE_URL=${{ inputs.base-path }}
+        npm run build
       shell: bash
