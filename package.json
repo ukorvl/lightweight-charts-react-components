@@ -26,6 +26,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^16.0.0",
+    "lint-staged": "^15.5.0",
     "prettier": "^3.5.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.3",
@@ -35,7 +36,7 @@
     "lightweight-charts": "4.2.3"
   },
   "simple-git-hooks": {
-    "pre-commit": "npm run lint",
+    "pre-commit": "npx --no-install lint-staged",
     "commit-msg": "npx --no-install commitlint --edit $1",
     "preserveUnused": [
       "commit-msg"
@@ -48,5 +49,13 @@
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=10.0.0"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint"
+    ],
+    "*.tsx": [
+      "npm run lint"
+    ]
   }
 }
