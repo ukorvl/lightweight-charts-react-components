@@ -1,0 +1,45 @@
+name: Deploy examples
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy to"
+        required: false
+        default: "gh-pages"
+      keep-files:
+        description: "Keep existing files in the gh-pages branch"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy examples
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: 22
+
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          check-commits: false
+
+      - name: Deploy
+        uses: ./.github/actions/deploy-examples
+        with:
+          keep-files: ${{ github.event.inputs.keep-files }}
+          branch: ${{ github.event.inputs.branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -12,7 +12,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Changelog
+    - name: Create a new release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ inputs.tag }}

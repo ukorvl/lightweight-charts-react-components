@@ -27,4 +27,4 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
         with:
-          check-commits: ${{ github.event_name == 'pull_request' }}
+          check-commits: ${{ github.event_name == 'pull_request' && github.event.pull_request }}
