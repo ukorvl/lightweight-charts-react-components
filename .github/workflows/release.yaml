@@ -1,4 +1,7 @@
 name: Release
+# Create a tag with a valid SemVer version number
+# and then run this workflow to release a new version of the library
+# and deploy the examples to GitHub Pages
 
 on:
   workflow_dispatch:
@@ -8,11 +11,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-semver-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.check-semver-tag.outputs.tag_name }}
+    steps:
+      - name: Check semver tag
+        id: check-semver-tag
+        run: |
+          TAG_NAME=${GITHUB_REF##*/}
+          echo "Checking if the tag $TAG_NAME is a valid SemVer tag..."
+
+          if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: Tag $TAG_NAME is not a valid SemVer tag"
+            exit 1
+          fi
+
+          echo "The tag $TAG_NAME is a valid SemVer tag."
+
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+        shell: bash
+
   release:
+    needs: check-semver-tag
     name: Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -29,9 +55,12 @@ jobs:
 
       - name: Create a new release
         uses: ./.github/actions/create-release
+        with:
+          tag: ${{ needs.check-semver-tag.outputs.tag_name }}
+          npm-token: ${{ secrets.NPM_AUTH_TOKEN }}
 
       - name: Deploy
         uses: ./.github/actions/deploy-examples
         with:
-          keep_files: true
+          keep-files: true
           branch: gh-pages
