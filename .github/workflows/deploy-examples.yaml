@@ -10,7 +10,7 @@ on:
       keep-files:
         description: "Keep existing files in the gh-pages branch"
         required: false
-        default: false
+        default: true
         type: boolean
 
 concurrency:
@@ -36,6 +36,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           check-commits: false
+          base-path: /lightweight-charts-react-components
 
       - name: Deploy
         uses: ./.github/actions/deploy-examples
