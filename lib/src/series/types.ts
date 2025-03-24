@@ -1,6 +1,5 @@
 import type {
   ISeriesApi,
-  SeriesType as NativeSeriesType,
   SeriesDataItemTypeMap,
   SeriesMarker,
   SeriesPartialOptionsMap,
@@ -8,7 +7,7 @@ import type {
 } from "lightweight-charts";
 import { ReactNode } from "react";
 
-export type SeriesType = Extract<NativeSeriesType, "Line" | "Candlestick" | "Histogram" | "Area">;
+export type SeriesType = "Line" | "Candlestick" | "Histogram" | "Area" | "Baseline" | "Bar";
 
 export type SeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];

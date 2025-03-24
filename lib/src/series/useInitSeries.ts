@@ -97,6 +97,12 @@ const addSeries = <T extends SeriesType>(chart: IChartApi, type: T) => {
     case "Area":
       series = chart.addAreaSeries();
       break;
+    case "Baseline":
+      series = chart.addBaselineSeries();
+      break;
+    case "Bar":
+      series = chart.addBarSeries();
+      break;
     default:
       throw new Error(`Unknown series type: ${type}`);
   }

@@ -1,7 +1,8 @@
 import { AreaSeries, Chart } from "lightweight-charts-react-components";
 import { chartCommonSettings } from "./common/chartsSettings";
+import { AreaData } from "lightweight-charts";
 
-const BasicAreaSeries = () => {
+const BasicAreaSeriesChart = () => {
   return (
     <Chart height={400} {...chartCommonSettings}>
       <AreaSeries data={mockAreaSeriesData} />
@@ -9,9 +10,9 @@ const BasicAreaSeries = () => {
   );
 };
 
-export { BasicAreaSeries };
+export { BasicAreaSeriesChart };
 
-const mockAreaSeriesData = [
+const mockAreaSeriesData: AreaData[] = [
   { time: "2024-03-01", value: 100 },
   { time: "2024-03-02", value: 102 },
   { time: "2024-03-03", value: 98 },

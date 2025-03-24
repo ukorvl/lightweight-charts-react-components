@@ -53,3 +53,46 @@
     </picture>
   </a>
 </p>
+
+<span style="line-height:4;"></span>
+
+## Description
+This library is a set of React components that wrap the Lightweight-charts library. It provides a simple declarative way to use the Lightweight-charts library in your React application.
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [Licence](#licence)
+
+## Installation
+You can install the library via npm, pnpm or yarn:
+```bash
+npm install lightweight-charts-react-components lightweight-charts
+```
+
+Standalone version of the library is also available:
+```html
+<head>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js" crossorigin></script>
+    <script src="https://unpkg.com/lightweight-charts-react-components/dist/lightweight-charts-react-components.standalone.js" crossorigin></script>
+</head>
+<body>
+  <script>
+    const { Chart, LineSeries } = LightweightChartsReactComponents;
+  </script>
+</body>
+```
+
+## Usage
+tbd
+
+## Examples
+tbd
+
+## Contributing
+tbd
+
+## Licence
+This project is licensed under the MIT License - see the [LICENCE](./LICENCE) file for details.

@@ -25,7 +25,7 @@ runs:
     #   shell: bash
 
     - name: Lint commits
-      if: ${{ inputs.check-commits }}
+      if: ${{ inputs.check-commits == 'true' }}
       run: npm run lint:commits
       shell: bash
 
