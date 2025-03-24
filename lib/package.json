@@ -1,6 +1,9 @@
 {
   "name": "lightweight-charts-react-components",
   "version": "0.0.1",
+  "scripts": {
+    "build": "rslib build"
+  },
   "description": "React components for Lightweight Charts",
   "keywords": [
     "react",
@@ -33,9 +36,6 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "build": "rslib build"
-  },
   "author": "ukorvl",
   "license": "MIT",
   "peerDependencies": {
@@ -54,7 +54,7 @@
     "@rslib/core": "^0.1.4",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
-    "typescript": "^5.7.2",
+    "rsbuild-plugin-dts": "^0.5.5",
     "vitest": "^2.1.9"
   }
 }
