@@ -5,7 +5,7 @@ const Configuration = {
   formatter: "@commitlint/format",
   rules: {
     "header-max-length": [2, "always", 72],
-    "subject-case": [2, "always", ["sentence-case"]],
+    "subject-case": [2, "always", ["sentence-case", "lower-case"]],
     "subject-full-stop": [2, "never", "."],
     "type-enum": [
       2,
@@ -23,7 +23,8 @@ const Configuration = {
         "revert",
       ],
     ],
-    "type-case": [2, "always", "lower-case"]
+    "type-case": [2, "always", "lower-case"],
+    "body-max-line-length": [0],
   },
   helpUrl:
     "https://github.com/conventional-changelog/commitlint/#what-is-commitlint",
