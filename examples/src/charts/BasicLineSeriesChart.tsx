@@ -1,7 +1,8 @@
 import { LineSeries, Chart } from "lightweight-charts-react-components";
 import { chartCommonSettings } from "./common/chartsSettings";
+import { LineData } from "lightweight-charts";
 
-const BasicLineSeries = () => {
+const BasicLineSeriesChart = () => {
   return (
     <Chart height={400} {...chartCommonSettings}>
       <LineSeries data={mockLineSeriesData} />
@@ -9,9 +10,9 @@ const BasicLineSeries = () => {
   );
 };
 
-export { BasicLineSeries };
+export { BasicLineSeriesChart };
 
-const mockLineSeriesData = [
+const mockLineSeriesData: LineData[] = [
   { time: "2024-02-10", value: 110.25 },
   { time: "2024-02-11", value: 115.4 },
   { time: "2024-02-12", value: 112.1 },

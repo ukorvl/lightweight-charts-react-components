@@ -67,7 +67,7 @@ jobs:
           npm-token: ${{ secrets.NPM_AUTH_TOKEN }}
 
       - name: Deploy
-        if: ${{ github.event.inputs.deploy-examples }}
+        if: ${{ github.event.inputs.deploy-examples == 'true' }}
         uses: ./.github/actions/deploy-examples
         with:
           keep-files: true
