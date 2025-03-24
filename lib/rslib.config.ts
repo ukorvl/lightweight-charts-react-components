@@ -14,7 +14,7 @@ const banner = `
 */
 `;
 
-const removeDistPrefix = (path: string) => path.replace(/^dist\//, "");
+const removeDistPrefix = (path: string) => path.replace(/^.\/dist\//, "");
 
 export default defineConfig({
   source: {
