@@ -55,6 +55,6 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "rsbuild-plugin-dts": "^0.5.5",
-    "vitest": "^2.1.9"
+    "vitest": "^3.0.9"
   }
 }
