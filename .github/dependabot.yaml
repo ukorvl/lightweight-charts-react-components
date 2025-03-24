@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    reviewers:
+      - "ukorvl"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
