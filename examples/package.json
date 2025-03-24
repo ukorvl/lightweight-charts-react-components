@@ -17,6 +17,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.7",
+    "lightweight-charts-react-components": "file:../lib",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "wouter": "^3.6.0",
