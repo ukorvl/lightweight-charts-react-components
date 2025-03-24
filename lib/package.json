@@ -2,16 +2,26 @@
   "name": "lightweight-charts-react-components",
   "version": "0.0.1",
   "description": "React components for Lightweight Charts",
+  "keywords": [
+    "react",
+    "lightweight-charts",
+    "data-visualization",
+    "trading",
+    "charting",
+    "stock",
+    "market",
+    "finance"
+  ],
   "repository": "https://github.com/ukorvl/lightweight-charts-react-components",
   "homepage": "https://github.com/ukorvl/lightweight-charts-react-components#readme",
   "bugs": {
     "url": "https://github.com/ukorvl/lightweight-charts-react-components/issues"
   },
   "type": "module",
-  "main": "lightweight-charts-react-components.cjs",
-  "module": "lightweight-charts-react-components.js",
-  "types": "index.d.ts",
-  "unpkg": "lightweight-charts-react-components.standalone.js",
+  "main": "./dist/lightweight-charts-react-components.cjs",
+  "module": "./dist/lightweight-charts-react-components.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/lightweight-charts-react-components.standalone.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
