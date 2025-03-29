@@ -1,0 +1,21 @@
+name: Check Changelog
+
+# This workflow ensures that the changelog is updated whenever the package.json version is updated
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-changelog:
+    name: Check Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Check Changelog
+        uses: ./.github/actions/check-changelog

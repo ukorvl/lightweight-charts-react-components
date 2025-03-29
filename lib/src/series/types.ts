@@ -7,7 +7,7 @@ import type {
 } from "lightweight-charts";
 import { ReactNode } from "react";
 
-export type SeriesType = "Line" | "Candlestick" | "Histogram" | "Area" | "Baseline" | "Bar";
+export type SeriesType = keyof SeriesDataItemTypeMap;
 
 export type SeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];

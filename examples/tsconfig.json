@@ -15,9 +15,7 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@/components": ["src/components"],
-      "@/routing": ["src/routing"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src", "typings.d.ts"],

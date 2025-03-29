@@ -49,6 +49,9 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
+      - name: Check Changelog
+        uses: ./.github/actions/check-changelog
+
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
@@ -59,6 +62,7 @@ jobs:
         with:
           check-commits: false
           base-path: /lightweight-charts-react-components
+          timestamp: true
 
       - name: Create a new release
         uses: ./.github/actions/create-release

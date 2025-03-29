@@ -5,11 +5,13 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
-    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run build -w lib && npm run dev -w examples",
+    "build": "bash ./scripts/build-all.sh",
     "test": "npm run test --workspaces --if-present",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
-    "knip": "knip"
+    "knip": "knip",
+    "changelog": "bash ./scripts/fill-changelog.sh"
   },
   "version": "0.1.0",
   "workspaces": [
