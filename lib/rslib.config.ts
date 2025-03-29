@@ -68,10 +68,11 @@ export default defineConfig({
         js: banner,
       },
       output: {
-        minify: false,
-        sourceMap: false,
         filename: {
           js: removeDistPrefix(packageJson.unpkg),
+        },
+        externals: {
+          react: "React",
         },
       },
     },

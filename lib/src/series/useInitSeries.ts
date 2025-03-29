@@ -1,8 +1,13 @@
 import { useLayoutEffect, useRef } from "react";
 import { SeriesApiRef, SeriesTemplateProps, SeriesType } from "./types";
-import { IChartApi, ISeriesApi } from "lightweight-charts";
+import {
+  IChartApi,
+  ICustomSeriesPaneView,
+  ISeriesApi,
+} from "lightweight-charts";
 import { useSafeContext } from "@/shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import { BaseInternalError } from "@/shared/InternalError";
 
 export const useInitSeries = <T extends SeriesType>({
   type,
@@ -10,6 +15,7 @@ export const useInitSeries = <T extends SeriesType>({
   options = {},
   reactive,
   markers,
+  plugin,
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const chart = useSafeContext(ChartContext);
 
@@ -23,7 +29,7 @@ export const useInitSeries = <T extends SeriesType>({
           return null;
         }
 
-        this._series = addSeries(chartApi, type);
+        this._series = addSeries(chartApi, type, plugin);
 
         this._series.applyOptions(options);
 
@@ -81,7 +87,11 @@ export const useInitSeries = <T extends SeriesType>({
   return seriesApiRef;
 };
 
-const addSeries = <T extends SeriesType>(chart: IChartApi, type: T) => {
+const addSeries = <T extends SeriesType>(
+  chart: IChartApi,
+  type: T,
+  plugin?: ICustomSeriesPaneView,
+) => {
   let series = null;
 
   switch (type) {
@@ -103,8 +113,17 @@ const addSeries = <T extends SeriesType>(chart: IChartApi, type: T) => {
     case "Bar":
       series = chart.addBarSeries();
       break;
+    case "Custom": {
+      if (!plugin) {
+        throw new BaseInternalError("Custom series requires a plugin", {
+          docsPath: "custom-series",
+        });
+      }
+      series = chart.addCustomSeries(plugin);
+      break;
+    }
     default:
-      throw new Error(`Unknown series type: ${type}`);
+      throw new Error(`Unknown series type: "${type}"`);
   }
 
   return series as ISeriesApi<T>;

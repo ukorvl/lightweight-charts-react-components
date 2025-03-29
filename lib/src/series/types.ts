@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type {
+  ICustomSeriesPaneView,
   ISeriesApi,
   SeriesDataItemTypeMap,
   SeriesMarker,
@@ -7,18 +10,31 @@ import type {
 } from "lightweight-charts";
 import { ReactNode } from "react";
 
-export type SeriesType = "Line" | "Candlestick" | "Histogram" | "Area" | "Baseline" | "Bar";
+export type SeriesType = keyof SeriesDataItemTypeMap;
 
-export type SeriesParameters<T extends SeriesType> = {
+type CustomSeriesParameters = {
+  plugin: ICustomSeriesPaneView;
+  data: any[];
+  options?: SeriesOptions<"Custom"> & { [key: string]: any };
+  reactive?: boolean;
+  markers?: SeriesMarker<Time>[];
+};
+
+type DefaultSeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];
   markers?: SeriesMarker<Time>[];
   reactive?: boolean;
   options?: SeriesOptions<T>;
 };
 
+export type SeriesParameters<T extends SeriesType> = T extends "Custom"
+  ? CustomSeriesParameters
+  : DefaultSeriesParameters<T>;
+
 export type SeriesTemplateProps<T extends SeriesType> = {
   type: T;
   children?: ReactNode;
+  plugin?: ICustomSeriesPaneView;
 } & SeriesParameters<T>;
 
 export type SeriesApiRef<T extends SeriesType> = {
@@ -28,6 +44,10 @@ export type SeriesApiRef<T extends SeriesType> = {
   destroyed: boolean;
 };
 
-export type SeriesOptions<T extends SeriesType> = SeriesPartialOptionsMap[T];
+export type SeriesOptions<T extends SeriesType> =
+  SeriesPartialOptionsMap[T];
 
-export type SeriesProps<T extends SeriesType> = Omit<SeriesTemplateProps<T>, "type">;
+export type SeriesProps<T extends SeriesType> = Omit<
+  SeriesTemplateProps<T>,
+  "type"
+>;
