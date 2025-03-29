@@ -25,10 +25,10 @@
     </picture>
   </a>
 
-  <a href="https://github.com/ukorvl/lightweight-charts-react-components/blob/main/LICENCE">
+  <a href="https://github.com/ukorvl/lightweight-charts-react-components/blob/main/LICENSE">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/npm/l/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat">
-      <img src="https://img.shields.io/npm/l/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat" alt="Licence">
+      <img src="https://img.shields.io/npm/l/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat" alt="License">
     </picture>
   </a>
 
@@ -54,17 +54,15 @@
   </a>
 </p>
 
-<span style="line-height:4;"></span>
-
 ## Description
-This library is a set of React components that wrap the Lightweight-charts library. It provides a simple declarative way to use the Lightweight-charts library in your React application.
+This library is a set of React components that wraps the Lightweight-charts library. It provides a simple declarative way to use the Lightweight-charts library in your React application.
 
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
 - [Examples](#examples)
 - [Contributing](#contributing)
-- [Licence](#licence)
+- [License](#license)
 
 ## Installation
 You can install the library via npm, pnpm or yarn:
@@ -72,11 +70,12 @@ You can install the library via npm, pnpm or yarn:
 npm install lightweight-charts-react-components lightweight-charts
 ```
 
-Standalone version of the library is also available:
+Standalone version of the library is also available and includes all the necessary dependencies except react:
 ```html
 <head>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js" crossorigin></script>
-    <script src="https://unpkg.com/lightweight-charts-react-components/dist/lightweight-charts-react-components.standalone.js" crossorigin></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/lightweight-charts-react-components/dist/lightweight-charts-react-components.standalone.js" crossorigin></script>
 </head>
 <body>
   <script>
@@ -94,5 +93,5 @@ tbd
 ## Contributing
 tbd
 
-## Licence
-This project is licensed under the MIT License - see the [LICENCE](./LICENCE) file for details.
+## License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/lib/LICENSE) file for details.

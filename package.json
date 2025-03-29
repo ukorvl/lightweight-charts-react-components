@@ -5,11 +5,13 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
-    "build": "npm run build --workspaces --if-present",
+    "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
+    "build": "bash ./scripts/build-all.sh",
     "test": "npm run test --workspaces --if-present",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
-    "knip": "knip"
+    "knip": "knip",
+    "changelog": "bash ./scripts/fill-changelog.sh"
   },
   "version": "0.1.0",
   "workspaces": [
@@ -25,6 +27,7 @@
     "@commitlint/types": "^19.8.0",
     "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.13",
+    "concurrently": "^9.1.2",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",

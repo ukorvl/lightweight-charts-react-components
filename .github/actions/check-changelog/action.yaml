@@ -1,0 +1,49 @@
+name: "Check changelog"
+description: "Checks that if package.json version has been updated, the changelog has been updated too"
+
+inputs:
+  PACKAGE_JSON:
+    description: "Path to the package.json file"
+    required: true
+    default: "lib/package.json"
+  CHANGELOG_FILE:
+    description: "Path to the changelog file"
+    required: true
+    default: "lib/CHANGELOG.md"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get previous package.json version
+      shell: bash
+      run: |
+        git fetch --tags --depth=1 --force
+        OLD_VERSION=$(git show origin/main:${{ inputs.PACKAGE_JSON }} | jq -r .version)
+        echo "OLD_VERSION=$OLD_VERSION" >> $GITHUB_ENV
+
+    - name: Get current package.json version
+      shell: bash
+      run: |
+        NEW_VERSION=$(jq -r .version ${{ inputs.PACKAGE_JSON }})
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+    - name: Check if version changed
+      id: check_if_version_changed
+      shell: bash
+      run: |
+        if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+          echo "Version did not change. Skipping changelog check."
+          echo "VERSION_CHANGED=false" >> $GITHUB_ENV
+          exit 0
+        fi
+
+    - name: Ensure new version exists in changelog
+      if: steps.check_if_version_changed.outputs.VERSION_CHANGED != 'false'
+      shell: bash
+      run: |
+        if ! grep -q "$NEW_VERSION" ${{ inputs.CHANGELOG_FILE }}; then
+          echo "❌ ERROR: Version $NEW_VERSION not found in ${{ inputs.CHANGELOG_FILE }}! Please update the changelog."
+          exit 1
+        else
+          echo "✅ CHANGELOG.md is up to date."
+        fi

@@ -1,18 +1,26 @@
 import { createTheme } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
+import { colors } from "./colors";
 
 const theme = createTheme({
   cssVariables: true,
   palette: {
     primary: {
-      main: "#556cd6",
+      main: colors.pink,
     },
     secondary: {
-      main: "#19857b",
+      main: colors.cyan,
     },
-    error: {
-      main: red.A400,
+    background: {
+      default: colors.black,
+      paper: colors.darkBlue,
     },
+    text: {
+      primary: colors.white,
+      secondary: colors.lightBlue,
+    },
+  },
+  typography: {
+    fontFamily: "Roboto",
   },
 });
 

@@ -1,0 +1,31 @@
+import { colors } from "@/colors";
+import { ChartOptions, DeepPartial } from "lightweight-charts";
+
+export const chartCommonOptions = {
+  layout: {
+    attributionLogo: false,
+    fontFamily: "Roboto",
+    background: {
+      color: "transparent",
+    },
+    textColor: colors.lightBlue,
+  },
+  grid: {
+    vertLines: {
+      visible: false,
+    },
+    horzLines: {
+      visible: false,
+    },
+  },
+  crosshair: {
+    vertLine: {
+      style: 0,
+      color: colors.lightBlue,
+    },
+    horzLine: {
+      style: 0,
+      color: colors.lightBlue,
+    },
+  },
+} satisfies DeepPartial<ChartOptions>;
