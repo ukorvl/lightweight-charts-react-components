@@ -23,6 +23,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
     VITE_DESIGN_SYSTEM_URL,
     VITE_SITE_PUBLISHED_TIMESTAMP,
     VITE_TRADINGVIEW_URL,
+    VITE_LIGHTWEIGHT_CHARTS_REPO_URL,
   } = import.meta.env;
 
   return (
@@ -89,9 +90,28 @@ const Footer: FC<FooterProps> = ({ sx }) => {
       <Stack useFlexGap spacing={2}>
         <FooterText>{`lightweight-charts-react-components version: v${VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION}`}</FooterText>
         <FooterText>{`lightweight-charts version: v${VITE_LIGHTWEIGHT_CHARTS_VERSION}`}</FooterText>
+        <FooterText>{`site published: ${VITE_SITE_PUBLISHED_TIMESTAMP}`}</FooterText>
       </Stack>
       <Stack useFlexGap spacing={2}>
-        <FooterText>{`published: ${VITE_SITE_PUBLISHED_TIMESTAMP}`}</FooterText>
+        <FooterText>TradingView Lightweight Charts™</FooterText>
+        <FooterText>
+          <Link
+            href={VITE_LIGHTWEIGHT_CHARTS_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Lightweight charts
+          </Link>
+        </FooterText>
+        <FooterText>
+          <Link
+            href={VITE_TRADINGVIEW_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            TradingView
+          </Link>
+        </FooterText>
       </Stack>
     </Stack>
   );

@@ -4,9 +4,7 @@ import type {
   ICustomSeriesPaneView,
   ISeriesApi,
   SeriesDataItemTypeMap,
-  SeriesMarker,
   SeriesPartialOptionsMap,
-  Time,
 } from "lightweight-charts";
 import { ReactNode } from "react";
 
@@ -17,12 +15,10 @@ type CustomSeriesParameters = {
   data: any[];
   options?: SeriesOptions<"Custom"> & { [key: string]: any };
   reactive?: boolean;
-  markers?: SeriesMarker<Time>[];
 };
 
 type DefaultSeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];
-  markers?: SeriesMarker<Time>[];
   reactive?: boolean;
   options?: SeriesOptions<T>;
 };
@@ -34,7 +30,6 @@ export type SeriesParameters<T extends SeriesType> = T extends "Custom"
 export type SeriesTemplateProps<T extends SeriesType> = {
   type: T;
   children?: ReactNode;
-  plugin?: ICustomSeriesPaneView;
 } & SeriesParameters<T>;
 
 export type SeriesApiRef<T extends SeriesType> = {
