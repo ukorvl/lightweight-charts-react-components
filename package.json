@@ -42,7 +42,7 @@
     "vite": "^6.2.3"
   },
   "dependencies": {
-    "lightweight-charts": "4.2.3"
+    "lightweight-charts": "^5.0.5"
   },
   "simple-git-hooks": {
     "pre-commit": "npx --no-install lint-staged",

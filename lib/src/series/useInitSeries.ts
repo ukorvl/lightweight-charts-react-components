@@ -1,20 +1,25 @@
 import { useLayoutEffect, useRef } from "react";
 import { SeriesApiRef, SeriesTemplateProps, SeriesType } from "./types";
 import {
-  IChartApi,
-  ICustomSeriesPaneView,
-  ISeriesApi,
+  LineSeries,
+  CandlestickSeries,
+  HistogramSeries,
+  AreaSeries,
+  BaselineSeries,
+  BarSeries,
+  SeriesDefinition,
 } from "lightweight-charts";
 import { useSafeContext } from "@/shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { BaseInternalError } from "@/shared/InternalError";
+
+type SeriesTypeWithoutCustom = Exclude<SeriesType, "Custom">;
 
 export const useInitSeries = <T extends SeriesType>({
   type,
   data,
   options = {},
   reactive,
-  markers,
   plugin,
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const chart = useSafeContext(ChartContext);
@@ -29,15 +34,20 @@ export const useInitSeries = <T extends SeriesType>({
           return null;
         }
 
-        this._series = addSeries(chartApi, type, plugin);
+        if (!plugin && type === "Custom") {
+          throw new BaseInternalError(
+            "Custom series requires a plugin to be defined",
+          );
+        }
 
-        this._series.applyOptions(options);
+        this._series = chartApi.addSeries(
+          type === "Custom"
+            ? plugin
+            : seriesMap[type as SeriesTypeWithoutCustom],
+          options,
+        );
 
         this._series.setData(data);
-
-        if (markers) {
-          this._series.setMarkers(markers);
-        }
       }
 
       return this._series;
@@ -63,14 +73,6 @@ export const useInitSeries = <T extends SeriesType>({
   useLayoutEffect(() => {
     if (!chart) return;
 
-    if (markers && reactive) {
-      seriesApiRef.current.api()?.setMarkers(markers);
-    }
-  }, [markers, reactive]);
-
-  useLayoutEffect(() => {
-    if (!chart) return;
-
     if (data && reactive) {
       seriesApiRef.current.api()?.setData(data);
     }
@@ -87,44 +89,14 @@ export const useInitSeries = <T extends SeriesType>({
   return seriesApiRef;
 };
 
-const addSeries = <T extends SeriesType>(
-  chart: IChartApi,
-  type: T,
-  plugin?: ICustomSeriesPaneView,
-) => {
-  let series = null;
-
-  switch (type) {
-    case "Line":
-      series = chart.addLineSeries();
-      break;
-    case "Candlestick":
-      series = chart.addCandlestickSeries();
-      break;
-    case "Histogram":
-      series = chart.addHistogramSeries();
-      break;
-    case "Area":
-      series = chart.addAreaSeries();
-      break;
-    case "Baseline":
-      series = chart.addBaselineSeries();
-      break;
-    case "Bar":
-      series = chart.addBarSeries();
-      break;
-    case "Custom": {
-      if (!plugin) {
-        throw new BaseInternalError("Custom series requires a plugin", {
-          docsPath: "custom-series",
-        });
-      }
-      series = chart.addCustomSeries(plugin);
-      break;
-    }
-    default:
-      throw new Error(`Unknown series type: "${type}"`);
-  }
-
-  return series as ISeriesApi<T>;
+const seriesMap: Record<
+  SeriesTypeWithoutCustom,
+  SeriesDefinition<SeriesTypeWithoutCustom>
+> = {
+  Line: LineSeries,
+  Candlestick: CandlestickSeries,
+  Histogram: HistogramSeries,
+  Area: AreaSeries,
+  Baseline: BaselineSeries,
+  Bar: BarSeries,
 };
