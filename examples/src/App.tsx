@@ -4,6 +4,7 @@ import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { colors } from "./colors";
 import { Footer } from "./ui/Footer";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
+import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 
 export const App = () => {
   const { VITE_APP_DEFAULT_TITLE, VITE_LIGHTWEIGHT_CHARTS_REPO_URL } =
@@ -14,7 +15,7 @@ export const App = () => {
         spacing={{ xs: 4, sm: 6 }}
         useFlexGap
         sx={{
-          marginTop: 6,
+          marginTop: { xs: 4, sm: 8 },
           marginBottom: 12,
         }}
       >
@@ -62,8 +63,13 @@ export const App = () => {
         <LayoutGrid>
           <BasicSeries />
           <CustomSeries />
+          <RangeSwitcher />
         </LayoutGrid>
-        <Footer />
+        <Footer
+          sx={{
+            marginTop: 6,
+          }}
+        />
       </Stack>
     </Container>
   );

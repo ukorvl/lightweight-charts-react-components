@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { createStubArray } from "@/common/utils";
 import { SeriesDataItemTypeMap } from "lightweight-charts";
 import {
   AreaSeries,
@@ -93,7 +94,7 @@ const getSeriesDataByTab = (tab: BasicSeriesType) => {
   }
 };
 
-const dataStub = new Array(30).fill(0);
+const dataStub = createStubArray(30);
 
 const timeSeriesData = dataStub.map((_, i) => ({
   time: `2024-03-${String(i + 1).padStart(2, "0")}`,

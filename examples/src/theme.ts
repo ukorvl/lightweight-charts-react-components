@@ -10,6 +10,9 @@ const theme = createTheme({
     secondary: {
       main: colors.cyan,
     },
+    info: {
+      main: colors.cyan,
+    },
     background: {
       default: colors.black,
       paper: colors.darkBlue,

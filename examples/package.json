@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "dayjs": "^1.11.13",
     "vite-plugin-compression": "^0.5.1"
   },
   "dependencies": {
