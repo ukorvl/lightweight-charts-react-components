@@ -10,7 +10,7 @@ const CustomSeries = () => {
   return (
     <ChartWidgetCard
       title="Custom series"
-      subTitle="Example of custom series plugin usage (grouped bars)"
+      subTitle="Custom series plugin usage (grouped bars)"
     >
       <Chart height={400} {...chartCommonOptions} autoSize>
         <CustomSeriesComponent

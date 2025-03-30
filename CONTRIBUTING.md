@@ -14,7 +14,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    ```sh
    npm install
    ```
-   Note, that the project use npm workspaces, so all dependencies will be installed in the root `node_modules` folder.
+   Note, that the project uses npm workspaces, so all dependencies will be installed in the root `node_modules` folder.
 
 3. **Create a Branch**: Use a meaningful branch name related to your changes.
    ```sh
@@ -26,7 +26,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
 ### Running the Project
 - Start the development environment:
   ```sh
-  npm run dev # Builds the library and watches for changes
+  npm run dev # Runs the library and the examples website in watch mode
   ```
 - Run tests:
   ```sh
@@ -52,8 +52,9 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    ```
    Note, that we use commitlint to enforce conventional commit messages.
 2. **Ensure version and changelog**:
-   If made a change that affects the public API, update the version in the `package.json` file and add a new entry to the `CHANGELOG.md` file.
-   There is a script [fill-changelog](./scripts/fill-changelog.sh) that can help you to automatically, but note that it uses the commit history to generate the changelog, so make sure that your commits messages are explicit and follow the conventional commit format.
+   If you would like to make a new release, update the version in the `package.json` file and add a new entry to the `CHANGELOG.md` file.
+
+   There is a script [fill-changelog](./scripts/fill-changelog.sh) that can help you to do it automatically, but note that it uses the commit history to generate the changelog, so make sure that your commits messages are explicit and follow the conventional commit format.
    ```sh
    npm run changelog
    ```
@@ -67,7 +68,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    - Click "New Pull Request".
    - Select your branch and submit the PR with a clear description.
 5. **Release**:
-   Once your PR is merged, repository maintainers should create a tag with the new version and run `Release` workflow to publish the new version to npm, create a GitHub release and update the documentation.
+   When there is a need to release a new version of the library, repository maintainers should create a tag, associated with the new version and run `Release` workflow to publish the new version to npm, create a GitHub release and update the documentation.
 ## Issues and Feature Requests
 - Use the **GitHub Issues** tab to report bugs and request features.
 

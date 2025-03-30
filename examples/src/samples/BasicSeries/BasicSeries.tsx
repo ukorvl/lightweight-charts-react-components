@@ -20,7 +20,7 @@ const BasicSeries = () => {
   return (
     <ChartWidgetCard
       title="Basic series"
-      subTitle="Examples of different types series basic usage"
+      subTitle="Different series types basic usage"
     >
       <Tabs
         value={activeTab}

@@ -73,8 +73,8 @@ npm install lightweight-charts-react-components lightweight-charts
 Standalone version of the library is also available and includes all the necessary dependencies except react:
 ```html
 <head>
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/lightweight-charts-react-components/dist/lightweight-charts-react-components.standalone.js" crossorigin></script>
 </head>
 <body>
