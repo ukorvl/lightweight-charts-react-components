@@ -12,11 +12,6 @@ inputs:
     required: false
     default: "/"
     type: "string"
-  timestamp:
-    description: "Set a timestamp env variable before the build"
-    required: false
-    default: false
-    type: "boolean"
 
 runs:
   using: "composite"
@@ -41,10 +36,8 @@ runs:
     - name: Build
       run: |
         export VITE_BASE_URL=${{ inputs.base-path }}
-
-        if [ ${{ inputs.timestamp }} = true ]; then
-          export VITE_SITE_PUBLISHED_TIMESTAMP=$(date -u +"%Y-%m-%d")
-        fi
+        export VITE_PUBLISH_COMMIT_URL=https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+        export VITE_SITE_PUBLISHED_TIMESTAMP=$(date -u +"%Y-%m-%d")
 
         npm run build
       shell: bash

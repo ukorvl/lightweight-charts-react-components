@@ -24,6 +24,7 @@ export const useInitMarkers = ({ reactive, markers }: MarkersProps) => {
     },
     clear() {
       if (this._markers !== null) {
+        this._markers.detach();
         this._markers = null;
         this.destroyed = true;
       }

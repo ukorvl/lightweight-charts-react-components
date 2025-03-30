@@ -1,5 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
-import { SeriesApiRef, SeriesTemplateProps, SeriesType } from "./types";
+import {
+  CustomSeriesUniqueProps,
+  SeriesApiRef,
+  SeriesTemplateProps,
+  SeriesType,
+} from "./types";
 import {
   LineSeries,
   CandlestickSeries,
@@ -8,6 +13,7 @@ import {
   BaselineSeries,
   BarSeries,
   SeriesDefinition,
+  ISeriesApi,
 } from "lightweight-charts";
 import { useSafeContext } from "@/shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
@@ -20,7 +26,7 @@ export const useInitSeries = <T extends SeriesType>({
   data,
   options = {},
   reactive,
-  plugin,
+  ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const chart = useSafeContext(ChartContext);
 
@@ -34,20 +40,25 @@ export const useInitSeries = <T extends SeriesType>({
           return null;
         }
 
-        if (!plugin && type === "Custom") {
-          throw new BaseInternalError(
-            "Custom series requires a plugin to be defined",
+        if (type === "Custom") {
+          const plugin = (rest as CustomSeriesUniqueProps).plugin;
+          if (!plugin) {
+            throw new BaseInternalError("Custom series requires a plugin to be defined");
+          }
+
+          // TODO: Fix this type cast and infer the correct type
+          (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
+            plugin,
+            options,
+          );
+        } else {
+          this._series = chartApi.addSeries(
+            seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
+            options,
           );
         }
 
-        this._series = chartApi.addSeries(
-          type === "Custom"
-            ? plugin
-            : seriesMap[type as SeriesTypeWithoutCustom],
-          options,
-        );
-
-        this._series.setData(data);
+        this._series?.setData(data);
       }
 
       return this._series;

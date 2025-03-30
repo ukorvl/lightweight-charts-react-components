@@ -29,11 +29,12 @@ export class GroupedBarsSeries<TData extends GroupedBarsData>
   }
 
   priceValueBuilder(plotRow: TData): CustomSeriesPricePlotValues {
-    return [0, ...plotRow.values];
+    const { values} = plotRow.customValues ?? { values: [] };
+    return [0, ...values];
   }
 
   isWhitespace(data: TData | WhitespaceData): data is WhitespaceData {
-    return !Boolean((data as Partial<TData>).values?.length);
+    return !Boolean((data as Partial<TData>).customValues?.values?.length);
   }
 
   renderer(): GroupedBarsSeriesRenderer<TData> {

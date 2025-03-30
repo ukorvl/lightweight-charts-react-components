@@ -10,5 +10,7 @@
 import { CustomData } from "lightweight-charts";
 
 export interface GroupedBarsData extends CustomData {
-  values: number[];
+  customValues: {
+    values: number[];
+  };
 }

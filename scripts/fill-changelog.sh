@@ -11,7 +11,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 REPO_ROOT="$SCRIPT_DIR/.."
 CHANGELOG_FILE="$REPO_ROOT/lib/CHANGELOG.md"
 LIB_PACKAGE_JSON="$REPO_ROOT/lib/package.json"
-COMMIT_TYPES="feat fixes chore docs refactor test perf ci style revert"
+COMMIT_TYPES="feat fix chore docs refactor test perf ci style revert"
 
 # Colors
 COLOR_GREEN="\033[0;32m"

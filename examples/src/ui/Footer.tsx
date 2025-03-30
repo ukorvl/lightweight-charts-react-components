@@ -3,7 +3,6 @@ import { GitHub } from "@mui/icons-material";
 import { colors } from "@/colors";
 import { styled } from "@mui/material/styles";
 import { FigmaIcon } from "./FigmaIcon";
-import { TradingviewIcon } from "./TradingviewIcon";
 import { ComponentProps, FC } from "react";
 
 type FooterProps = {
@@ -24,14 +23,15 @@ const Footer: FC<FooterProps> = ({ sx }) => {
     VITE_SITE_PUBLISHED_TIMESTAMP,
     VITE_TRADINGVIEW_URL,
     VITE_LIGHTWEIGHT_CHARTS_REPO_URL,
+    VITE_PUBLISH_COMMIT_URL,
   } = import.meta.env;
 
   return (
     <Stack
       component="footer"
       direction={{ xs: "column", sm: "row" }}
-      spacing={{ xs: 1, sm: 2, md: 4 }}
-      justifyContent="space-around"
+      spacing={{ xs: 2, sm: 4, md: 8 }}
+      justifyContent="center"
       alignItems="flex-start"
       divider={
         <Divider
@@ -46,56 +46,11 @@ const Footer: FC<FooterProps> = ({ sx }) => {
       useFlexGap
       sx={sx}
     >
-      <Stack useFlexGap spacing={2}>
-        <Link
-          href={VITE_GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <GitHub />
-          GitHub repository
-        </Link>
-        <Link
-          href={VITE_DESIGN_SYSTEM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <FigmaIcon />
-          Design System
-        </Link>
-        <Link
-          href={VITE_TRADINGVIEW_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <TradingviewIcon />
-          <Typography>TradingView</Typography>
-        </Link>
-      </Stack>
-      <Stack useFlexGap spacing={2}>
-        <FooterText>{`lightweight-charts-react-components version: v${VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION}`}</FooterText>
-        <FooterText>{`lightweight-charts version: v${VITE_LIGHTWEIGHT_CHARTS_VERSION}`}</FooterText>
-        <FooterText>{`site published: ${VITE_SITE_PUBLISHED_TIMESTAMP}`}</FooterText>
-      </Stack>
-      <Stack useFlexGap spacing={2}>
+      <Stack useFlexGap spacing={2} alignItems="center">
         <FooterText>TradingView Lightweight Charts™</FooterText>
         <FooterText>
           <Link
+            underline="hover"
             href={VITE_LIGHTWEIGHT_CHARTS_REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
@@ -105,6 +60,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
         </FooterText>
         <FooterText>
           <Link
+            underline="hover"
             href={VITE_TRADINGVIEW_URL}
             target="_blank"
             rel="noopener noreferrer"
@@ -112,6 +68,58 @@ const Footer: FC<FooterProps> = ({ sx }) => {
             TradingView
           </Link>
         </FooterText>
+      </Stack>
+      <Stack useFlexGap spacing={2} alignItems="center">
+        <FooterText>{`lightweight-charts-react-components version: v${VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION}`}</FooterText>
+        <FooterText>{`lightweight-charts version: v${VITE_LIGHTWEIGHT_CHARTS_VERSION}`}</FooterText>
+        <FooterText>
+          site{" "}
+          {VITE_PUBLISH_COMMIT_URL ? (
+            <Link
+              underline="hover"
+              href={VITE_PUBLISH_COMMIT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              published
+            </Link>
+          ) : (
+            "published"
+          )}
+          {`: ${VITE_SITE_PUBLISHED_TIMESTAMP}`}
+        </FooterText>
+      </Stack>
+      <Stack useFlexGap spacing={2}>
+        <Link
+          href={VITE_GITHUB_URL}
+          underline="hover"
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            fontSize: "0.8rem",
+          }}
+        >
+          <GitHub />
+          GitHub repository
+        </Link>
+        <Link
+          href={VITE_DESIGN_SYSTEM_URL}
+          underline="hover"
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            fontSize: "0.8rem",
+          }}
+        >
+          <FigmaIcon />
+          Design System
+        </Link>
       </Stack>
     </Stack>
   );

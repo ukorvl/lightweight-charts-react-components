@@ -3,7 +3,7 @@ import type {
   IPriceScaleApi,
   ITimeScaleApi,
   LogicalRangeChangeEventHandler,
-  Range,
+  IRange,
   SizeChangeEventHandler,
   Time,
   TimeRangeChangeEventHandler,
@@ -31,8 +31,8 @@ export type TimeScaleProps = {
   onVisibleTimeRangeChange?: TimeRangeChangeEventHandler<Time>;
   onVisibleLogicalRangeChange?: LogicalRangeChangeEventHandler;
   onSizeChange?: SizeChangeEventHandler;
-  visibleRange?: Range<Time>;
-  visibleLogicalRange?: Range<number>;
+  visibleRange?: IRange<Time>;
+  visibleLogicalRange?: IRange<number>;
   options?: TimeScaleOptions;
 };
 

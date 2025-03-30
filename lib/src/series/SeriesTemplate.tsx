@@ -3,7 +3,15 @@ import { SeriesType, SeriesTemplateProps, SeriesApiRef } from "./types";
 import { SeriesContext } from "./SeriesContext";
 import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
 
-const SeriesTemplateRenderFunction = <T extends SeriesType = "Line">(
+type GenericRefComponent = (<T extends SeriesType>(
+  props: SeriesTemplateProps<T> & {
+    ref?: ForwardedRef<SeriesApiRef<T>>;
+  },
+) => ReturnType<typeof SeriesTemplateRenderFunction>) & {
+  displayName: string;
+};
+
+const SeriesTemplateRenderFunction = <T extends SeriesType>(
   { children, ...rest }: SeriesTemplateProps<T>,
   ref: ForwardedRef<SeriesApiRef<T>>,
 ) => {
@@ -11,12 +19,11 @@ const SeriesTemplateRenderFunction = <T extends SeriesType = "Line">(
   useImperativeHandle(ref, () => seriesApi.current, [seriesApi]);
 
   return (
-    <SeriesContext.Provider value={seriesApi.current}>
-      {children}
-    </SeriesContext.Provider>
+    <SeriesContext.Provider value={seriesApi.current}>{children}</SeriesContext.Provider>
   );
 };
 
-const SeriesTemplate = forwardRef(SeriesTemplateRenderFunction);
+const SeriesTemplate = forwardRef(SeriesTemplateRenderFunction) as GenericRefComponent;
+
 SeriesTemplate.displayName = "SeriesTemplate";
 export default SeriesTemplate;
