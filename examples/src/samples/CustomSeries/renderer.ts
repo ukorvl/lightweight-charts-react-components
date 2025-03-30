@@ -128,13 +128,13 @@ export class GroupedBarsSeriesRenderer<TData extends GroupedBarsData>
     const options = this._options;
     const barWidth = this._data.barSpacing;
     const groups: GroupedBarsBarItem[] = this._data.bars.map((bar) => {
-      const count = bar.originalData.values.length;
+      const count = bar.originalData.customValues?.values.length;
       const singleBarWidth = barWidth / (count + 1);
       const padding = singleBarWidth / 2;
       const startX = padding + bar.x - barWidth / 2 + singleBarWidth / 2;
       return {
         singleBarWidth,
-        singleBars: bar.originalData.values.map((value, index) => ({
+        singleBars: bar.originalData.customValues.values.map((value, index) => ({
           y: priceToCoordinate(value) ?? 0,
           color: options.colors[index % options.colors.length],
           x: startX + index * singleBarWidth,

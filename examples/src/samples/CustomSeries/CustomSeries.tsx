@@ -16,16 +16,22 @@ const CustomSeries = () => {
         <CustomSeriesComponent
           data={[
             {
-              values: [1, 2, 3],
-              time: 1,
+              time: "2021-01-01",
+              customValues: {
+                values: [1, 2, 3],
+              },
             },
             {
-              values: [2, 3, 4],
-              time: 2,
+              time: "2021-01-02",
+              customValues: {
+                values: [2, 3, 4],
+              },
             },
             {
-              values: [3, 4, 5],
-              time: 3,
+              time: "2021-01-03",
+              customValues: {
+                values: [3, 4, 5],
+              },
             },
           ]}
           plugin={new GroupedBarsSeries()}
