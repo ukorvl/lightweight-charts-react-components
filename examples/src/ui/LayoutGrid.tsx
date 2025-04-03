@@ -7,9 +7,9 @@ type LayoutGridProps = {
 
 const LayoutGrid: FC<LayoutGridProps> = ({ children }) => {
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={{ xs: 2, sm: 4 }}>
       {Children.map(children, (child) => (
-        <Grid size={{ xs: 12, md: 12 }}>{child}</Grid>
+        <Grid size={{ xs: 12, lg: 6 }}>{child}</Grid>
       ))}
     </Grid>
   );

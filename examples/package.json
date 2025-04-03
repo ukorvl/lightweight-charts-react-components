@@ -19,10 +19,10 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.9",
     "@mui/material": "^6.4.7",
+    "copy-to-clipboard": "^3.3.3",
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.1.0",
     "react-dom": "^19.0.0",
-    "wouter": "^3.6.0",
     "zustand": "^5.0.3"
   }
 }

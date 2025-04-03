@@ -1,18 +1,53 @@
-import { Divider, Link, Stack, Typography } from "@mui/material";
-import { GitHub } from "@mui/icons-material";
+import { Divider, IconButton, Link, Stack, Tooltip, Typography } from "@mui/material";
+import { GitHub, ContentCopy } from "@mui/icons-material";
 import { colors } from "@/colors";
 import { styled } from "@mui/material/styles";
 import { FigmaIcon } from "./FigmaIcon";
-import { ComponentProps, FC } from "react";
+import { ComponentProps, FC, useEffect, useState } from "react";
+import dayjs from "dayjs";
+import copy from "copy-to-clipboard";
 
 type FooterProps = {
   sx?: ComponentProps<typeof Stack>["sx"];
+};
+
+type CopyIconProps = {
+  textToCopy: string;
+  ariaLabel?: string;
 };
 
 const FooterText = styled(Typography)(() => ({
   color: colors.gray,
   fontSize: "0.8rem",
 }));
+
+const CopyIcon: FC<CopyIconProps> = ({ textToCopy, ariaLabel }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    if (isCopied) {
+      const timeoutId = setTimeout(() => setIsCopied(false), 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isCopied]);
+
+  return (
+    <Tooltip title={isCopied ? "Copied" : "Copy"} leaveDelay={250} placement="top">
+      <IconButton
+        onClick={() => {
+          copy(textToCopy);
+          setIsCopied(true);
+        }}
+        aria-label={ariaLabel}
+        color="primary"
+        sx={{ paddingBlock: 0 }}
+      >
+        <ContentCopy sx={{ fontSize: "1rem" }} />
+      </IconButton>
+    </Tooltip>
+  );
+};
 
 const Footer: FC<FooterProps> = ({ sx }) => {
   const {
@@ -29,20 +64,11 @@ const Footer: FC<FooterProps> = ({ sx }) => {
   return (
     <Stack
       component="footer"
-      direction={{ xs: "column", sm: "row" }}
-      spacing={{ xs: 2, sm: 4, md: 8 }}
+      direction={{ xs: "column", md: "row" }}
+      spacing={{ xs: 2, md: 8 }}
       justifyContent="center"
-      alignItems="flex-start"
-      divider={
-        <Divider
-          aria-hidden="true"
-          orientation="vertical"
-          flexItem
-          sx={{
-            backgroundColor: colors.gray,
-          }}
-        />
-      }
+      alignItems={{ xs: "center", md: "flex-start" }}
+      divider={<Divider aria-hidden="true" orientation="vertical" flexItem />}
       useFlexGap
       sx={sx}
     >
@@ -70,10 +96,24 @@ const Footer: FC<FooterProps> = ({ sx }) => {
         </FooterText>
       </Stack>
       <Stack useFlexGap spacing={2} alignItems="center">
-        <FooterText>{`lightweight-charts-react-components version: v${VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION}`}</FooterText>
-        <FooterText>{`lightweight-charts version: v${VITE_LIGHTWEIGHT_CHARTS_VERSION}`}</FooterText>
+        <Stack useFlexGap direction="row" alignItems="center">
+          <FooterText>
+            {`Lightweight-charts-react-components version: ${VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION}`}
+          </FooterText>
+          <CopyIcon
+            textToCopy={VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION}
+            ariaLabel="Copy version of the Lightweight-charts-react-components"
+          />
+        </Stack>
+        <Stack useFlexGap direction="row" alignItems="center">
+          <FooterText>{`Lightweight-charts version: ${VITE_LIGHTWEIGHT_CHARTS_VERSION}`}</FooterText>
+          <CopyIcon
+            textToCopy={VITE_LIGHTWEIGHT_CHARTS_VERSION}
+            ariaLabel="Copy version of the Lightweight-charts"
+          />
+        </Stack>
         <FooterText>
-          site{" "}
+          Site{" "}
           {VITE_PUBLISH_COMMIT_URL ? (
             <Link
               underline="hover"
@@ -86,7 +126,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
           ) : (
             "published"
           )}
-          {`: ${VITE_SITE_PUBLISHED_TIMESTAMP}`}
+          {`: ${dayjs.utc(VITE_SITE_PUBLISHED_TIMESTAMP).local().format("YYYY-MM-DD")}`}
         </FooterText>
       </Stack>
       <Stack useFlexGap spacing={2}>

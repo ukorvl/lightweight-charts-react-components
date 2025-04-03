@@ -37,6 +37,7 @@ jobs:
         with:
           check-commits: false
           base-path: /lightweight-charts-react-components
+          deploy: true
 
       - name: Deploy
         uses: ./.github/actions/deploy-examples

@@ -12,6 +12,11 @@ inputs:
     required: false
     default: "/"
     type: "string"
+  deploy:
+    description: "Build the project for deployment"
+    required: false
+    default: false
+    type: "boolean"
 
 runs:
   using: "composite"
@@ -36,8 +41,11 @@ runs:
     - name: Build
       run: |
         export VITE_BASE_URL=${{ inputs.base-path }}
-        export VITE_PUBLISH_COMMIT_URL=https://github.com/${{ github.repository }}/commit/${{ github.sha }}
-        export VITE_SITE_PUBLISHED_TIMESTAMP=$(date -u +"%Y-%m-%d")
+
+        if [ ${{ inputs.deploy }} = true ]; then
+          export VITE_PUBLISH_COMMIT_URL=https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+          export VITE_SITE_PUBLISHED_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        fi
 
         npm run build
       shell: bash

@@ -1,9 +1,9 @@
-import type {
-  ChartOptions as ChartNativeOptions,
-  DeepPartial,
-  IChartApi,
-  MouseEventHandler,
-  Time,
+import {
+  type ChartOptions as ChartNativeOptions,
+  type DeepPartial,
+  type IChartApi,
+  type MouseEventHandler,
+  type Time,
 } from "lightweight-charts";
 import { ReactNode } from "react";
 

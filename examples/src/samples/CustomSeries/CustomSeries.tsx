@@ -5,12 +5,14 @@ import {
 } from "lightweight-charts-react-components";
 import { GroupedBarsSeries } from "./plugin";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { samplesLinks } from "@/samples";
 
 const CustomSeries = () => {
   return (
     <ChartWidgetCard
       title="Custom series"
       subTitle="Custom series plugin usage (grouped bars)"
+      githubLink={samplesLinks.CustomSeries.githbub}
     >
       <Chart height={400} {...chartCommonOptions} autoSize>
         <CustomSeriesComponent
