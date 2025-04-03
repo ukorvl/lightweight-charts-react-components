@@ -38,7 +38,7 @@ const MarkersSample = () => {
             priceLineVisible: false,
           }}
         >
-          <Markers reactive markers={getMarkersData()} />
+          <Markers markers={getMarkersData()} />
         </AreaSeries>
       </Chart>
     </ChartWidgetCard>

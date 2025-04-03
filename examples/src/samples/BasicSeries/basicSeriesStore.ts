@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { colors } from "@/colors";
 import { generateLineData, generateOHLCData } from "@/common/generateSeriesData";
 import { SeriesDataItemTypeMap } from "lightweight-charts";
@@ -19,7 +17,7 @@ type BasicSeriesType = Exclude<keyof SeriesDataItemTypeMap, "Custom">;
 
 type BasicSeriesMap<K extends BasicSeriesType> = {
   [key in K]: {
-    Component: ComponentType<any>;
+    Component: ComponentType<SeriesProps<K>>;
     options?: SeriesProps<K>["options"];
   };
 };
@@ -30,11 +28,14 @@ interface TabStore {
 }
 
 interface SeriesDataStore {
-  seriesComponent: ComponentType<any> | null;
-  seriesData: any[];
-  setSeriesData: (data: any) => void;
-  setSeriesComponent: (Component: ComponentType<any> | null) => void;
+  seriesComponent: ComponentType<SeriesProps<BasicSeriesType>> | null;
+  seriesData: SeriesDataItemTypeMap[BasicSeriesType][];
+  setSeriesData: (data: SeriesDataItemTypeMap[BasicSeriesType][]) => void;
+  setSeriesComponent: (Component: ComponentType<SeriesProps<BasicSeriesType>> | null) => void;
 }
+
+const timeSeriesData = generateLineData(50);
+const ohlcSeriesData = generateOHLCData(50);
 
 const basicSeriesMap: BasicSeriesMap<BasicSeriesType> = {
   Candlestick: {
@@ -60,61 +61,17 @@ const basicSeriesMap: BasicSeriesMap<BasicSeriesType> = {
   Baseline: {
     Component: BaselineSeries,
     options: {
-      baseValue: { type: "price", price: 50 },
+      baseValue: {
+        type: "price",
+        price: Math.floor(
+          timeSeriesData.reduce((a, b) => a + b.value, 0) / timeSeriesData.length,
+        ),
+      },
       topLineColor: colors.green,
       bottomLineColor: colors.red,
     },
   },
-};//   [
-//     "Candlestick",
-//     {
-//       Component: CandlestickSeries,
-//     },
-//   ],
-//   [
-//     "Line",
-//     {
-//       Component: LineSeries,
-//     },
-//   ],
-//   [
-//     "Bar",
-//     {
-//       Component: BarSeries,
-//     },
-//   ],
-//   [
-//     "Area",
-//     {
-//       Component: AreaSeries,
-//       options: {
-//         topLineColor: colors.blue100,
-//         bottomLineColor: colors.red,
-//         crossHairMarkerVisible: true,
-//         crossHairMarkerRadius: 5,
-//         crossHairMarkerBorderWidth: 2,
-//         crossHairMarkerBorderColor: colors.red,
-//       },
-//     },
-//   ],
-//   [
-//     "Histogram",
-//     {
-//       Component: HistogramSeries,
-//     },
-//   ],
-//   [
-//     "Baseline",
-//     {
-//       Component: BaselineSeries,
-//       options: {
-//         baseValue: { type: "price", price: 50 },
-//         topLineColor: colors.green,
-//         bottomLineColor: colors.red,
-//       },
-//     },
-//   ],
-// ]);
+};
 
 const getSeriesDataByTab = (tab: BasicSeriesType) => {
   switch (tab) {
@@ -131,9 +88,6 @@ const getSeriesDataByTab = (tab: BasicSeriesType) => {
       return [];
   }
 };
-
-const timeSeriesData = generateLineData(50);
-const ohlcSeriesData = generateOHLCData(50);
 
 const useTabStore = create<TabStore>((set) => ({
   activeTab: "Candlestick",

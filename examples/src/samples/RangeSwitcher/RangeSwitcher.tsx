@@ -53,7 +53,7 @@ const RangeSwitcher = () => {
         autoSize
         onInit={(chart) => chart.timeScale().fitContent()}
       >
-        <AreaSeries reactive options={seriesCustomOptions} data={data} />
+        <AreaSeries options={seriesCustomOptions} data={data} />
       </Chart>
     </ChartWidgetCard>
   );

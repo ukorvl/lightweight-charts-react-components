@@ -4,7 +4,7 @@ import { createSeriesMarkers } from "lightweight-charts";
 import { useSafeContext } from "@/shared/useSafeContext";
 import { SeriesContext } from "@/series/SeriesContext";
 
-export const useInitMarkers = ({ reactive, markers }: MarkersProps) => {
+export const useInitMarkers = ({ reactive = true, markers }: MarkersProps) => {
   const series = useSafeContext(SeriesContext);
 
   const markersApiRef = useRef<MarkersApiRef>({

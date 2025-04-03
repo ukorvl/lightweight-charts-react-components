@@ -33,7 +33,7 @@ const BasicSeries = () => {
         ))}
       </Tabs>
       <Chart height={400} {...chartCommonOptions} autoSize>
-        {Component && <Component data={seriesData} options={options} />}
+        {Component && <Component data={seriesData} options={options} reactive={false} />}
       </Chart>
     </ChartWidgetCard>
   );
