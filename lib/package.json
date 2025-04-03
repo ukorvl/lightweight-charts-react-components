@@ -54,7 +54,7 @@
     "@rsbuild/plugin-react": "^1.1.0",
     "@rslib/core": "^0.5.5",
     "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.0.2",
+    "@types/react-dom": "^19.1.1",
     "rsbuild-plugin-dts": "^0.5.5",
     "vitest": "^3.1.1"
   }
