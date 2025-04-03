@@ -11,3 +11,8 @@ updates:
       include: "scope"
     ignore:
       - dependency-name: "lightweight-charts"
+    groups:
+      react-packages:
+        patterns:
+          - "react"
+          - "react-dom"
