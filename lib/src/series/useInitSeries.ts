@@ -25,7 +25,7 @@ export const useInitSeries = <T extends SeriesType>({
   type,
   data,
   options = {},
-  reactive,
+  reactive = true,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const chart = useSafeContext(ChartContext);

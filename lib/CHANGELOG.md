@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.1.1] - 2025-04-03
 ### Fix
 - fix empty markers on init issue
+### Feat
+- make series and markers reactive by default
 
 ## [0.1.0] - 2025-03-31
 ### Feat
