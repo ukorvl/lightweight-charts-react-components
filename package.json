@@ -33,7 +33,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^16.0.0",
-    "knip": "^5.46.0",
+    "knip": "^5.46.5",
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.2",
     "simple-git-hooks": "^2.11.1",
