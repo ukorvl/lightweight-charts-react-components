@@ -11,6 +11,8 @@ updates:
       include: "scope"
     ignore:
       - dependency-name: "lightweight-charts"
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       react-packages:
         patterns:
