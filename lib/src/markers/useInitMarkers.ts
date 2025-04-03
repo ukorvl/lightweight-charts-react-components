@@ -17,7 +17,7 @@ export const useInitMarkers = ({ reactive, markers }: MarkersProps) => {
           return null;
         }
 
-        this._markers = createSeriesMarkers(seriesApi, []);
+        this._markers = createSeriesMarkers(seriesApi, markers);
       }
 
       return this._markers;

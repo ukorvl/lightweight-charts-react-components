@@ -1,27 +1,73 @@
-import { Container, Link, Stack, Typography } from "@mui/material";
+import { Container, Link, Stack, Typography, keyframes, styled } from "@mui/material";
 import { LayoutGrid } from "./ui/LayoutGrid";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { colors } from "./colors";
 import { Footer } from "./ui/Footer";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
+import { Markers } from "./samples/Markers/Markers";
+
+const gradientAnimation = keyframes`
+  0%   { background-position: 50% 0; }
+  12.5% { background-position: 70% 0; }
+  25%  { background-position: 75% 0; }
+  37.5% { background-position: 70% 0; }
+  50%  { background-position: 60% 0; }
+  62.5% { background-position: 55% 0; }
+  75%  { background-position: 50% 0; }
+  87.5% { background-position: 35% 0; }
+  100% { background-position: 20% 0; }
+`;
+
+const GradientLink = styled(Link)(() => ({
+  fontWeight: "bold",
+  background: `linear-gradient(90deg, ${colors.blue} 50%, ${colors.red} 70%)`,
+  backgroundSize: "300% 300%",
+  backgroundPosition: "0 0",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  transition: "background-position 0.3s ease-in-out",
+  "&:hover": {
+    animation: `${gradientAnimation} 2s ease-in-out infinite`,
+  },
+}));
 
 export const App = () => {
-  const { VITE_APP_DEFAULT_TITLE, VITE_LIGHTWEIGHT_CHARTS_REPO_URL } =
-    import.meta.env;
+  const { VITE_APP_DEFAULT_TITLE, VITE_LIGHTWEIGHT_CHARTS_REPO_URL } = import.meta.env;
   return (
-    <Container>
+    <Container
+      maxWidth="xl"
+      sx={{
+        paddingInline: { xs: 2, sm: 4, lg: 4 },
+      }}
+    >
       <Stack
-        spacing={{ xs: 4, sm: 6 }}
+        sx={{
+          marginTop: 4,
+        }}
+        component="header"
+        direction="row"
+        justifyContent="flex-end"
+        useFlexGap
+        gap={4}
+      >
+        <GradientLink underline="none" href="/#">
+          Examples
+        </GradientLink>
+        <Typography color="textDisabled">Terminal</Typography>
+      </Stack>
+      <Stack
+        component="main"
+        spacing={{ xs: 4, sm: 8 }}
         useFlexGap
         sx={{
-          marginTop: { xs: 4, sm: 8 },
+          marginTop: 4,
           marginBottom: 12,
         }}
       >
         <Typography
           sx={{
-            background: `linear-gradient(45deg, ${colors.red}, ${colors.blue})`,
+            background: `linear-gradient(45deg, ${colors.red}, ${colors.blue100})`,
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontSize: { xs: "2rem", sm: "3rem", md: "5rem" },
@@ -30,7 +76,7 @@ export const App = () => {
             wordBreak: "keep-all",
             lineHeight: 1,
             userSelect: "none",
-            marginInline: { md: 4 },
+            marginInline: { sm: 6, md: 12, lg: 28 },
           }}
           component="h1"
         >
@@ -40,7 +86,7 @@ export const App = () => {
           sx={{
             textAlign: "center",
             fontSize: "1.1rem",
-            marginInline: { xs: 4, sm: 12, md: 20 },
+            marginInline: { xs: 4, sm: 12, md: 28 },
           }}
           component="p"
         >
@@ -57,20 +103,22 @@ export const App = () => {
           ) : (
             "Lightweight-charts library"
           )}
-          . It provides a simple declarative way to use the
-          Lightweight-charts library in your React application.
+          . It provides a simple declarative way to use the Lightweight-charts library in
+          your React application.
         </Typography>
         <LayoutGrid>
           <BasicSeries />
           <CustomSeries />
           <RangeSwitcher />
+          <Markers />
         </LayoutGrid>
-        <Footer
-          sx={{
-            marginTop: 6,
-          }}
-        />
       </Stack>
+      <Footer
+        sx={{
+          marginTop: 6,
+          marginBottom: { xs: 4, sm: 8, md: 12, xl: 16 },
+        }}
+      />
     </Container>
   );
 };

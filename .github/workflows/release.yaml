@@ -62,6 +62,7 @@ jobs:
         with:
           check-commits: false
           base-path: /lightweight-charts-react-components
+          deploy: true
 
       - name: Create a new release
         uses: ./.github/actions/create-release

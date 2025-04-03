@@ -2,13 +2,15 @@ const colors = {
   white: "#f0f0f0",
   black: "#080F25",
   red: "#ff6b6b",
-  blue: "#0E43FB",
-  darkBlue: "#101935",
-  lightBlue: "#AEB9E1",
+  blue100: "#0E43FB",
+  blue200: "#101935",
+  blue: "#AEB9E1",
   gray: "#7E89AC",
+  gray100: "#343B4F",
   cyan: "#57C3FF",
   violet: "#8951FF",
   pink: "#cb3cff",
+  green: "#28a49c",
 } as const;
 
 export { colors };

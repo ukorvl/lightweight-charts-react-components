@@ -3,6 +3,15 @@ import { colors } from "./colors";
 
 const theme = createTheme({
   cssVariables: true,
+  components: {
+    MuiCardHeader: {
+      styleOverrides: {
+        action: {
+          margin: 0,
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       main: colors.pink,
@@ -15,12 +24,14 @@ const theme = createTheme({
     },
     background: {
       default: colors.black,
-      paper: colors.darkBlue,
+      paper: colors.blue200,
     },
     text: {
       primary: colors.white,
-      secondary: colors.lightBlue,
+      secondary: colors.blue,
+      disabled: colors.gray100,
     },
+    divider: colors.gray100,
   },
   typography: {
     fontFamily: "Roboto",
