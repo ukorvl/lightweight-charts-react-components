@@ -13,8 +13,12 @@ updates:
       - dependency-name: "lightweight-charts"
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "@rslib/core"
+        update-types: ["version-update:semver-minor"]
     groups:
       react-packages:
         patterns:
           - "react"
           - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"

@@ -11,6 +11,7 @@ const colors = {
   violet: "#8951FF",
   pink: "#cb3cff",
   green: "#28a49c",
+  orange: "#FFB74D",
 } as const;
 
 export { colors };

@@ -4,4 +4,7 @@ const typedObjectKeys = <T extends object>(obj: T): Array<keyof T> => {
 
 const createStubArray = (length: number) => new Array(length).fill(0);
 
-export { typedObjectKeys, createStubArray };
+const encodeInlineSvg = (inlineSvg: string) =>
+  `data:image/svg+xml,${encodeURIComponent(inlineSvg)}`;
+
+export { typedObjectKeys, createStubArray, encodeInlineSvg };

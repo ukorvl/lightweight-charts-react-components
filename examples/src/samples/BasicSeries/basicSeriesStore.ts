@@ -31,7 +31,9 @@ interface SeriesDataStore {
   seriesComponent: ComponentType<SeriesProps<BasicSeriesType>> | null;
   seriesData: SeriesDataItemTypeMap[BasicSeriesType][];
   setSeriesData: (data: SeriesDataItemTypeMap[BasicSeriesType][]) => void;
-  setSeriesComponent: (Component: ComponentType<SeriesProps<BasicSeriesType>> | null) => void;
+  setSeriesComponent: (
+    Component: ComponentType<SeriesProps<BasicSeriesType>> | null,
+  ) => void;
 }
 
 const timeSeriesData = generateLineData(50);
@@ -63,9 +65,10 @@ const basicSeriesMap: BasicSeriesMap<BasicSeriesType> = {
     options: {
       baseValue: {
         type: "price",
-        price: Math.floor(
-          timeSeriesData.reduce((a, b) => a + b.value, 0) / timeSeriesData.length,
-        ),
+        price:
+          (Math.min(...timeSeriesData.map((item) => item.value)) +
+            Math.max(...timeSeriesData.map((item) => item.value))) /
+          2,
       },
       topLineColor: colors.green,
       bottomLineColor: colors.red,

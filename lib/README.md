@@ -20,8 +20,8 @@
 
   <a href="https://github.com/ukorvl/lightweight-charts-react-components/actions/workflows/build.yaml">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/github/actions/workflow/status/ukorvl/lightweight-charts-react-components/build.yaml?colorA=1e2029&colorB=1e2029&style=flat">
-      <img src="https://img.shields.io/github/actions/workflow/status/ukorvl/lightweight-charts-react-components/build.yaml?colorA=ffcc00&colorB=ffcc00&style=flat" alt="Build Status">
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/github/actions/workflow/status/ukorvl/lightweight-charts-react-components/build.yaml?branch=main&colorA=1e2029&colorB=1e2029&style=flat">
+      <img src="https://img.shields.io/github/actions/workflow/status/ukorvl/lightweight-charts-react-components/build.yaml?branch=main&colorA=ffcc00&colorB=ffcc00&style=flat" alt="Build Status">
     </picture>
   </a>
 

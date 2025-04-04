@@ -52,13 +52,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    ```
    Note, that we use commitlint to enforce conventional commit messages.
 2. **Ensure version and changelog**:
-   If you would like to make a new release, update the version in the `package.json` file and add a new entry to the `CHANGELOG.md` file.
-
-   There is a script [fill-changelog](./scripts/fill-changelog.sh) that can help you to do it automatically, but note that it uses the commit history to generate the changelog, so make sure that your commits messages are explicit and follow the conventional commit format.
-   ```sh
-   npm run changelog
-   ```
-   Changleog can be filled manually as well.
+   If you would like to make a new release, update the version in the `package.json` file and add a new entry to the `CHANGELOG.md` file if necessary.
 3. **Push to Your Fork**:
    ```sh
    git push origin feature/my-new-feature

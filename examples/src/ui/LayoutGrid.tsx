@@ -6,10 +6,25 @@ type LayoutGridProps = {
 };
 
 const LayoutGrid: FC<LayoutGridProps> = ({ children }) => {
+  const childrenLength = Children.count(children);
+  const numberOfChildrenIsOdd = childrenLength % 2 === 1;
+
   return (
-    <Grid container spacing={{ xs: 2, sm: 4 }}>
-      {Children.map(children, (child) => (
-        <Grid size={{ xs: 12, lg: 6 }}>{child}</Grid>
+    <Grid
+      container
+      spacing={{ xs: 2, sm: 4 }}
+      justifyContent={numberOfChildrenIsOdd ? "center" : "stretch"}
+    >
+      {Children.map(children, (child, i) => (
+        <Grid
+          size={{
+            xs: 12,
+            lg: numberOfChildrenIsOdd ? (i === childrenLength - 1 ? 8 : 6) : 6,
+          }}
+          key={i}
+        >
+          {child}
+        </Grid>
       ))}
     </Grid>
   );

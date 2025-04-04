@@ -1,7 +1,8 @@
+import { CandlestickData, LineData } from "lightweight-charts";
 import { createStubArray } from "./utils";
 import dayjs from "dayjs";
 
-const generateLineData = (length: number) => {
+const generateLineData = (length: number): LineData[] => {
   const start = dayjs().subtract(length, "day");
   let lastValue = Math.floor(Math.random() * 100);
 
@@ -16,7 +17,7 @@ const generateLineData = (length: number) => {
   });
 };
 
-const generateOHLCData = (length: number) => {
+const generateOHLCData = (length: number): CandlestickData[] => {
   const start = dayjs().subtract(length, "day");
   let previousClose = Math.random() * 100;
 
