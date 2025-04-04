@@ -1,5 +1,5 @@
 import { colors } from "@/colors";
-import { generateLineData } from "@/common/generateSeriesData";
+import { generateOHLCData } from "@/common/generateSeriesData";
 import { SeriesMarker, Time } from "lightweight-charts";
 import { create } from "zustand";
 
@@ -18,40 +18,32 @@ const useMarkersStore = create<MarkersStore>((set, get) => ({
   },
 }));
 
-const seriesData = generateLineData(60);
+const seriesData = generateOHLCData(40);
 
 const basicMarkersData = [
   {
     time: seriesData[5].time,
-    color: colors.red,
+    color: colors.green,
     shape: "arrowUp",
     text: "Buy",
-    position: "aboveBar",
-    size: 2,
-  },
-  {
-    time: seriesData[25].time,
-    color: colors.green,
-    shape: "arrowDown",
-    text: "Sell",
     position: "belowBar",
     size: 2,
   },
   {
-    time: seriesData[35].time,
-    price: 140,
-    color: colors.cyan,
-    shape: "circle",
-    text: "Neutral",
-    position: "inBar",
+    time: seriesData[25].time,
+    color: colors.red,
+    shape: "arrowDown",
+    text: "Sell",
+    position: "aboveBar",
     size: 2,
   },
   {
-    time: seriesData[50].time,
-    color: colors.pink,
-    shape: "square",
-    text: "Info",
-    position: "inBar",
+    time: seriesData[35].time,
+    price: Math.max(...seriesData.map((d) => d.high)),
+    color: colors.orange,
+    shape: "circle",
+    text: "D",
+    position: "atPriceTop",
     size: 2,
   },
 ] satisfies SeriesMarker<Time>[];

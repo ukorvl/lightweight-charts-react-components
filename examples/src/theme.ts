@@ -8,9 +8,16 @@ const theme = createTheme({
       styleOverrides: {
         action: {
           margin: 0,
-        }
-      }
-    }
+        },
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        track: {
+          backgroundColor: colors.white,
+        },
+      },
+    },
   },
   palette: {
     primary: {

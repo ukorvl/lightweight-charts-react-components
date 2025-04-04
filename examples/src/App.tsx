@@ -6,6 +6,7 @@ import { Footer } from "./ui/Footer";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Markers } from "./samples/Markers/Markers";
+import { Watermark } from "./samples/Watermark/Watermark";
 
 const gradientAnimation = keyframes`
   0%   { background-position: 50% 0; }
@@ -47,7 +48,7 @@ export const App = () => {
         }}
         component="header"
         direction="row"
-        justifyContent="flex-end"
+        justifyContent={{ xs: "center", sm: "flex-end" }}
         useFlexGap
         gap={4}
       >
@@ -111,12 +112,13 @@ export const App = () => {
           <CustomSeries />
           <RangeSwitcher />
           <Markers />
+          <Watermark />
         </LayoutGrid>
       </Stack>
       <Footer
         sx={{
           marginTop: 6,
-          marginBottom: { xs: 4, sm: 8, md: 12, xl: 16 },
+          marginBottom: { xs: 8, md: 12, xl: 16 },
         }}
       />
     </Container>

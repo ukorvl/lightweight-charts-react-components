@@ -10,8 +10,7 @@
     "test": "npm run test --workspaces --if-present",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
-    "knip": "knip",
-    "changelog": "bash ./scripts/fill-changelog.sh"
+    "knip": "knip"
   },
   "version": "0.1.0",
   "workspaces": [

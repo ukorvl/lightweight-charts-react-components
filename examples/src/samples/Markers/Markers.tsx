@@ -1,5 +1,5 @@
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
-import { AreaSeries, Chart, Markers } from "lightweight-charts-react-components";
+import { CandlestickSeries, Chart, Markers } from "lightweight-charts-react-components";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
 import { seriesData, useMarkersStore } from "./markersStore";
@@ -16,7 +16,7 @@ const MarkersSample = () => {
       subTitle="Various markers display on the chart"
       githubLink={samplesLinks.Markers.github}
     >
-      <FormGroup>
+      <FormGroup sx={{ marginBottom: 2 }}>
         <FormControlLabel
           control={
             <Switch
@@ -29,17 +29,20 @@ const MarkersSample = () => {
         />
       </FormGroup>
       <Chart height={400} {...chartCommonOptions} autoSize>
-        <AreaSeries
+        <CandlestickSeries
           data={seriesData}
           options={{
-            topColor: colors.blue100,
-            bottomColor: "transparent",
-            lineColor: colors.blue100,
             priceLineVisible: false,
+            upColor: colors.blue,
+            downColor: "transparent",
+            borderUpColor: colors.blue,
+            borderDownColor: colors.blue,
+            wickUpColor: colors.blue,
+            wickDownColor: colors.blue,
           }}
         >
           <Markers markers={getMarkersData()} />
-        </AreaSeries>
+        </CandlestickSeries>
       </Chart>
     </ChartWidgetCard>
   );
