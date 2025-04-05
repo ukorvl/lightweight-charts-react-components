@@ -1,5 +1,6 @@
 import { Grid2 as Grid } from "@mui/material";
-import { Children, FC, ReactNode } from "react";
+import { Children } from "react";
+import type { FC, ReactNode } from "react";
 
 type LayoutGridProps = {
   children: ReactNode;

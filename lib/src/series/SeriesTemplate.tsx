@@ -1,7 +1,8 @@
-import { useSeries } from "./useSeries";
-import { SeriesType, SeriesTemplateProps, SeriesApiRef } from "./types";
+import { forwardRef, useImperativeHandle } from "react";
 import { SeriesContext } from "./SeriesContext";
-import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
+import { useSeries } from "./useSeries";
+import type { SeriesType, SeriesTemplateProps, SeriesApiRef } from "./types";
+import type { ForwardedRef } from "react";
 
 type GenericRefComponent = (<T extends SeriesType>(
   props: SeriesTemplateProps<T> & {

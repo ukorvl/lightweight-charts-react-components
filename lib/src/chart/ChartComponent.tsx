@@ -1,6 +1,6 @@
 import { ChartContext } from "./ChartContext";
 import { useChart } from "./useChart";
-import { ChartProps } from "./types";
+import type { ChartProps } from "./types";
 
 type ChartComponentProps = {
   container: HTMLElement;

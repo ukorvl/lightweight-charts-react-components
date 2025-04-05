@@ -5,7 +5,7 @@ import {
   type MouseEventHandler,
   type Time,
 } from "lightweight-charts";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export type ChartOptions = {
   onClick?: MouseEventHandler<Time>;

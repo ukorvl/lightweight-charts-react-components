@@ -1,10 +1,11 @@
-import { ForwardedRef, forwardRef } from "react";
+import { forwardRef } from "react";
 import SeriesTemplate from "./SeriesTemplate";
-import { SeriesApiRef, SeriesProps } from "./types";
+import type { SeriesApiRef, SeriesProps } from "./types";
+import type { ForwardedRef } from "react";
 
 const BaselineSeriesRenderFunction = (
   { children, ...rest }: SeriesProps<"Baseline">,
-  ref: ForwardedRef<SeriesApiRef<"Baseline">>,
+  ref: ForwardedRef<SeriesApiRef<"Baseline">>
 ) => {
   return (
     <SeriesTemplate type="Baseline" ref={ref} {...rest}>

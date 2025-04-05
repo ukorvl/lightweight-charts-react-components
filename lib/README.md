@@ -105,7 +105,8 @@ tbd
 
 ## Examples
 
-tbd
+Examples app itself is a [Demo](https://ukorvl.github.io/lightweight-charts-react-components/) web application, but it contains a lot of examples of how to use the library. You can find the source code of the examples in the [samples folder](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/examples/src/samples). 
+You can run and test the examples app locally by cloning the repository and running the examples app.
 
 ## Contributing
 

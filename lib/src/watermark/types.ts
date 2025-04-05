@@ -1,4 +1,4 @@
-import {
+import type {
   DeepPartial,
   IImageWatermarkPluginApi,
   ITextWatermarkPluginApi,
@@ -19,14 +19,14 @@ export type WatermarkProps<T extends WatermarkType> = {
   type: T;
 } & (T extends "text" ? TextWatermarkProps : ImageWatermarkProps);
 
-export type WatermarkTextApiRefBase = {
+type WatermarkTextApiRefBase = {
   _watermark: ITextWatermarkPluginApi<Time> | null;
   api: () => ITextWatermarkPluginApi<Time> | null;
   init: () => ITextWatermarkPluginApi<Time> | null;
   clear: () => void;
 };
 
-export type WatermarkImageApiRefBase = {
+type WatermarkImageApiRefBase = {
   _watermark: IImageWatermarkPluginApi<Time> | null;
   api: () => IImageWatermarkPluginApi<Time> | null;
   init: () => IImageWatermarkPluginApi<Time> | null;

@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
-import { PriceScaleApiRef, PriceScaleProps } from "./types";
+import { forwardRef, useImperativeHandle } from "react";
 import { usePriceScale } from "./usePriceScale";
+import type { PriceScaleApiRef, PriceScaleProps } from "./types";
+import type { ForwardedRef } from "react";
 
 const PriceScaleRenderFunction = (
   props: PriceScaleProps,

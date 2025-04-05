@@ -26,8 +26,7 @@ const Configuration = {
     "type-case": [2, "always", "lower-case"],
     "body-max-line-length": [0],
   },
-  helpUrl:
-    "https://github.com/conventional-changelog/commitlint/#what-is-commitlint",
+  helpUrl: "https://github.com/conventional-changelog/commitlint/#what-is-commitlint",
 } satisfies UserConfig;
 
 export default Configuration;

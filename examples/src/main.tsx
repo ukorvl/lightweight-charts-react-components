@@ -1,11 +1,11 @@
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-import dayjs from "dayjs";
-import { StrictMode } from "react";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,5 +18,5 @@ root.render(
       <CssBaseline />
       <App />
     </ThemeProvider>
-  </StrictMode>,
+  </StrictMode>
 );

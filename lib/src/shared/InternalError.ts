@@ -1,7 +1,6 @@
 import { version } from "../../package.json";
 
-const docsBaseUrl =
-  "https://tradingview.github.io/lightweight-charts/docs/4.2";
+const docsBaseUrl = "https://tradingview.github.io/lightweight-charts/docs";
 
 type IBaseErrorParameters = {
   isOperational?: boolean;
@@ -15,7 +14,7 @@ class BaseInternalError extends Error {
 
   constructor(
     message?: string,
-    { isOperational = true, cause, docsPath }: IBaseErrorParameters = {},
+    { isOperational = true, cause, docsPath }: IBaseErrorParameters = {}
   ) {
     super(message);
 

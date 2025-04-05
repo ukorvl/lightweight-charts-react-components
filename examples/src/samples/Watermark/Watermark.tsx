@@ -1,10 +1,10 @@
-import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
+import { Tab, Tabs } from "@mui/material";
 import { AreaSeries, Chart } from "lightweight-charts-react-components";
+import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
-import { Tab, Tabs } from "@mui/material";
+import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { useWatermarkStore, seriesData, useWatermarkComponent } from "./watermarkStore";
-import { colors } from "@/colors";
 
 const Watermark = () => {
   const { visibleWatermark, setWatermarkVisible } = useWatermarkStore();
@@ -27,7 +27,7 @@ const Watermark = () => {
         aria-label="watermark tabs"
         sx={{ marginBottom: 2 }}
       >
-        {["text", "image"].map((key) => (
+        {["text", "image"].map(key => (
           <Tab key={key} value={key} label={key} {...a11yProps(key)} />
         ))}
       </Tabs>
@@ -38,7 +38,7 @@ const Watermark = () => {
             lineWidth: 1,
             lineColor: colors.pink,
             topColor: colors.pink,
-            bottomColor: colors.blue200
+            bottomColor: colors.blue200,
           }}
         />
         <WatermarkComponent />

@@ -1,11 +1,12 @@
-import { Divider, IconButton, Link, Stack, Tooltip, Typography } from "@mui/material";
 import { GitHub, ContentCopy } from "@mui/icons-material";
-import { colors } from "@/colors";
+import { Divider, IconButton, Link, Stack, Tooltip, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { FigmaIcon } from "./FigmaIcon";
-import { ComponentProps, FC, useEffect, useState } from "react";
-import dayjs from "dayjs";
 import copy from "copy-to-clipboard";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { colors } from "@/colors";
+import { FigmaIcon } from "./FigmaIcon";
+import type { ComponentProps, FC } from "react";
 
 type FooterProps = {
   sx?: ComponentProps<typeof Stack>["sx"];

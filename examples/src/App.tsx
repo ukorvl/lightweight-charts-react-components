@@ -1,12 +1,12 @@
 import { Container, Link, Stack, Typography, keyframes, styled } from "@mui/material";
-import { LayoutGrid } from "./ui/LayoutGrid";
-import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { colors } from "./colors";
-import { Footer } from "./ui/Footer";
+import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
-import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Markers } from "./samples/Markers/Markers";
+import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Watermark } from "./samples/Watermark/Watermark";
+import { Footer } from "./ui/Footer";
+import { LayoutGrid } from "./ui/LayoutGrid";
 
 const gradientAnimation = keyframes`
   0%   { background-position: 50% 0; }

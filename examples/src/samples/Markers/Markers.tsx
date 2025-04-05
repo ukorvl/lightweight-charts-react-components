@@ -1,10 +1,10 @@
-import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { CandlestickSeries, Chart, Markers } from "lightweight-charts-react-components";
+import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
+import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { seriesData, useMarkersStore } from "./markersStore";
-import { colors } from "@/colors";
-import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 
 const MarkersSample = () => {
   const { getMarkersData, basicMarkersVisible, setBasicMarkersVisible } =

@@ -8,16 +8,17 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import {
+import { defaultOptions } from "./options";
+import { GroupedBarsSeriesRenderer } from "./renderer";
+import type { GroupedBarsData } from "./GroupedBarsData";
+import type { GroupedBarsSeriesOptions } from "./options";
+import type {
   CustomSeriesPricePlotValues,
   ICustomSeriesPaneView,
   PaneRendererCustomData,
   WhitespaceData,
   Time,
 } from "lightweight-charts";
-import { GroupedBarsSeriesOptions, defaultOptions } from "./options";
-import { GroupedBarsSeriesRenderer } from "./renderer";
-import { GroupedBarsData } from "./GroupedBarsData";
 
 export class GroupedBarsSeries<TData extends GroupedBarsData>
   implements ICustomSeriesPaneView<Time, TData, GroupedBarsSeriesOptions>
@@ -29,7 +30,7 @@ export class GroupedBarsSeries<TData extends GroupedBarsData>
   }
 
   priceValueBuilder(plotRow: TData): CustomSeriesPricePlotValues {
-    const { values} = plotRow.customValues ?? { values: [] };
+    const { values } = plotRow.customValues ?? { values: [] };
     return [0, ...values];
   }
 
@@ -43,7 +44,7 @@ export class GroupedBarsSeries<TData extends GroupedBarsData>
 
   update(
     data: PaneRendererCustomData<Time, TData>,
-    options: GroupedBarsSeriesOptions,
+    options: GroupedBarsSeriesOptions
   ): void {
     this._renderer.update(data, options);
   }

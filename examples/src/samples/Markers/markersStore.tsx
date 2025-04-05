@@ -1,7 +1,7 @@
+import { create } from "zustand";
 import { colors } from "@/colors";
 import { generateOHLCData } from "@/common/generateSeriesData";
-import { SeriesMarker, Time } from "lightweight-charts";
-import { create } from "zustand";
+import type { SeriesMarker, Time } from "lightweight-charts";
 
 interface MarkersStore {
   basicMarkersVisible: boolean;
@@ -11,7 +11,7 @@ interface MarkersStore {
 
 const useMarkersStore = create<MarkersStore>((set, get) => ({
   basicMarkersVisible: true,
-  setBasicMarkersVisible: (visible) => set({ basicMarkersVisible: visible }),
+  setBasicMarkersVisible: visible => set({ basicMarkersVisible: visible }),
   getMarkersData: () => {
     const { basicMarkersVisible } = get();
     return basicMarkersVisible ? basicMarkersData : [];
@@ -39,7 +39,7 @@ const basicMarkersData = [
   },
   {
     time: seriesData[35].time,
-    price: Math.max(...seriesData.map((d) => d.high)),
+    price: Math.max(...seriesData.map(d => d.high)),
     color: colors.orange,
     shape: "circle",
     text: "D",
