@@ -1,10 +1,7 @@
-import { create } from "zustand";
-import type {
-  SeriesDataItemTypeMap,
-  TimeFormatterFn,
-} from "lightweight-charts";
-import { createStubArray } from "@/common/utils";
 import dayjs from "dayjs";
+import { create } from "zustand";
+import { createStubArray } from "@/common/utils";
+import type { SeriesDataItemTypeMap, TimeFormatterFn } from "lightweight-charts";
 
 type DataRange = "1d" | "1w" | "1m" | "1y";
 
@@ -19,15 +16,15 @@ interface SeriesDataStore {
 }
 
 const dataRangeMap: Record<DataRange, TimeFormatterFn<string>> = {
-  "1d": (t) => dayjs(t).format("YYYY-MM-DD"),
-  "1w": (t) => dayjs(t).format("YYYY-MM-DD"),
-  "1m": (t) => dayjs(t).format("YYYY-MM"),
-  "1y": (t) => dayjs(t).format("YYYY"),
+  "1d": t => dayjs(t).format("YYYY-MM-DD"),
+  "1w": t => dayjs(t).format("YYYY-MM-DD"),
+  "1m": t => dayjs(t).format("YYYY-MM"),
+  "1y": t => dayjs(t).format("YYYY"),
 } as const;
 
 const getSeriesDataByRange = (
   range: DataRange,
-  dataLength = 50,
+  dataLength = 50
 ): SeriesDataItemTypeMap["Area"][] => {
   const now = Math.floor(Date.now() / 1000);
   const oneDay = 86400;
@@ -67,17 +64,17 @@ const getSeriesDataByRange = (
   });
 };
 
-const useDataRangeStore = create<RangeSwitcherStore>((set) => ({
+const useDataRangeStore = create<RangeSwitcherStore>(set => ({
   range: "1d",
   setRange: (range: DataRange) => set({ range }),
 }));
 
-const useSeriesDataStore = create<SeriesDataStore>((set) => ({
+const useSeriesDataStore = create<SeriesDataStore>(set => ({
   data: getSeriesDataByRange("1d"),
-  setData: (data) => set({ data }),
+  setData: data => set({ data }),
 }));
 
-useDataRangeStore.subscribe((state) => {
+useDataRangeStore.subscribe(state => {
   const { range } = state;
   useSeriesDataStore.getState().setData(getSeriesDataByRange(range));
 });

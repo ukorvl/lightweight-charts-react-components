@@ -1,14 +1,7 @@
 import { GitHub, TableChart } from "@mui/icons-material";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Stack,
-  Link,
-  Tooltip,
-} from "@mui/material";
-import { FC, ReactNode } from "react";
+import { Card, CardContent, CardHeader, Stack, Link, Tooltip } from "@mui/material";
 import { CodesandboxIcon } from "./CodesandboxIcon";
+import type { FC, ReactNode } from "react";
 
 type ChartWidgetCardProps = {
   title: string;

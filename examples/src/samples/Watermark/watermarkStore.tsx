@@ -1,22 +1,19 @@
-import { generateLineData } from "@/common/generateSeriesData";
-import {
-  WatermarkText,
-  WatermarkImage,
-  WatermarkType,
-} from "lightweight-charts-react-components";
-import { create } from "zustand";
 import { useTheme } from "@mui/material/styles";
+import { WatermarkText, WatermarkImage } from "lightweight-charts-react-components";
+import { create } from "zustand";
 import { colors } from "@/colors";
+import { generateLineData } from "@/common/generateSeriesData";
 import { encodeInlineSvg } from "@/common/utils";
+import type { WatermarkType } from "lightweight-charts-react-components";
 
 interface WatermarkStore {
   visibleWatermark: WatermarkType;
   setWatermarkVisible: (w: WatermarkType) => void;
 }
 
-const useWatermarkStore = create<WatermarkStore>((set) => ({
+const useWatermarkStore = create<WatermarkStore>(set => ({
   visibleWatermark: "text",
-  setWatermarkVisible: (w) => set({ visibleWatermark: w }),
+  setWatermarkVisible: w => set({ visibleWatermark: w }),
 }));
 
 const tvSvg = `

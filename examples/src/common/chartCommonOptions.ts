@@ -1,5 +1,5 @@
 import { colors } from "@/colors";
-import { ChartOptions, DeepPartial } from "lightweight-charts";
+import type { ChartOptions, DeepPartial } from "lightweight-charts";
 
 export const chartCommonOptions = {
   layout: {

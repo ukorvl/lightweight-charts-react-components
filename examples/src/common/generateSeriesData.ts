@@ -1,6 +1,6 @@
-import { CandlestickData, LineData } from "lightweight-charts";
-import { createStubArray } from "./utils";
 import dayjs from "dayjs";
+import { createStubArray } from "./utils";
+import type { CandlestickData, LineData } from "lightweight-charts";
 
 const generateLineData = (length: number): LineData[] => {
   const start = dayjs().subtract(length, "day");

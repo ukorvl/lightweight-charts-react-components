@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
-import { TimeScaleApiRef, TimeScaleProps } from "./types";
+import { forwardRef, useImperativeHandle } from "react";
 import { useTimeScale } from "./useTimeScale";
+import type { TimeScaleApiRef, TimeScaleProps } from "./types";
+import type { ForwardedRef } from "react";
 
 const TimeScaleRenderFunction = (
   props: TimeScaleProps,

@@ -1,4 +1,4 @@
-import { IPriceLine, PriceLineOptions } from "lightweight-charts";
+import type { IPriceLine, PriceLineOptions } from "lightweight-charts";
 
 export type PriceLineProps = {
   price: number;

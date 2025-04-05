@@ -1,10 +1,10 @@
-import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { Tab, Tabs } from "@mui/material";
 import { Chart } from "lightweight-charts-react-components";
+import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { typedObjectKeys } from "@/common/utils";
+import { samplesLinks } from "@/samples";
 import { basicSeriesMap, useSeriesStore, useTabStore } from "./basicSeriesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
-import { samplesLinks } from "@/samples";
-import { typedObjectKeys } from "@/common/utils";
 
 const BasicSeries = () => {
   const { activeTab, setActiveTab } = useTabStore();

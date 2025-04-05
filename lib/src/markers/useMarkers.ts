@@ -1,8 +1,8 @@
-import { useLayoutEffect, useRef } from "react";
-import { MarkersApiRef, MarkersProps } from "./types";
 import { createSeriesMarkers } from "lightweight-charts";
-import { useSafeContext } from "@/shared/useSafeContext";
+import { useLayoutEffect, useRef } from "react";
 import { SeriesContext } from "@/series/SeriesContext";
+import { useSafeContext } from "@/shared/useSafeContext";
+import type { MarkersApiRef, MarkersProps } from "./types";
 
 export const useMarkers = ({ reactive = true, markers }: MarkersProps) => {
   const { initialized: seriesInitialized, seriesApiRef: series } =

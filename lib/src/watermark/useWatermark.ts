@@ -1,10 +1,10 @@
-import { useLayoutEffect, useRef } from "react";
-import { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
 import { createTextWatermark, createImageWatermark } from "lightweight-charts";
-import { useSafeContext } from "@/shared/useSafeContext";
+import { useLayoutEffect, useRef } from "react";
 import { ChartContext } from "@/chart/ChartContext";
+import { useSafeContext } from "@/shared/useSafeContext";
+import type { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
 
-export function useWatermark<T extends WatermarkType>(props: WatermarkProps<T>) {
+const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
   const { initialized: chartInitialized, chartApiRef: chart } =
     useSafeContext(ChartContext);
 
@@ -58,10 +58,12 @@ export function useWatermark<T extends WatermarkType>(props: WatermarkProps<T>) 
   }, [props]);
 
   return watermarkApiRef;
-}
+};
 
 const isTextWatermark = (
   props: WatermarkProps<WatermarkType>
 ): props is WatermarkProps<"text"> => {
   return props.type === "text";
 };
+
+export { useWatermark };

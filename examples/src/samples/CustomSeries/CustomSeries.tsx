@@ -1,11 +1,11 @@
-import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   Chart,
   CustomSeries as CustomSeriesComponent,
 } from "lightweight-charts-react-components";
-import { GroupedBarsSeries } from "./plugin";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
+import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
+import { GroupedBarsSeries } from "./plugin";
 
 const CustomSeries = () => {
   return (

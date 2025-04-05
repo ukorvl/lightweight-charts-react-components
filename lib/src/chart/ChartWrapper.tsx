@@ -1,6 +1,7 @@
-import { ForwardRefRenderFunction, forwardRef, useCallback, useState } from "react";
-import { ChartProps } from "./types";
+import { forwardRef, useCallback, useState } from "react";
 import ChartComponent from "./ChartComponent";
+import type { ChartProps } from "./types";
+import type { ForwardRefRenderFunction } from "react";
 
 const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> = (
   { children, className, ...rest },

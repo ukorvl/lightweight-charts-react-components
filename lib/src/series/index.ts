@@ -5,4 +5,4 @@ export { default as AreaSeries } from "./AreaSeries";
 export { default as BaselineSeries } from "./BaselineSeries";
 export { default as BarSeries } from "./BarSeries";
 export { default as CustomSeries } from "./CustomSeries";
-export * from "./types";
+export type { SeriesApiRef, SeriesType, SeriesProps, SeriesOptions } from "./types";

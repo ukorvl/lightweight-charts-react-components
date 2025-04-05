@@ -1,6 +1,3 @@
-import { colors } from "@/colors";
-import { generateLineData, generateOHLCData } from "@/common/generateSeriesData";
-import { SeriesDataItemTypeMap } from "lightweight-charts";
 import {
   AreaSeries,
   BarSeries,
@@ -8,10 +5,13 @@ import {
   CandlestickSeries,
   HistogramSeries,
   LineSeries,
-  SeriesProps,
 } from "lightweight-charts-react-components";
-import { ComponentType } from "react";
 import { create } from "zustand";
+import { colors } from "@/colors";
+import { generateLineData, generateOHLCData } from "@/common/generateSeriesData";
+import type { SeriesDataItemTypeMap } from "lightweight-charts";
+import type { SeriesProps } from "lightweight-charts-react-components";
+import type { ComponentType } from "react";
 
 type BasicSeriesType = Exclude<keyof SeriesDataItemTypeMap, "Custom">;
 
@@ -32,7 +32,7 @@ interface SeriesDataStore {
   seriesData: SeriesDataItemTypeMap[BasicSeriesType][];
   setSeriesData: (data: SeriesDataItemTypeMap[BasicSeriesType][]) => void;
   setSeriesComponent: (
-    Component: ComponentType<SeriesProps<BasicSeriesType>> | null,
+    Component: ComponentType<SeriesProps<BasicSeriesType>> | null
   ) => void;
 }
 
@@ -66,8 +66,8 @@ const basicSeriesMap: BasicSeriesMap<BasicSeriesType> = {
       baseValue: {
         type: "price",
         price:
-          (Math.min(...timeSeriesData.map((item) => item.value)) +
-            Math.max(...timeSeriesData.map((item) => item.value))) /
+          (Math.min(...timeSeriesData.map(item => item.value)) +
+            Math.max(...timeSeriesData.map(item => item.value))) /
           2,
       },
       topLineColor: colors.green,
@@ -92,19 +92,19 @@ const getSeriesDataByTab = (tab: BasicSeriesType) => {
   }
 };
 
-const useTabStore = create<TabStore>((set) => ({
+const useTabStore = create<TabStore>(set => ({
   activeTab: "Candlestick",
-  setActiveTab: (tab) => set({ activeTab: tab }),
+  setActiveTab: tab => set({ activeTab: tab }),
 }));
 
-const useSeriesStore = create<SeriesDataStore>((set) => ({
+const useSeriesStore = create<SeriesDataStore>(set => ({
   seriesComponent: CandlestickSeries,
   seriesData: getSeriesDataByTab(useTabStore.getState().activeTab),
-  setSeriesData: (data) => set({ seriesData: data }),
-  setSeriesComponent: (Component) => set({ seriesComponent: Component }),
+  setSeriesData: data => set({ seriesData: data }),
+  setSeriesComponent: Component => set({ seriesComponent: Component }),
 }));
 
-useTabStore.subscribe((state) => {
+useTabStore.subscribe(state => {
   const activeTab = state.activeTab;
 
   useSeriesStore

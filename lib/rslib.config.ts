@@ -1,5 +1,5 @@
-import { defineConfig } from "@rslib/core";
 import { pluginReact } from "@rsbuild/plugin-react";
+import { defineConfig } from "@rslib/core";
 import { pluginDts } from "rsbuild-plugin-dts";
 import packageJson from "./package.json" with { type: "json" };
 

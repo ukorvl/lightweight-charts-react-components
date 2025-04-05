@@ -1,4 +1,5 @@
-const githubSamplesLocation = "https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples";
+const githubSamplesLocation =
+  "https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples";
 
 const samplesLinks = {
   BasicSeries: {

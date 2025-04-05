@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import { TimeScaleApiRef, TimeScaleProps } from "./types";
-import { useSafeContext } from "@/shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import { useSafeContext } from "@/shared/useSafeContext";
+import type { TimeScaleApiRef, TimeScaleProps } from "./types";
 
 export const useTimeScale = ({
   onVisibleTimeRangeChange,

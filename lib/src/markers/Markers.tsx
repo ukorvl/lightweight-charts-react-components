@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
-import { MarkersApiRef, MarkersProps } from "./types";
+import { forwardRef, useImperativeHandle } from "react";
 import { useMarkers } from "./useMarkers";
+import type { MarkersApiRef, MarkersProps } from "./types";
+import type { ForwardedRef } from "react";
 
 const MarkersRenderFunction = (
   { ...rest }: MarkersProps,

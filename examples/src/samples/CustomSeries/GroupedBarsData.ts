@@ -7,7 +7,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { CustomData } from "lightweight-charts";
+import type { CustomData } from "lightweight-charts";
 
 export interface GroupedBarsData extends CustomData {
   customValues: {

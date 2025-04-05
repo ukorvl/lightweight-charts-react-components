@@ -1,4 +1,4 @@
-import { ISeriesMarkersPluginApi, SeriesMarker, Time } from "lightweight-charts";
+import type { ISeriesMarkersPluginApi, SeriesMarker, Time } from "lightweight-charts";
 
 export type MarkersApiRef = {
   _markers: ISeriesMarkersPluginApi<Time> | null;

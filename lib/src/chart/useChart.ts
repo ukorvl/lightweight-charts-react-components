@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
-import { ChartApiRef, ChartOptions } from "./types";
+import { useLayoutEffect, useRef, useState } from "react";
+import type { ChartApiRef, ChartOptions } from "./types";
 
 export const useChart = ({
   container,

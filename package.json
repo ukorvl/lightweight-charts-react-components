@@ -5,6 +5,8 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
+    "format": "prettier --check './**/*.{ts,tsx,json,mjs}'",
+    "format:fix": "prettier --write './**/*.{ts,tsx,json,mjs}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
     "build": "bash ./scripts/build-all.sh",
     "test": "npm run test --workspaces --if-present",
@@ -28,9 +30,11 @@
     "@types/node": "^22.14.0",
     "concurrently": "^9.1.2",
     "eslint": "^9.24.0",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-import-resolver-typescript": "^4.3.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.9",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.0.0",
     "knip": "^5.46.5",
     "lint-staged": "^15.5.0",
@@ -59,11 +63,9 @@
     "npm": ">=10.0.0"
   },
   "lint-staged": {
-    "*.ts": [
-      "npm run lint"
-    ],
-    "*.tsx": [
-      "npm run lint"
+    "*.{ts,tsx}": [
+      "npm run lint",
+      "npm run format"
     ]
   },
   "knip": {

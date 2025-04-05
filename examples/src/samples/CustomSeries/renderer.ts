@@ -7,18 +7,18 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import {
+import type { GroupedBarsData } from "./GroupedBarsData";
+import type { GroupedBarsSeriesOptions } from "./options";
+import type {
   BitmapCoordinatesRenderingScope,
   CanvasRenderingTarget2D,
 } from "fancy-canvas";
-import {
+import type {
   ICustomSeriesPaneRenderer,
   PaneRendererCustomData,
   PriceToCoordinateConverter,
   Time,
 } from "lightweight-charts";
-import { GroupedBarsData } from "./GroupedBarsData";
-import { GroupedBarsSeriesOptions } from "./options";
 
 export interface BitmapPositionLength {
   /** coordinate for use with a bitmap rendering scope */
@@ -42,7 +42,7 @@ export function positionsLine(
   positionMedia: number,
   pixelRatio: number,
   desiredWidthMedia: number = 1,
-  widthIsBitmap?: boolean,
+  widthIsBitmap?: boolean
 ): BitmapPositionLength {
   const scaledPosition = Math.round(pixelRatio * positionMedia);
   const lineBitmapWidth = widthIsBitmap
@@ -63,7 +63,7 @@ export function positionsLine(
 export function positionsBox(
   position1Media: number,
   position2Media: number,
-  pixelRatio: number,
+  pixelRatio: number
 ): BitmapPositionLength {
   const scaledPosition1 = Math.round(pixelRatio * position1Media);
   const scaledPosition2 = Math.round(pixelRatio * position2Media);
@@ -98,16 +98,14 @@ export class GroupedBarsSeriesRenderer<TData extends GroupedBarsData>
 
   draw(
     target: CanvasRenderingTarget2D,
-    priceConverter: PriceToCoordinateConverter,
+    priceConverter: PriceToCoordinateConverter
   ): void {
-    target.useBitmapCoordinateSpace((scope) =>
-      this._drawImpl(scope, priceConverter),
-    );
+    target.useBitmapCoordinateSpace(scope => this._drawImpl(scope, priceConverter));
   }
 
   update(
     data: PaneRendererCustomData<Time, TData>,
-    options: GroupedBarsSeriesOptions,
+    options: GroupedBarsSeriesOptions
   ): void {
     this._data = data;
     this._options = options;
@@ -115,7 +113,7 @@ export class GroupedBarsSeriesRenderer<TData extends GroupedBarsData>
 
   _drawImpl(
     renderingScope: BitmapCoordinatesRenderingScope,
-    priceToCoordinate: PriceToCoordinateConverter,
+    priceToCoordinate: PriceToCoordinateConverter
   ): void {
     if (
       this._data === null ||
@@ -127,7 +125,7 @@ export class GroupedBarsSeriesRenderer<TData extends GroupedBarsData>
     }
     const options = this._options;
     const barWidth = this._data.barSpacing;
-    const groups: GroupedBarsBarItem[] = this._data.bars.map((bar) => {
+    const groups: GroupedBarsBarItem[] = this._data.bars.map(bar => {
       const count = bar.originalData.customValues?.values.length;
       const singleBarWidth = barWidth / (count + 1);
       const padding = singleBarWidth / 2;
@@ -143,23 +141,15 @@ export class GroupedBarsSeriesRenderer<TData extends GroupedBarsData>
     });
 
     const zeroY = priceToCoordinate(0) ?? 0;
-    for (
-      let i = this._data.visibleRange.from;
-      i < this._data.visibleRange.to;
-      i++
-    ) {
+    for (let i = this._data.visibleRange.from; i < this._data.visibleRange.to; i++) {
       const group = groups[i];
       let lastX: number;
-      group.singleBars.forEach((bar) => {
-        const yPos = positionsBox(
-          zeroY,
-          bar.y,
-          renderingScope.verticalPixelRatio,
-        );
+      group.singleBars.forEach(bar => {
+        const yPos = positionsBox(zeroY, bar.y, renderingScope.verticalPixelRatio);
         const xPos = positionsLine(
           bar.x,
           renderingScope.horizontalPixelRatio,
-          group.singleBarWidth,
+          group.singleBarWidth
         );
         renderingScope.context.beginPath();
         renderingScope.context.fillStyle = bar.color;
@@ -168,7 +158,7 @@ export class GroupedBarsSeriesRenderer<TData extends GroupedBarsData>
           xPos.position - offset,
           yPos.position,
           xPos.length + offset,
-          yPos.length,
+          yPos.length
         );
         lastX = xPos.position + xPos.length;
       });

@@ -1,10 +1,3 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import {
-  CustomSeriesUniqueProps,
-  SeriesApiRef,
-  SeriesTemplateProps,
-  SeriesType,
-} from "./types";
 import {
   LineSeries,
   CandlestickSeries,
@@ -12,12 +5,18 @@ import {
   AreaSeries,
   BaselineSeries,
   BarSeries,
-  SeriesDefinition,
-  ISeriesApi,
 } from "lightweight-charts";
-import { useSafeContext } from "@/shared/useSafeContext";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ChartContext } from "@/chart/ChartContext";
 import { BaseInternalError } from "@/shared/InternalError";
+import { useSafeContext } from "@/shared/useSafeContext";
+import type {
+  CustomSeriesUniqueProps,
+  SeriesApiRef,
+  SeriesTemplateProps,
+  SeriesType,
+} from "./types";
+import type { SeriesDefinition, ISeriesApi } from "lightweight-charts";
 
 type SeriesTypeWithoutCustom = Exclude<SeriesType, "Custom">;
 

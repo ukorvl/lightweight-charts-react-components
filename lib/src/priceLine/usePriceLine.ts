@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import { PriceLineApiRef, PriceLineProps } from "./types";
-import { useSafeContext } from "@/shared/useSafeContext";
 import { SeriesContext } from "@/series/SeriesContext";
+import { useSafeContext } from "@/shared/useSafeContext";
+import type { PriceLineApiRef, PriceLineProps } from "./types";
 
 export const usePriceLine = ({ options, price }: PriceLineProps) => {
   const { initialized: seriesInitialized, seriesApiRef: series } =
