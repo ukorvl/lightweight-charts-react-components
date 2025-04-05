@@ -22,15 +22,15 @@ export type WatermarkProps<T extends WatermarkType> = {
 export type WatermarkTextApiRefBase = {
   _watermark: ITextWatermarkPluginApi<Time> | null;
   api: () => ITextWatermarkPluginApi<Time> | null;
+  init: () => ITextWatermarkPluginApi<Time> | null;
   clear: () => void;
-  destroyed: boolean;
 };
 
 export type WatermarkImageApiRefBase = {
   _watermark: IImageWatermarkPluginApi<Time> | null;
   api: () => IImageWatermarkPluginApi<Time> | null;
+  init: () => IImageWatermarkPluginApi<Time> | null;
   clear: () => void;
-  destroyed: boolean;
 };
 
 export type WatermarkApiRef<T extends WatermarkType> = T extends "text"

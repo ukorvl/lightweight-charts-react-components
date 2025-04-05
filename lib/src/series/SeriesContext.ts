@@ -1,5 +1,8 @@
 import { createContext } from "react";
-import { SeriesApiRef, SeriesType } from "./types";
+import { type ISeriesContext } from "./types";
 
-export const SeriesContext = createContext({} as SeriesApiRef<SeriesType>);
+export const SeriesContext = createContext<ISeriesContext>({
+  seriesApiRef: null,
+  initialized: false,
+});
 SeriesContext.displayName = "SeriesContext";

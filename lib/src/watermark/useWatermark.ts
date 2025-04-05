@@ -5,14 +5,17 @@ import { useSafeContext } from "@/shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 
 export function useWatermark<T extends WatermarkType>(props: WatermarkProps<T>) {
-  const chart = useSafeContext(ChartContext);
+  const { initialized: chartInitialized, chartApiRef: chart } =
+    useSafeContext(ChartContext);
 
   const watermarkApiRef = useRef<WatermarkApiRef<T>>({
     _watermark: null,
-    destroyed: false,
     api() {
-      if (!this._watermark && !this.destroyed) {
-        const chartApi = chart.api();
+      return this._watermark;
+    },
+    init() {
+      if (this._watermark === null) {
+        const chartApi = chart?.api();
         const pane = chartApi?.panes()[0];
         if (!chartApi || !pane) return null;
 
@@ -31,13 +34,17 @@ export function useWatermark<T extends WatermarkType>(props: WatermarkProps<T>) 
       if (this._watermark !== null) {
         this._watermark.detach();
         this._watermark = null;
-        this.destroyed = true;
       }
     },
   } as WatermarkApiRef<T>);
 
   useLayoutEffect(() => {
-    watermarkApiRef.current.api();
+    if (!chartInitialized) return;
+
+    watermarkApiRef.current.init();
+  }, [chartInitialized]);
+
+  useLayoutEffect(() => {
     return () => {
       watermarkApiRef.current.clear();
     };
@@ -54,7 +61,7 @@ export function useWatermark<T extends WatermarkType>(props: WatermarkProps<T>) 
 }
 
 const isTextWatermark = (
-  props: WatermarkProps<WatermarkType>,
+  props: WatermarkProps<WatermarkType>
 ): props is WatermarkProps<"text"> => {
   return props.type === "text";
 };

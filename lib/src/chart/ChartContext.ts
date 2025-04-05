@@ -1,5 +1,10 @@
 import { createContext } from "react";
-import { ChartApiRef } from "./types";
+import { type IChartContext } from "./types";
 
-export const ChartContext = createContext({} as ChartApiRef);
+const ChartContext = createContext<IChartContext>({
+  chartApiRef: null,
+  initialized: false,
+});
+
 ChartContext.displayName = "ChartContext";
+export { ChartContext };

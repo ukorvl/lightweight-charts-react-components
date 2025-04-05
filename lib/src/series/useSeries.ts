@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   CustomSeriesUniqueProps,
   SeriesApiRef,
@@ -21,20 +21,25 @@ import { BaseInternalError } from "@/shared/InternalError";
 
 type SeriesTypeWithoutCustom = Exclude<SeriesType, "Custom">;
 
-export const useInitSeries = <T extends SeriesType>({
+export const useSeries = <T extends SeriesType>({
   type,
   data,
   options = {},
   reactive = true,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
-  const chart = useSafeContext(ChartContext);
+  const { initialized: chartInitialized, chartApiRef: chart } =
+    useSafeContext(ChartContext);
+  const [initialized, setInitialized] = useState(false);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
     _series: null,
     api() {
-      if (!this._series && !this.destroyed) {
-        const chartApi = chart.api();
+      return this._series;
+    },
+    init() {
+      if (!this._series) {
+        const chartApi = chart?.api();
 
         if (!chartApi) {
           return null;
@@ -49,14 +54,16 @@ export const useInitSeries = <T extends SeriesType>({
           // TODO: Fix this type cast and infer the correct type
           (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
             plugin,
-            options,
+            options
           );
         } else {
           this._series = chartApi.addSeries(
             seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
-            options,
+            options
           );
         }
+
+        setInitialized(true);
 
         this._series?.setData(data);
       }
@@ -65,17 +72,20 @@ export const useInitSeries = <T extends SeriesType>({
     },
     clear() {
       if (this._series !== null) {
-        chart.api()?.removeSeries(this._series);
+        chart?.api()?.removeSeries(this._series);
         this._series = null;
-        this.destroyed = true;
+        setInitialized(false);
       }
     },
-    destroyed: false,
   });
 
   useLayoutEffect(() => {
-    seriesApiRef.current.api();
+    if (!chartInitialized) return;
 
+    seriesApiRef.current.init();
+  }, [chartInitialized]);
+
+  useLayoutEffect(() => {
     return () => {
       seriesApiRef.current.clear();
     };
@@ -97,7 +107,7 @@ export const useInitSeries = <T extends SeriesType>({
     }
   }, [options]);
 
-  return seriesApiRef;
+  return { initialized, seriesApiRef };
 };
 
 const seriesMap: Record<

@@ -17,12 +17,14 @@ export type PriceScaleOptions = DeepPartial<PriceScaleNativeOptions>;
 export type TimeScaleApiRef = {
   _timeScale: ITimeScaleApi<Time> | null;
   api: () => ITimeScaleApi<Time> | null;
+  init: () => ITimeScaleApi<Time> | null;
   clear: () => void;
 };
 
 export type PriceScaleApiRef = {
   _priceScale: IPriceScaleApi | null;
   api: () => IPriceScaleApi | null;
+  init: () => IPriceScaleApi | null;
   setId: (id: string) => void;
   clear: () => void;
 };

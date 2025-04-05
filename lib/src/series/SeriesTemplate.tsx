@@ -1,4 +1,4 @@
-import { useInitSeries } from "./useInitSeries";
+import { useSeries } from "./useSeries";
 import { SeriesType, SeriesTemplateProps, SeriesApiRef } from "./types";
 import { SeriesContext } from "./SeriesContext";
 import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
@@ -6,20 +6,30 @@ import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
 type GenericRefComponent = (<T extends SeriesType>(
   props: SeriesTemplateProps<T> & {
     ref?: ForwardedRef<SeriesApiRef<T>>;
-  },
+  }
 ) => ReturnType<typeof SeriesTemplateRenderFunction>) & {
   displayName: string;
 };
 
 const SeriesTemplateRenderFunction = <T extends SeriesType>(
   { children, ...rest }: SeriesTemplateProps<T>,
-  ref: ForwardedRef<SeriesApiRef<T>>,
+  ref: ForwardedRef<SeriesApiRef<T>>
 ) => {
-  const seriesApi = useInitSeries(rest);
-  useImperativeHandle(ref, () => seriesApi.current, [seriesApi]);
+  const {
+    seriesApiRef: { current: seriesApiRef },
+    initialized,
+  } = useSeries(rest);
+  useImperativeHandle(ref, () => seriesApiRef, [seriesApiRef]);
 
   return (
-    <SeriesContext.Provider value={seriesApi.current}>{children}</SeriesContext.Provider>
+    <SeriesContext.Provider
+      value={{
+        seriesApiRef,
+        initialized,
+      }}
+    >
+      {children}
+    </SeriesContext.Provider>
   );
 };
 

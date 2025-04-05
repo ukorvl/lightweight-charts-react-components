@@ -21,6 +21,11 @@ export type ChartProps = {
 export type ChartApiRef = {
   _chart: IChartApi | null;
   api: () => IChartApi | null;
+  init: () => IChartApi | null;
   clear: () => void;
-  destroyed: boolean;
 };
+
+export interface IChartContext {
+  chartApiRef: ChartApiRef | null;
+  initialized: boolean;
+}

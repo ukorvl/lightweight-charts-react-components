@@ -8,5 +8,6 @@ export type PriceLineProps = {
 export type PriceLineApiRef = {
   _priceLine: IPriceLine | null;
   api: () => IPriceLine | null;
+  init: () => IPriceLine | null;
   clear: () => void;
 };

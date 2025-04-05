@@ -52,7 +52,7 @@ export const App = () => {
         useFlexGap
         gap={4}
       >
-        <GradientLink underline="none" href="/#">
+        <GradientLink underline="none" href="#">
           Examples
         </GradientLink>
         <Typography color="textDisabled">Terminal</Typography>

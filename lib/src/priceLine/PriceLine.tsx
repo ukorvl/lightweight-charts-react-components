@@ -1,9 +1,12 @@
 import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
 import { PriceLineApiRef, PriceLineProps } from "./types";
-import { useInitPriceLine } from "./useInitPriceLine";
+import { usePriceLine } from "./usePriceLine";
 
-const PriceLineRenderFunction = (props: PriceLineProps, ref: ForwardedRef<PriceLineApiRef>) => {
-  const priceLineApiRef = useInitPriceLine(props);
+const PriceLineRenderFunction = (
+  props: PriceLineProps,
+  ref: ForwardedRef<PriceLineApiRef>
+) => {
+  const priceLineApiRef = usePriceLine(props);
   useImperativeHandle(ref, () => priceLineApiRef.current, [priceLineApiRef]);
 
   return null;

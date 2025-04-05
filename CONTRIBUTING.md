@@ -52,7 +52,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    ```
    Note, that we use commitlint to enforce conventional commit messages.
 2. **Ensure version and changelog**:
-   If you would like to make a new release, update the version in the `package.json` file and add a new entry to the `CHANGELOG.md` file if necessary.
+   If you made a user-visible change, add a new entry to the `CHANGELOG.md` file if necessary under "Unreleased" section.
 3. **Push to Your Fork**:
    ```sh
    git push origin feature/my-new-feature
@@ -62,7 +62,8 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    - Click "New Pull Request".
    - Select your branch and submit the PR with a clear description.
 5. **Release**:
-   When there is a need to release a new version of the library, repository maintainers should create a tag, associated with the new version and run `Release` workflow to publish the new version to npm, create a GitHub release and update the documentation.
+   When there is a need to release a new version of the library, repository maintainers should create a special commit and a tag, associated with the new version. A new version should be added to the `CHANGELOG.md` file and the version in `package.json` should be updated. The version should follow [Semantic Versioning](https://semver.org/).
+   To create a new release, run `Release` workflow in the GitHub Actions tab. This will create a new release and publish it to npm.
 ## Issues and Feature Requests
 - Use the **GitHub Issues** tab to report bugs and request features.
 
