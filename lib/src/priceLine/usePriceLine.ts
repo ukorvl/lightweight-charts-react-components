@@ -3,14 +3,18 @@ import { PriceLineApiRef, PriceLineProps } from "./types";
 import { useSafeContext } from "@/shared/useSafeContext";
 import { SeriesContext } from "@/series/SeriesContext";
 
-export const useInitPriceLine = ({ options, price }: PriceLineProps) => {
-  const series = useSafeContext(SeriesContext);
+export const usePriceLine = ({ options, price }: PriceLineProps) => {
+  const { initialized: seriesInitialized, seriesApiRef: series } =
+    useSafeContext(SeriesContext);
 
   const priceLineApiRef = useRef<PriceLineApiRef>({
     _priceLine: null,
     api() {
+      return this._priceLine;
+    },
+    init() {
       if (!this._priceLine) {
-        const seriesApi = series.api();
+        const seriesApi = series?.api();
 
         if (!seriesApi) {
           return null;
@@ -26,15 +30,19 @@ export const useInitPriceLine = ({ options, price }: PriceLineProps) => {
     },
     clear() {
       if (this._priceLine !== null) {
-        series.api()?.removePriceLine(this._priceLine);
+        series?.api()?.removePriceLine(this._priceLine);
         this._priceLine = null;
       }
     },
   });
 
   useLayoutEffect(() => {
-    priceLineApiRef.current.api();
+    if (!seriesInitialized) return;
 
+    priceLineApiRef.current.init();
+  }, [seriesInitialized]);
+
+  useLayoutEffect(() => {
     return () => {
       priceLineApiRef.current.clear();
     };

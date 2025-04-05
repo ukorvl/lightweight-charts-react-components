@@ -3,7 +3,7 @@ import { TimeScaleApiRef, TimeScaleProps } from "./types";
 import { useSafeContext } from "@/shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 
-export const useInitTimeScale = ({
+export const useTimeScale = ({
   onVisibleTimeRangeChange,
   onVisibleLogicalRangeChange,
   onSizeChange,
@@ -11,7 +11,8 @@ export const useInitTimeScale = ({
   visibleLogicalRange,
   options = {},
 }: TimeScaleProps) => {
-  const chart = useSafeContext(ChartContext);
+  const { initialized: chartInitialized, chartApiRef: chart } =
+    useSafeContext(ChartContext);
 
   if (!chart) {
     throw new Error("Chart context not found");
@@ -20,8 +21,11 @@ export const useInitTimeScale = ({
   const timeScaleApiRef = useRef<TimeScaleApiRef>({
     _timeScale: null,
     api() {
+      return this._timeScale;
+    },
+    init() {
       if (!this._timeScale) {
-        const chartApi = chart.api();
+        const chartApi = chart?.api();
 
         if (!chartApi) {
           return null;
@@ -43,15 +47,17 @@ export const useInitTimeScale = ({
       return this._timeScale;
     },
     clear() {
-      if (this._timeScale !== null) {
-        this._timeScale = null;
-      }
+      this._timeScale = null;
     },
   });
 
   useLayoutEffect(() => {
-    timeScaleApiRef.current.api();
+    if (!chartInitialized) return;
 
+    timeScaleApiRef.current.init();
+  }, [chartInitialized]);
+
+  useLayoutEffect(() => {
     return () => {
       timeScaleApiRef.current.clear();
     };
@@ -127,9 +133,7 @@ export const useInitTimeScale = ({
     if (!chart) return;
 
     if (visibleLogicalRange) {
-      timeScaleApiRef.current
-        ?.api()
-        ?.setVisibleLogicalRange(visibleLogicalRange);
+      timeScaleApiRef.current?.api()?.setVisibleLogicalRange(visibleLogicalRange);
     }
   }, [visibleLogicalRange]);
 

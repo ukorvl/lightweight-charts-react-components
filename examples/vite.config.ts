@@ -2,17 +2,16 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import viteCompression from "vite-plugin-compression";
 import path from "node:path";
-import htmlPlugin from "vite-plugin-html-config";
+import htmlPlugin, { type Options } from "vite-plugin-html-config";
 import { homepage, description } from "./package.json";
 
 const env = loadEnv("", process.cwd(), "");
 
-export const htmlConfig = {
+export const htmlConfig: Options = {
   title: env.VITE_APP_DEFAULT_TITLE,
   metas: [
     {
-      name: "charset",
-      content: "utf-8",
+      charset: "utf-8",
     },
     {
       name: "description",
@@ -112,7 +111,7 @@ export const htmlConfig = {
     {
       rel: "icon",
       type: "image/svg+xml",
-      href: `${env.VITE_BASE_URL}icon.svg`,
+      href: `${env.VITE_BASE_URL}/icon.svg`,
     },
     {
       rel: "preconnect",
@@ -144,7 +143,7 @@ export default defineConfig({
     },
     copyPublicDir: true,
   },
-  base: env.VITE_BASE_URL || "/",
+  base: env.VITE_BASE_URL,
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

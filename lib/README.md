@@ -57,6 +57,7 @@
 ## Description
 
 This library is a set of React components that wraps the Lightweight-charts library. It provides a simple declarative way to use the Lightweight-charts library in your React application.
+Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-components/) to see the components in action.
 
 ## Table of Contents
 

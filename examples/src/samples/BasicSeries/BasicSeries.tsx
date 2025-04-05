@@ -28,7 +28,7 @@ const BasicSeries = () => {
         aria-label="basic series tabs"
         sx={{ marginBottom: 2 }}
       >
-        {typedObjectKeys(basicSeriesMap).map((key) => (
+        {typedObjectKeys(basicSeriesMap).map(key => (
           <Tab key={key} value={key} label={key} {...a11yProps(key)} />
         ))}
       </Tabs>

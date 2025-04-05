@@ -1,9 +1,12 @@
 import { ForwardedRef, forwardRef, useImperativeHandle } from "react";
 import { PriceScaleApiRef, PriceScaleProps } from "./types";
-import { useInitPriceScale } from "./useInitPriceScale";
+import { usePriceScale } from "./usePriceScale";
 
-const PriceScaleRenderFunction = (props: PriceScaleProps, ref: ForwardedRef<PriceScaleApiRef>) => {
-  const priceScaleApiRef = useInitPriceScale(props);
+const PriceScaleRenderFunction = (
+  props: PriceScaleProps,
+  ref: ForwardedRef<PriceScaleApiRef>
+) => {
+  const priceScaleApiRef = usePriceScale(props);
   useImperativeHandle(ref, () => priceScaleApiRef.current, [priceScaleApiRef]);
 
   return null;
