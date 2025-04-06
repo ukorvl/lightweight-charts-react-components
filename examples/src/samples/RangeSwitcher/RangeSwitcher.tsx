@@ -47,7 +47,10 @@ const RangeSwitcher = () => {
       <Chart
         height={400}
         localization={{
-          timeFormatter: dataRangeMap[range],
+          timeFormatter: dataRangeMap[range].formatter,
+        }}
+        timeScale={{
+          tickMarkFormatter: dataRangeMap[range].formatter,
         }}
         {...chartCommonOptions}
         autoSize
