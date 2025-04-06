@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { create } from "zustand";
 import { createStubArray } from "@/common/utils";
-import type { SeriesDataItemTypeMap, TimeFormatterFn } from "lightweight-charts";
+import type { SeriesDataItemTypeMap, Time, TimeFormatterFn } from "lightweight-charts";
 
 type DataRange = "1d" | "1w" | "1m" | "1y";
 
@@ -25,7 +25,7 @@ const getSeriesDataByRange = (
   let startTime = now - dataLength * oneDay;
   switch (range) {
     case "1w":
-      startTime = now - 7 * oneDay;
+      startTime = now - dataLength * 7 * oneDay;
       break;
     case "1m":
       startTime = now - dataLength * 30 * oneDay;
@@ -51,7 +51,7 @@ const getSeriesDataByRange = (
     }
 
     return {
-      time: dayjs(time * 1000).format("YYYY-MM-DD"),
+      time: (time * 1000) as Time,
       value: Math.random() * 100,
     };
   });
@@ -69,7 +69,10 @@ const dataRangeMap: Record<
     data: getSeriesDataByRange("1d"),
   },
   "1w": {
-    formatter: t => dayjs(t).format("YYYY-MM-DD"),
+    formatter: t => {
+      const dateObj = dayjs(t);
+      return `${dateObj.format("YYYY")}, ${dateObj.week()}w`;
+    },
     data: getSeriesDataByRange("1w"),
   },
   "1m": {
