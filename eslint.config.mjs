@@ -34,6 +34,7 @@ export default [
       },
     },
     rules: {
+      "no-console": "error",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "@typescript-eslint/no-unused-expressions": "off",

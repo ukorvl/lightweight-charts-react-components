@@ -42,12 +42,24 @@ const ohlcSeriesData = generateOHLCData(50);
 const basicSeriesMap: BasicSeriesMap<BasicSeriesType> = {
   Candlestick: {
     Component: CandlestickSeries,
+    options: {
+      upColor: colors.green,
+      downColor: colors.red,
+      borderUpColor: colors.green,
+      borderDownColor: colors.red,
+      wickUpColor: colors.green,
+      wickDownColor: colors.red,
+    },
   },
   Line: {
     Component: LineSeries,
   },
   Bar: {
     Component: BarSeries,
+    options: {
+      upColor: colors.green,
+      downColor: colors.red,
+    },
   },
   Area: {
     Component: AreaSeries,
