@@ -22,6 +22,10 @@ const samplesLinks = {
     github: `${githubSamplesLocation}/Watermark`,
     codesandbox: "",
   },
+  Legend: {
+    github: `${githubSamplesLocation}/Legend`,
+    codesandbox: "",
+  },
 } as const;
 
 export { samplesLinks };

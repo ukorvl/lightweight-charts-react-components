@@ -2,6 +2,7 @@ import { Container, Link, Stack, Typography, keyframes, styled } from "@mui/mate
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
+import { WithLegend } from "./samples/Legend/WithLegend";
 import { Markers } from "./samples/Markers/Markers";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Watermark } from "./samples/Watermark/Watermark";
@@ -113,6 +114,7 @@ export const App = () => {
           <RangeSwitcher />
           <Markers />
           <Watermark />
+          <WithLegend />
         </LayoutGrid>
       </Stack>
       <Footer
