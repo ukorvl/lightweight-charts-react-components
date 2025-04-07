@@ -12,6 +12,7 @@ const colors = {
   pink: "#cb3cff",
   green: "#28a49c",
   orange: "#FFB74D",
+  orange100: "#CC5500",
 } as const;
 
 export { colors };

@@ -22,9 +22,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
 
         this._priceScale = chartApi.priceScale(id);
 
-        this._priceScale.applyOptions({
-          ...options,
-        });
+        this._priceScale.applyOptions(options);
       }
 
       return this._priceScale;
@@ -35,6 +33,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
       }
 
       this._priceScale = chart.api()!.priceScale(id);
+      this._priceScale.applyOptions(options);
     },
     clear() {
       this._priceScale = null;

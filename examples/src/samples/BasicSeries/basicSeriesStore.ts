@@ -8,7 +8,11 @@ import {
 } from "lightweight-charts-react-components";
 import { create } from "zustand";
 import { colors } from "@/colors";
-import { generateLineData, generateOHLCData } from "@/common/generateSeriesData";
+import {
+  generateHistogramData,
+  generateLineData,
+  generateOHLCData,
+} from "@/common/generateSeriesData";
 import type { SeriesDataItemTypeMap } from "lightweight-charts";
 import type { SeriesProps } from "lightweight-charts-react-components";
 import type { ComponentType } from "react";
@@ -38,6 +42,10 @@ interface SeriesDataStore {
 
 const timeSeriesData = generateLineData(50);
 const ohlcSeriesData = generateOHLCData(50);
+const histogramData = generateHistogramData(50, {
+  upColor: colors.orange,
+  downColor: colors.blue100,
+});
 
 const basicSeriesMap: BasicSeriesMap<BasicSeriesType> = {
   Candlestick: {
@@ -98,7 +106,7 @@ const getSeriesDataByTab = (tab: BasicSeriesType) => {
     case "Bar":
       return ohlcSeriesData;
     case "Histogram":
-      return timeSeriesData;
+      return histogramData;
     default:
       return [];
   }

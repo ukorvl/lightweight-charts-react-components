@@ -33,8 +33,8 @@ const MarkersSample = () => {
           data={seriesData}
           options={{
             priceLineVisible: false,
-            upColor: colors.blue,
-            downColor: "transparent",
+            upColor: "transparent",
+            downColor: colors.blue,
             borderUpColor: colors.blue,
             borderDownColor: colors.blue,
             wickUpColor: colors.blue,

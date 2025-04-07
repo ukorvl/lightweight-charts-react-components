@@ -1,10 +1,12 @@
 import { Container, Link, Stack, Typography, keyframes, styled } from "@mui/material";
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
+import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
 import { WithLegend } from "./samples/Legend/WithLegend";
 import { Markers } from "./samples/Markers/Markers";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
+import { Scales } from "./samples/Scales/Scales";
 import { Watermark } from "./samples/Watermark/Watermark";
 import { Footer } from "./ui/Footer";
 import { LayoutGrid } from "./ui/LayoutGrid";
@@ -35,7 +37,8 @@ const GradientLink = styled(Link)(() => ({
 }));
 
 export const App = () => {
-  const { VITE_APP_DEFAULT_TITLE, VITE_LIGHTWEIGHT_CHARTS_REPO_URL } = import.meta.env;
+  const { VITE_APP_DEFAULT_TITLE, VITE_LIGHTWEIGHT_CHARTS_REPO_URL, VITE_GITHUB_URL } =
+    import.meta.env;
   return (
     <Container
       maxWidth="xl"
@@ -57,6 +60,9 @@ export const App = () => {
           Examples
         </GradientLink>
         <Typography color="textDisabled">Terminal</Typography>
+        <GradientLink underline="none" target="_blank" href={VITE_GITHUB_URL}>
+          GitHub
+        </GradientLink>
       </Stack>
       <Stack
         component="main"
@@ -115,6 +121,8 @@ export const App = () => {
           <Markers />
           <Watermark />
           <WithLegend />
+          <CompareSeries />
+          <Scales />
         </LayoutGrid>
       </Stack>
       <Footer
