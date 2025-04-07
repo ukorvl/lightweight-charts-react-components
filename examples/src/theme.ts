@@ -18,6 +18,35 @@ const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          color: colors.blue,
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: colors.gray100,
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: colors.gray,
+          },
+        },
+        icon: {
+          color: colors.blue,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: colors.white,
+          "&:hover": {
+            backgroundColor: `${colors.pink}15`,
+          },
+          "&.Mui-selected:hover": {
+            backgroundColor: `${colors.pink}50`,
+          },
+        },
+      },
+    },
   },
   palette: {
     primary: {

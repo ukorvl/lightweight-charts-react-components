@@ -26,6 +26,14 @@ const samplesLinks = {
     github: `${githubSamplesLocation}/Legend`,
     codesandbox: "",
   },
+  CompareSeries: {
+    github: `${githubSamplesLocation}/CompareSeries`,
+    codesandbox: "",
+  },
+  Scales: {
+    github: `${githubSamplesLocation}/Scales`,
+    codesandbox: "",
+  },
 } as const;
 
 export { samplesLinks };

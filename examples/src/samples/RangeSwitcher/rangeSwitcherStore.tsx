@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { create } from "zustand";
-import { createStubArray } from "@/common/utils";
+import { generateLineData } from "@/common/generateSeriesData";
 import type { SeriesDataItemTypeMap, Time, TimeFormatterFn } from "lightweight-charts";
 
 type DataRange = "1d" | "1w" | "1m" | "1y";
@@ -35,7 +35,7 @@ const getSeriesDataByRange = (
       break;
   }
 
-  return createStubArray(dataLength).map((_, i) => {
+  return generateLineData(dataLength).map((item, i) => {
     let time = startTime + i * oneDay;
 
     switch (range) {
@@ -52,7 +52,7 @@ const getSeriesDataByRange = (
 
     return {
       time: (time * 1000) as Time,
-      value: Math.random() * 100,
+      value: item.value,
     };
   });
 };

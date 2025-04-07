@@ -1,6 +1,11 @@
 import dayjs from "dayjs";
 import { createStubArray } from "./utils";
-import type { CandlestickData, LineData } from "lightweight-charts";
+import type { CandlestickData, HistogramData, LineData } from "lightweight-charts";
+
+type GenerateHistogramDataOptions = {
+  upColor?: string;
+  downColor?: string;
+};
 
 const generateLineData = (length: number): LineData<string>[] => {
   const start = dayjs().subtract(length, "day");
@@ -45,4 +50,22 @@ const generateOHLCData = (length: number): CandlestickData<string>[] => {
   });
 };
 
-export { generateLineData, generateOHLCData };
+const generateHistogramData = (
+  length: number,
+  { upColor, downColor }: GenerateHistogramDataOptions = {}
+): HistogramData<string>[] => {
+  const lineData = generateLineData(length);
+
+  return lineData.map((data, i) => {
+    const isFirst = i === 0;
+    const valueDecreased = !isFirst && data.value < lineData[i - 1].value;
+
+    return {
+      time: data.time,
+      value: data.value,
+      color: valueDecreased ? downColor : upColor,
+    };
+  });
+};
+
+export { generateLineData, generateOHLCData, generateHistogramData };

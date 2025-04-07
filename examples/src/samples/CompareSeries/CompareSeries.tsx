@@ -1,0 +1,85 @@
+import { Chip, Stack } from "@mui/material";
+import { CrosshairMode } from "lightweight-charts";
+import { AreaSeries, Chart } from "lightweight-charts-react-components";
+import { colors } from "@/colors";
+import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { typedObjectEntries } from "@/common/utils";
+import { samplesLinks } from "@/samples";
+import { mainSeriesData, seriesMap, useCompareSeriesStore } from "./compareSeriesStore";
+import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
+import type { FC } from "react";
+
+type ChipProps = {
+  label: string;
+  selected?: boolean;
+  color?: string;
+  onClick?: () => void;
+};
+
+const StyledChip: FC<ChipProps> = ({ label, selected, onClick, color }) => {
+  return (
+    <Chip
+      label={label}
+      variant={selected ? "filled" : "outlined"}
+      onClick={onClick}
+      sx={{
+        backgroundColor: selected ? color : "transparent",
+        borderColor: color,
+        color: selected ? colors.white : color,
+        "&:hover": {
+          backgroundColor: selected ? color : "transparent",
+        },
+      }}
+    />
+  );
+};
+
+const CompareSeries = () => {
+  const { visibleSeries, toggleSeriesVisibility } = useCompareSeriesStore();
+  const seriesMapEntries = typedObjectEntries(seriesMap);
+
+  return (
+    <ChartWidgetCard
+      title="Compare series"
+      subTitle="Compare different series and metrics on the same chart"
+      githubLink={samplesLinks.CompareSeries.github}
+    >
+      <Stack direction="row" useFlexGap gap={2} marginBottom={2} flexWrap="wrap">
+        <StyledChip label="Asset A" color={colors.blue100} selected />
+        {seriesMapEntries.map(([key, { chipColor }]) => {
+          return (
+            <StyledChip
+              key={key}
+              label={key}
+              color={chipColor}
+              selected={visibleSeries.includes(key)}
+              onClick={() => toggleSeriesVisibility(key)}
+            />
+          );
+        })}
+      </Stack>
+      <Chart
+        height={400}
+        {...chartCommonOptions}
+        crosshair={{ mode: CrosshairMode.Normal }}
+      >
+        <AreaSeries
+          data={mainSeriesData}
+          options={{
+            topColor: colors.blue100,
+            bottomColor: `${colors.blue100}10`,
+            lineColor: colors.blue100,
+            lineWidth: 2,
+          }}
+        />
+        {seriesMapEntries
+          .filter(([key]) => visibleSeries.includes(key))
+          .map(([key, { Component, data, options }]) => {
+            return <Component key={key} data={data} options={options} />;
+          })}
+      </Chart>
+    </ChartWidgetCard>
+  );
+};
+
+export { CompareSeries };
