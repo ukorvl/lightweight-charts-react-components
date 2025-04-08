@@ -27,6 +27,9 @@ const BasicSeries = () => {
         onChange={(_, newValue) => setActiveTab(newValue)}
         aria-label="basic series tabs"
         sx={{ marginBottom: 2 }}
+        allowScrollButtonsMobile
+        variant="scrollable"
+        scrollButtons="auto"
       >
         {typedObjectKeys(basicSeriesMap).map(key => (
           <Tab key={key} value={key} label={key} {...a11yProps(key)} />

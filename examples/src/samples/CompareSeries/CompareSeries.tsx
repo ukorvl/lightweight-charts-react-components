@@ -1,10 +1,11 @@
-import { Chip, Stack } from "@mui/material";
+import { Chip } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
 import { AreaSeries, Chart } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectEntries } from "@/common/utils";
 import { samplesLinks } from "@/samples";
+import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import { mainSeriesData, seriesMap, useCompareSeriesStore } from "./compareSeriesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { FC } from "react";
@@ -44,7 +45,7 @@ const CompareSeries = () => {
       subTitle="Compare different series and metrics on the same chart"
       githubLink={samplesLinks.CompareSeries.github}
     >
-      <Stack direction="row" useFlexGap gap={2} marginBottom={2} flexWrap="wrap">
+      <ScrollableContainer sx={{ marginBottom: 2 }}>
         <StyledChip label="Asset A" color={colors.blue100} selected />
         {seriesMapEntries.map(([key, { chipColor }]) => {
           return (
@@ -57,7 +58,7 @@ const CompareSeries = () => {
             />
           );
         })}
-      </Stack>
+      </ScrollableContainer>
       <Chart
         height={400}
         {...chartCommonOptions}
