@@ -28,6 +28,16 @@ const theme = createTheme({
           "&:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: colors.gray,
           },
+          "&.Mui-disabled": {
+            color: `${colors.gray100} !important`,
+
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: colors.gray100,
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: `${colors.gray100} !important`,
+            },
+          },
         },
         icon: {
           color: colors.blue,
@@ -38,6 +48,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           color: colors.white,
+          "&.Mui-selected": {
+            backgroundColor: `${colors.pink}65`,
+          },
           "&:hover": {
             backgroundColor: `${colors.pink}15`,
           },

@@ -1,8 +1,9 @@
-import { FormControl, FormHelperText, MenuItem, Select, Stack } from "@mui/material";
+import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
 import { AreaSeries, Chart, PriceScale } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
+import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
   mainSeriesData,
   priceScalePositionSelectOptions,
@@ -64,7 +65,7 @@ const Scales = () => {
       subTitle="Customize the scales of the chart"
       githubLink={samplesLinks.Scales.github}
     >
-      <Stack useFlexGap gap={2} direction="row" marginBottom={2} flexWrap="wrap">
+      <ScrollableContainer sx={{ marginBottom: 2 }}>
         <SelectFormField
           label="Price scales"
           value={priceScalesNumber}
@@ -84,8 +85,8 @@ const Scales = () => {
           options={priceScalePositionSelectOptions}
           disabled={priceScalesNumber === 2}
         />
-      </Stack>
-      <Chart height={400} {...chartCommonOptions}>
+      </ScrollableContainer>
+      <Chart height={400} {...chartCommonOptions} autoSize>
         <AreaSeries
           data={mainSeriesData}
           options={{

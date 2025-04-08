@@ -34,6 +34,10 @@ const samplesLinks = {
     github: `${githubSamplesLocation}/Scales`,
     codesandbox: "",
   },
+  Tooltips: {
+    github: `${githubSamplesLocation}/Tooltips`,
+    codesandbox: "",
+  },
 } as const;
 
 export { samplesLinks };
