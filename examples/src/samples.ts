@@ -3,15 +3,15 @@ const githubSamplesLocation =
 
 const samplesLinks = {
   BasicSeries: {
-    githbub: `${githubSamplesLocation}/BasicSeries`,
+    github: `${githubSamplesLocation}/BasicSeries`,
     codesandbox: "",
   },
   CustomSeries: {
-    githbub: `${githubSamplesLocation}/CustomSeries`,
+    github: `${githubSamplesLocation}/CustomSeries`,
     codesandbox: "",
   },
   RangeSwitcher: {
-    githbub: `${githubSamplesLocation}/RangeSwitcher`,
+    github: `${githubSamplesLocation}/RangeSwitcher`,
     codesandbox: "",
   },
   Markers: {
@@ -36,6 +36,10 @@ const samplesLinks = {
   },
   Tooltips: {
     github: `${githubSamplesLocation}/Tooltips`,
+    codesandbox: "",
+  },
+  Panes: {
+    github: `${githubSamplesLocation}/Panes`,
     codesandbox: "",
   },
 } as const;

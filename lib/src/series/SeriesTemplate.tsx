@@ -4,7 +4,7 @@ import { useSeries } from "./useSeries";
 import type { SeriesType, SeriesTemplateProps, SeriesApiRef } from "./types";
 import type { ForwardedRef } from "react";
 
-type GenericRefComponent = (<T extends SeriesType>(
+type GenericSeriesComponent = (<T extends SeriesType>(
   props: SeriesTemplateProps<T> & {
     ref?: ForwardedRef<SeriesApiRef<T>>;
   }
@@ -34,7 +34,7 @@ const SeriesTemplateRenderFunction = <T extends SeriesType>(
   );
 };
 
-const SeriesTemplate = forwardRef(SeriesTemplateRenderFunction) as GenericRefComponent;
+const SeriesTemplate = forwardRef(SeriesTemplateRenderFunction) as GenericSeriesComponent;
 
 SeriesTemplate.displayName = "SeriesTemplate";
-export default SeriesTemplate;
+export { SeriesTemplate };

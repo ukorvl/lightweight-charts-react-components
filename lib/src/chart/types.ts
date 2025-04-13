@@ -5,18 +5,19 @@ import {
   type MouseEventHandler,
   type Time,
 } from "lightweight-charts";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
-export type ChartOptions = {
+export type ChartCustomOptions = {
   onClick?: MouseEventHandler<Time>;
   onCrosshairMove?: MouseEventHandler<Time>;
   onInit?: (chart: IChartApi) => void;
-} & DeepPartial<ChartNativeOptions>;
+  options?: DeepPartial<ChartNativeOptions>;
+};
 
 export type ChartProps = {
   children?: ReactNode;
-  className?: string;
-} & ChartOptions;
+  containerProps?: JSX.IntrinsicElements["div"];
+} & ChartCustomOptions;
 
 export type ChartApiRef = {
   _chart: IChartApi | null;

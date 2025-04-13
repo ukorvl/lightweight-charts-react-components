@@ -23,6 +23,9 @@ export default [
   pluginReact.configs.flat.recommended,
   pluginReactHooks.configs["recommended-latest"],
   {
+    plugins: {
+      import: pluginImport,
+    },
     settings: {
       react: {
         version: "19",
@@ -60,9 +63,17 @@ export default [
     },
   },
   {
-    plugins: {
-      import: pluginImport,
+    files: [
+      "lib/src/**/*.ts",
+      "lib/src/**/*.tsx",
+      "examples/src/**/*.ts",
+      "examples/src/**/*.tsx",
+    ],
+    rules: {
+      "import/no-default-export": "error",
     },
+  },
+  {
     rules: {
       "import/order": [
         "error",

@@ -16,6 +16,7 @@ const seriesCustomOptions = {
   bottomColor: `${colors.blue100}05`,
   lineColor: colors.cyan,
   topColor: colors.cyan,
+  lineWidth: 2,
 } satisfies DeepPartial<AreaSeriesOptions>;
 
 const RangeSwitcher = () => {
@@ -26,7 +27,7 @@ const RangeSwitcher = () => {
     <ChartWidgetCard
       title="Range switcher"
       subTitle="Allows user to switch between different time ranges"
-      githubLink={samplesLinks.RangeSwitcher.githbub}
+      githubLink={samplesLinks.RangeSwitcher.github}
     >
       <ButtonGroup
         variant="outlined"
@@ -45,16 +46,14 @@ const RangeSwitcher = () => {
         ))}
       </ButtonGroup>
       <Chart
-        height={400}
+        options={chartCommonOptions}
+        containerProps={{ style: { flexGrow: "1" } }}
         localization={{
           timeFormatter: dataRangeMap[range].formatter,
         }}
         timeScale={{
           tickMarkFormatter: dataRangeMap[range].formatter,
         }}
-        {...chartCommonOptions}
-        autoSize
-        onInit={chart => chart.timeScale().fitContent()}
       >
         <AreaSeries options={seriesCustomOptions} data={data} />
       </Chart>

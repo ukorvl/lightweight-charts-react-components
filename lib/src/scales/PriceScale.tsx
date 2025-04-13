@@ -15,4 +15,4 @@ const PriceScaleRenderFunction = (
 
 const PriceScale = forwardRef(PriceScaleRenderFunction);
 PriceScale.displayName = "PriceScale";
-export default PriceScale;
+export { PriceScale };

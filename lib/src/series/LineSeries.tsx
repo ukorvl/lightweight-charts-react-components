@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import SeriesTemplate from "./SeriesTemplate";
+import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesProps } from "./types";
 import type { ForwardedRef } from "react";
 
@@ -16,4 +16,4 @@ const LineSeriesRenderFunction = (
 
 const LineSeries = forwardRef(LineSeriesRenderFunction);
 LineSeries.displayName = "LineSeries";
-export default LineSeries;
+export { LineSeries };

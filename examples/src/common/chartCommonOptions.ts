@@ -1,7 +1,9 @@
 import { colors } from "@/colors";
+import { deepMergePlainObjects } from "./utils";
 import type { ChartOptions, DeepPartial } from "lightweight-charts";
 
-export const chartCommonOptions = {
+const chartCommonOptions = {
+  autoSize: true,
   layout: {
     attributionLogo: false,
     fontFamily: "Roboto",
@@ -29,3 +31,9 @@ export const chartCommonOptions = {
     },
   },
 } satisfies DeepPartial<ChartOptions>;
+
+const withChartCommonOptions = (
+  options: DeepPartial<ChartOptions>
+): DeepPartial<ChartOptions> => deepMergePlainObjects(chartCommonOptions, options);
+
+export { chartCommonOptions, withChartCommonOptions };

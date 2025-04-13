@@ -86,7 +86,7 @@ const Scales = () => {
           disabled={priceScalesNumber === 2}
         />
       </ScrollableContainer>
-      <Chart height={400} {...chartCommonOptions} autoSize>
+      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         <AreaSeries
           data={mainSeriesData}
           options={{
