@@ -31,7 +31,7 @@ const Watermark = () => {
           <Tab key={key} value={key} label={key} {...a11yProps(key)} />
         ))}
       </Tabs>
-      <Chart height={400} {...chartCommonOptions} autoSize>
+      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         <AreaSeries
           data={seriesData}
           options={{

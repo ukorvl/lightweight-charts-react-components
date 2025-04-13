@@ -20,19 +20,22 @@ const BasicSeries = () => {
     <ChartWidgetCard
       title="Basic series"
       subTitle="Different series types basic usage"
-      githubLink={samplesLinks.BasicSeries.githbub}
+      githubLink={samplesLinks.BasicSeries.github}
     >
       <Tabs
         value={activeTab}
         onChange={(_, newValue) => setActiveTab(newValue)}
         aria-label="basic series tabs"
         sx={{ marginBottom: 2 }}
+        allowScrollButtonsMobile
+        variant="scrollable"
+        scrollButtons="auto"
       >
         {typedObjectKeys(basicSeriesMap).map(key => (
           <Tab key={key} value={key} label={key} {...a11yProps(key)} />
         ))}
       </Tabs>
-      <Chart height={400} {...chartCommonOptions} autoSize>
+      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         {Component && <Component data={seriesData} options={options} reactive={false} />}
       </Chart>
     </ChartWidgetCard>

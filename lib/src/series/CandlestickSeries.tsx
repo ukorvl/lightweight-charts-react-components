@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import SeriesTemplate from "./SeriesTemplate";
+import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesProps } from "./types";
 import type { ForwardedRef } from "react";
 
@@ -16,4 +16,4 @@ const CandlestickSeriesRenderFunction = (
 
 const CandlestickSeries = forwardRef(CandlestickSeriesRenderFunction);
 CandlestickSeries.displayName = "CandlestickSeries";
-export default CandlestickSeries;
+export { CandlestickSeries };

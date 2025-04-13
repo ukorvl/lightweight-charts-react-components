@@ -1,13 +1,14 @@
 import { type Context, useContext } from "react";
+import { BaseInternalError } from "./InternalError";
 
-export const useSafeContext = <T>(context: Context<T>) => {
+export const useSafeContext = <T>(context: Context<T>, errorMessage?: string) => {
   const currentContextValue = useContext(context);
 
   if (!currentContextValue) {
     const ctxName = context.name;
-    throw new Error(
-      `${ctxName} not found. You can access context value only inside its Provider.`
-    );
+    throw new BaseInternalError(errorMessage ?? `${ctxName} not found.`, {
+      isOperational: true,
+    });
   }
 
   return currentContextValue;

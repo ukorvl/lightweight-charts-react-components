@@ -1,10 +1,11 @@
-import { Chip, Stack } from "@mui/material";
+import { Chip } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
 import { AreaSeries, Chart } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectEntries } from "@/common/utils";
 import { samplesLinks } from "@/samples";
+import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import { mainSeriesData, seriesMap, useCompareSeriesStore } from "./compareSeriesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { FC } from "react";
@@ -22,6 +23,7 @@ const StyledChip: FC<ChipProps> = ({ label, selected, onClick, color }) => {
       label={label}
       variant={selected ? "filled" : "outlined"}
       onClick={onClick}
+      tabIndex={onClick ? 0 : -1}
       sx={{
         backgroundColor: selected ? color : "transparent",
         borderColor: color,
@@ -29,6 +31,13 @@ const StyledChip: FC<ChipProps> = ({ label, selected, onClick, color }) => {
         "&:hover": {
           backgroundColor: selected ? color : "transparent",
         },
+        ...(onClick
+          ? {
+              "&:focus": {
+                outline: `2px solid ${color}`,
+              },
+            }
+          : {}),
       }}
     />
   );
@@ -44,7 +53,7 @@ const CompareSeries = () => {
       subTitle="Compare different series and metrics on the same chart"
       githubLink={samplesLinks.CompareSeries.github}
     >
-      <Stack direction="row" useFlexGap gap={2} marginBottom={2} flexWrap="wrap">
+      <ScrollableContainer sx={{ marginBottom: 2, paddingBlock: 1 }}>
         <StyledChip label="Asset A" color={colors.blue100} selected />
         {seriesMapEntries.map(([key, { chipColor }]) => {
           return (
@@ -57,10 +66,10 @@ const CompareSeries = () => {
             />
           );
         })}
-      </Stack>
+      </ScrollableContainer>
       <Chart
-        height={400}
-        {...chartCommonOptions}
+        options={chartCommonOptions}
+        containerProps={{ style: { flexGrow: "1" } }}
         crosshair={{ mode: CrosshairMode.Normal }}
       >
         <AreaSeries

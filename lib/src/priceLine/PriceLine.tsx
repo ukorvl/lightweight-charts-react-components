@@ -15,4 +15,4 @@ const PriceLineRenderFunction = (
 
 const PriceLine = forwardRef(PriceLineRenderFunction);
 PriceLine.displayName = "PriceLine";
-export default PriceLine;
+export { PriceLine };

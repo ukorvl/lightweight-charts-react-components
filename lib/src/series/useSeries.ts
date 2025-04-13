@@ -6,8 +6,9 @@ import {
   BaselineSeries,
   BarSeries,
 } from "lightweight-charts";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useContext, useLayoutEffect, useRef, useState } from "react";
 import { ChartContext } from "@/chart/ChartContext";
+import { PaneContext } from "@/pane/PaneContext";
 import { BaseInternalError } from "@/shared/InternalError";
 import { useSafeContext } from "@/shared/useSafeContext";
 import type {
@@ -29,6 +30,8 @@ export const useSeries = <T extends SeriesType>({
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { initialized: chartInitialized, chartApiRef: chart } =
     useSafeContext(ChartContext);
+  const pane = useContext(PaneContext);
+  const paneId = pane?.paneId;
   const [initialized, setInitialized] = useState(false);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
@@ -53,12 +56,14 @@ export const useSeries = <T extends SeriesType>({
           // TODO: Fix this type cast and infer the correct type
           (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
             plugin,
-            options
+            options,
+            paneId
           );
         } else {
           this._series = chartApi.addSeries(
             seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
-            options
+            options,
+            paneId
           );
         }
 

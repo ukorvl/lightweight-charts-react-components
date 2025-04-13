@@ -21,6 +21,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.10",
     "@mui/material": "^6.4.7",
+    "@react-hook/resize-observer": "^2.0.2",
     "copy-to-clipboard": "^3.3.3",
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.1.0",

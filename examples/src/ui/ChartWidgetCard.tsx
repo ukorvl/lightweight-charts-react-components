@@ -59,13 +59,29 @@ const ChartWidgetCard: FC<ChartWidgetCardProps> = ({
   githubLink,
 }) => {
   return (
-    <Card sx={{ minWidth: 275, borderRadius: 3 }}>
+    <Card
+      sx={{
+        minWidth: 275,
+        borderRadius: 3,
+        height: 575,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <CardHeader
         title={title}
         subheader={subTitle}
         action={<ActionPanel codeSnippetLink={codeSnippetLink} githubLink={githubLink} />}
       />
-      <CardContent>{children}</CardContent>
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+        }}
+      >
+        {children}
+      </CardContent>
     </Card>
   );
 };

@@ -1,12 +1,13 @@
 import { Grid2 as Grid } from "@mui/material";
 import { Children } from "react";
-import type { FC, ReactNode } from "react";
+import type { ElementType, FC, ReactNode } from "react";
 
 type LayoutGridProps = {
   children: ReactNode;
+  component?: ElementType;
 };
 
-const LayoutGrid: FC<LayoutGridProps> = ({ children }) => {
+const LayoutGrid: FC<LayoutGridProps> = ({ children, component, ...rest }) => {
   const childrenLength = Children.count(children);
   const numberOfChildrenIsOdd = childrenLength % 2 === 1;
 
@@ -15,6 +16,8 @@ const LayoutGrid: FC<LayoutGridProps> = ({ children }) => {
       container
       spacing={{ xs: 2, sm: 4 }}
       justifyContent={numberOfChildrenIsOdd ? "center" : "stretch"}
+      component={component ?? "div"}
+      {...rest}
     >
       {Children.map(children, (child, i) => (
         <Grid

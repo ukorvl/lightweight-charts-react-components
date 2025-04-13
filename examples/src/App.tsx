@@ -5,8 +5,10 @@ import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
 import { WithLegend } from "./samples/Legend/WithLegend";
 import { Markers } from "./samples/Markers/Markers";
+import { Panes } from "./samples/Panes/Panes";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Scales } from "./samples/Scales/Scales";
+import { Tooltips } from "./samples/Tooltips/Tooltips";
 import { Watermark } from "./samples/Watermark/Watermark";
 import { Footer } from "./ui/Footer";
 import { LayoutGrid } from "./ui/LayoutGrid";
@@ -96,7 +98,7 @@ export const App = () => {
             fontSize: "1.1rem",
             marginInline: { xs: 4, sm: 12, md: 28 },
           }}
-          component="p"
+          component="h2"
         >
           This library is a set of React components that wraps the{" "}
           {VITE_LIGHTWEIGHT_CHARTS_REPO_URL ? (
@@ -114,7 +116,7 @@ export const App = () => {
           . It provides a simple declarative way to use the Lightweight-charts library in
           your React application.
         </Typography>
-        <LayoutGrid>
+        <LayoutGrid component="section" aria-label="Examples of library usage">
           <BasicSeries />
           <CustomSeries />
           <RangeSwitcher />
@@ -123,6 +125,8 @@ export const App = () => {
           <WithLegend />
           <CompareSeries />
           <Scales />
+          <Tooltips />
+          <Panes />
         </LayoutGrid>
       </Stack>
       <Footer

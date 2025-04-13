@@ -15,4 +15,4 @@ const MarkersRenderFunction = (
 
 const Markers = forwardRef(MarkersRenderFunction);
 Markers.displayName = "Markers";
-export default Markers;
+export { Markers };

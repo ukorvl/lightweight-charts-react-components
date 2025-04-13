@@ -4,17 +4,20 @@ import type { ChartProps } from "./types";
 
 type ChartComponentProps = {
   container: HTMLElement;
-} & Omit<ChartProps, "className">;
+} & Omit<ChartProps, "containerProps">;
 
 const ChartComponent: React.FC<ChartComponentProps> = ({
   children,
   container,
-  ...rest
+  onClick,
+  onCrosshairMove,
+  onInit,
+  options,
 }) => {
   const {
     chartApiRef: { current: chartApiRef },
     initialized,
-  } = useChart({ container, ...rest });
+  } = useChart({ container, onClick, onCrosshairMove, onInit, options });
 
   return (
     <ChartContext.Provider
@@ -28,4 +31,4 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   );
 };
 
-export default ChartComponent;
+export { ChartComponent };

@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import SeriesTemplate from "./SeriesTemplate";
+import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesProps } from "./types";
 import type { ForwardedRef } from "react";
 
@@ -16,4 +16,4 @@ const BaselineSeriesRenderFunction = (
 
 const BaselineSeries = forwardRef(BaselineSeriesRenderFunction);
 BaselineSeries.displayName = "BaselineSeries";
-export default BaselineSeries;
+export { BaselineSeries };
