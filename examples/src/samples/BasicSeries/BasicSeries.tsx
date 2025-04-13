@@ -20,7 +20,7 @@ const BasicSeries = () => {
     <ChartWidgetCard
       title="Basic series"
       subTitle="Different series types basic usage"
-      githubLink={samplesLinks.BasicSeries.githbub}
+      githubLink={samplesLinks.BasicSeries.github}
     >
       <Tabs
         value={activeTab}
@@ -35,7 +35,7 @@ const BasicSeries = () => {
           <Tab key={key} value={key} label={key} {...a11yProps(key)} />
         ))}
       </Tabs>
-      <Chart height={400} {...chartCommonOptions} autoSize>
+      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         {Component && <Component data={seriesData} options={options} reactive={false} />}
       </Chart>
     </ChartWidgetCard>

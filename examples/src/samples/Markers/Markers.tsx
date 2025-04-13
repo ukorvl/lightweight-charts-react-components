@@ -28,7 +28,7 @@ const MarkersSample = () => {
           label="Basic markers"
         />
       </FormGroup>
-      <Chart height={400} {...chartCommonOptions} autoSize>
+      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         <CandlestickSeries
           data={seriesData}
           options={{

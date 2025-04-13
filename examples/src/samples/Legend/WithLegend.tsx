@@ -9,7 +9,7 @@ import {
 import { CrosshairMode } from "lightweight-charts";
 import { CandlestickSeries, Chart } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { useLegendStore } from "./legendStore";
@@ -59,12 +59,13 @@ const WithLegend = () => {
           label="Show legend"
         />
       </FormGroup>
-      <Box flexDirection="column" position="relative">
+      <Box height="100%" flexDirection="column" position="relative">
         <Chart
-          height={400}
-          {...chartCommonOptions}
+          options={withChartCommonOptions({
+            crosshair: { mode: CrosshairMode.Normal },
+          })}
+          containerProps={{ style: { height: "100%" } }}
           onCrosshairMove={onCrosshairMove}
-          crosshair={{ mode: CrosshairMode.MagnetOHLC }}
         >
           <CandlestickSeries
             ref={ref}

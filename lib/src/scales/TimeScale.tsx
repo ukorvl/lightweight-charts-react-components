@@ -15,4 +15,4 @@ const TimeScaleRenderFunction = (
 
 const TimeScale = forwardRef(TimeScaleRenderFunction);
 TimeScale.displayName = "TimeScale";
-export default TimeScale;
+export { TimeScale };

@@ -23,6 +23,7 @@ const StyledChip: FC<ChipProps> = ({ label, selected, onClick, color }) => {
       label={label}
       variant={selected ? "filled" : "outlined"}
       onClick={onClick}
+      tabIndex={onClick ? 0 : -1}
       sx={{
         backgroundColor: selected ? color : "transparent",
         borderColor: color,
@@ -30,6 +31,13 @@ const StyledChip: FC<ChipProps> = ({ label, selected, onClick, color }) => {
         "&:hover": {
           backgroundColor: selected ? color : "transparent",
         },
+        ...(onClick
+          ? {
+              "&:focus": {
+                outline: `2px solid ${color}`,
+              },
+            }
+          : {}),
       }}
     />
   );
@@ -45,7 +53,7 @@ const CompareSeries = () => {
       subTitle="Compare different series and metrics on the same chart"
       githubLink={samplesLinks.CompareSeries.github}
     >
-      <ScrollableContainer sx={{ marginBottom: 2 }}>
+      <ScrollableContainer sx={{ marginBottom: 2, paddingBlock: 1 }}>
         <StyledChip label="Asset A" color={colors.blue100} selected />
         {seriesMapEntries.map(([key, { chipColor }]) => {
           return (
@@ -60,8 +68,8 @@ const CompareSeries = () => {
         })}
       </ScrollableContainer>
       <Chart
-        height={400}
-        {...chartCommonOptions}
+        options={chartCommonOptions}
+        containerProps={{ style: { flexGrow: "1" } }}
         crosshair={{ mode: CrosshairMode.Normal }}
       >
         <AreaSeries
