@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Feat
 - add `containerProps` and `options` to Chart props
-- add paneIndex series prop
+- add `isPane` series prop
 
 ## [0.2.1] - 2025-04-08
 ### Fix
