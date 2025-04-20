@@ -5,8 +5,7 @@ import { useSafeContext } from "@/shared/useSafeContext";
 import type { MarkersApiRef, MarkersProps } from "./types";
 
 export const useMarkers = ({ reactive = true, markers }: MarkersProps) => {
-  const { initialized: seriesInitialized, seriesApiRef: series } =
-    useSafeContext(SeriesContext);
+  const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(SeriesContext);
 
   const markersApiRef = useRef<MarkersApiRef>({
     _markers: null,
@@ -35,10 +34,10 @@ export const useMarkers = ({ reactive = true, markers }: MarkersProps) => {
   });
 
   useLayoutEffect(() => {
-    if (!seriesInitialized) return;
+    if (!seriesIsReady) return;
 
     markersApiRef.current.init();
-  }, [seriesInitialized]);
+  }, [seriesIsReady]);
 
   useLayoutEffect(() => {
     return () => {

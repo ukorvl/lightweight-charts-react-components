@@ -4,8 +4,7 @@ import { useSafeContext } from "@/shared/useSafeContext";
 import type { PriceLineApiRef, PriceLineProps } from "./types";
 
 export const usePriceLine = ({ options, price }: PriceLineProps) => {
-  const { initialized: seriesInitialized, seriesApiRef: series } =
-    useSafeContext(SeriesContext);
+  const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(SeriesContext);
 
   const priceLineApiRef = useRef<PriceLineApiRef>({
     _priceLine: null,
@@ -37,10 +36,10 @@ export const usePriceLine = ({ options, price }: PriceLineProps) => {
   });
 
   useLayoutEffect(() => {
-    if (!seriesInitialized) return;
+    if (!seriesIsReady) return;
 
     priceLineApiRef.current.init();
-  }, [seriesInitialized]);
+  }, [seriesIsReady]);
 
   useLayoutEffect(() => {
     return () => {

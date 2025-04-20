@@ -28,5 +28,5 @@ export type ChartApiRef = {
 
 export interface IChartContext {
   chartApiRef: ChartApiRef | null;
-  initialized: boolean;
+  isReady: boolean;
 }

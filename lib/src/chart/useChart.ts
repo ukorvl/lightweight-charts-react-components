@@ -11,7 +11,7 @@ export const useChart = ({
 }: {
   container: HTMLElement;
 } & ChartCustomOptions) => {
-  const [initialized, setInitialized] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const chartApiRef = useRef<ChartApiRef>({
     _chart: null,
@@ -27,15 +27,15 @@ export const useChart = ({
         }
       }
 
-      if (!initialized) {
-        setInitialized(true);
+      if (!isReady) {
+        setIsReady(true);
       }
 
       return this._chart;
     },
     clear() {
       if (this._chart !== null) {
-        setInitialized(false);
+        setIsReady(false);
         this._chart.remove();
         this._chart = null;
       }
@@ -84,5 +84,5 @@ export const useChart = ({
     chartApiRef.current.api()?.applyOptions(options);
   }, [options]);
 
-  return { chartApiRef, initialized };
+  return { chartApiRef, isReady };
 };

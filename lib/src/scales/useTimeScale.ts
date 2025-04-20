@@ -11,8 +11,7 @@ export const useTimeScale = ({
   visibleLogicalRange,
   options = {},
 }: TimeScaleProps) => {
-  const { initialized: chartInitialized, chartApiRef: chart } =
-    useSafeContext(ChartContext);
+  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
 
   if (!chart) {
     throw new Error("Chart context not found");
@@ -52,10 +51,10 @@ export const useTimeScale = ({
   });
 
   useLayoutEffect(() => {
-    if (!chartInitialized) return;
+    if (!chartIsReady) return;
 
     timeScaleApiRef.current.init();
-  }, [chartInitialized]);
+  }, [chartIsReady]);
 
   useLayoutEffect(() => {
     return () => {

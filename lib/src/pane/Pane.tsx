@@ -1,25 +1,24 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { PaneContext } from "./PaneContext";
 import { usePane } from "./usePane";
 import type { PaneProps, PaneApiRef } from "./types";
 import type { ForwardedRef } from "react";
 
-const PaneRenderFunction = (
-  { children, id, height }: PaneProps,
-  ref: ForwardedRef<PaneApiRef>
-) => {
+const PaneRenderFunction = ({ children }: PaneProps, ref: ForwardedRef<PaneApiRef>) => {
+  const [paneIndex, setPaneIndex] = useState<number | null>(null);
   const {
     paneApiRef: { current: paneApiRef },
-    initialized,
-  } = usePane({ id, height });
+    isReady,
+  } = usePane({ paneIndex });
   useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
 
   return (
     <PaneContext.Provider
       value={{
         paneApiRef,
-        initialized,
-        paneId: id,
+        isReady,
+        paneIndex,
+        setPaneIndex,
       }}
     >
       {children}

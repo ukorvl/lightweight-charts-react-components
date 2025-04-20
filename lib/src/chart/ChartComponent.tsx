@@ -16,14 +16,14 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
 }) => {
   const {
     chartApiRef: { current: chartApiRef },
-    initialized,
+    isReady,
   } = useChart({ container, onClick, onCrosshairMove, onInit, options });
 
   return (
     <ChartContext.Provider
       value={{
         chartApiRef,
-        initialized,
+        isReady,
       }}
     >
       {children}

@@ -1,46 +1,51 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { ChartContext } from "@/chart/ChartContext";
 import { useSafeContext } from "@/shared/useSafeContext";
-import type { PaneApiRef, PaneProps } from "./types";
+import type { PaneApiRef } from "./types";
 
-export const usePane = ({ id, height }: Omit<PaneProps, "children">) => {
-  const { initialized: chartInitialized, chartApiRef: chart } =
-    useSafeContext(ChartContext);
-  const [initialized, setInitialized] = useState(false);
+type Options = {
+  paneIndex: number | null;
+};
+
+export const usePane = ({ paneIndex }: Options) => {
+  const { chartApiRef: chart } = useSafeContext(ChartContext);
+  const [isReady, setIsReady] = useState(false);
 
   const paneApiRef = useRef<PaneApiRef>({
     _pane: null,
     api() {
       return this._pane;
     },
-    init() {
-      setInitialized(true);
+    init(paneIndex: number) {
       const panes = chart?.api()?.panes();
 
       if (!panes) return null;
+      const pane = panes[paneIndex!];
 
-      this._pane = panes[id];
-
-      if (height) {
-        this._pane.setHeight(height);
+      if (!pane) {
+        return null;
       }
+
+      this._pane = pane;
+      setIsReady(true);
 
       return this._pane;
     },
     clear() {
       if (this._pane !== null) {
-        chart?.api()?.removePane(id);
-        setInitialized(false);
+        chart?.api()?.removePane(this._pane.paneIndex());
+        setIsReady(false);
+
         this._pane = null;
       }
     },
   });
 
   useLayoutEffect(() => {
-    if (!chartInitialized) return;
+    if (paneIndex === null || paneIndex === undefined) return;
 
-    paneApiRef.current.init();
-  }, [chartInitialized]);
+    paneApiRef.current.init(paneIndex);
+  }, [paneIndex]);
 
   useLayoutEffect(() => {
     return () => {
@@ -48,21 +53,5 @@ export const usePane = ({ id, height }: Omit<PaneProps, "children">) => {
     };
   }, []);
 
-  useLayoutEffect(() => {
-    if (!chart) return;
-
-    if (id) {
-      paneApiRef.current.api()?.moveTo(id);
-    }
-  }, [id]);
-
-  useLayoutEffect(() => {
-    if (!chart) return;
-
-    if (height) {
-      paneApiRef.current.api()?.setHeight(height);
-    }
-  }, [height]);
-
-  return { paneApiRef, initialized };
+  return { paneApiRef, isReady };
 };

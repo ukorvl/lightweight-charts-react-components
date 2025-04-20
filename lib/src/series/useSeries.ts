@@ -6,9 +6,9 @@ import {
   BaselineSeries,
   BarSeries,
 } from "lightweight-charts";
-import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ChartContext } from "@/chart/ChartContext";
-import { PaneContext } from "@/pane/PaneContext";
+import { incrementPaneCount, panesCount, decrementPaneCount } from "@/pane/panesCount";
 import { BaseInternalError } from "@/shared/InternalError";
 import { useSafeContext } from "@/shared/useSafeContext";
 import type {
@@ -26,13 +26,11 @@ export const useSeries = <T extends SeriesType>({
   data,
   options = {},
   reactive = true,
+  pane,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
-  const { initialized: chartInitialized, chartApiRef: chart } =
-    useSafeContext(ChartContext);
-  const pane = useContext(PaneContext);
-  const paneId = pane?.paneId;
-  const [initialized, setInitialized] = useState(false);
+  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
+  const [isReady, setIsReady] = useState(false);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
     _series: null,
@@ -57,19 +55,19 @@ export const useSeries = <T extends SeriesType>({
           (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
             plugin,
             options,
-            paneId
+            pane ? panesCount : 0
           );
         } else {
           this._series = chartApi.addSeries(
             seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
             options,
-            paneId
+            pane ? panesCount : 0
           );
         }
 
-        setInitialized(true);
-
+        setIsReady(true);
         this._series?.setData(data);
+        pane && incrementPaneCount();
       }
 
       return this._series;
@@ -78,16 +76,17 @@ export const useSeries = <T extends SeriesType>({
       if (this._series !== null) {
         chart?.api()?.removeSeries(this._series);
         this._series = null;
-        setInitialized(false);
+        setIsReady(false);
+        pane && decrementPaneCount();
       }
     },
   });
 
   useLayoutEffect(() => {
-    if (!chartInitialized) return;
+    if (!chartIsReady) return;
 
     seriesApiRef.current.init();
-  }, [chartInitialized]);
+  }, [chartIsReady]);
 
   useLayoutEffect(() => {
     return () => {
@@ -111,7 +110,19 @@ export const useSeries = <T extends SeriesType>({
     }
   }, [options]);
 
-  return { initialized, seriesApiRef };
+  useLayoutEffect(() => {
+    if (!chart || pane === undefined) return;
+
+    if (pane) {
+      incrementPaneCount();
+      seriesApiRef.current.api()?.moveToPane(panesCount);
+    } else {
+      decrementPaneCount();
+      seriesApiRef.current.api()?.moveToPane(0);
+    }
+  }, [pane]);
+
+  return { isReady, seriesApiRef };
 };
 
 const seriesMap: Record<

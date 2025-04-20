@@ -125,7 +125,7 @@ const useBasicTooltip = (
           : prev
       );
     },
-    [containerWidth, containerHeight]
+    [containerWidth, containerHeight, options]
   );
 
   return {
@@ -203,7 +203,7 @@ const useMultipleSeriesTooltip = (
           : prev
       );
     },
-    [containerWidth, containerHeight]
+    [containerWidth, containerHeight, options]
   );
 
   return {

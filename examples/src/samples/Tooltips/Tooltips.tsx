@@ -1,7 +1,7 @@
 import { Circle } from "@mui/icons-material";
 import { Box, Grow, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { Chart, LineSeries } from "lightweight-charts-react-components";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectKeys } from "@/common/utils";
@@ -70,14 +70,20 @@ const BasicTooltipChart = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipWidth = 120;
   const tooltipHeight = 60;
+  const basicTooltipOpts = useMemo(
+    () => ({
+      tooltipHeight,
+      tooltipWidth,
+      yOffset: 12,
+      xOffset: 12,
+    }),
+    [tooltipHeight, tooltipWidth]
+  );
   const {
     onCrosshairMove,
     tooltipData: { time, price, position, show },
     seriesRef,
-  } = useBasicTooltip(containerRef, {
-    tooltipHeight,
-    tooltipWidth,
-  });
+  } = useBasicTooltip(containerRef, basicTooltipOpts);
 
   return (
     <Chart
@@ -138,15 +144,19 @@ const MultipleSeriesTooltipChart = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipWidth = 190;
   const tooltipHeight = 150;
+  const multipleSeriesTooltipOpts = useMemo(
+    () => ({
+      tooltipHeight,
+      tooltipWidth,
+      yOffset: 12,
+      xOffset: 12,
+    }),
+    [tooltipHeight, tooltipWidth]
+  );
   const {
     onCrosshairMove,
     tooltipData: { time, data, position, show },
-  } = useMultipleSeriesTooltip(containerRef, refs, {
-    tooltipHeight,
-    tooltipWidth,
-    yOffset: 12,
-    xOffset: 12,
-  });
+  } = useMultipleSeriesTooltip(containerRef, refs, multipleSeriesTooltipOpts);
 
   return (
     <Chart
