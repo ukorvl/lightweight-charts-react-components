@@ -68,7 +68,7 @@ const Panes = () => {
         />
         {rsiVisible && (
           <LineSeries
-            pane
+            isPane
             data={rsiData}
             options={{
               priceLineVisible: false,
@@ -99,7 +99,7 @@ const Panes = () => {
         )}
         {volumesVisible && (
           <HistogramSeries
-            pane
+            isPane
             data={volumeData}
             options={{
               priceLineVisible: false,

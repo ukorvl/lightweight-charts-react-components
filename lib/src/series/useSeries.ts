@@ -26,7 +26,7 @@ export const useSeries = <T extends SeriesType>({
   data,
   options = {},
   reactive = true,
-  pane,
+  isPane,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
@@ -55,19 +55,19 @@ export const useSeries = <T extends SeriesType>({
           (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
             plugin,
             options,
-            pane ? panesCount : 0
+            isPane ? panesCount : 0
           );
         } else {
           this._series = chartApi.addSeries(
             seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
             options,
-            pane ? panesCount : 0
+            isPane ? panesCount : 0
           );
         }
 
         setIsReady(true);
         this._series?.setData(data);
-        pane && incrementPaneCount();
+        isPane && incrementPaneCount();
       }
 
       return this._series;
@@ -77,7 +77,7 @@ export const useSeries = <T extends SeriesType>({
         chart?.api()?.removeSeries(this._series);
         this._series = null;
         setIsReady(false);
-        pane && decrementPaneCount();
+        isPane && decrementPaneCount();
       }
     },
   });
@@ -111,16 +111,16 @@ export const useSeries = <T extends SeriesType>({
   }, [options]);
 
   useLayoutEffect(() => {
-    if (!chart || pane === undefined) return;
+    if (!chart || isPane === undefined) return;
 
-    if (pane) {
+    if (isPane) {
       incrementPaneCount();
       seriesApiRef.current.api()?.moveToPane(panesCount);
     } else {
       decrementPaneCount();
       seriesApiRef.current.api()?.moveToPane(0);
     }
-  }, [pane]);
+  }, [isPane]);
 
   return { isReady, seriesApiRef };
 };

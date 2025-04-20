@@ -16,7 +16,7 @@ export type SeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];
   reactive?: boolean;
   options?: SeriesOptions<T>;
-  pane?: boolean;
+  isPane?: boolean;
 } & (T extends "Custom" ? CustomSeriesUniqueProps : {});
 
 export type SeriesTemplateProps<T extends SeriesType> = {
