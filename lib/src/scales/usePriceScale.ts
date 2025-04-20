@@ -4,8 +4,7 @@ import { useSafeContext } from "@/shared/useSafeContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
-  const { initialized: chartInitialized, chartApiRef: chart } =
-    useSafeContext(ChartContext);
+  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
@@ -41,10 +40,10 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   });
 
   useLayoutEffect(() => {
-    if (!chartInitialized) return;
+    if (!chartIsReady) return;
 
     priceScaleApiRef.current.init();
-  }, [chartInitialized]);
+  }, [chartIsReady]);
 
   useLayoutEffect(() => {
     return () => {

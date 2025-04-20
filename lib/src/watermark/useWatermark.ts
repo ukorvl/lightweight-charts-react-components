@@ -5,8 +5,7 @@ import { useSafeContext } from "@/shared/useSafeContext";
 import type { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
 
 const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
-  const { initialized: chartInitialized, chartApiRef: chart } =
-    useSafeContext(ChartContext);
+  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
 
   const watermarkApiRef = useRef<WatermarkApiRef<T>>({
     _watermark: null,
@@ -39,10 +38,10 @@ const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
   } as WatermarkApiRef<T>);
 
   useLayoutEffect(() => {
-    if (!chartInitialized) return;
+    if (!chartIsReady) return;
 
     watermarkApiRef.current.init();
-  }, [chartInitialized]);
+  }, [chartIsReady]);
 
   useLayoutEffect(() => {
     return () => {

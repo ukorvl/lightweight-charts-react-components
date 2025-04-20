@@ -19,6 +19,8 @@ const calculateRSI = (
 
   let gainSum = 0;
   let lossSum = 0;
+  let avgGain: number | null = null;
+  let avgLoss: number | null = null;
 
   for (let i = 0; i < closes.length; i++) {
     if (i === 0) {
@@ -28,7 +30,7 @@ const calculateRSI = (
 
     const change = closes[i] - closes[i - 1];
     const gain = Math.max(change, 0);
-    const loss = Math.abs(Math.min(change, 0));
+    const loss = Math.max(-change, 0);
 
     if (i < period) {
       gainSum += gain;
@@ -40,25 +42,16 @@ const calculateRSI = (
     if (i === period) {
       gainSum += gain;
       lossSum += loss;
-
-      const avgGain = gainSum / period;
-      const avgLoss = lossSum / period;
-      const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
-      const rsi = 100 - 100 / (1 + rs);
-      rsiData.push({ time: ohlcData[i].time, value: rsi });
+      avgGain = gainSum / period;
+      avgLoss = lossSum / period;
     } else {
-      const prevRSIData = rsiData[i - 1] as LineData;
-      const prevAvgGain = ((prevRSIData.value ?? 50) / 100) * (lossSum + gainSum);
-      const prevAvgLoss = (1 - (prevRSIData.value ?? 50) / 100) * (lossSum + gainSum);
-
-      const avgGain = (prevAvgGain * (period - 1) + gain) / period;
-      const avgLoss = (prevAvgLoss * (period - 1) + loss) / period;
-
-      const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
-      const rsi = 100 - 100 / (1 + rs);
-
-      rsiData.push({ time: ohlcData[i].time, value: rsi });
+      avgGain = (avgGain! * (period - 1) + gain) / period;
+      avgLoss = (avgLoss! * (period - 1) + loss) / period;
     }
+
+    const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+    const rsi = 100 - 100 / (1 + rs);
+    rsiData.push({ time: ohlcData[i].time, value: rsi });
   }
 
   return rsiData;
@@ -66,9 +59,13 @@ const calculateRSI = (
 
 const ohlcData = generateOHLCData(120);
 const rsiData = calculateRSI(ohlcData, 14);
-const volumeData = generateHistogramData(120, {
-  upColor: `${colors.green}90`,
-  downColor: `${colors.red}90`,
+const volumeData = generateHistogramData(120).map((data, i) => {
+  const ohlc = ohlcData[i];
+  return {
+    time: ohlc.time,
+    value: data.value,
+    color: ohlc.close > ohlc.open ? `${colors.green}90` : `${colors.red}90`,
+  };
 });
 
 const usePanesControlsStore = create<PanesControlsStore>(set => ({

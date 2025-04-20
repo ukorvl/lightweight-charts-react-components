@@ -80,7 +80,7 @@ export const App = () => {
             background: `linear-gradient(45deg, ${colors.red}, ${colors.blue100})`,
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: { xs: "2rem", sm: "3rem", md: "5rem" },
+            fontSize: { xs: "2rem", sm: "3rem", md: "4rem", lg: "5rem" },
             fontWeight: "bold",
             textAlign: "center",
             wordBreak: "keep-all",

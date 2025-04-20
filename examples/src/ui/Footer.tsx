@@ -20,6 +20,7 @@ type CopyIconProps = {
 const FooterText = styled(Typography)(() => ({
   color: colors.gray,
   fontSize: "0.8rem",
+  textWrap: "nowrap",
 }));
 
 const CopyIcon: FC<CopyIconProps> = ({ textToCopy, ariaLabel }) => {
@@ -66,7 +67,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
     <Stack
       component="footer"
       direction={{ xs: "column", md: "row" }}
-      spacing={{ xs: 2, md: 8 }}
+      spacing={{ xs: 2, md: 6, lg: 8 }}
       justifyContent="center"
       alignItems={{ xs: "center", md: "flex-start" }}
       divider={<Divider aria-hidden="true" orientation="vertical" flexItem />}
@@ -141,6 +142,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
             alignItems: "center",
             gap: 1,
             fontSize: "0.8rem",
+            textWrap: "nowrap",
           }}
         >
           <GitHub />
@@ -156,6 +158,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
             alignItems: "center",
             gap: 1,
             fontSize: "0.8rem",
+            textWrap: "nowrap",
           }}
         >
           <FigmaIcon />

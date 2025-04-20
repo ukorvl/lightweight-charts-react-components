@@ -4,7 +4,6 @@ import {
   Chart,
   HistogramSeries,
   LineSeries,
-  Pane,
   PriceLine,
 } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
@@ -56,60 +55,56 @@ const Panes = () => {
         })}
         containerProps={{ style: { flexGrow: "1" } }}
       >
-        <Pane id={0}>
-          <CandlestickSeries
-            data={ohlcData}
-            options={{
-              upColor: "transparent",
-              downColor: colors.orange100,
-              borderUpColor: colors.blue,
-              borderDownColor: colors.orange100,
-              wickUpColor: colors.blue,
-              wickDownColor: colors.orange100,
-            }}
-          />
-        </Pane>
+        <CandlestickSeries
+          data={ohlcData}
+          options={{
+            upColor: "transparent",
+            downColor: colors.orange100,
+            borderUpColor: colors.blue,
+            borderDownColor: colors.orange100,
+            wickUpColor: colors.blue,
+            wickDownColor: colors.orange100,
+          }}
+        />
         {rsiVisible && (
-          <Pane id={1} height={100}>
-            <LineSeries
-              data={rsiData}
+          <LineSeries
+            pane
+            data={rsiData}
+            options={{
+              priceLineVisible: false,
+              color: colors.blue100,
+              lineWidth: 2,
+              priceScaleId: "right",
+            }}
+          >
+            <PriceLine
+              price={70}
               options={{
-                priceLineVisible: false,
-                color: colors.blue100,
-                lineWidth: 2,
-                priceScaleId: "right",
-              }}
-            >
-              <PriceLine
-                price={70}
-                options={{
-                  color: colors.violet,
-                  lineWidth: 1,
-                  lineStyle: 3,
-                  axisLabelVisible: true,
-                }}
-              />
-              <PriceLine
-                price={30}
-                options={{
-                  color: colors.violet,
-                  lineWidth: 1,
-                  lineStyle: 3,
-                  axisLabelVisible: true,
-                }}
-              />
-            </LineSeries>
-          </Pane>
-        )}
-        {volumesVisible && (
-          <Pane id={2} height={75}>
-            <HistogramSeries
-              data={volumeData}
-              options={{
-                priceLineVisible: false,
+                color: colors.violet,
+                lineWidth: 1,
+                lineStyle: 3,
+                axisLabelVisible: true,
               }}
             />
-          </Pane>
+            <PriceLine
+              price={30}
+              options={{
+                color: colors.violet,
+                lineWidth: 1,
+                lineStyle: 3,
+                axisLabelVisible: true,
+              }}
+            />
+          </LineSeries>
+        )}
+        {volumesVisible && (
+          <HistogramSeries
+            pane
+            data={volumeData}
+            options={{
+              priceLineVisible: false,
+            }}
+          />
         )}
       </Chart>
     </ChartWidgetCard>
@@ -117,8 +112,3 @@ const Panes = () => {
 };
 
 export { Panes };
-
-//
-//enable panes autores
-// toggle visibility of rsi and volume panes
-// buttons move pane up and move pane down (including chart itself). only pane in the middle has 2 enaled buttons
