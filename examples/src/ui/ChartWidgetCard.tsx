@@ -63,7 +63,7 @@ const ChartWidgetCard: FC<ChartWidgetCardProps> = ({
       sx={{
         minWidth: 275,
         borderRadius: 3,
-        height: 575,
+        height: { xs: 480, md: 575 },
         display: "flex",
         flexDirection: "column",
       }}

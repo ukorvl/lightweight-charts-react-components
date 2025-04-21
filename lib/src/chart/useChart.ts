@@ -1,6 +1,6 @@
 import { createChart } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
-import type { ChartApiRef, ChartCustomOptions } from "./types";
+import type { ChartApiRef, UseChartOptions } from "./types";
 
 export const useChart = ({
   container,
@@ -8,9 +8,7 @@ export const useChart = ({
   onCrosshairMove,
   onInit,
   options = {},
-}: {
-  container: HTMLElement;
-} & ChartCustomOptions) => {
+}: UseChartOptions) => {
   const [isReady, setIsReady] = useState(false);
 
   const chartApiRef = useRef<ChartApiRef>({

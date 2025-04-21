@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
+import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
-import { useSafeContext } from "@/shared/useSafeContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {

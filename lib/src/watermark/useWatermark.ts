@@ -1,7 +1,7 @@
 import { createTextWatermark, createImageWatermark } from "lightweight-charts";
 import { useLayoutEffect, useRef } from "react";
+import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
-import { useSafeContext } from "@/shared/useSafeContext";
 import type { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
 
 const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {

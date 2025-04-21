@@ -1,10 +1,6 @@
 import { ChartContext } from "./ChartContext";
 import { useChart } from "./useChart";
-import type { ChartProps } from "./types";
-
-type ChartComponentProps = {
-  container: HTMLElement;
-} & Omit<ChartProps, "containerProps">;
+import type { ChartComponentProps } from "./types";
 
 const ChartComponent: React.FC<ChartComponentProps> = ({
   children,

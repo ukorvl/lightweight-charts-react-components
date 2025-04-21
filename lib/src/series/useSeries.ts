@@ -7,10 +7,10 @@ import {
   BarSeries,
 } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
+import { BaseInternalError } from "@/_shared/InternalError";
+import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { incrementPaneCount, panesCount, decrementPaneCount } from "@/pane/panesCount";
-import { BaseInternalError } from "@/shared/InternalError";
-import { useSafeContext } from "@/shared/useSafeContext";
 import type {
   CustomSeriesUniqueProps,
   SeriesApiRef,
