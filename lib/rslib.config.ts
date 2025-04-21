@@ -49,18 +49,6 @@ export default defineConfig({
       ],
     },
     {
-      format: "cjs",
-      syntax: "es5",
-      banner: {
-        js: banner,
-      },
-      output: {
-        filename: {
-          js: removeDistPrefix(packageJson.main),
-        },
-      },
-    },
-    {
       format: "umd",
       umdName: "LightweightChartsReactComponents",
       syntax: "es5",
