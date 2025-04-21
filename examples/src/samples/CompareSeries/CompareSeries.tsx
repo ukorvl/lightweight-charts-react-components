@@ -2,7 +2,7 @@ import { Chip } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
 import { AreaSeries, Chart } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectEntries } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
@@ -68,9 +68,12 @@ const CompareSeries = () => {
         })}
       </ScrollableContainer>
       <Chart
-        options={chartCommonOptions}
+        options={withChartCommonOptions({
+          crosshair: {
+            mode: CrosshairMode.Normal,
+          },
+        })}
         containerProps={{ style: { flexGrow: "1" } }}
-        crosshair={{ mode: CrosshairMode.Normal }}
       >
         <AreaSeries
           data={mainSeriesData}

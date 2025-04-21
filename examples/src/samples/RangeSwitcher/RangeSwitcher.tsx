@@ -1,7 +1,7 @@
 import { Button, ButtonGroup } from "@mui/material";
 import { AreaSeries, Chart } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
@@ -46,14 +46,15 @@ const RangeSwitcher = () => {
         ))}
       </ButtonGroup>
       <Chart
-        options={chartCommonOptions}
+        options={withChartCommonOptions({
+          localization: {
+            timeFormatter: dataRangeMap[range].formatter,
+          },
+          timeScale: {
+            tickMarkFormatter: dataRangeMap[range].formatter,
+          },
+        })}
         containerProps={{ style: { flexGrow: "1" } }}
-        localization={{
-          timeFormatter: dataRangeMap[range].formatter,
-        }}
-        timeScale={{
-          tickMarkFormatter: dataRangeMap[range].formatter,
-        }}
       >
         <AreaSeries options={seriesCustomOptions} data={data} />
       </Chart>
