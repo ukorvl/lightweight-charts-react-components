@@ -1,6 +1,6 @@
 {
   "name": "lightweight-charts-react-components",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch"
