@@ -22,16 +22,15 @@
     "url": "https://github.com/ukorvl/lightweight-charts-react-components/issues"
   },
   "type": "module",
-  "main": "./dist/lightweight-charts-react-components.cjs",
-  "module": "./dist/lightweight-charts-react-components.js",
+  "main": "./dist/lightweight-charts-react-components.mjs",
+  "module": "./dist/lightweight-charts-react-components.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/lightweight-charts-react-components.standalone.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/lightweight-charts-react-components.js",
-      "require": "./dist/lightweight-charts-react-components.cjs"
+      "import": "./dist/lightweight-charts-react-components.mjs"
     }
   },
   "files": [
