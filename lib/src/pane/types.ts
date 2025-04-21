@@ -18,5 +18,3 @@ export interface IPaneContext {
   setPaneIndex?: (paneIndex: number) => void;
   isReady: boolean;
 }
-
-export type PanesMap = Map<number, number>;
