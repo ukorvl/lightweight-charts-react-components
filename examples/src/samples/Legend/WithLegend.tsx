@@ -46,6 +46,7 @@ const WithLegend = () => {
       title="Legend"
       subTitle="Display legend on the chart"
       githubLink={samplesLinks.Legend.github}
+      codeSanboxLink={samplesLinks.Legend.codesandbox}
     >
       <FormGroup sx={{ marginBottom: 2 }}>
         <FormControlLabel

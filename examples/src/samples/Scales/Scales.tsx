@@ -64,6 +64,7 @@ const Scales = () => {
       title="Scales"
       subTitle="Customize the scales of the chart"
       githubLink={samplesLinks.Scales.github}
+      codeSanboxLink={samplesLinks.Scales.codesandbox}
     >
       <ScrollableContainer sx={{ marginBottom: 2 }}>
         <SelectFormField

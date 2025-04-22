@@ -52,6 +52,7 @@ const CompareSeries = () => {
       title="Compare series"
       subTitle="Compare different series and metrics on the same chart"
       githubLink={samplesLinks.CompareSeries.github}
+      codeSanboxLink={samplesLinks.CompareSeries.codesandbox}
     >
       <ScrollableContainer sx={{ marginBottom: 2, paddingBlock: 1 }}>
         <StyledChip label="Asset A" color={colors.blue100} selected />

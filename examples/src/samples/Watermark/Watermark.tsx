@@ -20,6 +20,7 @@ const Watermark = () => {
       title="Watermark"
       subTitle="Text and image watermarks on the chart"
       githubLink={samplesLinks.Watermark.github}
+      codeSanboxLink={samplesLinks.Watermark.codesandbox}
     >
       <Tabs
         value={visibleWatermark}
