@@ -21,6 +21,7 @@ const BasicSeries = () => {
       title="Basic series"
       subTitle="Different series types basic usage"
       githubLink={samplesLinks.BasicSeries.github}
+      codeSanboxLink={samplesLinks.BasicSeries.codesandbox}
     >
       <Tabs
         value={activeTab}

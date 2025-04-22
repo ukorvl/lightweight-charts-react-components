@@ -13,6 +13,7 @@ const CustomSeries = () => {
       title="Custom series"
       subTitle="Custom series plugin usage (grouped bars)"
       githubLink={samplesLinks.CustomSeries.github}
+      codeSanboxLink={samplesLinks.CustomSeries.codesandbox}
     >
       <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         <CustomSeriesComponent

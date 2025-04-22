@@ -240,6 +240,7 @@ const Tooltips = () => {
       title="Tooltips"
       subTitle="Different tooltips on the chart"
       githubLink={samplesLinks.Tooltips.github}
+      codeSanboxLink={samplesLinks.Tooltips.codesandbox}
     >
       <Tabs
         value={activeTab}

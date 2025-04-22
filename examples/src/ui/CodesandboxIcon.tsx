@@ -1,7 +1,8 @@
 import { SvgIcon } from "@mui/material";
+import type { SvgIconProps } from "@mui/material";
 
-const CodesandboxIcon = () => (
-  <SvgIcon>
+const CodesandboxIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props}>
     {/* Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools */}
     <svg
       xmlns="http://www.w3.org/2000/svg"

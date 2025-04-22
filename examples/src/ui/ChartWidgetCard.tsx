@@ -1,6 +1,7 @@
 import { GitHub, TableChart } from "@mui/icons-material";
 import { Card, CardContent, CardHeader, Stack, Link, Tooltip } from "@mui/material";
 import { CodesandboxIcon } from "./CodesandboxIcon";
+import { StackBlitzIcon } from "./StackBlitzIcon";
 import type { FC, ReactNode } from "react";
 
 type ChartWidgetCardProps = {
@@ -10,11 +11,18 @@ type ChartWidgetCardProps = {
 } & AcitionPanelProps;
 
 type AcitionPanelProps = {
-  codeSnippetLink?: string;
-  githubLink: string;
+  codeSanboxLink?: string;
+  stackBlitzLink?: string;
+  githubLink?: string;
+  terminalLink?: string;
 };
 
-const ActionPanel: FC<AcitionPanelProps> = ({ codeSnippetLink, githubLink }) => {
+const ActionPanel: FC<AcitionPanelProps> = ({
+  codeSanboxLink,
+  stackBlitzLink,
+  githubLink,
+  terminalLink,
+}) => {
   return (
     <Stack direction="row" spacing={1.5}>
       <Tooltip title="Open the source in GitHub" placement="bottom">
@@ -22,28 +30,33 @@ const ActionPanel: FC<AcitionPanelProps> = ({ codeSnippetLink, githubLink }) => 
           href={githubLink}
           target="_blank"
           rel="noopener noreferrer"
-          color="secondary"
+          color={githubLink ? "secondary" : "textDisabled"}
         >
           <GitHub />
         </Link>
       </Tooltip>
       <Tooltip title="Edit in CodeSandbox" placement="bottom">
         <Link
-          href={codeSnippetLink}
+          href={codeSanboxLink}
           target="_blank"
           rel="noopener noreferrer"
-          color="textDisabled"
+          color={codeSanboxLink ? "secondary" : "textDisabled"}
         >
           <CodesandboxIcon />
         </Link>
       </Tooltip>
-      <Tooltip title="Open in terminal" placement="bottom">
+      <Tooltip title="Edit in StackBlitz" placement="bottom">
         <Link
-          href={codeSnippetLink}
+          href={stackBlitzLink}
           target="_blank"
           rel="noopener noreferrer"
-          color="textDisabled"
+          color={stackBlitzLink ? "secondary" : "textDisabled"}
         >
+          <StackBlitzIcon inheritViewBox />
+        </Link>
+      </Tooltip>
+      <Tooltip title="Open in terminal" placement="bottom">
+        <Link color={terminalLink ? "secondary" : "textDisabled"} href={terminalLink}>
           <TableChart />
         </Link>
       </Tooltip>
@@ -55,7 +68,9 @@ const ChartWidgetCard: FC<ChartWidgetCardProps> = ({
   children,
   title,
   subTitle,
-  codeSnippetLink,
+  codeSanboxLink,
+  stackBlitzLink,
+  terminalLink,
   githubLink,
 }) => {
   return (
@@ -71,7 +86,14 @@ const ChartWidgetCard: FC<ChartWidgetCardProps> = ({
       <CardHeader
         title={title}
         subheader={subTitle}
-        action={<ActionPanel codeSnippetLink={codeSnippetLink} githubLink={githubLink} />}
+        action={
+          <ActionPanel
+            codeSanboxLink={codeSanboxLink}
+            stackBlitzLink={stackBlitzLink}
+            githubLink={githubLink}
+            terminalLink={terminalLink}
+          />
+        }
       />
       <CardContent
         sx={{

@@ -15,6 +15,7 @@ const MarkersSample = () => {
       title="Markers"
       subTitle="Various markers display on the chart"
       githubLink={samplesLinks.Markers.github}
+      codeSanboxLink={samplesLinks.Markers.codesandbox}
     >
       <FormGroup sx={{ marginBottom: 2 }}>
         <FormControlLabel

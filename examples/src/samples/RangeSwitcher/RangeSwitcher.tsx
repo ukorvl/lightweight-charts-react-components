@@ -28,6 +28,7 @@ const RangeSwitcher = () => {
       title="Range switcher"
       subTitle="Allows user to switch between different time ranges"
       githubLink={samplesLinks.RangeSwitcher.github}
+      codeSanboxLink={samplesLinks.RangeSwitcher.codesandbox}
     >
       <ButtonGroup
         variant="outlined"
