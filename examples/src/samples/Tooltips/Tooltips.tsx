@@ -239,8 +239,7 @@ const Tooltips = () => {
     <ChartWidgetCard
       title="Tooltips"
       subTitle="Different tooltips on the chart"
-      githubLink={samplesLinks.Tooltips.github}
-      codeSanboxLink={samplesLinks.Tooltips.codesandbox}
+      sampleConfig={samplesLinks.Tooltips}
     >
       <Tabs
         value={activeTab}

@@ -45,8 +45,7 @@ const WithLegend = () => {
     <ChartWidgetCard
       title="Legend"
       subTitle="Display legend on the chart"
-      githubLink={samplesLinks.Legend.github}
-      codeSanboxLink={samplesLinks.Legend.codesandbox}
+      sampleConfig={samplesLinks.Legend}
     >
       <FormGroup sx={{ marginBottom: 2 }}>
         <FormControlLabel

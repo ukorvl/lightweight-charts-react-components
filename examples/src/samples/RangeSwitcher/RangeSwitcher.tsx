@@ -27,8 +27,7 @@ const RangeSwitcher = () => {
     <ChartWidgetCard
       title="Range switcher"
       subTitle="Allows user to switch between different time ranges"
-      githubLink={samplesLinks.RangeSwitcher.github}
-      codeSanboxLink={samplesLinks.RangeSwitcher.codesandbox}
+      sampleConfig={samplesLinks.RangeSwitcher}
     >
       <ButtonGroup
         variant="outlined"

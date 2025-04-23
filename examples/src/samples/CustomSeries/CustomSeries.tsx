@@ -12,8 +12,7 @@ const CustomSeries = () => {
     <ChartWidgetCard
       title="Custom series"
       subTitle="Custom series plugin usage (grouped bars)"
-      githubLink={samplesLinks.CustomSeries.github}
-      codeSanboxLink={samplesLinks.CustomSeries.codesandbox}
+      sampleConfig={samplesLinks.CustomSeries}
     >
       <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         <CustomSeriesComponent

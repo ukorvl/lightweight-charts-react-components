@@ -14,8 +14,7 @@ const MarkersSample = () => {
     <ChartWidgetCard
       title="Markers"
       subTitle="Various markers display on the chart"
-      githubLink={samplesLinks.Markers.github}
-      codeSanboxLink={samplesLinks.Markers.codesandbox}
+      sampleConfig={samplesLinks.Markers}
     >
       <FormGroup sx={{ marginBottom: 2 }}>
         <FormControlLabel
