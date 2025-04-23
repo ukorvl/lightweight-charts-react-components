@@ -19,8 +19,7 @@ const Watermark = () => {
     <ChartWidgetCard
       title="Watermark"
       subTitle="Text and image watermarks on the chart"
-      githubLink={samplesLinks.Watermark.github}
-      codeSanboxLink={samplesLinks.Watermark.codesandbox}
+      sampleConfig={samplesLinks.Watermark}
     >
       <Tabs
         value={visibleWatermark}

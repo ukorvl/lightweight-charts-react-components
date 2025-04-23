@@ -1,13 +1,26 @@
-const githubSamplesLocation =
-  "https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples";
-const codesandboxBaseUrl = "https://codesandbox.io/s";
-const codesandboxBaseGithubUrl = `${codesandboxBaseUrl}/github/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples`;
+type SampleConfig = {
+  github?: string;
+  codesandbox?: string;
+  stackblitz?: string;
+  terminal?: string;
+};
+
+const repoSandboxSamplesPath =
+  "ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples";
+
+const githubSamplesLocation = `https://github.com/${repoSandboxSamplesPath}`;
+
+const codesandboxBaseUrl = import.meta.env.VITE_CODESANDBOX_BASE_URL;
+const stackblitzBaseUrl = import.meta.env.VITE_STACKBLITZ_BASE_URL;
+
+const codeSandboxUrlBase = `${codesandboxBaseUrl}/github/${repoSandboxSamplesPath}`;
+const stackBlitzUrlBase = `${stackblitzBaseUrl}/github/${repoSandboxSamplesPath}`;
 
 const samplesLinks = {
   BasicSeries: {
     github: `${githubSamplesLocation}/BasicSeries`,
-    codesandbox: `${codesandboxBaseGithubUrl}/BasicSeries/codesandbox`,
-    stackblitz: "",
+    codesandbox: `${codeSandboxUrlBase}/BasicSeries/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/BasicSeries/sandbox`,
   },
   CustomSeries: {
     github: `${githubSamplesLocation}/CustomSeries`,
@@ -56,4 +69,4 @@ const samplesLinks = {
   },
 } as const;
 
-export { samplesLinks };
+export { samplesLinks, type SampleConfig };

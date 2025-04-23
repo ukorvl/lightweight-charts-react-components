@@ -63,6 +63,7 @@ export default [
     },
   },
   {
+    ignores: ["**/sandbox/**"],
     files: [
       "lib/src/**/*.ts",
       "lib/src/**/*.tsx",

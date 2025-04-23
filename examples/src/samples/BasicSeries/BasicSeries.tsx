@@ -20,8 +20,7 @@ const BasicSeries = () => {
     <ChartWidgetCard
       title="Basic series"
       subTitle="Different series types basic usage"
-      githubLink={samplesLinks.BasicSeries.github}
-      codeSanboxLink={samplesLinks.BasicSeries.codesandbox}
+      sampleConfig={samplesLinks.BasicSeries}
     >
       <Tabs
         value={activeTab}

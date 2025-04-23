@@ -20,8 +20,7 @@ const Panes = () => {
     <ChartWidgetCard
       title="Panes"
       subTitle="Multiple panes on the same chart"
-      githubLink={samplesLinks.Panes.github}
-      codeSanboxLink={samplesLinks.Panes.codesandbox}
+      sampleConfig={samplesLinks.Panes}
     >
       <FormGroup sx={{ marginBottom: 2, flexDirection: "row", gap: 2 }}>
         <FormControlLabel

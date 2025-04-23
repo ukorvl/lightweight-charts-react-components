@@ -63,8 +63,7 @@ const Scales = () => {
     <ChartWidgetCard
       title="Scales"
       subTitle="Customize the scales of the chart"
-      githubLink={samplesLinks.Scales.github}
-      codeSanboxLink={samplesLinks.Scales.codesandbox}
+      sampleConfig={samplesLinks.Scales}
     >
       <ScrollableContainer sx={{ marginBottom: 2 }}>
         <SelectFormField
