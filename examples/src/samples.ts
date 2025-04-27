@@ -67,6 +67,11 @@ const samplesLinks = {
     codesandbox: "",
     stackblitz: "",
   },
+  InfiniteData: {
+    github: `${githubSamplesLocation}/InfiniteData`,
+    codesandbox: "",
+    stackblitz: "",
+  },
 } as const;
 
 export { samplesLinks, type SampleConfig };

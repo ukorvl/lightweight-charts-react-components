@@ -23,24 +23,38 @@ export const useTimeScale = ({
       return this._timeScale;
     },
     init() {
-      if (!this._timeScale) {
-        const chartApi = chart?.api();
+      if (this._timeScale) {
+        return this._timeScale;
+      }
 
-        if (!chartApi) {
-          return null;
-        }
+      const chartApi = chart?.api();
 
-        this._timeScale = chartApi.timeScale();
+      if (!chartApi) {
+        return null;
+      }
 
-        this._timeScale.applyOptions(options);
+      this._timeScale = chartApi.timeScale();
 
-        if (visibleRange) {
-          this._timeScale.setVisibleRange(visibleRange);
-        }
+      this._timeScale.applyOptions(options);
 
-        if (visibleLogicalRange) {
-          this._timeScale.setVisibleLogicalRange(visibleLogicalRange);
-        }
+      if (visibleRange) {
+        this._timeScale.setVisibleRange(visibleRange);
+      }
+
+      if (visibleLogicalRange) {
+        this._timeScale.setVisibleLogicalRange(visibleLogicalRange);
+      }
+
+      if (onVisibleTimeRangeChange) {
+        this._timeScale.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
+      }
+
+      if (onVisibleLogicalRangeChange) {
+        this._timeScale.subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
+      }
+
+      if (onSizeChange) {
+        this._timeScale.subscribeSizeChange(onSizeChange);
       }
 
       return this._timeScale;

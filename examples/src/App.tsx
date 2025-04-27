@@ -3,6 +3,7 @@ import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
+import { InfiniteData } from "./samples/InfiniteData/InfiniteData";
 import { WithLegend } from "./samples/Legend/WithLegend";
 import { Markers } from "./samples/Markers/Markers";
 import { Panes } from "./samples/Panes/Panes";
@@ -127,6 +128,7 @@ export const App = () => {
           <Scales />
           <Tooltips />
           <Panes />
+          <InfiniteData />
         </LayoutGrid>
       </Stack>
       <Footer

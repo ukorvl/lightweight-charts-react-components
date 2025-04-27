@@ -7,8 +7,17 @@ type GenerateHistogramDataOptions = {
   downColor?: string;
 };
 
-const generateLineData = (length: number): LineData<string>[] => {
-  const start = dayjs().subtract(length, "day");
+type GenerateLineDataOptions = {
+  lastItemTime?: string;
+};
+
+const generateLineData = (
+  length: number,
+  { lastItemTime }: GenerateLineDataOptions = {}
+): LineData<string>[] => {
+  const start = lastItemTime
+    ? dayjs(lastItemTime).subtract(length, "day")
+    : dayjs().subtract(length, "day");
   let lastValue = Math.floor(Math.random() * 100);
 
   return createStubArray(length).map((_, i) => {
