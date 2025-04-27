@@ -49,10 +49,13 @@ const deepMergePlainObjects = <
   return result as T | O;
 };
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export {
   typedObjectKeys,
   createStubArray,
   encodeInlineSvg,
   typedObjectEntries,
   deepMergePlainObjects,
+  sleep,
 };
