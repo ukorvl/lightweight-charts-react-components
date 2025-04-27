@@ -2,6 +2,7 @@ import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
 import checker from "vite-plugin-checker";
+import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
 import htmlPlugin, { type Options } from "vite-plugin-html-config";
 import { homepage, description } from "./package.json";
@@ -139,6 +140,7 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
     react(),
     viteCompression(),
     htmlPlugin(htmlConfig),
+    circleDependency(),
     ...(command === "build"
       ? [
           checker({
