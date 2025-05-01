@@ -4,22 +4,27 @@ import {
   type IChartApi,
   type MouseEventHandler,
   type Time,
+  type IPaneApi,
 } from "lightweight-charts";
 import type { JSX, ReactNode } from "react";
+
+export type ExtendedChartApi = IChartApi & {
+  addPane: (paneIndex: number) => IPaneApi<Time>;
+};
 
 export type ChartProps = {
   children?: ReactNode;
   containerProps?: JSX.IntrinsicElements["div"];
   onClick?: MouseEventHandler<Time>;
   onCrosshairMove?: MouseEventHandler<Time>;
-  onInit?: (chart: IChartApi) => void;
+  onInit?: (chart: IChartApi) => void; // TODO remove
   options?: DeepPartial<ChartNativeOptions>;
 };
 
 export type ChartApiRef = {
-  _chart: IChartApi | null;
-  api: () => IChartApi | null;
-  init: () => IChartApi | null;
+  _chart: ExtendedChartApi | null;
+  api: () => ExtendedChartApi | null;
+  init: () => ExtendedChartApi | null;
   clear: () => void;
 };
 

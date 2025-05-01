@@ -14,10 +14,6 @@ export const useTimeScale = ({
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
   const [isReady, setIsReady] = useState(false);
 
-  if (!chart) {
-    throw new Error("Chart context not found");
-  }
-
   const timeScaleApiRef = useRef<TimeScaleApiRef>({
     _timeScale: null,
     api() {
