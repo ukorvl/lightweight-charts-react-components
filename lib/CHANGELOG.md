@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Feat
 - add chart `onDblClick` prop to handle double-click event subscription
+- add `Pane` component
 
 ## [0.3.4] - 2025-05-09
 ### Fix
