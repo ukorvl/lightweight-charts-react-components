@@ -113,8 +113,13 @@ export const htmlConfig: Options = {
   links: [
     {
       rel: "icon",
+      sizes: "any",
+      href: `${env.VITE_BASE_URL}/favicon.ico`,
+    },
+    {
+      rel: "icon",
       type: "image/svg+xml",
-      href: `${env.VITE_BASE_URL}/icon.svg`,
+      href: `${env.VITE_GITHUB_STATIC_ASSETS_BASE_URL}/logo.svg`,
     },
     {
       rel: "preconnect",
