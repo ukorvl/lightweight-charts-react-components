@@ -1,4 +1,12 @@
-import { Container, Link, Stack, Typography, keyframes, styled } from "@mui/material";
+import {
+  Container,
+  Link,
+  Stack,
+  Typography,
+  keyframes,
+  styled,
+  Box,
+} from "@mui/material";
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
@@ -40,8 +48,12 @@ const GradientLink = styled(Link)(() => ({
 }));
 
 export const App = () => {
-  const { VITE_APP_DEFAULT_TITLE, VITE_LIGHTWEIGHT_CHARTS_REPO_URL, VITE_GITHUB_URL } =
-    import.meta.env;
+  const {
+    VITE_APP_DEFAULT_TITLE,
+    VITE_LIGHTWEIGHT_CHARTS_REPO_URL,
+    VITE_GITHUB_URL,
+    VITE_GITHUB_STATIC_ASSETS_BASE_URL,
+  } = import.meta.env;
   return (
     <Container
       maxWidth="xl"
@@ -69,7 +81,7 @@ export const App = () => {
       </Stack>
       <Stack
         component="main"
-        spacing={{ xs: 4, sm: 8 }}
+        spacing={{ xs: 4 }}
         useFlexGap
         sx={{
           marginTop: 4,
@@ -93,11 +105,45 @@ export const App = () => {
         >
           {VITE_APP_DEFAULT_TITLE}
         </Typography>
+        <Box
+          sx={{
+            width: { xs: 120, md: 200 },
+            height: { xs: 120, md: 200 },
+            alignSelf: "center",
+            position: "relative",
+            overflow: "visible",
+            ":before": {
+              content: '""',
+              position: "absolute",
+              top: "-50%",
+              left: "-50%",
+              width: "200%",
+              height: "200%",
+              background: `radial-gradient(
+                circle at center,
+                ${colors.violet}95,
+                ${colors.blue100}30 40%,
+                ${colors.blue100}10 60%,
+                transparent 100%)`,
+              filter: "blur(60px)",
+            },
+          }}
+        >
+          <img
+            alt=""
+            src={`${VITE_GITHUB_STATIC_ASSETS_BASE_URL}/logo.svg`}
+            loading="lazy"
+            decoding="async"
+            width="100%"
+            height="100%"
+          />
+        </Box>
         <Typography
           sx={{
             textAlign: "center",
             fontSize: "1.1rem",
             marginInline: { xs: 4, sm: 12, md: 28 },
+            marginBottom: { xs: 2, sm: 4 },
           }}
           component="h2"
         >
