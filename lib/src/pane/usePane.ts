@@ -3,7 +3,7 @@ import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { PaneApiRef, PaneProps } from "./types";
 
-export const usePane = ({ paneIndex, height }: Omit<PaneProps, "children">) => {
+export const usePane = ({ paneIndex }: Omit<PaneProps, "children">) => {
   const { chartApiRef: chart, isReady: chartIsReady } = useSafeContext(ChartContext);
   const [isReady, setIsReady] = useState(false);
 
@@ -19,16 +19,13 @@ export const usePane = ({ paneIndex, height }: Omit<PaneProps, "children">) => {
       const pane = chartApi.addPane(paneIndex);
       this._pane = pane;
 
-      if (height) {
-        pane.setHeight(height);
-      }
-
       setIsReady(true);
 
       return this._pane;
     },
     clear() {
       if (this._pane !== null) {
+        // don't remove pane completely but hide
         chart?.api()?.removePane(this._pane.paneIndex());
         setIsReady(false);
 
@@ -53,10 +50,10 @@ export const usePane = ({ paneIndex, height }: Omit<PaneProps, "children">) => {
     if (!chart || !isReady) return;
 
     const pane = paneApiRef.current.api();
-    if (height) {
-      pane?.setHeight(height);
+    if (pane) {
+      pane.moveTo(paneIndex);
     }
-  }, [height, isReady]);
+  }, [paneIndex, isReady]);
 
   return { paneApiRef, isReady };
 };
