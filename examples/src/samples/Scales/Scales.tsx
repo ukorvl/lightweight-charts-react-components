@@ -1,5 +1,11 @@
 import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
-import { AreaSeries, Chart, PriceScale } from "lightweight-charts-react-components";
+import {
+  AreaSeries,
+  Chart,
+  PriceScale,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
@@ -116,6 +122,9 @@ const Scales = () => {
             />
           </AreaSeries>
         )}
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
       </Chart>
     </ChartWidgetCard>
   );

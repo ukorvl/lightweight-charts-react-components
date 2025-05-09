@@ -7,7 +7,12 @@ import {
   Typography,
 } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
-import { CandlestickSeries, Chart } from "lightweight-charts-react-components";
+import {
+  CandlestickSeries,
+  Chart,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
@@ -79,6 +84,9 @@ const WithLegend = () => {
               wickDownColor: colors.red,
             }}
           />
+          <TimeScale>
+            <TimeScaleFitContentTrigger deps={[]} />
+          </TimeScale>
         </Chart>
         {legendData !== null && legendVisible && (
           <Legend>

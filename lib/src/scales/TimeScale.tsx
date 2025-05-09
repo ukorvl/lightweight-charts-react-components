@@ -1,16 +1,29 @@
 import { forwardRef, useImperativeHandle } from "react";
+import { TimeScaleContext } from "./TimeScaleContext";
 import { useTimeScale } from "./useTimeScale";
 import type { TimeScaleApiRef, TimeScaleProps } from "./types";
 import type { ForwardedRef } from "react";
 
 const TimeScaleRenderFunction = (
-  props: TimeScaleProps,
+  { children, ...props }: TimeScaleProps,
   ref: ForwardedRef<TimeScaleApiRef>
 ) => {
-  const timeScaleApiRef = useTimeScale(props);
-  useImperativeHandle(ref, () => timeScaleApiRef.current, [timeScaleApiRef]);
+  const {
+    timeScaleApiRef: { current: timeScaleApiRef },
+    isReady,
+  } = useTimeScale(props);
+  useImperativeHandle(ref, () => timeScaleApiRef, [timeScaleApiRef]);
 
-  return null;
+  return (
+    <TimeScaleContext.Provider
+      value={{
+        timeScaleApiRef,
+        isReady,
+      }}
+    >
+      {children}
+    </TimeScaleContext.Provider>
+  );
 };
 
 const TimeScale = forwardRef(TimeScaleRenderFunction);

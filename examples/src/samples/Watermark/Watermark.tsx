@@ -1,5 +1,10 @@
 import { Tab, Tabs } from "@mui/material";
-import { AreaSeries, Chart } from "lightweight-charts-react-components";
+import {
+  AreaSeries,
+  Chart,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
@@ -42,6 +47,9 @@ const Watermark = () => {
           }}
         />
         <WatermarkComponent />
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
       </Chart>
     </ChartWidgetCard>
   );

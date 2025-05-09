@@ -5,6 +5,8 @@ import {
   HistogramSeries,
   LineSeries,
   PriceLine,
+  TimeScale,
+  TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
@@ -55,6 +57,9 @@ const Panes = () => {
         })}
         containerProps={{ style: { flexGrow: "1" } }}
       >
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
         <CandlestickSeries
           data={ohlcData}
           options={{

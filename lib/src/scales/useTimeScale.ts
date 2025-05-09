@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { TimeScaleApiRef, TimeScaleProps } from "./types";
@@ -10,8 +10,9 @@ export const useTimeScale = ({
   visibleRange,
   visibleLogicalRange,
   options = {},
-}: TimeScaleProps) => {
+}: Omit<TimeScaleProps, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
+  const [isReady, setIsReady] = useState(false);
 
   if (!chart) {
     throw new Error("Chart context not found");
@@ -57,10 +58,13 @@ export const useTimeScale = ({
         this._timeScale.subscribeSizeChange(onSizeChange);
       }
 
+      setIsReady(true);
+
       return this._timeScale;
     },
     clear() {
       this._timeScale = null;
+      setIsReady(false);
     },
   });
 
@@ -150,5 +154,5 @@ export const useTimeScale = ({
     }
   }, [visibleLogicalRange]);
 
-  return timeScaleApiRef;
+  return { timeScaleApiRef, isReady };
 };

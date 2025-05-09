@@ -1,5 +1,11 @@
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
-import { CandlestickSeries, Chart, Markers } from "lightweight-charts-react-components";
+import {
+  CandlestickSeries,
+  Chart,
+  Markers,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
@@ -43,6 +49,9 @@ const MarkersSample = () => {
         >
           <Markers markers={getMarkersData()} />
         </CandlestickSeries>
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
       </Chart>
     </ChartWidgetCard>
   );
