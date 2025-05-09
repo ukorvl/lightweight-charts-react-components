@@ -1,13 +1,6 @@
-import {
-  Container,
-  Link,
-  Stack,
-  Typography,
-  keyframes,
-  styled,
-  Box,
-} from "@mui/material";
+import { Container, Link, Stack, Typography, styled, Box } from "@mui/material";
 import { colors } from "./colors";
+import { gradientAnimation, keyframesAnimation } from "./mainPageCSSKeyframes";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
@@ -21,18 +14,6 @@ import { Tooltips } from "./samples/Tooltips/Tooltips";
 import { Watermark } from "./samples/Watermark/Watermark";
 import { Footer } from "./ui/Footer";
 import { LayoutGrid } from "./ui/LayoutGrid";
-
-const gradientAnimation = keyframes`
-  0%   { background-position: 50% 0; }
-  12.5% { background-position: 70% 0; }
-  25%  { background-position: 75% 0; }
-  37.5% { background-position: 70% 0; }
-  50%  { background-position: 60% 0; }
-  62.5% { background-position: 55% 0; }
-  75%  { background-position: 50% 0; }
-  87.5% { background-position: 35% 0; }
-  100% { background-position: 20% 0; }
-`;
 
 const GradientLink = styled(Link)(() => ({
   fontWeight: "bold",
@@ -65,7 +46,7 @@ export const App = () => {
         sx={{
           marginTop: 4,
         }}
-        component="header"
+        component="nav"
         direction="row"
         justifyContent={{ xs: "center", sm: "flex-end" }}
         useFlexGap
@@ -112,9 +93,18 @@ export const App = () => {
             alignSelf: "center",
             position: "relative",
             overflow: "visible",
+            userSelect: "none",
+            transformOrigin: "center",
+            ":hover": {
+              animation: `${keyframesAnimation} 1.5s ease-in-out infinite`,
+              ":before": {
+                opacity: 1,
+              },
+            },
             ":before": {
               content: '""',
               position: "absolute",
+              pointerEvents: "none",
               top: "-50%",
               left: "-50%",
               width: "200%",
@@ -126,6 +116,8 @@ export const App = () => {
                 ${colors.blue100}10 60%,
                 transparent 100%)`,
               filter: "blur(60px)",
+              transition: "opacity 0.6s ease-in-out",
+              opacity: 0.75,
             },
           }}
         >
