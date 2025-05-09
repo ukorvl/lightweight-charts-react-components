@@ -1,6 +1,11 @@
 import { Chip } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
-import { AreaSeries, Chart } from "lightweight-charts-react-components";
+import {
+  AreaSeries,
+  Chart,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectEntries } from "@/common/utils";
@@ -89,6 +94,9 @@ const CompareSeries = () => {
           .map(([key, { Component, data, options }]) => {
             return <Component key={key} data={data} options={options} />;
           })}
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
       </Chart>
     </ChartWidgetCard>
   );

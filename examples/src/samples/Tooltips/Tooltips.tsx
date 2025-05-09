@@ -1,6 +1,11 @@
 import { Circle } from "@mui/icons-material";
 import { Box, Grow, Stack, Tab, Tabs, Typography } from "@mui/material";
-import { Chart, LineSeries } from "lightweight-charts-react-components";
+import {
+  Chart,
+  LineSeries,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { useMemo, useRef } from "react";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
@@ -130,6 +135,9 @@ const BasicTooltipChart = () => {
           {time}
         </Typography>
       </Tooltip>
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
     </Chart>
   );
 };
@@ -218,6 +226,9 @@ const MultipleSeriesTooltipChart = () => {
           {time}
         </Typography>
       </Tooltip>
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
     </Chart>
   );
 };

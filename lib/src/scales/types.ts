@@ -10,6 +10,7 @@ import type {
   TimeScaleOptions as TimeScaleNativeOptions,
   PriceScaleOptions as PriceScaleNativeOptions,
 } from "lightweight-charts";
+import type { DependencyList, ReactNode } from "react";
 
 export type TimeScaleOptions = DeepPartial<TimeScaleNativeOptions>;
 export type PriceScaleOptions = DeepPartial<PriceScaleNativeOptions>;
@@ -36,9 +37,19 @@ export type TimeScaleProps = {
   visibleRange?: IRange<Time>;
   visibleLogicalRange?: IRange<number>;
   options?: TimeScaleOptions;
+  children?: ReactNode;
 };
 
 export type PriceScaleProps = {
   options?: PriceScaleOptions;
   id: string;
 };
+
+export type TimeScaleFitContentTriggerProps = {
+  deps: DependencyList;
+};
+
+export interface ITimeScaleContext {
+  timeScaleApiRef: TimeScaleApiRef | null;
+  isReady: boolean;
+}

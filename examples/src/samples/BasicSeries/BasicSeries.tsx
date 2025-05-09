@@ -1,5 +1,9 @@
 import { Tab, Tabs } from "@mui/material";
-import { Chart } from "lightweight-charts-react-components";
+import {
+  Chart,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
@@ -37,6 +41,9 @@ const BasicSeries = () => {
       </Tabs>
       <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
         {Component && <Component data={seriesData} options={options} reactive={false} />}
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
       </Chart>
     </ChartWidgetCard>
   );

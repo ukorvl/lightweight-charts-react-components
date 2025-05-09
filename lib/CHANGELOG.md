@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fix
 - fix time scale options not being applied on init
+- feat: add `<TimeScaleFitContentTrigger>` component
 
 ## [0.3.3] - 2025-04-21
 ### Feat

@@ -3,6 +3,7 @@ import {
   Chart,
   LineSeries,
   TimeScale,
+  TimeScaleFitContentTrigger,
   WatermarkText,
 } from "lightweight-charts-react-components";
 import { useCallback, useMemo } from "react";
@@ -68,7 +69,9 @@ const InfiniteData = () => {
             fixRightEdge: true,
           }}
           onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}
-        />
+        >
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
         <WatermarkText
           visible={loading}
           lines={[
