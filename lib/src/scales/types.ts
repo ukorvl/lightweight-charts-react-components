@@ -12,8 +12,8 @@ import type {
 } from "lightweight-charts";
 import type { DependencyList, ReactNode } from "react";
 
-export type TimeScaleOptions = DeepPartial<TimeScaleNativeOptions>;
-export type PriceScaleOptions = DeepPartial<PriceScaleNativeOptions>;
+type TimeScaleOptions = DeepPartial<TimeScaleNativeOptions>;
+type PriceScaleOptions = DeepPartial<PriceScaleNativeOptions>;
 
 export type TimeScaleApiRef = {
   _timeScale: ITimeScaleApi<Time> | null;

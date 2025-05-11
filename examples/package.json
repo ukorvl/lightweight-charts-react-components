@@ -25,6 +25,7 @@
     "@mui/material": "^6.4.7",
     "@react-hook/resize-observer": "^2.0.2",
     "copy-to-clipboard": "^3.3.3",
+    "fancy-canvas": "^2.1.0",
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -20,7 +20,7 @@ import type {
   Time,
 } from "lightweight-charts";
 
-export interface BitmapPositionLength {
+interface BitmapPositionLength {
   /** coordinate for use with a bitmap rendering scope */
   position: number;
   /** length for use with a bitmap rendering scope */
@@ -38,7 +38,7 @@ function centreOffset(lineBitmapWidth: number): number {
  * @param desiredWidthMedia - desired width (in media coordinates)
  * @returns Position of of the start point and length dimension.
  */
-export function positionsLine(
+function positionsLine(
   positionMedia: number,
   pixelRatio: number,
   desiredWidthMedia: number = 1,
@@ -60,7 +60,7 @@ export function positionsLine(
  * @param pixelRatio - pixel ratio for the corresponding axis (vertical or horizontal)
  * @returns Position of of the start point and length dimension.
  */
-export function positionsBox(
+function positionsBox(
   position1Media: number,
   position2Media: number,
   pixelRatio: number
