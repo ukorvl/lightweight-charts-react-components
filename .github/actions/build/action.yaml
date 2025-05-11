@@ -29,9 +29,9 @@ runs:
       run: npm run format
       shell: bash
 
-    # - name: Check for unused files, dependencies, and exports
-    #   run: npm run knip -- --production
-    #   shell: bash
+    - name: Check for unused files, dependencies, and exports
+      run: npm run knip
+      shell: bash
 
     - name: Lint commits
       if: ${{ inputs.check-commits == 'true' }}

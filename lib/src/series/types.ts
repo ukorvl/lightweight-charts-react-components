@@ -12,7 +12,7 @@ export type CustomSeriesUniqueProps = {
   plugin?: ICustomSeriesPaneView;
 };
 
-export type SeriesParameters<T extends SeriesType> = {
+type SeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];
   reactive?: boolean;
   options?: SeriesOptions<T>;

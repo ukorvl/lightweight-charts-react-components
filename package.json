@@ -12,7 +12,7 @@
     "test": "npm run test --workspaces --if-present",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
-    "knip": "knip"
+    "knip": "knip --production"
   },
   "version": "0.1.0",
   "workspaces": [
@@ -69,8 +69,15 @@
     ]
   },
   "knip": {
-    "entry": [
+    "ignore": [
+      "examples/src/samples/BasicSeries/sandbox/**",
+      "lib/src/pane/**",
       "lib/rslib.config.ts"
+    ],
+    "ignoreBinaries": [
+      "lint-staged",
+      "commitlint",
+      "commit-msg"
     ]
   }
 }
