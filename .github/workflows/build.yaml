@@ -28,3 +28,9 @@ jobs:
         uses: ./.github/actions/build
         with:
           check-commits: ${{ github.event_name == 'pull_request' }}
+
+      - name: Test
+        uses: ./.github/actions/test
+        with:
+          upload-coverage: ${{ github.event_name == 'push' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

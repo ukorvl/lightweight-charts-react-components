@@ -1,0 +1,27 @@
+name: "Test"
+description: "Runs tests for the code in the repo"
+
+inputs:
+  upload-coverage:
+    description: "Upload coverage results to Coveralls"
+    required: false
+    type: "boolean"
+    default: false
+  github-token:
+    description: "GitHub token to authenticate with Coveralls"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run lib tests
+      run: |
+        cd ./lib
+        npm test
+      shell: bash
+
+    - name: Upload lib tests coverage to Coveralls
+      if: ${{ inputs.upload-coverage == 'true' }}
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ inputs.github-token }}
