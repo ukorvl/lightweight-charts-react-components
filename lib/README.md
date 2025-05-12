@@ -58,6 +58,19 @@
       <img src="https://img.shields.io/badge/contributions-welcome-ffcc00?style=flat" alt="Contributions">
     </picture>
   </a>
+
+  <a href="https://coveralls.io/github/ukorvl/lightweight-charts-react-components">
+    <picture>
+      <source
+        media="(prefers-color-scheme: dark)"
+        srcset="https://img.shields.io/coveralls/github/ukorvl/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat"
+      >
+      <img
+        src="https://img.shields.io/coveralls/github/ukorvl/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat"
+        alt="Coverage"
+      >
+    </picture>
+  </a>
 </p>
 
 ## Description
@@ -111,7 +124,7 @@ tbd
 
 ## Examples
 
-The [examples](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/examples/) app itself is a [Demo](https://ukorvl.github.io/lightweight-charts-react-components/) web application, but it contains a lot of examples of how to use the library. You can find the source code in the [samples folder](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/examples/src/samples). 
+The [examples](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/examples/) app itself is a [Demo](https://ukorvl.github.io/lightweight-charts-react-components/) web application, but it contains a lot of examples of how to use the library. You can find the source code in the [samples folder](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/examples/src/samples).
 You can run and test the code locally by cloning the repository and running the examples app.
 
 ## Contributing
@@ -119,6 +132,7 @@ You can run and test the code locally by cloning the repository and running the 
 We welcome contributions of all kinds! Whether it's fixing bugs, adding new features, improving examples, or suggesting ideas—your help is greatly appreciated.
 
 ### How to Contribute
+
 1. Fork the repository and create a new branch for your changes.
 2. Make your changes following the project guidelines.
 3. Test your changes to ensure everything works as expected.
