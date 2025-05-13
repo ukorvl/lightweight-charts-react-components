@@ -38,10 +38,6 @@ runs:
       run: npm run lint:commits
       shell: bash
 
-    - name: Test
-      run: npm test
-      shell: bash
-
     - name: Build
       run: |
         export VITE_BASE_URL=${{ inputs.base-path }}

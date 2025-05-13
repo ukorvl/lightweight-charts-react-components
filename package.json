@@ -9,7 +9,7 @@
     "format:fix": "prettier --write './**/*.{ts,tsx,json,mjs}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
     "build": "bash ./scripts/build-all.sh",
-    "test": "npm run test --workspaces --if-present",
+    "test:all": "concurrently \"npm run test:all -w lib\" \"npm run test:all -w examples\"",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
     "knip": "knip --production"
@@ -27,6 +27,7 @@
     "@commitlint/format": "^19.8.0",
     "@commitlint/types": "^19.8.0",
     "@eslint/js": "^9.21.0",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^22.15.3",
     "concurrently": "^9.1.2",
     "eslint": "^9.24.0",
@@ -36,13 +37,16 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.0.0",
+    "jsdom": "^26.1.0",
     "knip": "^5.46.5",
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.29.0",
-    "vite": "^6.2.7"
+    "vite": "^6.2.7",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.3"
   },
   "dependencies": {
     "lightweight-charts": "^5.0.5"
