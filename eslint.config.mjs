@@ -3,6 +3,7 @@ import pluginImport from "eslint-plugin-import";
 import pluginJsdoc from "eslint-plugin-jsdoc";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
+import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -117,6 +118,32 @@ export default [
       "jsdoc/empty-tags": "warn",
       "jsdoc/require-param": "warn",
       "jsdoc/require-returns": "warn",
+    },
+  },
+  {
+    files: ["lib/src/**/*.test.ts", "lib/src/**/*.test.tsx"],
+    plugins: {
+      vitest,
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals,
+      },
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      "vitest/max-nested-describe": [
+        "error",
+        {
+          max: 3,
+        },
+      ],
+      "vitest/prefer-lowercase-title": [
+        "error",
+        {
+          ignore: ["describe"],
+        },
+      ],
     },
   },
 ];
