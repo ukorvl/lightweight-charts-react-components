@@ -72,6 +72,11 @@ const samplesLinks = {
     codesandbox: "",
     stackblitz: "",
   },
+  PriceLines: {
+    github: `${githubSamplesLocation}/PriceLines`,
+    codesandbox: "",
+    stackblitz: "",
+  },
 } as const;
 
 export { samplesLinks, type SampleConfig };
