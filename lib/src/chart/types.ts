@@ -14,6 +14,7 @@ export type ChartProps = {
   onCrosshairMove?: MouseEventHandler<Time>;
   onInit?: (chart: IChartApi) => void;
   options?: DeepPartial<ChartNativeOptions>;
+  onDblClick?: MouseEventHandler<Time>;
 };
 
 export type ChartApiRef = {

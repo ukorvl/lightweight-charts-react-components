@@ -13,5 +13,6 @@ export default defineConfig({
       include: ["src/**/*.{ts,tsx}"],
       reportsDirectory: "coverage",
     },
+    setupFiles: ["@testing-library/jest-dom"],
   },
 });

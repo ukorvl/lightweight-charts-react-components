@@ -27,6 +27,7 @@
     "@commitlint/format": "^19.8.0",
     "@commitlint/types": "^19.8.0",
     "@eslint/js": "^9.21.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^22.15.3",
     "concurrently": "^9.1.2",

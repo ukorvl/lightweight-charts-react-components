@@ -8,6 +8,7 @@ export const useChart = ({
   onCrosshairMove,
   onInit,
   options = {},
+  onDblClick,
 }: UseChartOptions) => {
   const [isReady, setIsReady] = useState(false);
 
@@ -75,6 +76,20 @@ export const useChart = ({
       }
     };
   }, [onCrosshairMove]);
+
+  useLayoutEffect(() => {
+    if (!container) return;
+
+    if (onDblClick) {
+      chartApiRef.current.api()?.subscribeDblClick(onDblClick);
+    }
+
+    return () => {
+      if (onDblClick) {
+        chartApiRef.current.api()?.unsubscribeDblClick(onDblClick);
+      }
+    };
+  }, [onDblClick]);
 
   useLayoutEffect(() => {
     if (!container) return;
