@@ -2,10 +2,12 @@ import { createTextWatermark, createImageWatermark } from "lightweight-charts";
 import { useLayoutEffect, useRef } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import { usePaneContext } from "@/pane/usePaneContext";
 import type { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
 
 const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
+  const { isPaneReady, paneIndex, isInsidePane } = usePaneContext();
 
   const watermarkApiRef = useRef<WatermarkApiRef<T>>({
     _watermark: null,
@@ -15,7 +17,10 @@ const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
     init() {
       if (this._watermark === null) {
         const chartApi = chart?.api();
-        const pane = chartApi?.panes()[0];
+
+        const index = paneIndex ?? 0;
+        const pane = chartApi?.panes()[index];
+
         if (!chartApi || !pane) return null;
 
         if (isTextWatermark(props)) {
@@ -40,8 +45,12 @@ const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
   useLayoutEffect(() => {
     if (!chartIsReady) return;
 
+    if (isInsidePane && !isPaneReady) {
+      return;
+    }
+
     watermarkApiRef.current.init();
-  }, [chartIsReady]);
+  }, [chartIsReady, isPaneReady, isInsidePane]);
 
   useLayoutEffect(() => {
     return () => {

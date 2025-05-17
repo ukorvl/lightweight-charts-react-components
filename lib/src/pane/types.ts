@@ -3,18 +3,18 @@ import type { ReactNode } from "react";
 
 export type PaneProps = {
   children?: ReactNode;
+  paneIndex: number;
 };
 
 export type PaneApiRef = {
   _pane: IPaneApi<Time> | null;
   api: () => IPaneApi<Time> | null;
-  init: (i: number) => IPaneApi<Time> | null;
+  init: () => IPaneApi<Time> | null;
   clear: () => void;
 };
 
 export interface IPaneContext {
   paneApiRef?: PaneApiRef;
-  paneIndex: number | null;
-  setPaneIndex?: (paneIndex: number) => void;
+  paneIndex?: number;
   isReady: boolean;
 }
