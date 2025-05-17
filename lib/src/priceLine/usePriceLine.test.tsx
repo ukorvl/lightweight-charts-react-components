@@ -4,7 +4,6 @@ import { useSafeContext } from "@/_shared/useSafeContext";
 import { usePriceLine } from "./usePriceLine";
 
 vi.mock("@/_shared/useSafeContext");
-vi.mock("lightweight-charts");
 
 const mockCreatePriceLine = vi.fn().mockReturnValue({
   applyOptions: vi.fn(),
