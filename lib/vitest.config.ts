@@ -12,6 +12,7 @@ export default defineConfig({
       reporter: ["json", "text", "lcov"],
       include: ["src/**/*.{ts,tsx}"],
       reportsDirectory: "coverage",
+      exclude: ["**/index.{ts,tsx}"],
     },
     setupFiles: ["@testing-library/jest-dom"],
   },
