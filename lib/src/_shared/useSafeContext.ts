@@ -5,7 +5,7 @@ export const useSafeContext = <T>(context: Context<T>, errorMessage?: string) =>
   const currentContextValue = useContext(context);
 
   if (!currentContextValue) {
-    const ctxName = context.name;
+    const ctxName = context.name ?? context.displayName ?? "Context";
     throw new BaseInternalError(errorMessage ?? `${ctxName} not found.`, {
       isOperational: true,
     });
