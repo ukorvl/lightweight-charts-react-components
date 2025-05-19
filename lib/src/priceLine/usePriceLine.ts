@@ -55,5 +55,13 @@ export const usePriceLine = ({ options, price }: PriceLineProps) => {
     }
   }, [options]);
 
+  useLayoutEffect(() => {
+    if (!series) return;
+
+    if (price) {
+      priceLineApiRef.current.api()?.applyOptions({ price });
+    }
+  }, [price]);
+
   return priceLineApiRef;
 };
