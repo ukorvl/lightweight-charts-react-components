@@ -6,6 +6,7 @@ import {
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
+import { useMemo } from "react";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
@@ -23,7 +24,6 @@ import {
 } from "./scalesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { ChartOptions, DeepPartial } from "lightweight-charts";
-import { useMemo } from "react";
 
 type SelectFormFieldProps<T extends string | number> = {
   label: string;
