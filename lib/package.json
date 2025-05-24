@@ -5,7 +5,7 @@
     "build": "rslib build",
     "dev": "rslib build --watch",
     "test:unit": "vitest",
-    "test:all": "npm run test:unit -- run --coverage"
+    "test:all": "npm run test:unit -- run"
   },
   "description": "React components for Lightweight Charts",
   "keywords": [
