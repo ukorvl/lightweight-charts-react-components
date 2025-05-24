@@ -207,4 +207,26 @@ describe("useTimeScale", () => {
 
     expect(mockSubscribeSizeChange).toHaveBeenCalledWith(callback);
   });
+
+  it("does not initialize timeScale if chart is not ready", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: false,
+      chartApiRef: mockChart,
+    });
+
+    const { result } = renderHook(() => useTimeScale({}));
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeNull();
+  });
+
+  it("does not initialize timeScale if chart api is not defined", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: null,
+    });
+
+    const { result } = renderHook(() => useTimeScale({}));
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeNull();
+  });
 });
