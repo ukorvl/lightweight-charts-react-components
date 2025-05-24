@@ -9,6 +9,7 @@ import {
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
+import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
   seriesData,
   usePriceLinesControlsStore,
@@ -33,38 +34,40 @@ const PriceLines = () => {
       subTitle="Multiple price lines with titles"
       sampleConfig={samplesLinks.PriceLines}
     >
-      <FormGroup sx={{ marginBottom: 2, flexDirection: "row", gap: 2 }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={maxPriceVisible}
-              onChange={e => setMaxPriceVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Max price"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={avgPriceVisible}
-              onChange={e => setAvgPriceVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Avg price"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={minPriceVisible}
-              onChange={e => setMinPriceVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Min price"
-        />
-      </FormGroup>
+      <ScrollableContainer sx={{ marginBottom: 2 }}>
+        <FormGroup sx={{ flexDirection: "row", gap: 2 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={maxPriceVisible}
+                onChange={e => setMaxPriceVisible(e.target.checked)}
+                slotProps={{ input: { "aria-label": "controlled" } }}
+              />
+            }
+            label="Max price"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={avgPriceVisible}
+                onChange={e => setAvgPriceVisible(e.target.checked)}
+                slotProps={{ input: { "aria-label": "controlled" } }}
+              />
+            }
+            label="Avg price"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={minPriceVisible}
+                onChange={e => setMinPriceVisible(e.target.checked)}
+                slotProps={{ input: { "aria-label": "controlled" } }}
+              />
+            }
+            label="Min price"
+          />
+        </FormGroup>
+      </ScrollableContainer>
       <Chart
         options={withChartCommonOptions({
           timeScale: {
