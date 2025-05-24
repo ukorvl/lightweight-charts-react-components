@@ -3,10 +3,9 @@ import type {
   ISeriesApi,
   SeriesDataItemTypeMap,
   SeriesPartialOptionsMap,
+  SeriesType,
 } from "lightweight-charts";
 import type { ReactNode } from "react";
-
-export type SeriesType = keyof SeriesDataItemTypeMap;
 
 export type CustomSeriesUniqueProps = {
   plugin?: ICustomSeriesPaneView;
