@@ -54,6 +54,13 @@
 
   <a href="https://github.com/ukorvl/lightweight-charts-react-components">
     <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/module-ESM--only-1e2029?style=flat">
+      <img src="https://img.shields.io/badge/module-ESM--only-ffcc00?style=flat" alt="ESM Only">
+    </picture>
+  </a>
+
+  <a href="https://github.com/ukorvl/lightweight-charts-react-components">
+    <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/contributions-welcome-1e2029?style=flat">
       <img src="https://img.shields.io/badge/contributions-welcome-ffcc00?style=flat" alt="Contributions">
     </picture>
