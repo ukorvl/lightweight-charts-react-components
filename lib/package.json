@@ -5,7 +5,8 @@
     "build": "rslib build",
     "dev": "rslib build --watch",
     "test:unit": "vitest",
-    "test:all": "npm run test:unit -- run --coverage"
+    "test:all": "npm run test:unit -- run --coverage",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm"
   },
   "description": "React components for Lightweight Charts",
   "keywords": [
@@ -51,6 +52,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.1",
     "@microsoft/api-extractor": "^7.52.1",
     "@rsbuild/plugin-react": "^1.3.0",
     "@rslib/core": "^0.6.1",

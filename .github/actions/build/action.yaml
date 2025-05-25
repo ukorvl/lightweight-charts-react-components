@@ -49,3 +49,9 @@ runs:
 
         npm run build
       shell: bash
+
+    - name: Check lib exports
+      run: |
+        cd lib
+        npm run check-exports
+      shell: bash
