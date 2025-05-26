@@ -6,8 +6,9 @@ import {
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
+import { useMemo } from "react";
 import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
@@ -22,6 +23,7 @@ import {
   usePriceScalesNumberStore,
 } from "./scalesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
+import type { ChartOptions, DeepPartial } from "lightweight-charts";
 
 type SelectFormFieldProps<T extends string | number> = {
   label: string;
@@ -65,6 +67,22 @@ const Scales = () => {
   const { priceScalePosition, setPriceScalePosition } = usePriceScalePositionStore();
   const { priceScaleOptions } = usePriceScaleOptionsStore();
 
+  const chartOptions = useMemo(() => {
+    if (priceScalesNumber === 1) {
+      const opts: DeepPartial<ChartOptions> =
+        priceScalePosition === "left"
+          ? { leftPriceScale: { visible: true }, rightPriceScale: { visible: false } }
+          : { leftPriceScale: { visible: false }, rightPriceScale: { visible: true } };
+
+      return withChartCommonOptions(opts);
+    }
+
+    return withChartCommonOptions({
+      leftPriceScale: { visible: true },
+      rightPriceScale: { visible: true },
+    });
+  }, [withChartCommonOptions, priceScalePosition, priceScalesNumber]);
+
   return (
     <ChartWidgetCard
       title="Scales"
@@ -92,7 +110,7 @@ const Scales = () => {
           disabled={priceScalesNumber === 2}
         />
       </ScrollableContainer>
-      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
+      <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
         <AreaSeries
           data={mainSeriesData}
           options={{
