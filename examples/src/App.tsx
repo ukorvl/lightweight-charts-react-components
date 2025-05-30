@@ -6,6 +6,7 @@ import {
   keyframes,
   styled,
   Box,
+  Divider,
 } from "@mui/material";
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
@@ -54,6 +55,7 @@ export const App = () => {
     VITE_LIGHTWEIGHT_CHARTS_REPO_URL,
     VITE_GITHUB_URL,
     VITE_GITHUB_STATIC_ASSETS_BASE_URL,
+    VITE_NPM_PACKAGE_URL,
   } = import.meta.env;
   return (
     <Container
@@ -76,8 +78,22 @@ export const App = () => {
           Examples
         </GradientLink>
         <Typography color="textDisabled">Terminal</Typography>
-        <GradientLink underline="none" target="_blank" href={VITE_GITHUB_URL}>
+        <Divider aria-hidden="true" orientation="vertical" flexItem />
+        <GradientLink
+          underline="none"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={VITE_GITHUB_URL}
+        >
           GitHub
+        </GradientLink>
+        <GradientLink
+          rel="noopener noreferrer"
+          target="_blank"
+          href={VITE_NPM_PACKAGE_URL}
+          underline="none"
+        >
+          Npm
         </GradientLink>
       </Stack>
       <Stack
