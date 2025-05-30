@@ -1,14 +1,22 @@
-import { AreaSeries, Chart } from "lightweight-charts-react-components";
+import {
+  AreaSeries,
+  Chart,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 
 const App = () => {
   return (
     <Chart
       options={{
-        width: 800,
+        width: 600,
         height: 400,
       }}
     >
       <AreaSeries data={data} />
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
     </Chart>
   );
 };

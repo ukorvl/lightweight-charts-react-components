@@ -37,7 +37,7 @@ const RangeSwitcher = () => {
       <ButtonGroup
         variant="outlined"
         aria-label="Basic button group"
-        color="info"
+        color="secondary"
         sx={{ marginBottom: 2 }}
       >
         {typedObjectKeys(dataRangeMap).map(key => (

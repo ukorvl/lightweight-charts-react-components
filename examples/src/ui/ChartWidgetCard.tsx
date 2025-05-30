@@ -9,52 +9,81 @@ type ChartWidgetCardProps = {
   title: string;
   subTitle?: string;
   children?: ReactNode;
-} & AcitionPanelProps;
+} & ActionPanelProps;
 
-type AcitionPanelProps = {
+type ActionPanelProps = {
   sampleConfig: SampleConfig;
 };
 
-const ActionPanel: FC<AcitionPanelProps> = ({
+type ActionPanelElementProps = {
+  disabled?: boolean;
+  tooltipTitle: string;
+  tooltipDisabledTitle: string;
+  href?: string;
+  children: ReactNode;
+  isExternal?: boolean;
+  hrefTarget?: string;
+};
+
+const ActionPanelElement = ({
+  tooltipDisabledTitle,
+  tooltipTitle,
+  children,
+  href,
+  disabled = false,
+  isExternal = true,
+  hrefTarget = "_blank",
+}: ActionPanelElementProps) => (
+  <Tooltip title={disabled ? tooltipDisabledTitle : tooltipTitle} placement="bottom">
+    <Link
+      href={disabled ? undefined : href}
+      target={disabled ? undefined : hrefTarget}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      color={disabled ? "textDisabled" : "secondary"}
+    >
+      {children}
+    </Link>
+  </Tooltip>
+);
+
+const ActionPanel: FC<ActionPanelProps> = ({
   sampleConfig: { github, codesandbox, stackblitz, terminal },
 }) => {
   return (
     <Stack direction="row" spacing={1.5}>
-      <Tooltip title="Open the source in GitHub" placement="bottom">
-        <Link
-          href={github}
-          target="_blank"
-          rel="noopener noreferrer"
-          color={github ? "secondary" : "textDisabled"}
-        >
-          <GitHub />
-        </Link>
-      </Tooltip>
-      <Tooltip title="View in CodeSandbox" placement="bottom">
-        <Link
-          href={codesandbox}
-          target="_blank"
-          rel="noopener noreferrer"
-          color={codesandbox ? "secondary" : "textDisabled"}
-        >
-          <CodesandboxIcon />
-        </Link>
-      </Tooltip>
-      <Tooltip title="Edit in StackBlitz" placement="bottom">
-        <Link
-          href={stackblitz}
-          target="_blank"
-          rel="noopener noreferrer"
-          color={stackblitz ? "secondary" : "textDisabled"}
-        >
-          <StackBlitzIcon inheritViewBox />
-        </Link>
-      </Tooltip>
-      <Tooltip title="Open in terminal" placement="bottom">
-        <Link color={terminal ? "secondary" : "textDisabled"} href={terminal}>
-          <TableChart />
-        </Link>
-      </Tooltip>
+      <ActionPanelElement
+        disabled={!github}
+        tooltipTitle="Open the source in GitHub"
+        tooltipDisabledTitle="Source not available"
+        href={github}
+      >
+        <GitHub />
+      </ActionPanelElement>
+      <ActionPanelElement
+        disabled={!codesandbox}
+        tooltipTitle="View in CodeSandbox"
+        tooltipDisabledTitle="CodeSandbox not available"
+        href={codesandbox}
+      >
+        <CodesandboxIcon />
+      </ActionPanelElement>
+      <ActionPanelElement
+        disabled={!stackblitz}
+        tooltipTitle="Edit in StackBlitz"
+        tooltipDisabledTitle="StackBlitz not available"
+        href={stackblitz}
+      >
+        <StackBlitzIcon inheritViewBox />
+      </ActionPanelElement>
+      <ActionPanelElement
+        disabled={!terminal}
+        tooltipTitle="Open in terminal"
+        tooltipDisabledTitle="Terminal not available"
+        href={terminal}
+        isExternal={false}
+      >
+        <TableChart />
+      </ActionPanelElement>
     </Stack>
   );
 };

@@ -69,7 +69,7 @@ const theme = createTheme({
       main: colors.cyan,
     },
     info: {
-      main: colors.cyan,
+      main: colors.blue,
     },
     background: {
       default: colors.black,
