@@ -17,6 +17,7 @@ import { WithLegend } from "./samples/Legend/WithLegend";
 import { Markers } from "./samples/Markers/Markers";
 import { Panes } from "./samples/Panes/Panes";
 import { PriceLines } from "./samples/PriceLines/PriceLines";
+import { Primitives } from "./samples/Primitives/Primitives";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Scales } from "./samples/Scales/Scales";
 import { Tooltips } from "./samples/Tooltips/Tooltips";
@@ -193,6 +194,7 @@ export const App = () => {
           <Panes />
           <InfiniteData />
           <PriceLines />
+          <Primitives />
         </LayoutGrid>
       </Stack>
       <Footer

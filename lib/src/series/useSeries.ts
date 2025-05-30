@@ -11,13 +11,8 @@ import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { incrementPaneCount, panesCount, decrementPaneCount } from "@/pane/panesCount";
-import type {
-  CustomSeriesUniqueProps,
-  SeriesApiRef,
-  SeriesTemplateProps,
-  SeriesType,
-} from "./types";
-import type { SeriesDefinition, ISeriesApi } from "lightweight-charts";
+import type { CustomSeriesUniqueProps, SeriesApiRef, SeriesTemplateProps } from "./types";
+import type { SeriesDefinition, ISeriesApi, SeriesType } from "lightweight-charts";
 
 type SeriesTypeWithoutCustom = Exclude<SeriesType, "Custom">;
 
