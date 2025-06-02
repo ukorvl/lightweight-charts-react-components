@@ -1,9 +1,15 @@
 import { useLayoutEffect, useRef } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
+import { ChartContext } from "@/chart/ChartContext";
 import { SeriesContext } from "@/series/SeriesContext";
 import type { SeriesPrimitiveApiRef, SeriesPrimitiveProps } from "./types";
+import type { ISeriesApi, SeriesType } from "lightweight-charts";
 
-export const useSeriesPrimitive = ({ plugin }: SeriesPrimitiveProps) => {
+export const useSeriesPrimitive = <T extends SeriesType>({
+  render,
+  plugin,
+}: SeriesPrimitiveProps<T>) => {
+  const { isReady: isChartReady, chartApiRef: chart } = useSafeContext(ChartContext);
   const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(SeriesContext);
 
   const seriesPrimitiveApiRef = useRef<SeriesPrimitiveApiRef>({
@@ -14,13 +20,21 @@ export const useSeriesPrimitive = ({ plugin }: SeriesPrimitiveProps) => {
     init() {
       if (!this._primitive) {
         const seriesApi = series?.api();
+        const chartApi = chart?.api();
 
-        if (!seriesApi) {
+        if (!chartApi || !seriesApi) {
           return null;
         }
 
-        seriesApi.attachPrimitive(plugin);
-        this._primitive = plugin;
+        const primitive = plugin
+          ? plugin
+          : render({
+              chart: chartApi,
+              series: seriesApi as ISeriesApi<T>,
+            });
+
+        seriesApi.attachPrimitive(primitive);
+        this._primitive = primitive;
       }
 
       return this._primitive;
@@ -34,10 +48,10 @@ export const useSeriesPrimitive = ({ plugin }: SeriesPrimitiveProps) => {
   });
 
   useLayoutEffect(() => {
-    if (!seriesIsReady) return;
+    if (!isChartReady || !seriesIsReady) return;
 
     seriesPrimitiveApiRef.current.init();
-  }, [seriesIsReady]);
+  }, [seriesIsReady, isChartReady]);
 
   useLayoutEffect(() => {
     return () => {
