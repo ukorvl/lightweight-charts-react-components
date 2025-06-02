@@ -1,7 +1,8 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { SeriesContext } from "./SeriesContext";
 import { useSeries } from "./useSeries";
-import type { SeriesType, SeriesTemplateProps, SeriesApiRef } from "./types";
+import type { SeriesTemplateProps, SeriesApiRef } from "./types";
+import type { SeriesType } from "lightweight-charts";
 import type { ForwardedRef } from "react";
 
 type GenericSeriesComponent = (<T extends SeriesType>(
@@ -35,6 +36,5 @@ const SeriesTemplateRenderFunction = <T extends SeriesType>(
 };
 
 const SeriesTemplate = forwardRef(SeriesTemplateRenderFunction) as GenericSeriesComponent;
-
 SeriesTemplate.displayName = "SeriesTemplate";
 export { SeriesTemplate };

@@ -1,3 +1,5 @@
+import { colors } from "@/colors";
+
 const typedObjectKeys = <T extends object>(obj: T): Array<keyof T> => {
   return Object.keys(obj) as Array<keyof T>;
 };
@@ -51,6 +53,18 @@ const deepMergePlainObjects = <
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+const getContrastingTextColor = (hex: string) => {
+  const cleanHex = hex.replace(/^#/, "");
+
+  const r = parseInt(cleanHex.substring(0, 2), 16);
+  const g = parseInt(cleanHex.substring(2, 4), 16);
+  const b = parseInt(cleanHex.substring(4, 6), 16);
+
+  const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+
+  return luminance > 150 ? colors.black : colors.white;
+};
+
 export {
   typedObjectKeys,
   createStubArray,
@@ -58,4 +72,5 @@ export {
   typedObjectEntries,
   deepMergePlainObjects,
   sleep,
+  getContrastingTextColor,
 };

@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { getTooltipPosition, type TooltipOptions } from "@/common/tooltips";
 import { useSize } from "@/common/useSize";
 import type {
   LineData,
@@ -29,31 +30,6 @@ type MultipleSeriesTooltipData = {
   };
 };
 
-type Options = {
-  tooltipWidth: number;
-  tooltipHeight: number;
-  yOffset?: number;
-  xOffset?: number;
-};
-
-const getTooltipPosition = (
-  param: MouseEventParams,
-  containerWidth: number,
-  containerHeight: number,
-  o: Options
-) => {
-  const { tooltipHeight, tooltipWidth, yOffset = 10, xOffset = 10 } = o;
-  const x = param.point!.x + xOffset;
-  const y = param.point!.y + yOffset;
-  const xOverflow = x > containerWidth - tooltipWidth;
-  const yOverflow = y > containerHeight - tooltipHeight;
-
-  return {
-    x: xOverflow ? x - tooltipWidth - xOffset * 2 : x,
-    y: yOverflow ? y - tooltipHeight - yOffset * 2 : y,
-  };
-};
-
 const getShowTooltip = (param: MouseEventParams) => {
   return (
     param.time !== undefined &&
@@ -65,7 +41,7 @@ const getShowTooltip = (param: MouseEventParams) => {
 
 const useBasicTooltip = (
   containerRef: RefObject<HTMLElement | null>,
-  options: Options
+  options: TooltipOptions
 ) => {
   const seriesRef = useRef<SeriesApiRef<"Line">>(null);
   const size = useSize(containerRef);
@@ -119,6 +95,7 @@ const useBasicTooltip = (
                 param,
                 containerWidth,
                 containerHeight,
+                "anchor",
                 options
               ),
             }
@@ -138,7 +115,7 @@ const useBasicTooltip = (
 const useMultipleSeriesTooltip = (
   containerRef: RefObject<HTMLElement | null>,
   seriesRefs: Array<RefObject<SeriesApiRef<"Line"> | null>>,
-  options: Options
+  options: TooltipOptions
 ) => {
   const size = useSize(containerRef);
   const containerWidth = size?.width;
@@ -197,6 +174,7 @@ const useMultipleSeriesTooltip = (
                 param,
                 containerWidth,
                 containerHeight,
+                "anchor",
                 options
               ),
             }
