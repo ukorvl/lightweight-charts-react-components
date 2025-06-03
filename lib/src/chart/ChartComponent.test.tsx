@@ -61,15 +61,23 @@ describe("Chart component", () => {
   it("calls useChart with correct parameters", () => {
     const mockUseChart = vi.mocked(useChartModule.useChart);
     render(
-      <ChartComponent container={mockContainer} options={{}} onInit={vi.fn()}>
+      <ChartComponent
+        container={mockContainer}
+        options={{
+          width: 800,
+          height: 600,
+        }}
+      >
         <div>Child Content</div>
       </ChartComponent>
     );
 
     expect(mockUseChart).toHaveBeenCalledWith({
       container: mockContainer,
-      options: {},
-      onInit: expect.any(Function),
+      options: {
+        width: 800,
+        height: 600,
+      },
     });
   });
 });
