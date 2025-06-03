@@ -76,7 +76,7 @@
   },
   "knip": {
     "ignore": [
-      "examples/src/samples/BasicSeries/sandbox/**",
+      "examples/src/samples/**/sandbox/**",
       "lib/src/pane/**",
       "lib/rslib.config.ts"
     ],
