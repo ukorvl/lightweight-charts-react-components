@@ -10,7 +10,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
-import { usePaneContext} from "@/pane/usePaneContext";
+import { usePaneContext } from "@/pane/usePaneContext";
 import type { CustomSeriesUniqueProps, SeriesApiRef, SeriesTemplateProps } from "./types";
 import type { SeriesDefinition, ISeriesApi, SeriesType } from "lightweight-charts";
 
