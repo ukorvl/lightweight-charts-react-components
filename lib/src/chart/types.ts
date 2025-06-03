@@ -12,7 +12,6 @@ export type ChartProps = {
   containerProps?: JSX.IntrinsicElements["div"];
   onClick?: MouseEventHandler<Time>;
   onCrosshairMove?: MouseEventHandler<Time>;
-  onInit?: (chart: IChartApi) => void;
   options?: DeepPartial<ChartNativeOptions>;
   onDblClick?: MouseEventHandler<Time>;
 };

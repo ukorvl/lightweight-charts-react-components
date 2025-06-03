@@ -6,7 +6,6 @@ export const useChart = ({
   container,
   onClick,
   onCrosshairMove,
-  onInit,
   options = {},
   onDblClick,
 }: UseChartOptions) => {
@@ -20,10 +19,6 @@ export const useChart = ({
     init() {
       if (this._chart === null) {
         this._chart = createChart(container, options);
-
-        if (onInit) {
-          onInit(this._chart);
-        }
       }
 
       if (!isReady) {
