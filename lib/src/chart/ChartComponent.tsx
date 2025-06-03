@@ -8,13 +8,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   container,
   onClick,
   onCrosshairMove,
-  onInit,
   options,
 }) => {
   const {
     chartApiRef: { current: chartApiRef },
     isReady,
-  } = useChart({ container, onClick, onCrosshairMove, onInit, options });
+  } = useChart({ container, onClick, onCrosshairMove, options });
 
   return (
     <ChartContext.Provider
