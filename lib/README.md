@@ -138,7 +138,7 @@ We welcome contributions of all kinds! Whether it's fixing bugs, adding new feat
 3. Test your changes to ensure everything works as expected.
 4. Submit a pull request.
 
-For detailed contribution guidelines, please check out our [CONTRIBUTING.md](../CONTRIBUTING.md)
+For detailed contribution guidelines, please check out our [CONTRIBUTING.md](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/CONTRIBUTING.md)
 Thank you for helping improve this project!
 
 ## License
