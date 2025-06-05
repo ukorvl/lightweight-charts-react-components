@@ -15,7 +15,7 @@ type GenericSeriesPrimitiveComponent = (<T extends SeriesType>(
 const SeriesPrimitiveRenderFunction = <T extends SeriesType>(
   props: SeriesPrimitiveProps<T>,
   ref: ForwardedRef<SeriesPrimitiveApiRef>
-) => {
+): null => {
   const seriesPrimitiveApiRef = useSeriesPrimitive(props);
   useImperativeHandle(ref, () => seriesPrimitiveApiRef.current, [seriesPrimitiveApiRef]);
 

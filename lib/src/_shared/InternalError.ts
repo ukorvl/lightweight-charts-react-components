@@ -1,4 +1,4 @@
-import { version } from "../../package.json";
+import { version } from "../version";
 
 const docsBaseUrl = "https://tradingview.github.io/lightweight-charts/docs";
 
@@ -10,7 +10,7 @@ type IBaseErrorParameters = {
 
 class BaseInternalError extends Error {
   public isOperational: boolean;
-  public cause?: Error | BaseInternalError;
+  public override cause?: Error | BaseInternalError;
 
   constructor(
     message?: string,

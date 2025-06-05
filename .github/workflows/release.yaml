@@ -52,6 +52,13 @@ jobs:
       - name: Check Changelog
         uses: ./.github/actions/check-changelog
 
+      - name: Check versions in sync
+        uses: ./.github/actions/check-versions-in-sync
+        with:
+          PACKAGE_JSON: lib/package.json
+          JSR_JSON: lib/jsr.json
+          VERSION_FILE: lib/src/version.ts
+
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:

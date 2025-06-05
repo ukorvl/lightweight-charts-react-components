@@ -1,7 +1,11 @@
 import { forwardRef, useCallback, useState } from "react";
 import { ChartComponent } from "./ChartComponent";
 import type { ChartProps } from "./types";
-import type { ForwardRefRenderFunction } from "react";
+import type {
+  ForwardRefExoticComponent,
+  ForwardRefRenderFunction,
+  RefAttributes,
+} from "react";
 
 const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> = (
   { children, containerProps, ...rest },
@@ -34,6 +38,8 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
   );
 };
 
-const ChartWrapper = forwardRef(ChartRenderFunction);
+const ChartWrapper: ForwardRefExoticComponent<
+  ChartProps & RefAttributes<HTMLDivElement>
+> = forwardRef(ChartRenderFunction);
 ChartWrapper.displayName = "ChartWrapper";
 export { ChartWrapper };

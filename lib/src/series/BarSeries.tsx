@@ -1,12 +1,12 @@
 import { forwardRef } from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesProps } from "./types";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
 
 const BarSeriesRenderFunction = (
   { children, ...rest }: SeriesProps<"Bar">,
   ref: ForwardedRef<SeriesApiRef<"Bar">>
-) => {
+): JSX.Element => {
   return (
     <SeriesTemplate type="Bar" ref={ref} {...rest}>
       {children}
@@ -14,6 +14,8 @@ const BarSeriesRenderFunction = (
   );
 };
 
-const BarSeries = forwardRef(BarSeriesRenderFunction);
+const BarSeries: ForwardRefExoticComponent<
+  SeriesProps<"Bar"> & RefAttributes<SeriesApiRef<"Bar">>
+> = forwardRef(BarSeriesRenderFunction);
 BarSeries.displayName = "BarSeries";
 export { BarSeries };
