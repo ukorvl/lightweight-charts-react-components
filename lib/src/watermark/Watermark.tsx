@@ -7,7 +7,7 @@ import type {
   WatermarkProps,
   WatermarkType,
 } from "./types";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, ForwardRefExoticComponent, RefAttributes } from "react";
 
 const WatermarkRenderFunction = <T extends WatermarkType>(
   props: WatermarkProps<T>,
@@ -19,17 +19,17 @@ const WatermarkRenderFunction = <T extends WatermarkType>(
   return null;
 };
 
-const WatermarkText = forwardRef<WatermarkApiRef<"text">, TextWatermarkProps>(
-  (props, ref) => {
-    return WatermarkRenderFunction({ ...props, type: "text" }, ref);
-  }
-);
+const WatermarkText: ForwardRefExoticComponent<
+  TextWatermarkProps & RefAttributes<WatermarkApiRef<"text">>
+> = forwardRef<WatermarkApiRef<"text">, TextWatermarkProps>((props, ref) => {
+  return WatermarkRenderFunction({ ...props, type: "text" }, ref);
+});
 
-const WatermarkImage = forwardRef<WatermarkApiRef<"image">, ImageWatermarkProps>(
-  (props, ref) => {
-    return WatermarkRenderFunction({ ...props, type: "image" }, ref);
-  }
-);
+const WatermarkImage: ForwardRefExoticComponent<
+  ImageWatermarkProps & RefAttributes<WatermarkApiRef<"image">>
+> = forwardRef<WatermarkApiRef<"image">, ImageWatermarkProps>((props, ref) => {
+  return WatermarkRenderFunction({ ...props, type: "image" }, ref);
+});
 
 WatermarkText.displayName = "WatermarkText";
 WatermarkImage.displayName = "WatermarkImage";
