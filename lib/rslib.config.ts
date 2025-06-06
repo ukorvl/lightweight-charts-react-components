@@ -61,6 +61,8 @@ export default defineConfig({
         },
         externals: {
           react: "React",
+          "react-dom": "ReactDOM",
+          "lightweight-charts": "LightweightCharts",
         },
       },
     },

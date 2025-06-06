@@ -8,7 +8,6 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}"],
     globals: true,
     coverage: {
-      enabled: process.env.COVERAGE !== "false",
       provider: "v8",
       reporter: ["json", "text", "lcov"],
       include: ["src/**/*.{ts,tsx}"],

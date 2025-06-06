@@ -101,7 +101,9 @@ You can install the library via npm, pnpm or yarn:
 npm install lightweight-charts-react-components lightweight-charts
 ```
 
-Standalone version of the library is also available and includes all the necessary dependencies except react:
+Standalone version of the library is also available for use in the browser without a build step. You can include it in your HTML file using a script tag. Note that library expects global `React`, `ReactDOM` and `LightweightCharts` variables to be available in the global scope.
+
+```bash
 
 ```html
 <head>
@@ -111,6 +113,10 @@ Standalone version of the library is also available and includes all the necessa
   ></script>
   <script
     src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    crossorigin
+  ></script>
+  <script
+    src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"
     crossorigin
   ></script>
   <script
