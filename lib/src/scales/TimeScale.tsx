@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle } from "react";
+import React from "react";
 import { TimeScaleContext } from "./TimeScaleContext";
 import { useTimeScale } from "./useTimeScale";
 import type { TimeScaleApiRef, TimeScaleProps } from "./types";

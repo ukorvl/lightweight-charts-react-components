@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
+import React from "react";
 import { PaneContext } from "./PaneContext";
 import { usePane } from "./usePane";
 import type { PaneProps, PaneApiRef } from "./types";

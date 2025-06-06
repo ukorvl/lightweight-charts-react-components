@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { createRef } from "react";
+import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Markers } from "./Markers";
 import { useMarkers } from "./useMarkers";
