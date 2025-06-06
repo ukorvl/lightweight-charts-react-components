@@ -5,10 +5,9 @@
 set -e pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-REPO_ROOT="$SCRIPT_DIR/.."
-LIB_PACKAGE_JSON="$REPO_ROOT/lib/package.json"
-ROOT_PACKAGE_JSON="$REPO_ROOT/package.json"
-EXAMPLES_PATH="examples"
+source "$SCRIPT_DIR/common.sh"
+
+check_command jq
 
 export VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION=$(jq -r .version $LIB_PACKAGE_JSON | sed 's/[^0-9.]//g')
 echo "lighweight-charts-components-version: $VITE_LIGHTWEIGHT_CHARTS_REACT_COMPONENTS_VERSION"
