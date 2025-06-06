@@ -64,12 +64,14 @@ export default [
     },
   },
   {
-    ignores: ["**/sandbox/**"],
+    ignores: ["**/sandbox/**", "**/*.config.ts"],
     files: [
       "lib/src/**/*.ts",
       "lib/src/**/*.tsx",
       "examples/src/**/*.ts",
       "examples/src/**/*.tsx",
+      "lib/tests/**/*.ts",
+      "lib/tests/**/*.tsx",
     ],
     rules: {
       "import/no-default-export": "error",
@@ -121,7 +123,12 @@ export default [
     },
   },
   {
-    files: ["lib/src/**/*.test.ts", "lib/src/**/*.test.tsx"],
+    files: [
+      "lib/src/**/*.test.ts",
+      "lib/src/**/*.test.tsx",
+      "lib/tests/**/*.test.ts",
+      "lib/tests/**/*.test.tsx",
+    ],
     plugins: {
       vitest,
     },
