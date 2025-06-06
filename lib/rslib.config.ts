@@ -74,5 +74,11 @@ export default defineConfig({
     cleanDistPath: true,
     sourceMap: true,
   },
-  plugins: [pluginReact()],
+  plugins: [
+    pluginReact({
+      swcReactOptions: {
+        runtime: "classic",
+      },
+    }),
+  ],
 });

@@ -1,12 +1,12 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { useMarkers } from "./useMarkers";
 import type { MarkersApiRef, MarkersProps } from "./types";
-import type { ForwardedRef, ForwardRefExoticComponent, RefAttributes } from "react";
+import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
 
 const MarkersRenderFunction = (
   { ...rest }: MarkersProps,
   ref: ForwardedRef<MarkersApiRef>
-): null => {
+): JSX.Element | null => {
   const markersApiRef = useMarkers(rest);
   useImperativeHandle(ref, () => markersApiRef.current, [markersApiRef]);
 

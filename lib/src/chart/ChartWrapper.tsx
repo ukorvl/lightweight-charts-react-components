@@ -1,4 +1,5 @@
 import { forwardRef, useCallback, useState } from "react";
+import React from "react";
 import { ChartComponent } from "./ChartComponent";
 import type { ChartProps } from "./types";
 import type {
