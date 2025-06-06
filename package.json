@@ -12,7 +12,8 @@
     "test:all": "concurrently \"npm run test:all -w lib\" \"npm run test:all -w examples\"",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
-    "knip": "knip --production"
+    "knip": "knip --production",
+    "version": "bash ./scripts/version.sh"
   },
   "version": "0.1.0",
   "workspaces": [

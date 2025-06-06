@@ -5,7 +5,6 @@
     "allowJs": true,
     "checkJs": false,
     "jsx": "preserve",
-    "jsxImportSource": "react",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
