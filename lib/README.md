@@ -71,6 +71,13 @@
       >
     </picture>
   </a>
+
+  <a href="https://jsr.io/@ukorvl/lightweight-charts-react-components">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/jsr/v/%40ukorvl/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat">
+      <img src="https://img.shields.io/jsr/v/%40ukorvl/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat" alt="Jsr version">
+    </picture>
+  </a>
 </p>
 
 ## Description
