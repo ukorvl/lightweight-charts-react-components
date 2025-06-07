@@ -1,12 +1,4 @@
-import {
-  Container,
-  Link,
-  Stack,
-  Typography,
-  styled,
-  Box,
-  Divider,
-} from "@mui/material";
+import { Container, Link, Stack, Typography, styled, Box, Divider } from "@mui/material";
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CompareSeries } from "./samples/CompareSeries/CompareSeries";

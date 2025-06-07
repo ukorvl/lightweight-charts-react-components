@@ -10,7 +10,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
-import { usePaneContext} from "@/pane/usePaneContext";
+import { usePaneContext } from "@/pane/usePaneContext";
 import type { CustomSeriesUniqueProps, SeriesApiRef, SeriesTemplateProps } from "./types";
 import type { SeriesDefinition, ISeriesApi, SeriesType } from "lightweight-charts";
 
@@ -24,7 +24,7 @@ export const useSeries = <T extends SeriesType>({
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isPaneReady, paneIndex, isInsidePane } = usePaneContext();
+  const { isPaneReady, paneIndex, isInsidePane, height, paneApiRef } = usePaneContext();
   const [isReady, setIsReady] = useState(false);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
@@ -60,8 +60,13 @@ export const useSeries = <T extends SeriesType>({
           );
         }
 
-        setIsReady(true);
         this._series?.setData(data);
+
+        if (isInsidePane && height) {
+          paneApiRef?.api()?.setHeight(height);
+        }
+
+        setIsReady(true);
       }
 
       return this._series;
