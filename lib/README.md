@@ -103,8 +103,6 @@ npm install lightweight-charts-react-components lightweight-charts
 
 Standalone version of the library is also available for use in the browser without a build step. You can include it in your HTML file using a script tag. Note that library expects global `React`, `ReactDOM` and `LightweightCharts` variables to be available in the global scope.
 
-```bash
-
 ```html
 <head>
   <script
