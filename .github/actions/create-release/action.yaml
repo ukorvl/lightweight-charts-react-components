@@ -12,6 +12,29 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Check that was not published on npm
+      working-directory: lib
+      run: |
+        VERSION=$(echo "${{ inputs.tag }}" | sed 's/^v//')
+        PACKAGE_NAME=$(jq -r .name package.json)
+        if ! npm view "$PACKAGE_NAME@$VERSION" > /dev/null 2>&1; then
+          echo "✅ Version $VERSION is not published on npm."
+        else
+          echo "❌ ERROR: Version $VERSION already exists on npm! Please use a different version."
+          exit 1
+        fi
+      shell: bash
+
+    - name: Check npm publishing (dry run)
+      working-directory: lib
+      run: npm publish --dry-run
+      shell: bash
+
+    - name: Check JSR publishing (dry run)
+      working-directory: lib
+      run: npx jsr publish --dry-run
+      shell: bash
+
     - name: Create a new release
       uses: softprops/action-gh-release@v2
       with:
