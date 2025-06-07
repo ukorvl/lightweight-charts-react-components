@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 export type PaneProps = {
   children?: ReactNode;
   paneIndex: number;
+  height?: number;
 };
 
 export type PaneApiRef = {
@@ -17,4 +18,5 @@ export interface IPaneContext {
   paneApiRef?: PaneApiRef;
   paneIndex?: number;
   isReady: boolean;
+  height?: number;
 }

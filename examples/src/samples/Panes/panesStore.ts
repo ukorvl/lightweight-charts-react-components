@@ -57,9 +57,9 @@ const calculateRSI = (
   return rsiData;
 };
 
-const ohlcData = generateOHLCData(120);
+const ohlcData = generateOHLCData(100);
 const rsiData = calculateRSI(ohlcData, 14);
-const volumeData = generateHistogramData(120).map((data, i) => {
+const volumeData = generateHistogramData(100).map((data, i) => {
   const ohlc = ohlcData[i];
   return {
     time: ohlc.time,
