@@ -1,4 +1,3 @@
-import { createChart } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
 import { createChartWrapper } from "./createChartWrapper";
 import type { ChartApiRef, UseChartOptions } from "./types";
@@ -20,8 +19,8 @@ export const useChart = ({
     },
     init() {
       if (this._chart === null) {
-        const chart = createChart(container, options);
-        this._chart = createChartWrapper(chart);
+        const chart = createChartWrapper(container, options);
+        this._chart = chart;
 
         if (onInit) {
           onInit(this._chart);

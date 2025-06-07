@@ -3,16 +3,16 @@ import React from "react";
 import { PaneContext } from "./PaneContext";
 import { usePane } from "./usePane";
 import type { PaneProps, PaneApiRef } from "./types";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, ForwardRefExoticComponent, RefAttributes } from "react";
 
 const PaneRenderFunction = (
-  { children, paneIndex }: PaneProps,
+  { children, paneIndex, height }: PaneProps,
   ref: ForwardedRef<PaneApiRef>
 ) => {
   const {
     paneApiRef: { current: paneApiRef },
     isReady,
-  } = usePane({ paneIndex });
+  } = usePane({ paneIndex, height });
   useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
 
   return (
@@ -21,6 +21,7 @@ const PaneRenderFunction = (
         paneApiRef,
         isReady,
         paneIndex,
+        height,
       }}
     >
       {children}
@@ -28,6 +29,7 @@ const PaneRenderFunction = (
   );
 };
 
-const Pane = forwardRef(PaneRenderFunction);
+const Pane: ForwardRefExoticComponent<PaneProps & RefAttributes<PaneApiRef>> =
+  forwardRef(PaneRenderFunction);
 Pane.displayName = "Pane";
 export { Pane };

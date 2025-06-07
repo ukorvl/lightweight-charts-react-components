@@ -85,18 +85,21 @@ const Panes = () => {
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
-        <CandlestickSeries
-          data={ohlcData}
-          options={{
-            upColor: "transparent",
-            downColor: colors.orange100,
-            borderUpColor: colors.blue,
-            borderDownColor: colors.orange100,
-            wickUpColor: colors.blue,
-            wickDownColor: colors.orange100,
-          }}
-        />
-        <Watermark text="0" />
+        <Pane paneIndex={0} height={100}>
+          <CandlestickSeries
+            data={ohlcData}
+            options={{
+              upColor: "transparent",
+              downColor: colors.orange100,
+              borderUpColor: colors.blue,
+              borderDownColor: colors.orange100,
+              wickUpColor: colors.blue,
+              wickDownColor: colors.orange100,
+              priceLineVisible: false,
+            }}
+          />
+          <Watermark text="0" />
+        </Pane>
         {rsiVisible && (
           <Pane paneIndex={1}>
             <LineSeries
