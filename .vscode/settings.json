@@ -10,8 +10,5 @@
   },
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
-  "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit"
-  }
+  "editor.formatOnType": true
 }
