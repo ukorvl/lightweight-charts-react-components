@@ -54,6 +54,13 @@
 
   <a href="https://github.com/ukorvl/lightweight-charts-react-components">
     <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/module-ESM--only-1e2029?style=flat">
+      <img src="https://img.shields.io/badge/module-ESM--only-ffcc00?style=flat" alt="ESM Only">
+    </picture>
+  </a>
+
+  <a href="https://github.com/ukorvl/lightweight-charts-react-components">
+    <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/contributions-welcome-1e2029?style=flat">
       <img src="https://img.shields.io/badge/contributions-welcome-ffcc00?style=flat" alt="Contributions">
     </picture>
@@ -91,6 +98,7 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
 - [Usage](#usage)
 - [Examples](#examples)
 - [Contributing](#contributing)
+- [Related Projects](#related-projects)
 - [License](#license)
 
 ## Installation
@@ -151,6 +159,11 @@ We welcome contributions of all kinds! Whether it's fixing bugs, adding new feat
 
 For detailed contribution guidelines, please check out our [CONTRIBUTING.md](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/CONTRIBUTING.md)
 Thank you for helping improve this project!
+
+## Related Projects
+
+- [lightweight-charts](https://github.com/tradingview/lightweight-charts) - The original Lightweight Charts library by TradingView.
+- [lightweight-charts-vue](https://github.com/ukorvl/lightweight-charts-vue) - Vue.js wrapper for Lightweight Charts.
 
 ## License
 

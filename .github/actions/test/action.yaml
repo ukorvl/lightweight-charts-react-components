@@ -23,3 +23,4 @@ runs:
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ inputs.github-token }}
+        base-path: "lib"

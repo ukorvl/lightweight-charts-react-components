@@ -20,7 +20,12 @@
     "market",
     "finance"
   ],
-  "repository": "https://github.com/ukorvl/lightweight-charts-react-components",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ukorvl/lightweight-charts-react-components",
+    "directory": "lib"
+  },
+  "sideEffects": false,
   "homepage": "https://github.com/ukorvl/lightweight-charts-react-components#readme",
   "bugs": {
     "url": "https://github.com/ukorvl/lightweight-charts-react-components/issues"
