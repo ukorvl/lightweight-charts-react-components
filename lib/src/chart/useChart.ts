@@ -1,15 +1,14 @@
-import { createChart } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
-import type { ChartApiRef, UseChartOptions } from "./types";
+import type { ChartApiRef, ChartOwnProps, UseChartOptions } from "./types";
 
-export const useChart = ({
+export const useChart = <T extends ChartOwnProps>({
   container,
   onClick,
   onCrosshairMove,
-  onInit,
   options = {},
   onDblClick,
-}: UseChartOptions) => {
+  createChartHandler,
+}: UseChartOptions<T>) => {
   const [isReady, setIsReady] = useState(false);
 
   const chartApiRef = useRef<ChartApiRef>({
@@ -19,11 +18,7 @@ export const useChart = ({
     },
     init() {
       if (this._chart === null) {
-        this._chart = createChart(container, options);
-
-        if (onInit) {
-          onInit(this._chart);
-        }
+        this._chart = createChartHandler(container, options);
       }
 
       if (!isReady) {
