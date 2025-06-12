@@ -98,6 +98,7 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
 - [Usage](#usage)
 - [Examples](#examples)
 - [Contributing](#contributing)
+- [Related Projects](#related-projects)
 - [License](#license)
 
 ## Installation
@@ -158,6 +159,11 @@ We welcome contributions of all kinds! Whether it's fixing bugs, adding new feat
 
 For detailed contribution guidelines, please check out our [CONTRIBUTING.md](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/CONTRIBUTING.md)
 Thank you for helping improve this project!
+
+## Related Projects
+
+- [lightweight-charts](https://github.com/tradingview/lightweight-charts) - The original Lightweight Charts library by TradingView.
+- [lightweight-charts-vue](https://github.com/ukorvl/lightweight-charts-vue) - Vue.js wrapper for Lightweight Charts.
 
 ## License
 
