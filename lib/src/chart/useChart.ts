@@ -1,14 +1,15 @@
-import { createChart } from "lightweight-charts";
+/* eslint-disable */
 import { useLayoutEffect, useRef, useState } from "react";
-import type { ChartApiRef, UseChartOptions } from "./types";
+import type { ChartApiRef, ChartOwnProps, UseChartOptions } from "./types";
 
-export const useChart = ({
+export const useChart = <T extends ChartOwnProps>({
   container,
   onClick,
   onCrosshairMove,
   options = {},
   onDblClick,
-}: UseChartOptions) => {
+  createChartHandler,
+}: UseChartOptions<T>) => {
   const [isReady, setIsReady] = useState(false);
 
   const chartApiRef = useRef<ChartApiRef>({
@@ -18,7 +19,7 @@ export const useChart = ({
     },
     init() {
       if (this._chart === null) {
-        this._chart = createChart(container, options);
+        this._chart = createChartHandler(container, options);
       }
 
       if (!isReady) {
@@ -48,12 +49,12 @@ export const useChart = ({
     if (!container) return;
 
     if (onClick) {
-      chartApiRef.current.api()?.subscribeClick(onClick);
+      chartApiRef.current.api()?.subscribeClick(onClick as any);
     }
 
     return () => {
       if (onClick) {
-        chartApiRef.current.api()?.unsubscribeClick(onClick);
+        chartApiRef.current.api()?.unsubscribeClick(onClick as any);
       }
     };
   }, [onClick]);
@@ -62,12 +63,12 @@ export const useChart = ({
     if (!container) return;
 
     if (onCrosshairMove) {
-      chartApiRef.current.api()?.subscribeCrosshairMove(onCrosshairMove);
+      chartApiRef.current.api()?.subscribeCrosshairMove(onCrosshairMove as any);
     }
 
     return () => {
       if (onCrosshairMove) {
-        chartApiRef.current.api()?.unsubscribeCrosshairMove(onCrosshairMove);
+        chartApiRef.current.api()?.unsubscribeCrosshairMove(onCrosshairMove as any);
       }
     };
   }, [onCrosshairMove]);
@@ -76,12 +77,12 @@ export const useChart = ({
     if (!container) return;
 
     if (onDblClick) {
-      chartApiRef.current.api()?.subscribeDblClick(onDblClick);
+      chartApiRef.current.api()?.subscribeDblClick(onDblClick as any);
     }
 
     return () => {
       if (onDblClick) {
-        chartApiRef.current.api()?.unsubscribeDblClick(onDblClick);
+        chartApiRef.current.api()?.unsubscribeDblClick(onDblClick as any);
       }
     };
   }, [onDblClick]);
