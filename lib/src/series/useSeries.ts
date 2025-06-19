@@ -22,6 +22,7 @@ export const useSeries = <T extends SeriesType>({
   options = {},
   reactive = true,
   isPane,
+  crosshairPosition: cp,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
@@ -60,8 +61,13 @@ export const useSeries = <T extends SeriesType>({
           );
         }
 
-        setIsReady(true);
+        if (cp) {
+          queueMicrotask(() => {
+            chartApi.setCrosshairPosition(cp.price, cp.horizontalPosition, this._series!);
+          });
+        }
         this._series?.setData(data);
+        setIsReady(true);
         isPane && incrementPaneCount();
       }
 
@@ -116,6 +122,19 @@ export const useSeries = <T extends SeriesType>({
       seriesApiRef.current.api()?.moveToPane(0);
     }
   }, [isPane]);
+
+  useLayoutEffect(() => {
+    //console.log("Crosshair position updated", chart, cp);
+    if (!chart) return;
+
+    if (!cp) return;
+
+    const series = seriesApiRef.current.api();
+    //console.log("Setting crosshair position", series);
+    if (!series) return;
+
+    chart?.api()?.setCrosshairPosition(cp.price, cp.horizontalPosition, series);
+  }, [cp, chartIsReady]);
 
   return { isReady, seriesApiRef };
 };

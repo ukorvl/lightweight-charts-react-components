@@ -82,6 +82,11 @@ const samplesLinks = {
     codesandbox: "",
     stackblitz: "",
   },
+  SyncingCharts: {
+    github: `${githubSamplesLocation}/SyncingCharts`,
+    codesandbox: `${codeSandboxUrlBase}/SyncingCharts/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/SyncingCharts/sandbox`,
+  },
 } as const;
 
 export { samplesLinks, type SampleConfig };

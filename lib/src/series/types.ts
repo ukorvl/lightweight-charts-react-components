@@ -4,6 +4,7 @@ import type {
   SeriesDataItemTypeMap,
   SeriesPartialOptionsMap,
   SeriesType,
+  Time,
 } from "lightweight-charts";
 import type { ReactNode } from "react";
 
@@ -11,11 +12,17 @@ export type CustomSeriesUniqueProps = {
   plugin?: ICustomSeriesPaneView;
 };
 
+export type CrosshairPosition = {
+  price: number;
+  horizontalPosition: Time;
+};
+
 type SeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];
   reactive?: boolean;
   options?: SeriesOptions<T>;
   isPane?: boolean;
+  crosshairPosition?: CrosshairPosition;
 } & (T extends "Custom" ? CustomSeriesUniqueProps : {});
 
 export type SeriesTemplateProps<T extends SeriesType> = {
