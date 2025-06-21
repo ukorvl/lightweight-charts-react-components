@@ -1,34 +1,38 @@
 import { CrosshairMode } from "lightweight-charts";
 import {
-  BaselineSeries,
   CandlestickSeries,
   Chart,
-  PriceLine,
+  HistogramSeries,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { useCallback, useMemo, useState } from "react";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import {
+  generateOHLCData,
+  generateVolumeDataFromOHLC,
+} from "@/common/generateSeriesData";
 import { samplesLinks } from "@/samples";
-import { seriesData } from "./syncingChartsStore";
+import { useSyncCharts } from "./useSyncCharts";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
-import type { LogicalRangeChangeEventHandler } from "lightweight-charts";
+
+const ohlcData = generateOHLCData(70);
+const volumeData = generateVolumeDataFromOHLC(ohlcData, {
+  upColor: colors.orange,
+  downColor: colors.blue100,
+});
 
 const SyncingCharts = () => {
-  const [visibleRange, setVisibleRange] = useState(null);
-  const crosshairPosition = useMemo(() => {
-    return {
-      price: seriesData[5].close,
-      horizontalPosition: seriesData[5].time,
-    };
-  }, []);
-
-  const onVisibleLogicalRangeChange: LogicalRangeChangeEventHandler = useCallback(r => {
-    queueMicrotask(() => {
-      setVisibleRange(r);
-    });
-  }, []);
+  const {
+    series1Ref,
+    series2Ref,
+    visibleLogicalRange,
+    onVisibleLogicalRangeChange,
+    onChart1CrosshairMove,
+    onChart2CrosshairMove,
+    chart1Cp,
+    chart2Cp,
+  } = useSyncCharts();
 
   return (
     <ChartWidgetCard
@@ -40,20 +44,39 @@ const SyncingCharts = () => {
         options={withChartCommonOptions({
           crosshair: {
             mode: CrosshairMode.Normal,
+            vertLine: {
+              style: 0,
+              color: colors.blue,
+            },
+            horzLine: {
+              style: 0,
+              color: colors.blue,
+            },
           },
           timeScale: {
             visible: false,
+          },
+          rightPriceScale: {
+            minimumWidth: 75,
+            scaleMargins: {
+              top: 0,
+              bottom: 0.1,
+            },
           },
         })}
         containerProps={{
           style: { flexBasis: "50%", borderBottom: `1px solid ${colors.gray100}` },
         }}
+        onCrosshairMove={onChart1CrosshairMove}
       >
-        <TimeScale onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}>
+        <TimeScale
+          onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}
+          visibleLogicalRange={visibleLogicalRange}
+        >
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
         <CandlestickSeries
-          data={seriesData}
+          data={ohlcData}
           options={{
             upColor: colors.green,
             downColor: colors.red,
@@ -63,33 +86,48 @@ const SyncingCharts = () => {
             wickDownColor: colors.red,
             priceLineVisible: false,
           }}
-          crosshairPosition={crosshairPosition}
+          ref={series1Ref}
+          crosshairPosition={chart1Cp}
         />
       </Chart>
       <Chart
         options={withChartCommonOptions({
           crosshair: {
             mode: CrosshairMode.Normal,
+            vertLine: {
+              style: 0,
+              color: colors.blue,
+            },
+            horzLine: {
+              style: 0,
+              color: colors.blue,
+            },
+          },
+          rightPriceScale: {
+            minimumWidth: 75,
+            scaleMargins: {
+              top: 0.25,
+              bottom: 0,
+            },
           },
         })}
         containerProps={{ style: { flexBasis: "50%" } }}
+        onCrosshairMove={onChart2CrosshairMove}
       >
-        <TimeScale visibleLogicalRange={visibleRange}>
+        <TimeScale
+          onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}
+          visibleLogicalRange={visibleLogicalRange}
+        >
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
-        <BaselineSeries
-          data={seriesData.map(d => ({ time: d.time, value: d.close }))}
+        <HistogramSeries
+          data={volumeData}
+          ref={series2Ref}
+          crosshairPosition={chart2Cp}
           options={{
-            lineWidth: 2,
             priceLineVisible: false,
-            baseValue: {
-              type: "price",
-              price: seriesData[0].close,
-            },
           }}
-          crosshairPosition={crosshairPosition}
         />
-        <PriceLine price={seriesData[0].close} options={{ color: colors.blue }} />
       </Chart>
     </ChartWidgetCard>
   );

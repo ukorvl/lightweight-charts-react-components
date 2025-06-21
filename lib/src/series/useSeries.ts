@@ -124,17 +124,18 @@ export const useSeries = <T extends SeriesType>({
   }, [isPane]);
 
   useLayoutEffect(() => {
-    //console.log("Crosshair position updated", chart, cp);
-    if (!chart) return;
-
-    if (!cp) return;
+    if (!chartIsReady || !isReady) return;
 
     const series = seriesApiRef.current.api();
-    //console.log("Setting crosshair position", series);
     if (!series) return;
 
+    if (!cp) {
+      chart?.api()?.clearCrosshairPosition();
+      return;
+    }
+
     chart?.api()?.setCrosshairPosition(cp.price, cp.horizontalPosition, series);
-  }, [cp, chartIsReady]);
+  }, [cp, chartIsReady, isReady]);
 
   return { isReady, seriesApiRef };
 };

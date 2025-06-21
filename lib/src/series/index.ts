@@ -5,4 +5,9 @@ export { AreaSeries } from "./AreaSeries";
 export { BaselineSeries } from "./BaselineSeries";
 export { BarSeries } from "./BarSeries";
 export { CustomSeries } from "./CustomSeries";
-export type { SeriesApiRef, SeriesProps, SeriesOptions } from "./types";
+export type {
+  SeriesApiRef,
+  SeriesProps,
+  SeriesOptions,
+  CrosshairPosition,
+} from "./types";
