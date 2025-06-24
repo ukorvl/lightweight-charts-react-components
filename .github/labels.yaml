@@ -1,6 +1,6 @@
 - name: ci
   description: "Changes to CI configuration files"
-  color: "0366d6"
+  color: "e30fd9"
 
 - name: documentation
   description: "Changes to documentation files"
@@ -8,7 +8,7 @@
 
 - name: tests
   description: "Changes to test files"
-  color: "d73a4a"
+  color: "ffd300"
 
 - name: examples
   description: "Changes to example files"
@@ -16,7 +16,7 @@
 
 - name: dependencies
   description: "Changes to dependencies"
-  color: "b60205"
+  color: "bf6971"
 
 - name: core
   description: "Changes to core library files"
@@ -36,7 +36,7 @@
 
 - name: bug
   description: "Issues or pull requests that fix a bug"
-  color: "f29513"
+  color: "b60205"
 
 - name: question
   description: "Questions or requests for clarification"
@@ -44,7 +44,7 @@
 
 - name: discussion
   description: "General discussions or proposals"
-  color: "1d76db"
+  color: "19003c"
 
 - name: duplicate
   description: "This issue or pull request already exists"
@@ -52,7 +52,7 @@
 
 - name: invalid
   description: "This issue or pull request is not valid"
-  color: "e4e669"
+  color: "ba0413"
 
 - name: wontfix
   description: "This issue or pull request will not be fixed"
