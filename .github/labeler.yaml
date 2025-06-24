@@ -18,10 +18,10 @@ documentation:
 tests:
   - changed_files:
     - any-glob-to-any-file:
-      - '**/*test.ts'
-      - '**/*spec.ts'
-      - '**/*test.tsx'
-      - '**/*spec.tsx'
+      - '**/*.test.ts'
+      - '**/*.spec.ts'
+      - '**/*.test.tsx'
+      - '**/*.spec.tsx'
 
 examples:
   - changed_files:
