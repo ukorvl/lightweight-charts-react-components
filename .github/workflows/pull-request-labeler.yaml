@@ -1,0 +1,17 @@
+name: Label Pull Requests
+
+on:
+  - pull_request_target
+
+jobs:
+  label-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Add Labels for PR
+        uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true
