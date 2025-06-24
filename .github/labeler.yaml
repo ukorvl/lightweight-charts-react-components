@@ -7,7 +7,6 @@ ci:
       - .github/actions/**
       - .github/labeler.yaml
       - .github/labels.yaml
-      - .github/stale.yaml
 
 documentation:
   - changed_files:

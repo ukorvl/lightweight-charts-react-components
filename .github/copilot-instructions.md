@@ -33,3 +33,7 @@ The repository contains library code and example usage.
 - Use `PascalCase` for components and `camelCase` for hooks.
 - Write clear JSDoc comments for public components and utilities.
 - Use `eslint` and `prettier` for code formatting and linting.
+- Implement comprehensive error handling
+- Write maintainable, self-documenting code
+- Follow security best practices
+- Ensure proper type coverage

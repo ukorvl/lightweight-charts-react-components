@@ -12,11 +12,14 @@ import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
+  currencySelectOptions,
   mainSeriesData,
   priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
   secondSeriesData,
+  useChartLocalizationOptionsStore,
+  usePriceCurrencyStore,
   usePriceScaleOptionsStore,
   usePriceScalePositionStore,
   usePriceScaleTypeStore,
@@ -66,22 +69,36 @@ const Scales = () => {
   const { priceScalesNumber, setPriceScalesNumber } = usePriceScalesNumberStore();
   const { priceScalePosition, setPriceScalePosition } = usePriceScalePositionStore();
   const { priceScaleOptions } = usePriceScaleOptionsStore();
+  const { currency, setCurrency } = usePriceCurrencyStore();
+  const { priceFormatter } = useChartLocalizationOptionsStore();
 
   const chartOptions = useMemo(() => {
+    const localizationOpts: DeepPartial<ChartOptions> = priceFormatter
+      ? {
+          localization: {
+            priceFormatter,
+          },
+        }
+      : {};
+
     if (priceScalesNumber === 1) {
       const opts: DeepPartial<ChartOptions> =
         priceScalePosition === "left"
           ? { leftPriceScale: { visible: true }, rightPriceScale: { visible: false } }
           : { leftPriceScale: { visible: false }, rightPriceScale: { visible: true } };
 
-      return withChartCommonOptions(opts);
+      return withChartCommonOptions({
+        ...localizationOpts,
+        ...opts,
+      });
     }
 
     return withChartCommonOptions({
+      ...localizationOpts,
       leftPriceScale: { visible: true },
       rightPriceScale: { visible: true },
     });
-  }, [withChartCommonOptions, priceScalePosition, priceScalesNumber]);
+  }, [withChartCommonOptions, priceScalePosition, priceScalesNumber, priceFormatter]);
 
   return (
     <ChartWidgetCard
@@ -108,6 +125,13 @@ const Scales = () => {
           setValue={setPriceScalePosition}
           options={priceScalePositionSelectOptions}
           disabled={priceScalesNumber === 2}
+        />
+        <SelectFormField
+          label="Price currency"
+          value={currency}
+          setValue={setCurrency}
+          options={currencySelectOptions}
+          disabled={priceScaleType === "logarithmic" || priceScaleType === "percentage"}
         />
       </ScrollableContainer>
       <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
