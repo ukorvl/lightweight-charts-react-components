@@ -11,6 +11,7 @@ import {
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
+import { SyncingCharts } from "./samples/Crosshair/SyncingCharts";
 import { CustomSeries } from "./samples/CustomSeries/CustomSeries";
 import { InfiniteData } from "./samples/InfiniteData/InfiniteData";
 import { WithLegend } from "./samples/Legend/WithLegend";
@@ -195,6 +196,7 @@ export const App = () => {
           <InfiniteData />
           <PriceLines />
           <Primitives />
+          <SyncingCharts />
         </LayoutGrid>
       </Stack>
       <Footer

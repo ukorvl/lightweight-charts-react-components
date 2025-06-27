@@ -138,6 +138,16 @@ export const useTimeScale = ({
     if (!chart) return;
 
     if (visibleRange) {
+      const currentVisibleRange = timeScaleApiRef.current?.api()?.getVisibleRange();
+
+      if (
+        currentVisibleRange &&
+        visibleRange.from === currentVisibleRange.from &&
+        visibleRange.to === currentVisibleRange.to
+      ) {
+        return;
+      }
+
       timeScaleApiRef.current?.api()?.setVisibleRange(visibleRange);
     }
   }, [visibleRange]);
@@ -146,6 +156,18 @@ export const useTimeScale = ({
     if (!chart) return;
 
     if (visibleLogicalRange) {
+      const currentVisibleLogicalRange = timeScaleApiRef.current
+        ?.api()
+        ?.getVisibleLogicalRange();
+
+      if (
+        currentVisibleLogicalRange &&
+        visibleLogicalRange.from === currentVisibleLogicalRange.from &&
+        visibleLogicalRange.to === currentVisibleLogicalRange.to
+      ) {
+        return;
+      }
+
       timeScaleApiRef.current?.api()?.setVisibleLogicalRange(visibleLogicalRange);
     }
   }, [visibleLogicalRange]);
