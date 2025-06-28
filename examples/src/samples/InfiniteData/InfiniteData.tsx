@@ -78,7 +78,7 @@ const InfiniteData = () => {
             {
               text: "Loading more data...",
               color: `${colors.gray}75`,
-              fontSize: 36,
+              fontSize: 32,
               fontFamily: theme.typography.fontFamily,
             },
           ]}

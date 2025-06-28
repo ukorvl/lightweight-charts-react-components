@@ -18,6 +18,7 @@ const symbolsToTest = new Set([
   "WatermarkText",
   "Markers",
   "SeriesPrimitive",
+  "Pane",
 ]);
 
 describe.concurrent("Symbols", () => {

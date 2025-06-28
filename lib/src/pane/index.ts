@@ -1,6 +1,11 @@
 export * from "./types";
 export { Pane } from "./Pane";
 
-// TODO: enable panes height prop
-// TODO: buttons move pane up and move pane down (including chart itself). only pane in the middle has 2 enaled buttons
-// TODO: panes order property
+/**
+ * problems we have:
+ *
+ * 1. when all series are removed from the pane - the pane is removed
+ * 2. when pane is removed - other panes change indexes
+ *
+ * lets first go with pane index prop.
+ */

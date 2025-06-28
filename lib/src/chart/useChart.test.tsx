@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { createChart, type IChartApi } from "lightweight-charts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { defaultChartOptions } from "./defaultChartOptions";
 import { useChart } from "./useChart";
 import type { UseChartOptions } from "./types";
 
@@ -85,6 +86,7 @@ describe("useChart", () => {
 
     expect(mockApplyOptions).toHaveBeenCalledWith({
       layout: { backgroundColor: "red" },
+      ...defaultChartOptions,
     });
   });
 

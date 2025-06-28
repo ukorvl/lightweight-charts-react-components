@@ -1,6 +1,6 @@
 {
   "name": "lightweight-charts-react-components",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch",
@@ -20,7 +20,12 @@
     "market",
     "finance"
   ],
-  "repository": "https://github.com/ukorvl/lightweight-charts-react-components",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ukorvl/lightweight-charts-react-components",
+    "directory": "lib"
+  },
+  "sideEffects": false,
   "homepage": "https://github.com/ukorvl/lightweight-charts-react-components#readme",
   "bugs": {
     "url": "https://github.com/ukorvl/lightweight-charts-react-components/issues"
@@ -40,7 +45,7 @@
   "files": [
     "dist"
   ],
-  "author": "ukorvl",
+  "author": "ukorvl <ukorotovskiy@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "lightweight-charts": ">=5 < 6",
