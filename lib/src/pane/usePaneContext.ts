@@ -6,9 +6,9 @@ const usePaneContext = () => {
 
   const isInsidePane = !!paneContext;
   const isPaneReady = !!paneContext?.isReady;
-  const { paneIndex, height, paneApiRef } = paneContext ?? {};
+  const paneApiRef = paneContext?.paneApiRef;
 
-  return { isInsidePane, isPaneReady, paneIndex, height, paneApiRef };
+  return { isInsidePane, isPaneReady, paneApiRef };
 };
 
 export { usePaneContext };

@@ -1,6 +1,6 @@
 {
   "name": "lightweight-charts-react-components",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch",
@@ -45,7 +45,7 @@
   "files": [
     "dist"
   ],
-  "author": "ukorvl",
+  "author": "ukorvl <ukorotovskiy@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "lightweight-charts": ">=5 < 6",

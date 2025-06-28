@@ -7,7 +7,7 @@ import type { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
 
 const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isPaneReady, paneIndex, isInsidePane } = usePaneContext();
+  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext();
 
   const watermarkApiRef = useRef<WatermarkApiRef<T>>({
     _watermark: null,
@@ -18,8 +18,7 @@ const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
       if (this._watermark === null) {
         const chartApi = chart?.api();
 
-        const index = paneIndex ?? 0;
-        const pane = chartApi?.panes()[index];
+        const pane = isInsidePane ? paneApiRef?.api() : undefined;
 
         if (!chartApi || !pane) return null;
 
