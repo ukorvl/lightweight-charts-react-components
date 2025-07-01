@@ -25,7 +25,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
-    "@commitlint/format": "^19.8.0",
+    "@commitlint/format": "^19.8.1",
     "@commitlint/types": "^19.8.0",
     "@eslint/js": "^9.21.0",
     "@testing-library/jest-dom": "^6.6.3",
