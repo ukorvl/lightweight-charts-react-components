@@ -24,7 +24,7 @@ export const useSeries = <T extends SeriesType>({
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isPaneReady, paneIndex, isInsidePane, height, paneApiRef } = usePaneContext();
+  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext();
   const [isReady, setIsReady] = useState(false);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
@@ -39,6 +39,8 @@ export const useSeries = <T extends SeriesType>({
         if (!chartApi) {
           return null;
         }
+
+        const paneIndex = isInsidePane ? paneApiRef?.api()?.paneIndex() : undefined;
 
         if (type === "Custom") {
           const plugin = (rest as CustomSeriesUniqueProps).plugin;
@@ -61,10 +63,6 @@ export const useSeries = <T extends SeriesType>({
         }
 
         this._series?.setData(data);
-
-        if (isInsidePane && height) {
-          paneApiRef?.api()?.setHeight(height);
-        }
 
         setIsReady(true);
       }
