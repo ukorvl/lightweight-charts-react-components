@@ -22,3 +22,11 @@ updates:
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+    labels:
+      - "dependencies"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"

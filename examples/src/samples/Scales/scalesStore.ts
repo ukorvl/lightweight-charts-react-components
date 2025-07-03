@@ -2,7 +2,11 @@ import { PriceScaleMode } from "lightweight-charts";
 import { create } from "zustand";
 import { colors } from "@/colors";
 import { generateHistogramData, generateLineData } from "@/common/generateSeriesData";
-import type { DeepPartial, PriceScaleOptions } from "lightweight-charts";
+import type {
+  DeepPartial,
+  PriceFormatterFn,
+  PriceScaleOptions,
+} from "lightweight-charts";
 
 type PriceScaleType = "normal" | "logarithmic" | "percentage" | "inverted";
 type PriceScalePosition = "left" | "right";
@@ -27,6 +31,25 @@ interface PriceScaleOptionsStore {
   setPriceScaleOptions: (o: DeepPartial<PriceScaleOptions>) => void;
 }
 
+interface PriceCurrencyStore {
+  currency: string;
+  setCurrency: (currency: string) => void;
+}
+
+interface ChartLocalizationOptionsStore {
+  priceFormatter?: PriceFormatterFn;
+  setPriceFormatter: (formatter: PriceFormatterFn | undefined) => void;
+}
+
+const createPriceFormatter = (currency: string): PriceFormatterFn => {
+  return (price: number) => {
+    return `${currency} ${price.toFixed(2)}`;
+  };
+};
+
+const LKRFormatter = createPriceFormatter("Rs");
+const AMDFormatter = createPriceFormatter("AMD");
+
 const mainSeriesData = generateLineData(50);
 const secondSeriesData = generateHistogramData(50, {
   upColor: colors.green,
@@ -46,6 +69,10 @@ const priceScalePositionSelectOptions = [
 const priceScalesNumberSelectOptions = [
   { value: 1, label: "1" },
   { value: 2, label: "2" },
+] as const;
+const currencySelectOptions = [
+  { value: "LKR", label: "LKR" },
+  { value: "AMD", label: "AMD" },
 ] as const;
 
 const getpriceScaleOptions = (t: PriceScaleType): DeepPartial<PriceScaleOptions> => {
@@ -81,6 +108,16 @@ const usePriceScaleOptionsStore = create<PriceScaleOptionsStore>(set => ({
   setPriceScaleOptions: o => set({ priceScaleOptions: o }),
 }));
 
+const usePriceCurrencyStore = create<PriceCurrencyStore>(set => ({
+  currency: "LKR",
+  setCurrency: currency => set({ currency }),
+}));
+
+const useChartLocalizationOptionsStore = create<ChartLocalizationOptionsStore>(set => ({
+  priceFormatter: LKRFormatter,
+  setPriceFormatter: formatter => set({ priceFormatter: formatter }),
+}));
+
 usePriceScaleTypeStore.subscribe(state => {
   const { priceScaleType } = state;
   const { priceScaleOptions, setPriceScaleOptions } =
@@ -92,6 +129,33 @@ usePriceScaleTypeStore.subscribe(state => {
   });
 });
 
+usePriceCurrencyStore.subscribe(state => {
+  const { currency } = state;
+  const { setPriceFormatter } = useChartLocalizationOptionsStore.getState();
+
+  if (currency === "LKR") {
+    setPriceFormatter(LKRFormatter);
+  } else if (currency === "AMD") {
+    setPriceFormatter(AMDFormatter);
+  } else {
+    setPriceFormatter(undefined);
+  }
+});
+
+usePriceScaleTypeStore.subscribe(state => {
+  const { priceScaleType } = state;
+  const { setPriceFormatter } = useChartLocalizationOptionsStore.getState();
+  const shouldFormatPrice =
+    priceScaleType !== "percentage" && priceScaleType !== "logarithmic";
+
+  if (shouldFormatPrice) {
+    const { currency } = usePriceCurrencyStore.getState();
+    setPriceFormatter(createPriceFormatter(currency));
+  } else {
+    setPriceFormatter(undefined);
+  }
+});
+
 export {
   mainSeriesData,
   secondSeriesData,
@@ -101,5 +165,8 @@ export {
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
   priceScalePositionSelectOptions,
+  currencySelectOptions,
   usePriceScaleOptionsStore,
+  usePriceCurrencyStore,
+  useChartLocalizationOptionsStore,
 };
