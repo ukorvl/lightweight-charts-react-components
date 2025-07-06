@@ -4,13 +4,8 @@ import {
   type IChartApi,
   type MouseEventHandler,
   type Time,
-  type IPaneApi,
 } from "lightweight-charts";
 import type { JSX, ReactNode } from "react";
-
-export type ExtendedChartApi = IChartApi & {
-  addPane: (paneIndex: number) => IPaneApi<Time>;
-};
 
 export type ChartProps = {
   children?: ReactNode;
@@ -23,9 +18,9 @@ export type ChartProps = {
 };
 
 export type ChartApiRef = {
-  _chart: ExtendedChartApi | null;
-  api: () => ExtendedChartApi | null;
-  init: () => ExtendedChartApi | null;
+  _chart: IChartApi | null;
+  api: () => IChartApi | null;
+  init: () => IChartApi | null;
   clear: () => void;
 };
 

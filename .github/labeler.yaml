@@ -1,7 +1,7 @@
 # This file is used by actions/labeler to automatically label pull requests.
 
 ci:
-  - changed_files:
+  - changed-files:
     - any-glob-to-any-file:
       - .github/workflows/**
       - .github/actions/**
@@ -9,13 +9,13 @@ ci:
       - .github/labels.yaml
 
 documentation:
-  - changed_files:
+  - changed-files:
     - any-glob-to-any-file:
       - '**/README.md'
       - 'docs/**'
 
 tests:
-  - changed_files:
+  - changed-files:
     - any-glob-to-any-file:
       - '**/*.test.ts'
       - '**/*.spec.ts'
@@ -23,17 +23,17 @@ tests:
       - '**/*.spec.tsx'
 
 examples:
-  - changed_files:
+  - changed-files:
     - any-glob-to-any-file:
       - 'examples/**'
 
 dependencies:
-  - changed_files:
+  - changed-files:
     - any-glob-to-any-file:
       - '**/package.json'
       - 'package-lock.json'
 
 core:
-  - changed_files:
+  - changed-files:
     - any-glob-to-any-file:
       - 'lib/src/**'

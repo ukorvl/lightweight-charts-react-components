@@ -3,6 +3,10 @@ name: Label Pull Requests
 on:
   - pull_request_target
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   label-pr:
     runs-on: ubuntu-latest

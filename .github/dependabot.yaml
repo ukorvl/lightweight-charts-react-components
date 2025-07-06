@@ -4,8 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    reviewers:
-      - "ukorvl"
     commit-message:
       prefix: "chore"
       include: "scope"
@@ -22,7 +20,11 @@ updates:
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+    labels:
+      - "dependencies"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    labels:
+      - "dependencies"

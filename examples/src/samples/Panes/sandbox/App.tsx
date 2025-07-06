@@ -4,6 +4,7 @@ import {
   Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
+  Pane,
 } from "lightweight-charts-react-components";
 
 const App = () => {
@@ -15,8 +16,12 @@ const App = () => {
           height: 400,
         }}
       >
-        <CandlestickSeries data={candlestickSeriesData} />
-        <LineSeries isPane={true} data={lineSeriesData} />
+        <Pane>
+          <CandlestickSeries data={candlestickSeriesData} />
+        </Pane>
+        <Pane stretchFactor={2}>
+          <LineSeries data={lineSeriesData} />
+        </Pane>
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>

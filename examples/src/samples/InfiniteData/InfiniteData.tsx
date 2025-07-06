@@ -2,6 +2,7 @@ import { debounce, useTheme } from "@mui/material";
 import {
   Chart,
   LineSeries,
+  Pane,
   TimeScale,
   TimeScaleFitContentTrigger,
   WatermarkText,
@@ -62,27 +63,29 @@ const InfiniteData = () => {
       sampleConfig={samplesLinks.InfiniteData}
     >
       <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
-        <LineSeries data={data} options={{ color: colors.green }} />
-        <TimeScale
-          options={{
-            barSpacing: 10,
-            fixRightEdge: true,
-          }}
-          onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}
-        >
-          <TimeScaleFitContentTrigger deps={[]} />
-        </TimeScale>
-        <WatermarkText
-          visible={loading}
-          lines={[
-            {
-              text: "Loading more data...",
-              color: `${colors.gray}75`,
-              fontSize: 32,
-              fontFamily: theme.typography.fontFamily,
-            },
-          ]}
-        />
+        <Pane>
+          <LineSeries data={data} options={{ color: colors.green }} />
+          <TimeScale
+            options={{
+              barSpacing: 10,
+              fixRightEdge: true,
+            }}
+            onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}
+          >
+            <TimeScaleFitContentTrigger deps={[]} />
+          </TimeScale>
+          <WatermarkText
+            visible={loading}
+            lines={[
+              {
+                text: "Loading more data...",
+                color: `${colors.gray}75`,
+                fontSize: 32,
+                fontFamily: theme.typography.fontFamily,
+              },
+            ]}
+          />
+        </Pane>
       </Chart>
     </ChartWidgetCard>
   );
