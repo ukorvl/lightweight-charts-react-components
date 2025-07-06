@@ -163,7 +163,7 @@ const Primitives = () => {
   return (
     <ChartWidgetCard
       title="Primitives"
-      subTitle="Multiple primitives display on the chart. Click on the chart to add a vertical line."
+      subTitle="Multiple primitives display on the chart"
       sampleConfig={samplesLinks.Primitives}
     >
       <ScrollableContainer sx={{ marginBottom: 2 }}>
