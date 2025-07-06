@@ -1,6 +1,5 @@
 import { version } from "../version";
-
-const docsBaseUrl = "https://ukorvl.github.io/lightweight-charts-react-components/docs/";
+import { docsBaseUrl } from "./docsBaseUrl";
 
 type IBaseErrorParameters = {
   /**
