@@ -2,6 +2,7 @@ import { Tab, Tabs } from "@mui/material";
 import {
   AreaSeries,
   Chart,
+  Pane,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
@@ -37,16 +38,18 @@ const Watermark = () => {
         ))}
       </Tabs>
       <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
-        <AreaSeries
-          data={seriesData}
-          options={{
-            lineWidth: 1,
-            lineColor: colors.pink,
-            topColor: colors.pink,
-            bottomColor: colors.blue200,
-          }}
-        />
-        <WatermarkComponent />
+        <Pane>
+          <AreaSeries
+            data={seriesData}
+            options={{
+              lineWidth: 1,
+              lineColor: colors.pink,
+              topColor: colors.pink,
+              bottomColor: colors.blue200,
+            }}
+          />
+          <WatermarkComponent />
+        </Pane>
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>

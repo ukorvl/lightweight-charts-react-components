@@ -1,10 +1,22 @@
 import { version } from "../version";
 
-const docsBaseUrl = "https://tradingview.github.io/lightweight-charts/docs";
+const docsBaseUrl = "https://ukorvl.github.io/lightweight-charts-react-components/docs/";
 
 type IBaseErrorParameters = {
+  /**
+   * An operational error refers to an error that occurs during normal program operation
+   * due to external factors or expected failures, not due to bugs in the code itself.
+   */
   isOperational?: boolean;
+  /**
+   * The cause of the error, if any.
+   * This can be used to provide additional context or information about the error.
+   */
   cause?: Error | BaseInternalError;
+  /**
+   * A path to the documentation that can help resolve the error.
+   * This is useful for providing users with guidance on how to fix or understand the error.
+   */
   docsPath?: string;
 };
 
@@ -25,13 +37,11 @@ class BaseInternalError extends Error {
     this.message = `${message ?? "An error occurred"}`;
 
     if (docsPath) {
-      this.message = `${this.message}
-      Docs: see ${docsBaseUrl + docsPath}`;
+      this.message = `${this.message}\n\nDocs: see ${docsBaseUrl + docsPath}`;
     }
 
     if (version) {
-      this.message = `${this.message}
-      Version: lightweight-charts-react-components/${version}`;
+      this.message = `${this.message}\n\nVersion: lightweight-charts-react-components@${version}`;
     }
 
     Object.setPrototypeOf(this, BaseInternalError.prototype);

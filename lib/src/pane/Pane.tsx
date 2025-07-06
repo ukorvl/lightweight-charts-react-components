@@ -6,13 +6,13 @@ import type { PaneProps, PaneApiRef } from "./types";
 import type { ForwardedRef, ForwardRefExoticComponent, RefAttributes } from "react";
 
 const PaneRenderFunction = (
-  { children, paneIndex, height }: PaneProps,
+  { children, stretchFactor }: PaneProps,
   ref: ForwardedRef<PaneApiRef>
 ) => {
   const {
     paneApiRef: { current: paneApiRef },
     isReady,
-  } = usePane({ paneIndex, height });
+  } = usePane({ stretchFactor });
   useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
 
   return (
@@ -20,8 +20,6 @@ const PaneRenderFunction = (
       value={{
         paneApiRef,
         isReady,
-        paneIndex,
-        height,
       }}
     >
       {children}

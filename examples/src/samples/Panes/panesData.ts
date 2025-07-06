@@ -1,14 +1,6 @@
-import { create } from "zustand";
 import { colors } from "@/colors";
 import { generateHistogramData, generateOHLCData } from "@/common/generateSeriesData";
 import type { CandlestickData, LineData, WhitespaceData } from "lightweight-charts";
-
-interface PanesControlsStore {
-  rsiVisible: boolean;
-  volumesVisible: boolean;
-  setRsiVisible: (visible: boolean) => void;
-  setVolumesVisible: (visible: boolean) => void;
-}
 
 const calculateRSI = (
   ohlcData: CandlestickData<string>[],
@@ -68,11 +60,4 @@ const volumeData = generateHistogramData(100).map((data, i) => {
   };
 });
 
-const usePanesControlsStore = create<PanesControlsStore>(set => ({
-  rsiVisible: true,
-  volumesVisible: true,
-  setRsiVisible: visible => set({ rsiVisible: visible }),
-  setVolumesVisible: visible => set({ volumesVisible: visible }),
-}));
-
-export { ohlcData, rsiData, volumeData, usePanesControlsStore };
+export { ohlcData, rsiData, volumeData };

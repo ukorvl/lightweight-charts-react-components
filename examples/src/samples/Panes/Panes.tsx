@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormGroup, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import {
   CandlestickSeries,
   Chart,
@@ -13,7 +13,7 @@ import {
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
-import { ohlcData, rsiData, usePanesControlsStore, volumeData } from "./panesStore";
+import { ohlcData, rsiData, volumeData } from "./panesData";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 
 type WatermarkProps = {
@@ -28,8 +28,8 @@ const Watermark = ({ text }: WatermarkProps) => {
       lines={[
         {
           text,
-          color: `${colors.blue}75`,
-          fontSize: 24,
+          color: `${colors.blue}90`,
+          fontSize: 12,
           fontFamily: theme.typography.fontFamily,
         },
       ]}
@@ -40,37 +40,12 @@ const Watermark = ({ text }: WatermarkProps) => {
 };
 
 const Panes = () => {
-  const { volumesVisible, rsiVisible, setRsiVisible, setVolumesVisible } =
-    usePanesControlsStore();
-
   return (
     <ChartWidgetCard
       title="Panes"
       subTitle="Multiple panes on the same chart"
       sampleConfig={samplesLinks.Panes}
     >
-      <FormGroup sx={{ marginBottom: 2, flexDirection: "row", gap: 2 }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={rsiVisible}
-              onChange={e => setRsiVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Show RSI"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={volumesVisible}
-              onChange={e => setVolumesVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Show Volume"
-        />
-      </FormGroup>
       <Chart
         options={withChartCommonOptions({
           layout: {
@@ -85,7 +60,7 @@ const Panes = () => {
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
-        <Pane paneIndex={0} height={100}>
+        <Pane stretchFactor={3}>
           <CandlestickSeries
             data={ohlcData}
             options={{
@@ -98,52 +73,47 @@ const Panes = () => {
               priceLineVisible: false,
             }}
           />
-          <Watermark text="0" />
         </Pane>
-        {rsiVisible && (
-          <Pane paneIndex={1}>
-            <LineSeries
-              data={rsiData}
+        <Pane stretchFactor={1}>
+          <LineSeries
+            data={rsiData}
+            options={{
+              priceLineVisible: false,
+              color: colors.blue100,
+              lineWidth: 2,
+              priceScaleId: "right",
+            }}
+          >
+            <PriceLine
+              price={70}
               options={{
-                priceLineVisible: false,
-                color: colors.blue100,
-                lineWidth: 2,
-                priceScaleId: "right",
-              }}
-            >
-              <PriceLine
-                price={70}
-                options={{
-                  color: colors.violet,
-                  lineWidth: 1,
-                  lineStyle: 3,
-                  axisLabelVisible: true,
-                }}
-              />
-              <PriceLine
-                price={30}
-                options={{
-                  color: colors.violet,
-                  lineWidth: 1,
-                  lineStyle: 3,
-                  axisLabelVisible: true,
-                }}
-              />
-            </LineSeries>
-            <Watermark text="1" />
-          </Pane>
-        )}
-        {volumesVisible && (
-          <Pane paneIndex={2}>
-            <HistogramSeries
-              data={volumeData}
-              options={{
-                priceLineVisible: false,
+                color: colors.violet,
+                lineWidth: 1,
+                lineStyle: 3,
+                axisLabelVisible: true,
               }}
             />
-            <Watermark text="2" />
-          </Pane>
-        )}
+            <PriceLine
+              price={30}
+              options={{
+                color: colors.violet,
+                lineWidth: 1,
+                lineStyle: 3,
+                axisLabelVisible: true,
+              }}
+            />
+          </LineSeries>
+          <Watermark text="RSI-14" />
+        </Pane>
+        <Pane stretchFactor={1}>
+          <HistogramSeries
+            data={volumeData}
+            options={{
+              priceLineVisible: false,
+            }}
+          />
+          <Watermark text="VOLUME" />
+        </Pane>
       </Chart>
     </ChartWidgetCard>
   );

@@ -2,6 +2,7 @@ import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
 import {
   AreaSeries,
   Chart,
+  Pane,
   PriceScale,
   TimeScale,
   TimeScaleFitContentTrigger,
@@ -135,35 +136,37 @@ const Scales = () => {
         />
       </ScrollableContainer>
       <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
-        <AreaSeries
-          data={mainSeriesData}
-          options={{
-            lineColor: colors.red,
-            topColor: colors.red,
-            bottomColor: `${colors.red}33`,
-            lineWidth: 2,
-            priceScaleId: priceScalePosition,
-          }}
-        >
-          <PriceScale id={priceScalePosition} options={priceScaleOptions} />
-        </AreaSeries>
-        {priceScalesNumber === 2 && (
+        <Pane>
           <AreaSeries
-            data={secondSeriesData}
+            data={mainSeriesData}
             options={{
-              lineColor: colors.violet,
-              topColor: colors.violet,
-              bottomColor: `${colors.violet}33`,
+              lineColor: colors.red,
+              topColor: colors.red,
+              bottomColor: `${colors.red}33`,
               lineWidth: 2,
-              priceScaleId: priceScalePosition === "left" ? "right" : "left",
+              priceScaleId: priceScalePosition,
             }}
           >
-            <PriceScale
-              id={priceScalePosition === "left" ? "right" : "left"}
-              options={priceScaleOptions}
-            />
+            <PriceScale id={priceScalePosition} options={priceScaleOptions} />
           </AreaSeries>
-        )}
+          {priceScalesNumber === 2 && (
+            <AreaSeries
+              data={secondSeriesData}
+              options={{
+                lineColor: colors.violet,
+                topColor: colors.violet,
+                bottomColor: `${colors.violet}33`,
+                lineWidth: 2,
+                priceScaleId: priceScalePosition === "left" ? "right" : "left",
+              }}
+            >
+              <PriceScale
+                id={priceScalePosition === "left" ? "right" : "left"}
+                options={priceScaleOptions}
+              />
+            </AreaSeries>
+          )}
+        </Pane>
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
