@@ -139,7 +139,81 @@ Standalone version of the library is also available for use in the browser witho
 
 ## Usage
 
-tbd
+The library provides a set of components that you can use in your React application. Here is a simple example of how to use the `Chart` and `LineSeries` components:
+
+```tsx
+import React from "react";
+import { Chart, LineSeries } from "lightweight-charts-react-components";
+
+const data = [
+  { time: "2023-01-01", value: 100 },
+  { time: "2023-01-02", value: 101 },
+  { time: "2023-01-03", value: 102 },
+];
+
+const Example = () => {
+  return (
+    <Chart>
+      <LineSeries data={data} />
+    </Chart>
+  );
+};
+
+export { Example };
+```
+
+The following is an advanced example that demonstrates how to use custom scales, panes and multiple series in a single chart:
+
+```tsx
+import React from "react";
+import {
+  Chart,
+  LineSeries,
+  BarSeries,
+  PriceScale,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+  Pane,
+} from "lightweight-charts-react-components";
+
+const data = [
+  { time: "2023-01-01", value: 100 },
+  { time: "2023-01-02", value: 101 },
+  { time: "2023-01-03", value: 102 },
+];
+const volumeData = [
+  { time: "2023-01-01", value: 1000 },
+  { time: "2023-01-02", value: 1100 },
+  { time: "2023-01-03", value: 1200 },
+];
+
+const chartOptions = {
+  // Chart options can be customized here
+};
+
+const priceScaleOptions = {
+  // Price scale options can be customized here
+};
+
+const AdvancedExample = () => {
+  return (
+    <Chart options={chartOptions}>
+      <Pane stretchFactor={2}>
+        <LineSeries data={data} />
+        <PriceScale id="left" options={priceScaleOptions} />
+      </Pane>
+      <Pane>
+        <BarSeries data={volumeData} />
+      </Pane>
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
+    </Chart>
+  );
+};
+
+export { AdvancedExample };
+```
 
 ## Examples
 
