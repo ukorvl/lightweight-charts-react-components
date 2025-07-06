@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { docsBaseUrl } from "./docsBaseUrl";
 import { BaseInternalError } from "./InternalError";
 
 describe("BaseInternalError", () => {
@@ -28,8 +29,6 @@ describe("BaseInternalError", () => {
   it("should include documentation path in the message", () => {
     const docsPath = "/errors/internal-error";
     const error = new BaseInternalError("Error with docs", { docsPath });
-    expect(error.message).toContain(
-      `Docs: see https://ukorvl.github.io/lightweight-charts-react-components/docs/${docsPath}`
-    );
+    expect(error.message).toContain(`Docs: see ${docsBaseUrl}${docsPath}`);
   });
 });

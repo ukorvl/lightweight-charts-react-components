@@ -151,7 +151,7 @@ const data = [
   { time: "2023-01-03", value: 102 },
 ];
 
-const Example = () => {
+const App = () => {
   return (
     <Chart>
       <LineSeries data={data} />
@@ -159,7 +159,7 @@ const Example = () => {
   );
 };
 
-export { Example };
+export { App };
 ```
 
 The following is an advanced example that demonstrates how to use custom scales, panes and multiple series in a single chart:
@@ -169,7 +169,7 @@ import React from "react";
 import {
   Chart,
   LineSeries,
-  BarSeries,
+  HistogramSeries,
   PriceScale,
   TimeScale,
   TimeScaleFitContentTrigger,
@@ -182,9 +182,9 @@ const data = [
   { time: "2023-01-03", value: 102 },
 ];
 const volumeData = [
-  { time: "2023-01-01", value: 1000 },
-  { time: "2023-01-02", value: 1100 },
-  { time: "2023-01-03", value: 1200 },
+  { time: "2023-01-01", value: 1000, color: "rgba(0, 150, 136, 0.5)" },
+  { time: "2023-01-02", value: 1100, color: "rgba(0, 150, 136, 0.5)" },
+  { time: "2023-01-03", value: 1200, color: "rgba(0, 150, 136, 0.5)" },
 ];
 
 const chartOptions = {
@@ -195,7 +195,7 @@ const priceScaleOptions = {
   // Price scale options can be customized here
 };
 
-const AdvancedExample = () => {
+const App = () => {
   return (
     <Chart options={chartOptions}>
       <Pane stretchFactor={2}>
@@ -203,7 +203,7 @@ const AdvancedExample = () => {
         <PriceScale id="left" options={priceScaleOptions} />
       </Pane>
       <Pane>
-        <BarSeries data={volumeData} />
+        <HistogramSeries data={volumeData} />
       </Pane>
       <TimeScale>
         <TimeScaleFitContentTrigger deps={[]} />
@@ -212,7 +212,7 @@ const AdvancedExample = () => {
   );
 };
 
-export { AdvancedExample };
+export { App };
 ```
 
 ## Examples
