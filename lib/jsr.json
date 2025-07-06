@@ -1,6 +1,6 @@
 {
   "name": "@ukorvl/lightweight-charts-react-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "$schema": "https://jsr.io/schema/config-file.v1.json",
   "license": "MIT",
   "exports": "./src/index.ts",
