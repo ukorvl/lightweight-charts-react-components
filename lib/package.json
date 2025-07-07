@@ -7,7 +7,8 @@
     "test:unit": "vitest --coverage",
     "test:standalone": "vitest -c tests/standalone/vitest.config.ts",
     "test:readme": "vitest -c tests/readme/vitest.config.ts",
-    "test:all": "npm run test:unit -- run && npm run test:standalone -- run && npm run test:readme -- run",
+    "test:bench": "vitest bench -c tests/bench/vitest.config.ts",
+    "test": "run-s \"test:* -- --run\"",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm"
   },
   "description": "React components for Lightweight Charts",

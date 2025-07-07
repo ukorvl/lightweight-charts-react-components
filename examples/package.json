@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:all": "echo 'No tests available' && exit 0"
+    "test": "echo 'No tests available' && exit 0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",
