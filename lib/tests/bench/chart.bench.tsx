@@ -1,108 +1,86 @@
 import { render, cleanup } from "@testing-library/react";
+import React from "react";
 import { afterEach, bench, describe } from "vitest";
-import { Chart, LineSeries } from "lightweight-charts-react-components";
+import {
+  Chart,
+  LineSeries,
+  Pane,
+  PriceScale,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
 import { generateLineData } from "./utils";
+
+const lineData = generateLineData(500);
+const newLineData = generateLineData(500);
 
 describe("Chart Rendering Performance", () => {
   afterEach(() => {
     cleanup();
   });
 
-  bench("Empty chart initialization", () => {
+  bench("empty chart initialization", () => {
     const { unmount } = render(<Chart />);
     unmount();
   });
 
-  bench("Chart with 100 data points", () => {
-    const data = generateLineData(100);
+  bench("chart with 500 data points", () => {
     const { unmount } = render(
       <Chart>
-        <LineSeries data={data} />
+        <LineSeries data={lineData} />
       </Chart>
     );
     unmount();
   });
 
-  //   bench("Chart with 1000 data points", () => {
-  //     const data = generateLineData(1000);
-  //     const { unmount } = render(
-  //       <Chart>
-  //         <LineSeries data={data} />
-  //       </Chart>
-  //     );
-  //     unmount();
-  //   });
+  bench("multiple series chart", () => {
+    const { unmount } = render(
+      <Chart>
+        <LineSeries data={lineData} />
+        <LineSeries data={lineData} />
+        <LineSeries data={lineData} />
+      </Chart>
+    );
+    unmount();
+  });
 
-  //   bench("Chart with 10000 data points", () => {
-  //     const data = generateLineData(10000);
-  //     const { unmount } = render(
-  //       <Chart>
-  //         <LineSeries data={data} />
-  //       </Chart>
-  //     );
-  //     unmount();
-  //   });
+  bench("bulk data replacement", () => {
+    const { rerender, unmount } = render(
+      <Chart>
+        <LineSeries data={lineData} />
+      </Chart>
+    );
 
-  //   bench("Candlestick chart with 1000 points", () => {
-  //     const data = generateOHLCData(1000);
-  //     const { unmount } = render(
-  //       <Chart>
-  //         <CandlestickSeries data={data} />
-  //       </Chart>
-  //     );
-  //     unmount();
-  //   });
+    rerender(
+      <Chart>
+        <LineSeries data={newLineData} />
+      </Chart>
+    );
 
-  //   bench("Multiple series chart", () => {
-  //     const lineData = generateLineData(500);
-  //     const candlestickData = generateOHLCData(500);
-  //     const { unmount } = render(
-  //       <Chart>
-  //         <LineSeries data={lineData} />
-  //         <CandlestickSeries data={candlestickData} />
-  //       </Chart>
-  //     );
-  //     unmount();
-  //   });
-  // });
+    unmount();
+  });
 
-  // describe("Data Update Performance", () => {
-  //   bench("Line series data updates", () => {
-  //     let data = generateLineData(100);
-  //     const { rerender, unmount } = render(
-  //       <Chart>
-  //         <LineSeries data={data} />
-  //       </Chart>
-  //     );
+  bench("chart with time custom scale", () => {
+    const { unmount } = render(
+      <Chart>
+        <LineSeries data={lineData} />
+        <TimeScale>
+          <TimeScaleFitContentTrigger deps={[]} />
+        </TimeScale>
+      </Chart>
+    );
+    unmount();
+  });
 
-  //     // Simulate data updates
-  //     for (let i = 0; i < 10; i++) {
-  //       data = [...data, { time: data.length, value: Math.random() * 100 }];
-  //       rerender(
-  //         <Chart>
-  //           <LineSeries data={data} />
-  //         </Chart>
-  //       );
-  //     }
-
-  //     unmount();
-  //   });
-
-  //   bench("Bulk data replacement", () => {
-  //     const initialData = generateLineData(500);
-  //     const { rerender, unmount } = render(
-  //       <Chart>
-  //         <LineSeries data={initialData} />
-  //       </Chart>
-  //     );
-
-  //     const newData = generateLineData(500);
-  //     rerender(
-  //       <Chart>
-  //         <LineSeries data={newData} />
-  //       </Chart>
-  //     );
-
-  //     unmount();
-  //   });
+  bench("chart with custom price scale", () => {
+    const { unmount } = render(
+      <Chart>
+        <Pane>
+          <LineSeries data={lineData} />
+          <PriceScale id="left" />
+        </Pane>
+      </Chart>
+    );
+    unmount();
+  });
 });

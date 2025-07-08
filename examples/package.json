@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",
-    "dayjs": "^1.11.13",
     "vite-plugin-checker": "^0.9.3",
     "vite-plugin-circular-dependency": "^0.5.0",
     "vite-plugin-compression": "^0.5.1",
@@ -27,6 +26,7 @@
     "@react-hook/resize-observer": "^2.0.2",
     "@uiw/react-color-wheel": "^2.5.5",
     "copy-to-clipboard": "^3.3.3",
+    "dayjs": "^1.11.13",
     "fancy-canvas": "^2.1.0",
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.1.0",

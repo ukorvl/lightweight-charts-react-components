@@ -5,7 +5,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
-    "lint:md-links": "node ./scripts/check-md-links.ts",
+    "lint:md-links": "node ./scripts/check-md-links.mts",
     "format": "prettier --check './**/*.{ts,tsx,json,mjs,md}'",
     "format:fix": "prettier --write './**/*.{ts,tsx,json,mjs,md}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
@@ -14,7 +14,8 @@
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
     "knip": "knip --production",
-    "version": "bash ./scripts/version.sh"
+    "version": "bash ./scripts/version.sh",
+    "covert-benchmark": "node ./lib/tests/bench/convert-benchmark.mts"
   },
   "version": "0.1.0",
   "workspaces": [
@@ -42,6 +43,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-vitest": "^0.5.4",
+    "glob": "^11.0.3",
     "globals": "^16.2.0",
     "jsdom": "^26.1.0",
     "knip": "^5.46.5",

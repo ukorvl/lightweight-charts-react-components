@@ -1,0 +1,27 @@
+name: Benchmark check
+description: "Runs performance benchmarks on the code in the repo and compares them with previous results"
+
+inputs:
+  benchmark-results-file-path:
+    description: "Path to the file where benchmark results are stored"
+    required: true
+    default: "examples/benchmarkjs/output.txt"
+  token:
+    description: "GitHub token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        name: Benchmark.js Benchmark
+        tool: 'benchmarkjs'
+        output-file-path: examples/benchmarkjs/output.txt
+        github-token: ${{ inputs.token }}
+        auto-push: true
+        alert-threshold: '125%'
+        comment-on-alert: true
+        fail-on-alert: true
+        alert-comment-cc-users: '@ukorvl'

@@ -1,21 +1,11 @@
 import dayjs from "dayjs";
-import type { CandlestickData, LineData } from "lightweight-charts";
-const createStubArray = (length: number) => new Array(length).fill(0);
+import type { LineData } from "lightweight-charts";
 
-type GenerateLineDataOptions = {
-  lastItemTime?: string;
-};
-
-const generateLineData = (
-  length: number,
-  { lastItemTime }: GenerateLineDataOptions = {}
-): LineData<string>[] => {
-  const start = lastItemTime
-    ? dayjs(lastItemTime).subtract(length, "day")
-    : dayjs().subtract(length, "day");
+const generateLineData = (length: number): LineData<string>[] => {
+  const start = dayjs().subtract(length, "day");
   let lastValue = Math.floor(Math.random() * 100);
 
-  return createStubArray(length).map((_, i) => {
+  return new Array(length).fill(0).map((_, i) => {
     const change = Math.floor(Math.random() * 21) - 10;
     lastValue = Math.max(0, lastValue + change);
 
@@ -26,32 +16,6 @@ const generateLineData = (
   });
 };
 
-const generateOHLCData = (length: number): CandlestickData<string>[] => {
-  const start = dayjs().subtract(length, "day");
-  let previousClose = Math.max(1, Math.random() * 100);
+const benchmarkOutPutFileName = "benchmark-results.json";
 
-  return createStubArray(length).map((_, i) => {
-    const open = previousClose;
-    const high = open + Math.random() * 10;
-    let low = open - Math.random() * 10;
-
-    low = Math.max(0, low);
-
-    const minimalDistance = 0.01;
-    const adjustedHigh = Math.max(high, low + minimalDistance);
-
-    const close = low + Math.random() * (adjustedHigh - low);
-
-    previousClose = close;
-
-    return {
-      time: start.add(i, "day").format("YYYY-MM-DD"),
-      open,
-      high: adjustedHigh,
-      low,
-      close,
-    };
-  });
-};
-
-export { generateLineData, generateOHLCData };
+export { generateLineData, benchmarkOutPutFileName };

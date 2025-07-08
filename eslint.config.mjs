@@ -16,6 +16,7 @@ export default [
       "**/coverage/",
       "**/.rslib",
       "lib/tests/readme/extracted-snippets",
+      "lib/tests/bench/output",
     ],
   },
   {
@@ -134,6 +135,8 @@ export default [
       "lib/src/**/*.test.tsx",
       "lib/tests/**/*.test.ts",
       "lib/tests/**/*.test.tsx",
+      "lib/tests/**/*.bench.ts",
+      "lib/tests/**/*.bench.tsx",
     ],
     plugins: {
       vitest,

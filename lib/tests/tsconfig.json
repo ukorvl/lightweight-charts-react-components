@@ -2,8 +2,6 @@
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": true,
-    "checkJs": false,
     "jsx": "preserve",
     "strict": true,
     "esModuleInterop": true,
@@ -13,12 +11,9 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "noEmit": true,
-    "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "types": ["vitest/globals", "node"],
+    "useUnknownInCatchVariables": false
   },
-  "include": ["src", "types.d.ts"],
-  "exclude": ["coverage"]
+  "include": ["."],
+  "exclude": ["readme/extracted-snippets", "bench/output"]
 }
