@@ -102,6 +102,11 @@ export default [
               group: "internal",
               position: "after",
             },
+            {
+              pattern: "lightweight-charts-react-components",
+              group: "internal",
+              position: "after",
+            },
           ],
           pathGroupsExcludedImportTypes: ["builtin"],
           "newlines-between": "never",

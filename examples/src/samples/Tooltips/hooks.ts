@@ -1,13 +1,13 @@
 import { useCallback, useRef, useState } from "react";
 import { getTooltipPosition, type TooltipOptions } from "@/common/tooltips";
 import { useSize } from "@/common/useSize";
+import type { SeriesApiRef } from "lightweight-charts-react-components";
 import type {
   LineData,
   MouseEventHandler,
   MouseEventParams,
   Time,
 } from "lightweight-charts";
-import type { SeriesApiRef } from "lightweight-charts-react-components";
 import type { RefObject } from "react";
 
 type BasicTooltipData = {

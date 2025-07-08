@@ -13,13 +13,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { CrosshairMode, type Time } from "lightweight-charts";
-import {
-  Chart,
-  LineSeries,
-  SeriesPrimitive,
-  TimeScale,
-  TimeScaleFitContentTrigger,
-} from "lightweight-charts-react-components";
 import { lazy, memo, useCallback, useRef, useState } from "react";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
@@ -27,6 +20,14 @@ import { getContrastingTextColor } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
+import {
+  Chart,
+  LineSeries,
+  SeriesPrimitive,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
+import type { RenderPrimitive } from "lightweight-charts-react-components";
 import { VerticalLine } from "./primitives/VerticalLine";
 import {
   areaSeries,
@@ -37,7 +38,6 @@ import {
 import { useTooltip } from "./useTooltip";
 import type { VerticalLineOptions } from "./primitives/VerticalLine";
 import type { PrimitiveData } from "./primitivesStore";
-import type { RenderPrimitive } from "lightweight-charts-react-components";
 
 type VerticalLinePrimitiveProps = {
   time: Time;

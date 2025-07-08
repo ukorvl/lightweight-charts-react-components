@@ -1,22 +1,22 @@
 import { Circle } from "@mui/icons-material";
 import { Box, Grow, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { useMemo, useRef } from "react";
+import { colors } from "@/colors";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { typedObjectKeys } from "@/common/utils";
+import { samplesLinks } from "@/samples";
 import {
   Chart,
   LineSeries,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { useMemo, useRef } from "react";
-import { colors } from "@/colors";
-import { withChartCommonOptions } from "@/common/chartCommonOptions";
-import { typedObjectKeys } from "@/common/utils";
-import { samplesLinks } from "@/samples";
+import type { SeriesApiRef } from "lightweight-charts-react-components";
 import { useBasicTooltip, useMultipleSeriesTooltip } from "./hooks";
 import { basicTooltipSeriesData, multipleSeriesData, useTabStore } from "./tooltipsStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { TooltipType } from "./tooltipsStore";
 import type { SxProps } from "@mui/material";
-import type { SeriesApiRef } from "lightweight-charts-react-components";
 import type { ComponentType, FC, ReactNode, RefObject } from "react";
 
 type TooltipProps = {

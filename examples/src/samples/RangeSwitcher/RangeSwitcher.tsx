@@ -1,15 +1,15 @@
 import { Button, ButtonGroup } from "@mui/material";
+import { colors } from "@/colors";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { typedObjectKeys } from "@/common/utils";
+import { samplesLinks } from "@/samples";
+import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   AreaSeries,
   Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { colors } from "@/colors";
-import { withChartCommonOptions } from "@/common/chartCommonOptions";
-import { typedObjectKeys } from "@/common/utils";
-import { samplesLinks } from "@/samples";
-import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   dataRangeMap,
   useDataRangeStore,

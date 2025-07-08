@@ -1,10 +1,10 @@
 import { type LineData } from "lightweight-charts";
-import { LineSeries } from "lightweight-charts-react-components";
 import { create } from "zustand";
 import { colors } from "@/colors";
 import { generateLineData } from "@/common/generateSeriesData";
-import type { SeriesType } from "lightweight-charts";
+import { LineSeries } from "lightweight-charts-react-components";
 import type { SeriesProps } from "lightweight-charts-react-components";
+import type { SeriesType } from "lightweight-charts";
 import type { ComponentType } from "react";
 
 type CompareSeriesType = "Asset B" | "SMA 14" | "EMA 14";

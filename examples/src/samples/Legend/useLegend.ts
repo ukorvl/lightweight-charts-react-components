@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { useCallback, useRef, useState } from "react";
 import { colors } from "@/colors";
 import { generateOHLCData } from "@/common/generateSeriesData";
+import type { SeriesApiRef } from "lightweight-charts-react-components";
 import type { CandlestickData } from "lightweight-charts";
 import type {
   ISeriesApi,
@@ -9,7 +10,6 @@ import type {
   Time,
   WhitespaceData,
 } from "lightweight-charts";
-import type { SeriesApiRef } from "lightweight-charts-react-components";
 
 type LegendData = {
   open?: string;
