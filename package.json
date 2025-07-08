@@ -14,8 +14,7 @@
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks",
     "knip": "knip --production",
-    "version": "bash ./scripts/version.sh",
-    "covert-benchmark": "node ./lib/tests/bench/convert-benchmark.mts"
+    "version": "bash ./scripts/version.sh"
   },
   "version": "0.1.0",
   "workspaces": [
@@ -88,7 +87,8 @@
       "examples/src/samples/**/sandbox/**",
       "lib/src/pane/**",
       "lib/rslib.config.ts",
-      "lib/tests/**"
+      "lib/tests/**",
+      "scripts/**"
     ],
     "ignoreBinaries": [
       "lint-staged",

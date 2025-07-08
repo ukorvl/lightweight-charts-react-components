@@ -1,6 +1,5 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
-import { benchmarkOutPutFileName } from "./utils";
 
 export default defineConfig({
   mode: "benchmark",
@@ -11,7 +10,7 @@ export default defineConfig({
     globals: true,
     benchmark: {
       include: ["tests/bench/**/*.bench.{ts,tsx}"],
-      outputJson: `tests/bench/output/${benchmarkOutPutFileName}`,
+      outputJson: "tests/bench/output/benchmark-results.json",
     },
   },
 });

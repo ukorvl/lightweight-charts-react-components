@@ -16,6 +16,4 @@ const generateLineData = (length: number): LineData<string>[] => {
   });
 };
 
-const benchmarkOutPutFileName = "benchmark-results.json";
-
-export { generateLineData, benchmarkOutPutFileName };
+export { generateLineData };

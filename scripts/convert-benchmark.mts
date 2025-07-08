@@ -2,15 +2,28 @@
 /* eslint-disable no-console */
 
 // Converts Vitest benchmark output to github-action-benchmark compatible format
+// Usage: node convert-benchmark.mts [inputFile] [outputFile] (use relative to the root directory)
 
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
-import { benchmarkOutPutFileName } from "./utils";
 
 const scriptDir = path.dirname(new URL(import.meta.url).pathname);
+const rootDir = path.join(scriptDir, "..");
 
-const defaultInputFile = path.join(scriptDir, "output", benchmarkOutPutFileName);
-const defaultOutputFile = path.join(scriptDir, "output", "benchmark-data.json");
+const defaultInputFile = path.join(
+  "lib",
+  "tests",
+  "bench",
+  "output",
+  "benchmark-results.json"
+);
+const defaultOutputFile = path.join(
+  "lib",
+  "tests",
+  "bench",
+  "output",
+  "github-action-benchmark-results.json"
+);
 
 function convertVitestToGithubActionBenchmark(vitestData) {
   const converted = [];
@@ -66,15 +79,18 @@ function convertVitestToGithubActionBenchmark(vitestData) {
 
 const main = async () => {
   const args = process.argv.slice(2);
-  const [inputFile = defaultInputFile, outputFile = defaultOutputFile] = args;
+  const [inputFile, outputFile] = args;
+
+  const inputFilePath = path.resolve(rootDir, inputFile || defaultInputFile);
+  const outputFilePath = path.resolve(rootDir, outputFile || defaultOutputFile);
 
   try {
-    const inputData = JSON.parse(readFileSync(inputFile, "utf8"));
+    const inputData = JSON.parse(readFileSync(inputFilePath, "utf8"));
     const convertedData = convertVitestToGithubActionBenchmark(inputData);
 
-    writeFileSync(outputFile, JSON.stringify(convertedData, null, 2));
+    writeFileSync(outputFilePath, JSON.stringify(convertedData, null, 2));
 
-    console.log(`Successfully converted ${inputFile} to ${outputFile}`);
+    console.log(`Successfully converted ${inputFilePath} to ${outputFilePath}`);
   } catch (error) {
     console.error("Failed to convert benchmark data:", error.message);
     process.exit(1);
