@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-07-06
+### Changed
+- add readme usage example
+
+## [1.0.0] - 2025-06-30
+### Added
+- add standalone version of the library
+- add `Pane` component
+
+## [0.4.1] - 2025-06-06
+### Changed
+- migrate to `classic` jsx transform from `react-jsx`
+
 ## [0.4.0] - 2025-06-03
 ### Added
 - add `SeriesPrimitive` component

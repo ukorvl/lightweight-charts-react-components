@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { CrosshairMode, type Time } from "lightweight-charts";
 import {
   Chart,
   LineSeries,
@@ -21,7 +22,7 @@ import {
 } from "lightweight-charts-react-components";
 import { lazy, memo, useCallback, useRef, useState } from "react";
 import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { getContrastingTextColor } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
@@ -36,7 +37,6 @@ import {
 import { useTooltip } from "./useTooltip";
 import type { VerticalLineOptions } from "./primitives/VerticalLine";
 import type { PrimitiveData } from "./primitivesStore";
-import type { Time } from "lightweight-charts";
 import type { RenderPrimitive } from "lightweight-charts-react-components";
 
 type VerticalLinePrimitiveProps = {
@@ -112,8 +112,8 @@ const Tooltip = ({
           width={colorPickerSize}
           height={colorPickerSize}
           color={color}
-          onChange={color => {
-            setColor(color.hex);
+          onChange={col => {
+            setColor(col.hex);
           }}
         />
         <Button
@@ -163,7 +163,7 @@ const Primitives = () => {
   return (
     <ChartWidgetCard
       title="Primitives"
-      subTitle="Multiple primitives display on the chart. Click on the chart to add a vertical line."
+      subTitle="Multiple primitives display on the chart"
       sampleConfig={samplesLinks.Primitives}
     >
       <ScrollableContainer sx={{ marginBottom: 2 }}>
@@ -191,7 +191,11 @@ const Primitives = () => {
       <ClickAwayListener onClickAway={close}>
         <Box sx={{ flexGrow: 1, position: "relative" }} role="presentation">
           <Chart
-            options={chartCommonOptions}
+            options={withChartCommonOptions({
+              crosshair: {
+                mode: CrosshairMode.Normal,
+              },
+            })}
             containerProps={{
               style: { height: "100%" },
             }}
@@ -206,8 +210,12 @@ const Primitives = () => {
                 priceLineVisible: false,
               }}
             >
-              {primitives.map(({ uid, options, time }) => (
-                <MemoizedVerticalLinePrimitive key={uid} time={time} options={options} />
+              {primitives.map(({ uid, options, time: primitiveTime }) => (
+                <MemoizedVerticalLinePrimitive
+                  key={uid}
+                  time={primitiveTime}
+                  options={options}
+                />
               ))}
             </LineSeries>
             <TimeScale onVisibleTimeRangeChange={close}>

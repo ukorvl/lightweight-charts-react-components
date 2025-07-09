@@ -1,13 +1,4 @@
-import {
-  Container,
-  Link,
-  Stack,
-  Typography,
-  keyframes,
-  styled,
-  Box,
-  Divider,
-} from "@mui/material";
+import { Container, Link, Stack, Typography, styled, Box, Divider } from "@mui/material";
 import { colors } from "./colors";
 import { BasicSeries } from "./samples/BasicSeries/BasicSeries";
 import { CompareSeries } from "./samples/CompareSeries/CompareSeries";
@@ -22,20 +13,9 @@ import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
 import { Scales } from "./samples/Scales/Scales";
 import { Tooltips } from "./samples/Tooltips/Tooltips";
 import { Watermark } from "./samples/Watermark/Watermark";
+import { gradientAnimation, logoKeyframes, textBgKeyframes } from "./styles";
 import { Footer } from "./ui/Footer";
 import { LayoutGrid } from "./ui/LayoutGrid";
-
-const gradientAnimation = keyframes`
-  0%   { background-position: 50% 0; }
-  12.5% { background-position: 70% 0; }
-  25%  { background-position: 75% 0; }
-  37.5% { background-position: 70% 0; }
-  50%  { background-position: 60% 0; }
-  62.5% { background-position: 55% 0; }
-  75%  { background-position: 50% 0; }
-  87.5% { background-position: 35% 0; }
-  100% { background-position: 20% 0; }
-`;
 
 const GradientLink = styled(Link)(() => ({
   fontWeight: "bold",
@@ -47,6 +27,10 @@ const GradientLink = styled(Link)(() => ({
   transition: "background-position 0.3s ease-in-out",
   "&:hover": {
     animation: `${gradientAnimation} 2s ease-in-out infinite`,
+    "@media (prefers-reduced-motion: reduce)": {
+      animation: "none",
+      backgroundPosition: "0 0",
+    },
   },
 }));
 
@@ -69,7 +53,7 @@ export const App = () => {
         sx={{
           marginTop: 4,
         }}
-        component="header"
+        component="nav"
         direction="row"
         justifyContent={{ xs: "center", sm: "flex-end" }}
         useFlexGap
@@ -118,6 +102,14 @@ export const App = () => {
             lineHeight: 1,
             userSelect: "none",
             marginInline: { sm: 6, md: 12, lg: 28 },
+            transition:
+              "background-position 0.3s ease-in-out, background-size 0.3s ease-in-out",
+            animation: `${textBgKeyframes} 2s ease-in-out forwards`,
+            backgroundSize: "200% 200%",
+            "@media (prefers-reduced-motion: reduce)": {
+              animation: "none",
+              backgroundSize: "100% 100%",
+            },
           }}
           component="h1"
         >
@@ -130,9 +122,24 @@ export const App = () => {
             alignSelf: "center",
             position: "relative",
             overflow: "visible",
+            userSelect: "none",
+            transformOrigin: "center",
+            ":hover": {
+              animation: `${logoKeyframes} 1.5s ease-in-out infinite`,
+              ":before": {
+                opacity: 1,
+              },
+              "@media (prefers-reduced-motion: reduce)": {
+                animation: "none",
+                ":before": {
+                  opacity: 0.75,
+                },
+              },
+            },
             ":before": {
               content: '""',
               position: "absolute",
+              pointerEvents: "none",
               top: "-50%",
               left: "-50%",
               width: "200%",
@@ -144,6 +151,8 @@ export const App = () => {
                 ${colors.blue100}10 60%,
                 transparent 100%)`,
               filter: "blur(60px)",
+              transition: "opacity 0.6s ease-in-out",
+              opacity: 0.75,
             },
           }}
         >
@@ -185,13 +194,13 @@ export const App = () => {
           <BasicSeries />
           <CustomSeries />
           <RangeSwitcher />
-          <Markers />
+          <Panes />
           <Watermark />
           <WithLegend />
           <CompareSeries />
           <Scales />
           <Tooltips />
-          <Panes />
+          <Markers />
           <InfiniteData />
           <PriceLines />
           <Primitives />

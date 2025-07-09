@@ -61,6 +61,8 @@ export default defineConfig({
         },
         externals: {
           react: "React",
+          "react-dom": "ReactDOM",
+          "lightweight-charts": "LightweightCharts",
         },
       },
     },
@@ -74,5 +76,11 @@ export default defineConfig({
     cleanDistPath: true,
     sourceMap: true,
   },
-  plugins: [pluginReact()],
+  plugins: [
+    pluginReact({
+      swcReactOptions: {
+        runtime: "classic",
+      },
+    }),
+  ],
 });

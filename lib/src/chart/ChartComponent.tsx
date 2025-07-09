@@ -1,3 +1,4 @@
+import React from "react";
 import { ChartContext } from "./ChartContext";
 import { useChart } from "./useChart";
 import type { ChartComponentProps } from "./types";

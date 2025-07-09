@@ -1,0 +1,49 @@
+name: "Check versions in sync"
+description: "Checks that the version in package.json matches the version in other files like jsr.json"
+
+inputs:
+  PACKAGE_JSON:
+    description: "Path to the package.json file"
+    required: true
+    default: "lib/package.json"
+  JSR_JSON:
+    description: "Path to the jsr.json file"
+    required: true
+    default: "lib/jsr.json"
+  VERSION_FILE:
+    description: "Path to the version.ts file"
+    required: false
+    default: "lib/src/version.ts"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get package.json version
+      shell: bash
+      run: |
+        PKG_VERSION=$(jq -r .version ${{ inputs.PACKAGE_JSON }})
+        echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
+
+    - name: Check jsr.json version
+      shell: bash
+      run: |
+        JS_VERSION=$(jq -r .version ${{ inputs.JSR_JSON }})
+        if [[ "$JS_VERSION" != "$PKG_VERSION" ]]; then
+          echo "Error: jsr.json version ($JS_VERSION) does not match package.json version ($PKG_VERSION)"
+          exit 1
+        fi
+        echo "jsr.json version ($JS_VERSION) matches package.json version ($PKG_VERSION)."
+
+    - name: Check version.ts version
+      shell: bash
+      run: |
+        if [[ -f ${{ inputs.VERSION_FILE }} ]]; then
+          TS_VERSION=$(grep -oP '(?<=export const version = ")[^"]+' ${{ inputs.VERSION_FILE }})
+          if [[ "$TS_VERSION" != "$PKG_VERSION" ]]; then
+            echo "Error: version.ts version ($TS_VERSION) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+          echo "version.ts version ($TS_VERSION) matches package.json version ($PKG_VERSION)."
+        else
+          echo "Warning: ${{ inputs.VERSION_FILE }} does not exist, skipping version check."
+        fi

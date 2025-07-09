@@ -1,9 +1,12 @@
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useSafeContext } from "@/_shared/useSafeContext";
+import type { PaneApiRef } from "@/pane";
+import { usePaneContext } from "@/pane/usePaneContext";
 import { usePriceScale } from "./usePriceScale";
 
 vi.mock("@/_shared/useSafeContext");
+vi.mock("@/pane/usePaneContext");
 
 const mockApplyOptions = vi.fn();
 
@@ -17,6 +20,12 @@ const mockChart = {
   }),
 };
 
+const mockPane = {
+  api: () => ({
+    paneIndex: () => 0,
+  }),
+} as unknown as PaneApiRef;
+
 describe("usePriceScale", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -26,6 +35,12 @@ describe("usePriceScale", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       isReady: true,
       chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
     });
 
     const { result } = renderHook(() =>
@@ -42,6 +57,12 @@ describe("usePriceScale", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       isReady: true,
       chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
     });
 
     const { rerender } = renderHook(
@@ -78,6 +99,77 @@ describe("usePriceScale", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       isReady: false,
       chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const { result } = renderHook(() =>
+      usePriceScale({
+        id: "right",
+      })
+    );
+
+    expect(result.current.current.api()).toBeNull();
+  });
+
+  it("does not initialize priceScale if no chartApiRef", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: null,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const { result } = renderHook(() =>
+      usePriceScale({
+        id: "right",
+      })
+    );
+
+    expect(result.current.current.api()).toBeNull();
+  });
+
+  it("throws error if used outside of a pane", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: false,
+      isInsidePane: false,
+      paneApiRef: mockPane,
+    });
+
+    expect(() =>
+      renderHook(() =>
+        usePriceScale({
+          id: "right",
+        })
+      )
+    ).toThrowError(
+      "PriceScale must be used inside a pane. Please ensure that the component is wrapped in a pane component."
+    );
+  });
+
+  it("does not initialize if pane is not ready", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: false,
+      isInsidePane: true,
+      paneApiRef: mockPane,
     });
 
     const { result } = renderHook(() =>

@@ -5,3 +5,4 @@ export * from "./priceLine";
 export * from "./markers";
 export * from "./watermark";
 export * from "./primitives";
+export * from "./pane";

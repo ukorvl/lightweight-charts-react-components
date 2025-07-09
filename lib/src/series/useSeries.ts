@@ -10,7 +10,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
-import { incrementPaneCount, panesCount, decrementPaneCount } from "@/pane/panesCount";
+import { usePaneContext } from "@/pane/usePaneContext";
 import type { CustomSeriesUniqueProps, SeriesApiRef, SeriesTemplateProps } from "./types";
 import type { SeriesDefinition, ISeriesApi, SeriesType } from "lightweight-charts";
 
@@ -21,10 +21,10 @@ export const useSeries = <T extends SeriesType>({
   data,
   options = {},
   reactive = true,
-  isPane,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
+  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext();
   const [isReady, setIsReady] = useState(false);
 
   const seriesApiRef = useRef<SeriesApiRef<T>>({
@@ -40,6 +40,8 @@ export const useSeries = <T extends SeriesType>({
           return null;
         }
 
+        const paneIndex = isInsidePane ? paneApiRef?.api()?.paneIndex() : undefined;
+
         if (type === "Custom") {
           const plugin = (rest as CustomSeriesUniqueProps).plugin;
           if (!plugin) {
@@ -50,19 +52,18 @@ export const useSeries = <T extends SeriesType>({
           (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
             plugin,
             options,
-            isPane ? panesCount : 0
+            paneIndex
           );
         } else {
           this._series = chartApi.addSeries(
             seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
             options,
-            isPane ? panesCount : 0
+            paneIndex
           );
         }
 
-        setIsReady(true);
         this._series?.setData(data);
-        isPane && incrementPaneCount();
+        setIsReady(true);
       }
 
       return this._series;
@@ -72,7 +73,6 @@ export const useSeries = <T extends SeriesType>({
         chart?.api()?.removeSeries(this._series);
         this._series = null;
         setIsReady(false);
-        isPane && decrementPaneCount();
       }
     },
   });
@@ -80,8 +80,12 @@ export const useSeries = <T extends SeriesType>({
   useLayoutEffect(() => {
     if (!chartIsReady) return;
 
+    if (isInsidePane && !isPaneReady) {
+      return;
+    }
+
     seriesApiRef.current.init();
-  }, [chartIsReady]);
+  }, [chartIsReady, isInsidePane, isPaneReady]);
 
   useLayoutEffect(() => {
     return () => {
@@ -104,18 +108,6 @@ export const useSeries = <T extends SeriesType>({
       seriesApiRef.current.api()?.applyOptions(options);
     }
   }, [options]);
-
-  useLayoutEffect(() => {
-    if (!chart || isPane === undefined) return;
-
-    if (isPane) {
-      incrementPaneCount();
-      seriesApiRef.current.api()?.moveToPane(panesCount);
-    } else {
-      decrementPaneCount();
-      seriesApiRef.current.api()?.moveToPane(0);
-    }
-  }, [isPane]);
 
   return { isReady, seriesApiRef };
 };

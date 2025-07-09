@@ -1,5 +1,6 @@
 import { createChart } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
+import { defaultChartOptions } from "./defaultChartOptions";
 import type { ChartApiRef, UseChartOptions } from "./types";
 
 export const useChart = ({
@@ -19,7 +20,11 @@ export const useChart = ({
     },
     init() {
       if (this._chart === null) {
-        this._chart = createChart(container, options);
+        const chart = createChart(container, {
+          ...defaultChartOptions,
+          ...options,
+        });
+        this._chart = chart;
 
         if (onInit) {
           onInit(this._chart);
@@ -94,7 +99,10 @@ export const useChart = ({
   useLayoutEffect(() => {
     if (!container) return;
 
-    chartApiRef.current.api()?.applyOptions(options);
+    chartApiRef.current.api()?.applyOptions({
+      ...defaultChartOptions,
+      ...options,
+    });
   }, [options]);
 
   return { chartApiRef, isReady };

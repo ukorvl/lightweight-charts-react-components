@@ -3,7 +3,7 @@ name: Question
 about: Ask a question or request information
 title: "[Question]: "
 labels: question
-assignees: 
+assignees:
 ---
 
 **What’s your question?**

@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { useTheme } from "@mui/material";
 import {
   CandlestickSeries,
   Chart,
@@ -7,45 +7,45 @@ import {
   PriceLine,
   TimeScale,
   TimeScaleFitContentTrigger,
+  Pane,
+  WatermarkText,
 } from "lightweight-charts-react-components";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
-import { ohlcData, rsiData, usePanesControlsStore, volumeData } from "./panesStore";
+import { ohlcData, rsiData, volumeData } from "./panesData";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 
-const Panes = () => {
-  const { volumesVisible, rsiVisible, setRsiVisible, setVolumesVisible } =
-    usePanesControlsStore();
+type WatermarkProps = {
+  text: string;
+};
 
+const Watermark = ({ text }: WatermarkProps) => {
+  const theme = useTheme();
+
+  return (
+    <WatermarkText
+      lines={[
+        {
+          text,
+          color: `${colors.blue}90`,
+          fontSize: 12,
+          fontFamily: theme.typography.fontFamily,
+        },
+      ]}
+      horzAlign="center"
+      vertAlign="center"
+    />
+  );
+};
+
+const Panes = () => {
   return (
     <ChartWidgetCard
       title="Panes"
       subTitle="Multiple panes on the same chart"
       sampleConfig={samplesLinks.Panes}
     >
-      <FormGroup sx={{ marginBottom: 2, flexDirection: "row", gap: 2 }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={rsiVisible}
-              onChange={e => setRsiVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Show RSI"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={volumesVisible}
-              onChange={e => setVolumesVisible(e.target.checked)}
-              slotProps={{ input: { "aria-label": "controlled" } }}
-            />
-          }
-          label="Show Volume"
-        />
-      </FormGroup>
       <Chart
         options={withChartCommonOptions({
           layout: {
@@ -60,20 +60,22 @@ const Panes = () => {
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
-        <CandlestickSeries
-          data={ohlcData}
-          options={{
-            upColor: "transparent",
-            downColor: colors.orange100,
-            borderUpColor: colors.blue,
-            borderDownColor: colors.orange100,
-            wickUpColor: colors.blue,
-            wickDownColor: colors.orange100,
-          }}
-        />
-        {rsiVisible && (
+        <Pane stretchFactor={3}>
+          <CandlestickSeries
+            data={ohlcData}
+            options={{
+              upColor: "transparent",
+              downColor: colors.orange100,
+              borderUpColor: colors.blue,
+              borderDownColor: colors.orange100,
+              wickUpColor: colors.blue,
+              wickDownColor: colors.orange100,
+              priceLineVisible: false,
+            }}
+          />
+        </Pane>
+        <Pane stretchFactor={1}>
           <LineSeries
-            isPane
             data={rsiData}
             options={{
               priceLineVisible: false,
@@ -101,16 +103,17 @@ const Panes = () => {
               }}
             />
           </LineSeries>
-        )}
-        {volumesVisible && (
+          <Watermark text="RSI-14" />
+        </Pane>
+        <Pane stretchFactor={1}>
           <HistogramSeries
-            isPane
             data={volumeData}
             options={{
               priceLineVisible: false,
             }}
           />
-        )}
+          <Watermark text="VOLUME" />
+        </Pane>
       </Chart>
     </ChartWidgetCard>
   );

@@ -1,0 +1,17 @@
+{
+  "name": "@ukorvl/lightweight-charts-react-components",
+  "version": "1.0.1",
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "license": "MIT",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["LICENSE", "README.md", "CHANGELOG.md", "src/**/*.tsx", "src/**/*.ts"],
+    "exclude": ["**/*.test.tsx", "**/*.test.ts"]
+  },
+  "imports": {
+    "@/": "./src/",
+    "react": "npm:react@^19.1.0",
+    "react-dom": "npm:react-dom@^19.1.0",
+    "lightweight-charts": "npm:lightweight-charts@^5.0.5"
+  }
+}

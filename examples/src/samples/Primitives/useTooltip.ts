@@ -42,8 +42,8 @@ const useTooltip = ({ width, height, containerRef }: UseTooltipParams) => {
         return;
       }
 
-      const time = param.time;
-      if (time === undefined || param.point === undefined) {
+      const timeToSet = param.time;
+      if (timeToSet === undefined || param.point === undefined) {
         return;
       }
 
@@ -62,7 +62,7 @@ const useTooltip = ({ width, height, containerRef }: UseTooltipParams) => {
 
       setPosition(tooltipPos);
       setShow(true);
-      setTime(time);
+      setTime(timeToSet);
     },
     [containerWidth, containerHeight, width, height]
   );

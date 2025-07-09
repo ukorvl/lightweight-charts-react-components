@@ -54,6 +54,13 @@
 
   <a href="https://github.com/ukorvl/lightweight-charts-react-components">
     <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/module-ESM--only-1e2029?style=flat">
+      <img src="https://img.shields.io/badge/module-ESM--only-ffcc00?style=flat" alt="ESM Only">
+    </picture>
+  </a>
+
+  <a href="https://github.com/ukorvl/lightweight-charts-react-components">
+    <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/contributions-welcome-1e2029?style=flat">
       <img src="https://img.shields.io/badge/contributions-welcome-ffcc00?style=flat" alt="Contributions">
     </picture>
@@ -71,6 +78,13 @@
       >
     </picture>
   </a>
+
+  <a href="https://jsr.io/@ukorvl/lightweight-charts-react-components">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/jsr/v/%40ukorvl/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat">
+      <img src="https://img.shields.io/jsr/v/%40ukorvl/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat" alt="Jsr version">
+    </picture>
+  </a>
 </p>
 
 ## Description
@@ -84,6 +98,7 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
 - [Usage](#usage)
 - [Examples](#examples)
 - [Contributing](#contributing)
+- [Related Projects](#related-projects)
 - [License](#license)
 
 ## Installation
@@ -94,7 +109,7 @@ You can install the library via npm, pnpm or yarn:
 npm install lightweight-charts-react-components lightweight-charts
 ```
 
-Standalone version of the library is also available and includes all the necessary dependencies except react:
+Standalone version of the library is also available for use in the browser without a build step. You can include it in your HTML file using a script tag. Note that library expects global `React`, `ReactDOM` and `LightweightCharts` variables to be available in the global scope.
 
 ```html
 <head>
@@ -104,6 +119,10 @@ Standalone version of the library is also available and includes all the necessa
   ></script>
   <script
     src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    crossorigin
+  ></script>
+  <script
+    src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"
     crossorigin
   ></script>
   <script
@@ -120,7 +139,81 @@ Standalone version of the library is also available and includes all the necessa
 
 ## Usage
 
-tbd
+The library provides a set of components that you can use in your React application. Here is a simple example of how to use the `Chart` and `LineSeries` components:
+
+```tsx
+import React from "react";
+import { Chart, LineSeries } from "lightweight-charts-react-components";
+
+const data = [
+  { time: "2023-01-01", value: 100 },
+  { time: "2023-01-02", value: 101 },
+  { time: "2023-01-03", value: 102 },
+];
+
+const App = () => {
+  return (
+    <Chart>
+      <LineSeries data={data} />
+    </Chart>
+  );
+};
+
+export { App };
+```
+
+The following is an advanced example that demonstrates how to use custom scales, panes and multiple series in a single chart:
+
+```tsx
+import React from "react";
+import {
+  Chart,
+  LineSeries,
+  HistogramSeries,
+  PriceScale,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+  Pane,
+} from "lightweight-charts-react-components";
+
+const data = [
+  { time: "2023-01-01", value: 100 },
+  { time: "2023-01-02", value: 101 },
+  { time: "2023-01-03", value: 102 },
+];
+const volumeData = [
+  { time: "2023-01-01", value: 1000, color: "rgba(0, 150, 136, 0.5)" },
+  { time: "2023-01-02", value: 1100, color: "rgba(0, 150, 136, 0.5)" },
+  { time: "2023-01-03", value: 1200, color: "rgba(0, 150, 136, 0.5)" },
+];
+
+const chartOptions = {
+  // Chart options can be customized here
+};
+
+const priceScaleOptions = {
+  // Price scale options can be customized here
+};
+
+const App = () => {
+  return (
+    <Chart options={chartOptions}>
+      <Pane stretchFactor={2}>
+        <LineSeries data={data} />
+        <PriceScale id="left" options={priceScaleOptions} />
+      </Pane>
+      <Pane>
+        <HistogramSeries data={volumeData} />
+      </Pane>
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
+    </Chart>
+  );
+};
+
+export { App };
+```
 
 ## Examples
 
@@ -140,6 +233,11 @@ We welcome contributions of all kinds! Whether it's fixing bugs, adding new feat
 
 For detailed contribution guidelines, please check out our [CONTRIBUTING.md](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/CONTRIBUTING.md)
 Thank you for helping improve this project!
+
+## Related Projects
+
+- [lightweight-charts](https://github.com/tradingview/lightweight-charts) - The original Lightweight Charts library by TradingView.
+- [lightweight-charts-vue](https://github.com/ukorvl/lightweight-charts-vue) - Vue.js wrapper for Lightweight Charts.
 
 ## License
 

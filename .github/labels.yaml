@@ -1,0 +1,83 @@
+- name: ci
+  description: "Changes to CI configuration files"
+  color: "e30fd9"
+
+- name: documentation
+  description: "Changes to documentation files"
+  color: "0075ca"
+
+- name: tests
+  description: "Changes to test files"
+  color: "ffd300"
+
+- name: examples
+  description: "Changes to example files"
+  color: "6f42c1"
+
+- name: dependencies
+  description: "Changes to dependencies"
+  color: "bf6971"
+
+- name: core
+  description: "Changes to core library files"
+  color: "0052cc"
+
+- name: stale
+  description: "Stale issues and pull requests"
+  color: "697150"
+
+- name: breaking change
+  description: "Changes are not compatible with previous versions"
+  color: "E99695"
+
+- name: enhancement
+  description: "Improvements or new features"
+  color: "a2eeef"
+
+- name: bug
+  description: "Issues or pull requests that fix a bug"
+  color: "b60205"
+
+- name: question
+  description: "Questions or requests for clarification"
+  color: "d876e3"
+
+- name: discussion
+  description: "General discussions or proposals"
+  color: "19003c"
+
+- name: duplicate
+  description: "This issue or pull request already exists"
+  color: "cfd3d7"
+
+- name: invalid
+  description: "This issue or pull request is not valid"
+  color: "ba0413"
+
+- name: wontfix
+  description: "This issue or pull request will not be fixed"
+  color: "ffffff"
+
+- name: help wanted
+  description: "This issue or pull request needs help from the community"
+  color: "008672"
+
+- name: good first issue
+  description: "A good first issue for new contributors"
+  color: "7057ff"
+
+- name: security
+  description: "Security-related issues or pull requests"
+  color: "ff0000"
+
+- name: out of scope
+  description: "This issue or pull request is out of scope for the project"
+  color: "fef2c0"
+
+- name: need more feedback
+  description: "This issue or pull request needs more feedback from the community"
+  color: "ea4e94"
+
+- name: ai
+  description: "Everything related to AI tools, e.g configuration, adjustments"
+  color: "f2c94c"

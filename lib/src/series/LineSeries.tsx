@@ -1,12 +1,13 @@
 import { forwardRef } from "react";
+import React from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesProps } from "./types";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
 
 const LineSeriesRenderFunction = (
   { children, ...rest }: SeriesProps<"Line">,
   ref: ForwardedRef<SeriesApiRef<"Line">>
-) => {
+): JSX.Element => {
   return (
     <SeriesTemplate type="Line" ref={ref} {...rest}>
       {children}
@@ -14,6 +15,8 @@ const LineSeriesRenderFunction = (
   );
 };
 
-const LineSeries = forwardRef(LineSeriesRenderFunction);
+const LineSeries: ForwardRefExoticComponent<
+  SeriesProps<"Line"> & RefAttributes<SeriesApiRef<"Line">>
+> = forwardRef(LineSeriesRenderFunction);
 LineSeries.displayName = "LineSeries";
 export { LineSeries };

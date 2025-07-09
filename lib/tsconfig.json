@@ -4,13 +4,13 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "checkJs": false,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "moduleResolution": "bundler",
-    "resolveJsonModule": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
     "noEmit": true,
     "incremental": true,
@@ -19,5 +19,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "types.d.ts"]
+  "include": ["src", "types.d.ts", "tests"]
 }

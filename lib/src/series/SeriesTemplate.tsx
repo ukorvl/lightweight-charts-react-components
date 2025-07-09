@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle } from "react";
+import React from "react";
 import { SeriesContext } from "./SeriesContext";
 import { useSeries } from "./useSeries";
 import type { SeriesTemplateProps, SeriesApiRef } from "./types";

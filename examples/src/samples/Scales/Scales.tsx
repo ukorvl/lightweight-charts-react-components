@@ -2,26 +2,32 @@ import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
 import {
   AreaSeries,
   Chart,
+  Pane,
   PriceScale,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
+import { useMemo } from "react";
 import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
+  currencySelectOptions,
   mainSeriesData,
   priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
   secondSeriesData,
+  useChartLocalizationOptionsStore,
+  usePriceCurrencyStore,
   usePriceScaleOptionsStore,
   usePriceScalePositionStore,
   usePriceScaleTypeStore,
   usePriceScalesNumberStore,
 } from "./scalesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
+import type { ChartOptions, DeepPartial } from "lightweight-charts";
 
 type SelectFormFieldProps<T extends string | number> = {
   label: string;
@@ -49,9 +55,9 @@ const SelectFormField = <T extends string | number>({
         disabled={disabled}
         variant="outlined"
       >
-        {options.map(({ value, label }) => (
-          <MenuItem key={label} value={value}>
-            {label}
+        {options.map(({ value: itemValue, label: itemLabel }) => (
+          <MenuItem key={itemLabel} value={itemValue}>
+            {itemLabel}
           </MenuItem>
         ))}
       </Select>
@@ -64,6 +70,36 @@ const Scales = () => {
   const { priceScalesNumber, setPriceScalesNumber } = usePriceScalesNumberStore();
   const { priceScalePosition, setPriceScalePosition } = usePriceScalePositionStore();
   const { priceScaleOptions } = usePriceScaleOptionsStore();
+  const { currency, setCurrency } = usePriceCurrencyStore();
+  const { priceFormatter } = useChartLocalizationOptionsStore();
+
+  const chartOptions = useMemo(() => {
+    const localizationOpts: DeepPartial<ChartOptions> = priceFormatter
+      ? {
+          localization: {
+            priceFormatter,
+          },
+        }
+      : {};
+
+    if (priceScalesNumber === 1) {
+      const opts: DeepPartial<ChartOptions> =
+        priceScalePosition === "left"
+          ? { leftPriceScale: { visible: true }, rightPriceScale: { visible: false } }
+          : { leftPriceScale: { visible: false }, rightPriceScale: { visible: true } };
+
+      return withChartCommonOptions({
+        ...localizationOpts,
+        ...opts,
+      });
+    }
+
+    return withChartCommonOptions({
+      ...localizationOpts,
+      leftPriceScale: { visible: true },
+      rightPriceScale: { visible: true },
+    });
+  }, [withChartCommonOptions, priceScalePosition, priceScalesNumber, priceFormatter]);
 
   return (
     <ChartWidgetCard
@@ -91,37 +127,46 @@ const Scales = () => {
           options={priceScalePositionSelectOptions}
           disabled={priceScalesNumber === 2}
         />
+        <SelectFormField
+          label="Price currency"
+          value={currency}
+          setValue={setCurrency}
+          options={currencySelectOptions}
+          disabled={priceScaleType === "logarithmic" || priceScaleType === "percentage"}
+        />
       </ScrollableContainer>
-      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
-        <AreaSeries
-          data={mainSeriesData}
-          options={{
-            lineColor: colors.red,
-            topColor: colors.red,
-            bottomColor: `${colors.red}33`,
-            lineWidth: 2,
-            priceScaleId: priceScalePosition,
-          }}
-        >
-          <PriceScale id={priceScalePosition} options={priceScaleOptions} />
-        </AreaSeries>
-        {priceScalesNumber === 2 && (
+      <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
+        <Pane>
           <AreaSeries
-            data={secondSeriesData}
+            data={mainSeriesData}
             options={{
-              lineColor: colors.violet,
-              topColor: colors.violet,
-              bottomColor: `${colors.violet}33`,
+              lineColor: colors.red,
+              topColor: colors.red,
+              bottomColor: `${colors.red}33`,
               lineWidth: 2,
-              priceScaleId: priceScalePosition === "left" ? "right" : "left",
+              priceScaleId: priceScalePosition,
             }}
           >
-            <PriceScale
-              id={priceScalePosition === "left" ? "right" : "left"}
-              options={priceScaleOptions}
-            />
+            <PriceScale id={priceScalePosition} options={priceScaleOptions} />
           </AreaSeries>
-        )}
+          {priceScalesNumber === 2 && (
+            <AreaSeries
+              data={secondSeriesData}
+              options={{
+                lineColor: colors.violet,
+                topColor: colors.violet,
+                bottomColor: `${colors.violet}33`,
+                lineWidth: 2,
+                priceScaleId: priceScalePosition === "left" ? "right" : "left",
+              }}
+            >
+              <PriceScale
+                id={priceScalePosition === "left" ? "right" : "left"}
+                options={priceScaleOptions}
+              />
+            </AreaSeries>
+          )}
+        </Pane>
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>

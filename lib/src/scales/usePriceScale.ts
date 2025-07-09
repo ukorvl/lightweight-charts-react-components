@@ -1,10 +1,13 @@
 import { useLayoutEffect, useRef } from "react";
+import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import { usePaneContext } from "@/pane/usePaneContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
+  const { isInsidePane, isPaneReady } = usePaneContext();
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
@@ -26,12 +29,12 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
 
       return this._priceScale;
     },
-    setId(id) {
+    setId(idToSet) {
       if (this._priceScale === null || chart === null) {
         return;
       }
 
-      this._priceScale = chart.api()!.priceScale(id);
+      this._priceScale = chart.api()!.priceScale(idToSet);
       this._priceScale.applyOptions(options);
     },
     clear() {
@@ -42,8 +45,22 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   useLayoutEffect(() => {
     if (!chartIsReady) return;
 
+    if (!isInsidePane) {
+      throw new BaseInternalError(
+        "PriceScale must be used inside a pane. Please ensure that the component is wrapped in a pane component.",
+        {
+          isOperational: true,
+          docsPath: "",
+        }
+      );
+    }
+
+    if (!isPaneReady) {
+      return;
+    }
+
     priceScaleApiRef.current.init();
-  }, [chartIsReady]);
+  }, [chartIsReady, isInsidePane, isPaneReady]);
 
   useLayoutEffect(() => {
     return () => {

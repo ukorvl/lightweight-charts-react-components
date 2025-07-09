@@ -1,14 +1,10 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
-import type { PaneApiRef } from "./types";
+import type { PaneApiRef, PaneProps } from "./types";
 
-type Options = {
-  paneIndex: number | null;
-};
-
-export const usePane = ({ paneIndex }: Options) => {
-  const { chartApiRef: chart } = useSafeContext(ChartContext);
+export const usePane = ({ stretchFactor }: Omit<PaneProps, "children"> = {}) => {
+  const { chartApiRef: chart, isReady: chartIsReady } = useSafeContext(ChartContext);
   const [isReady, setIsReady] = useState(false);
 
   const paneApiRef = useRef<PaneApiRef>({
@@ -16,18 +12,18 @@ export const usePane = ({ paneIndex }: Options) => {
     api() {
       return this._pane;
     },
-    init(paneIndex: number) {
-      const panes = chart?.api()?.panes();
+    init() {
+      const chartApi = chart?.api();
+      if (!chartApi) return null;
 
-      if (!panes) return null;
-      const pane = panes[paneIndex!];
-
-      if (!pane) {
-        return null;
-      }
-
+      const pane = chartApi.addPane(true);
       this._pane = pane;
+
       setIsReady(true);
+
+      if (stretchFactor !== undefined) {
+        this._pane.setStretchFactor(stretchFactor);
+      }
 
       return this._pane;
     },
@@ -42,16 +38,25 @@ export const usePane = ({ paneIndex }: Options) => {
   });
 
   useLayoutEffect(() => {
-    if (paneIndex === null || paneIndex === undefined) return;
+    if (!chartIsReady) return;
 
-    paneApiRef.current.init(paneIndex);
-  }, [paneIndex]);
+    paneApiRef.current.init();
+  }, [chartIsReady]);
 
   useLayoutEffect(() => {
     return () => {
       paneApiRef.current.clear();
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (stretchFactor === undefined) return;
+
+    const pane = paneApiRef.current.api();
+    if (pane) {
+      pane.setStretchFactor(stretchFactor);
+    }
+  }, [stretchFactor]);
 
   return { paneApiRef, isReady };
 };
