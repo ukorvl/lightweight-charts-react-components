@@ -9,13 +9,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:all": "playwright test"
+    "test:e2e": "playwright test",
+    "test:all": "npm run test:e2e"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "@types/node": "^22.15.29",
     "@vitejs/plugin-react": "^4.4.1",
-    "cypress": "^14.4.1",
     "dayjs": "^1.11.13",
     "vite-plugin-checker": "^0.9.3",
     "vite-plugin-circular-dependency": "^0.5.0",

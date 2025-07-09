@@ -10,7 +10,13 @@ import tseslint from "typescript-eslint";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    ignores: ["**/node_modules", "**/dist", "**/coverage/", "**/.rslib"],
+    ignores: [
+      "**/node_modules",
+      "**/dist",
+      "**/coverage/",
+      "**/.rslib",
+      "examples/tests/e2e/test-results",
+    ],
   },
   {
     languageOptions: {
