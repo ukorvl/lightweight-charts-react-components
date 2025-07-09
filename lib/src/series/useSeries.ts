@@ -63,7 +63,6 @@ export const useSeries = <T extends SeriesType>({
         }
 
         this._series?.setData(data);
-
         setIsReady(true);
       }
 

@@ -55,9 +55,9 @@ const SelectFormField = <T extends string | number>({
         disabled={disabled}
         variant="outlined"
       >
-        {options.map(({ value, label }) => (
-          <MenuItem key={label} value={value}>
-            {label}
+        {options.map(({ value: itemValue, label: itemLabel }) => (
+          <MenuItem key={itemLabel} value={itemValue}>
+            {itemLabel}
           </MenuItem>
         ))}
       </Select>
