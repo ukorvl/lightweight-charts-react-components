@@ -194,13 +194,13 @@ export const App = () => {
           <BasicSeries />
           <CustomSeries />
           <RangeSwitcher />
-          <Markers />
+          <Panes />
           <Watermark />
           <WithLegend />
           <CompareSeries />
           <Scales />
           <Tooltips />
-          <Panes />
+          <Markers />
           <InfiniteData />
           <PriceLines />
           <Primitives />

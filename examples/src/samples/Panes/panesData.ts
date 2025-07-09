@@ -1,5 +1,7 @@
-import { colors } from "@/colors";
-import { generateHistogramData, generateOHLCData } from "@/common/generateSeriesData";
+import {
+  generateOHLCData,
+  generateVolumeDataFromOHLC,
+} from "@/common/generateSeriesData";
 import type { CandlestickData, LineData, WhitespaceData } from "lightweight-charts";
 
 const calculateRSI = (
@@ -51,13 +53,6 @@ const calculateRSI = (
 
 const ohlcData = generateOHLCData(100);
 const rsiData = calculateRSI(ohlcData, 14);
-const volumeData = generateHistogramData(100).map((data, i) => {
-  const ohlc = ohlcData[i];
-  return {
-    time: ohlc.time,
-    value: data.value,
-    color: ohlc.close > ohlc.open ? `${colors.green}90` : `${colors.red}90`,
-  };
-});
+const volumeData = generateVolumeDataFromOHLC(ohlcData);
 
 export { ohlcData, rsiData, volumeData };

@@ -29,12 +29,12 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
 
       return this._priceScale;
     },
-    setId(id) {
+    setId(idToSet) {
       if (this._priceScale === null || chart === null) {
         return;
       }
 
-      this._priceScale = chart.api()!.priceScale(id);
+      this._priceScale = chart.api()!.priceScale(idToSet);
       this._priceScale.applyOptions(options);
     },
     clear() {

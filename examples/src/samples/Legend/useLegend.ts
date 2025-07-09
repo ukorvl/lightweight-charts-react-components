@@ -118,8 +118,8 @@ const useLegend = (showLegend: boolean) => {
         return;
       }
 
-      const legendData = mapCandlestickDataToLegendData(data);
-      setLegendData(prev => (prev?.time !== legendData.time ? legendData : prev));
+      const newLegendData = mapCandlestickDataToLegendData(data);
+      setLegendData(prev => (prev?.time !== newLegendData.time ? newLegendData : prev));
     },
     [setLegendData, showLegend]
   );
