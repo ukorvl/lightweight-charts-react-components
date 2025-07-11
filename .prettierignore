@@ -1,3 +1,4 @@
 .rslib
 lib/CHANGELOG.md
 lib/tests/readme/extracted-snippets
+examples/tests/e2e/output

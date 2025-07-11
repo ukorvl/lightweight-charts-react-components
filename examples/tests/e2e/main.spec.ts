@@ -1,43 +1,67 @@
+import { readdirSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { test, expect } from "@playwright/test";
 
-test("has title", async ({ page }) => {
-  await page.goto("/");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const samplesDir = path.join(__dirname, "../..", "src/samples");
+const examplesCount = readdirSync(samplesDir, { withFileTypes: true }).filter(dirent =>
+  dirent.isDirectory()
+).length;
 
-  await expect(page).toHaveTitle(import.meta.env.VITE_APP_DEFAULT_TITLE);
-});
+test.describe("Main page", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
 
-test("canvas rendering", async ({ page }) => {
-  await page.goto("/");
+  test("has title", async ({ page }) => {
+    await expect(page).toHaveTitle(
+      process.env.VITE_APP_DEFAULT_TITLE || "Wrong title, you should read from env"
+    );
+  });
 
-  const exampleSection = page.getByLabel("Examples of library usage");
-  expect(exampleSection).toHaveCount(1);
+  test("has important metatags", async ({ page }) => {
+    const metas = ["description", "keywords", "author"];
 
-  const examples = exampleSection.locator(">div");
-  expect(examples).toHaveCount(13);
-
-  const canvases = examples.locator("canvas");
-  const canvasesCount = await canvases.count();
-  for (let i = 0; i < canvasesCount; i++) expect(canvases.nth(i)).toBeVisible();
-});
-
-test("valid links", async ({ page }) => {
-  await page.goto("/");
-
-  const hrefAttrs = await page
-    .locator("a")
-    .evaluateAll(links => links.map(link => link.getAttribute("href")));
-
-  const externalURLs = hrefAttrs.reduce((urls, url) => {
-    if (url && !url?.startsWith("#")) urls.add(url);
-    return urls;
-  }, new Set<string>());
-
-  for (const externalURl of externalURLs) {
-    try {
-      const response = await page.request.get(externalURl);
-      expect.soft(response.ok(), `${externalURl} didnt return Ok response`).toBeTruthy();
-    } catch {
-      expect.soft(null, `${externalURl} didnt return Ok response `);
+    for (const meta of metas) {
+      const metaTag = await page.locator(`meta[name="${meta}"]`);
+      await expect(metaTag).toHaveCount(1);
+      await expect(metaTag).toHaveAttribute("name", meta);
+      await expect(metaTag).toHaveAttribute("content", expect.any(String));
     }
-  }
+  });
+
+  test("canvas rendering", async ({ page }) => {
+    const exampleSection = await page.getByLabel("Examples of library usage");
+    await expect(exampleSection).toHaveCount(1);
+
+    const examples = await exampleSection.locator(">div");
+    await expect(examples).toHaveCount(examplesCount);
+
+    const canvases = await examples.locator("canvas");
+    const canvasesCount = await canvases.count();
+    for (let i = 0; i < canvasesCount; i++) await expect(canvases.nth(i)).toBeVisible();
+  });
+
+  test("valid links", async ({ page }) => {
+    const hrefAttrs = await page
+      .locator("a")
+      .evaluateAll(links => links.map(link => link.getAttribute("href")));
+
+    const externalURLs = hrefAttrs.filter(
+      (url): url is string => url !== null && !url.startsWith("#") && !url.startsWith("/")
+    );
+
+    for (const externalURl of externalURLs) {
+      try {
+        const response = await page.request.get(externalURl);
+        expect
+          .soft(response.ok(), `${externalURl} didn't return Ok response`)
+          .toBeTruthy();
+      } catch {
+        expect.soft(false, `${externalURl} didnt return Ok response `);
+      }
+    }
+  });
 });

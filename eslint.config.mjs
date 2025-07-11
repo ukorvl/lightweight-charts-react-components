@@ -15,7 +15,7 @@ export default [
       "**/dist",
       "**/coverage/",
       "**/.rslib",
-      "examples/tests/e2e/test-results",
+      "examples/tests/e2e/output",
       "lib/tests/readme/extracted-snippets",
     ],
   },
