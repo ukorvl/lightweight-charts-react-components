@@ -10,10 +10,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "test:all": "npm run test:e2e"
   },
   "devDependencies": {
-    "@playwright/test": "^1.52.0",
     "@vitejs/plugin-react": "^4.4.1",
     "dayjs": "^1.11.13",
     "vite-plugin-checker": "^0.9.3",
