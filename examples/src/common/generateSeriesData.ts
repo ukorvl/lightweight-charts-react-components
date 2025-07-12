@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { colors } from "@/colors";
 import { createStubArray } from "./utils";
 import type { CandlestickData, HistogramData, LineData } from "lightweight-charts";
 
@@ -78,26 +77,4 @@ const generateHistogramData = (
   });
 };
 
-const generateVolumeDataFromOHLC = (
-  ohlcData: CandlestickData<string>[],
-  {
-    upColor = `${colors.green}90`,
-    downColor = `${colors.red}90`,
-  }: GenerateHistogramDataOptions = {}
-): HistogramData<string>[] => {
-  return generateHistogramData(ohlcData.length).map((data, i) => {
-    const ohlc = ohlcData[i];
-    return {
-      time: ohlc.time,
-      value: data.value,
-      color: ohlc.close > ohlc.open ? upColor : downColor,
-    };
-  });
-};
-
-export {
-  generateLineData,
-  generateOHLCData,
-  generateHistogramData,
-  generateVolumeDataFromOHLC,
-};
+export { generateLineData, generateOHLCData, generateHistogramData };
