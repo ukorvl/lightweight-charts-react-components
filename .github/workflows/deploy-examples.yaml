@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Build
         uses: ./.github/actions/build

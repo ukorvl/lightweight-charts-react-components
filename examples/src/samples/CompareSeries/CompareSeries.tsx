@@ -1,16 +1,16 @@
 import { Chip } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
+import { colors } from "@/colors";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { typedObjectEntries } from "@/common/utils";
+import { samplesLinks } from "@/samples";
+import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
   AreaSeries,
   Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { colors } from "@/colors";
-import { withChartCommonOptions } from "@/common/chartCommonOptions";
-import { typedObjectEntries } from "@/common/utils";
-import { samplesLinks } from "@/samples";
-import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import { mainSeriesData, seriesMap, useCompareSeriesStore } from "./compareSeriesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { FC } from "react";

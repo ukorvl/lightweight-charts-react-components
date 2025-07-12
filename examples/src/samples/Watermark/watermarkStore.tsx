@@ -1,9 +1,9 @@
 import { useTheme } from "@mui/material/styles";
-import { WatermarkText, WatermarkImage } from "lightweight-charts-react-components";
 import { create } from "zustand";
 import { colors } from "@/colors";
 import { generateLineData } from "@/common/generateSeriesData";
 import { encodeInlineSvg } from "@/common/utils";
+import { WatermarkText, WatermarkImage } from "lightweight-charts-react-components";
 import type { WatermarkType } from "lightweight-charts-react-components";
 
 interface WatermarkStore {

@@ -1,3 +1,10 @@
+import { create } from "zustand";
+import { colors } from "@/colors";
+import {
+  generateHistogramData,
+  generateLineData,
+  generateOHLCData,
+} from "@/common/generateSeriesData";
 import {
   AreaSeries,
   BarSeries,
@@ -6,15 +13,8 @@ import {
   HistogramSeries,
   LineSeries,
 } from "lightweight-charts-react-components";
-import { create } from "zustand";
-import { colors } from "@/colors";
-import {
-  generateHistogramData,
-  generateLineData,
-  generateOHLCData,
-} from "@/common/generateSeriesData";
-import type { SeriesDataItemTypeMap } from "lightweight-charts";
 import type { SeriesProps } from "lightweight-charts-react-components";
+import type { SeriesDataItemTypeMap } from "lightweight-charts";
 import type { ComponentType } from "react";
 
 type BasicSeriesType = Exclude<keyof SeriesDataItemTypeMap, "Custom">;

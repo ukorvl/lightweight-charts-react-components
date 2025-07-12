@@ -1,12 +1,12 @@
 import { Tab, Tabs } from "@mui/material";
+import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { typedObjectKeys } from "@/common/utils";
+import { samplesLinks } from "@/samples";
 import {
   Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
-import { typedObjectKeys } from "@/common/utils";
-import { samplesLinks } from "@/samples";
 import { basicSeriesMap, useSeriesStore, useTabStore } from "./basicSeriesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 

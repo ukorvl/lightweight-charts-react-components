@@ -1,12 +1,12 @@
+import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { samplesLinks } from "@/samples";
+import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   Chart,
   CustomSeries as CustomSeriesComponent,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
-import { samplesLinks } from "@/samples";
-import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { GroupedBarsSeries } from "./plugin";
 
 const CustomSeries = () => {

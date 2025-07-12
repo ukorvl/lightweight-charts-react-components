@@ -97,4 +97,21 @@ describe("useMarkers", () => {
 
     expect(mockSetMarkers).toHaveBeenCalledWith(newMarkers);
   });
+
+  it("should not render if series api is null", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      seriesApiRef: {
+        api: () => null,
+      },
+      isReady: true,
+    });
+
+    const { result } = renderHook(() =>
+      useMarkers({
+        markers: [],
+      })
+    );
+
+    expect(result.current.current.api()).toBeNull();
+  });
 });

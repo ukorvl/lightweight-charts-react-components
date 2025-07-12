@@ -1,0 +1,34 @@
+name: Benchmark check
+description: "Runs performance benchmarks on the code in the repo and compares them with previous results"
+
+inputs:
+  bench-results-path:
+    description: "Relative to the root path to the file where benchmark results are stored"
+    required: true
+    default: "lib/tests/bench/output/benchmark-results.json"
+  gh-bench-output-path:
+    description: "Relative to the root path to the file where GitHub Action benchmark results will be stored"
+    required: true
+    default: "lib/tests/bench/output/github-action-benchmark-results.json"
+  github-token:
+    description: "GitHub token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check that vitest benchmarks are available
+      id: check-benchmarks-file
+      run: |
+        if [ ! -f "${{ inputs.bench-results-path }}" ]; then
+          echo "Benchmark results file not found: ${{ inputs.bench-results-path }}"
+          echo "benchmarks-file-exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Run benchmarks
+      if: steps.check-benchmarks-file.outputs.benchmarks-file-exists != 'false'
+      run: |
+        cd lib
+        npm run test:bench -- --run
+      shell: bash

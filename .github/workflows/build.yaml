@@ -11,6 +11,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build:
     name: Build
@@ -24,7 +28,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Build
         uses: ./.github/actions/build
@@ -35,4 +39,10 @@ jobs:
         uses: ./.github/actions/test
         with:
           upload-coverage: ${{ github.event_name == 'push' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Benchmark
+        if: github.event_name == 'pull_request'
+        uses: ./.github/actions/bench
+        with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

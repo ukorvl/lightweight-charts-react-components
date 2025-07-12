@@ -5,11 +5,12 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
+    "lint:md-links": "node ./scripts/check-md-links.mts",
     "format": "prettier --check './**/*.{ts,tsx,json,mjs,md}'",
     "format:fix": "prettier --write './**/*.{ts,tsx,json,mjs,md}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
     "build": "bash ./scripts/build-all.sh",
-    "test:all": "concurrently \"npm run test:all -w lib\" \"npm run test:all -w examples\"",
+    "test:all": "concurrently \"npm run test -w lib\" \"npm run test -w examples\"",
     "install-git-hooks": "npx --no-install simple-git-hooks",
     "prepare": "npm run install-git-hooks && playwright install --with-deps",
     "knip": "knip --production",
@@ -43,10 +44,13 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-vitest": "^0.5.4",
+    "glob": "^11.0.3",
     "globals": "^16.2.0",
     "jsdom": "^26.1.0",
     "knip": "^5.46.5",
     "lint-staged": "^15.5.0",
+    "markdown-it-anchor": "^9.2.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.5.2",
     "simple-git-hooks": "^2.11.1",
     "size-limit": "^11.2.0",
@@ -71,7 +75,7 @@
     "lib": "lib"
   },
   "engines": {
-    "node": ">=22.0.0",
+    "node": ">=24.0.0",
     "npm": ">=10.0.0"
   },
   "lint-staged": {
@@ -85,15 +89,13 @@
       "examples/src/samples/**/sandbox/**",
       "lib/src/pane/**",
       "lib/rslib.config.ts",
-      "lib/tests/**"
+      "lib/tests/**",
+      "scripts/check-md-links.mts"
     ],
     "ignoreBinaries": [
       "lint-staged",
       "commitlint",
       "commit-msg"
     ]
-  },
-  "overrides": {
-    "eslint": "^9.28.0"
   }
 }

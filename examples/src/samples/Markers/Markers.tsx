@@ -1,4 +1,8 @@
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { colors } from "@/colors";
+import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { samplesLinks } from "@/samples";
+import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   CandlestickSeries,
   Chart,
@@ -6,10 +10,6 @@ import {
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { colors } from "@/colors";
-import { chartCommonOptions } from "@/common/chartCommonOptions";
-import { samplesLinks } from "@/samples";
-import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { seriesData, useMarkersStore } from "./markersStore";
 
 const MarkersSample = () => {

@@ -1,4 +1,7 @@
 import { useTheme } from "@mui/material";
+import { colors } from "@/colors";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { samplesLinks } from "@/samples";
 import {
   CandlestickSeries,
   Chart,
@@ -10,9 +13,6 @@ import {
   Pane,
   WatermarkText,
 } from "lightweight-charts-react-components";
-import { colors } from "@/colors";
-import { withChartCommonOptions } from "@/common/chartCommonOptions";
-import { samplesLinks } from "@/samples";
 import { ohlcData, rsiData, volumeData } from "./panesData";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 

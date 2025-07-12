@@ -1,4 +1,8 @@
 import { debounce, useTheme } from "@mui/material";
+import { useCallback, useMemo } from "react";
+import { colors } from "@/colors";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { samplesLinks } from "@/samples";
 import {
   Chart,
   LineSeries,
@@ -7,10 +11,6 @@ import {
   TimeScaleFitContentTrigger,
   WatermarkText,
 } from "lightweight-charts-react-components";
-import { useCallback, useMemo } from "react";
-import { colors } from "@/colors";
-import { withChartCommonOptions } from "@/common/chartCommonOptions";
-import { samplesLinks } from "@/samples";
 import { useInfiniteDataStore } from "./infiniteDataStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { LogicalRange, LogicalRangeChangeEventHandler } from "lightweight-charts";
