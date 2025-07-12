@@ -112,8 +112,8 @@ const Tooltip = ({
           width={colorPickerSize}
           height={colorPickerSize}
           color={color}
-          onChange={color => {
-            setColor(color.hex);
+          onChange={col => {
+            setColor(col.hex);
           }}
         />
         <Button
@@ -210,8 +210,12 @@ const Primitives = () => {
                 priceLineVisible: false,
               }}
             >
-              {primitives.map(({ uid, options, time }) => (
-                <MemoizedVerticalLinePrimitive key={uid} time={time} options={options} />
+              {primitives.map(({ uid, options, time: primitiveTime }) => (
+                <MemoizedVerticalLinePrimitive
+                  key={uid}
+                  time={primitiveTime}
+                  options={options}
+                />
               ))}
             </LineSeries>
             <TimeScale onVisibleTimeRangeChange={close}>

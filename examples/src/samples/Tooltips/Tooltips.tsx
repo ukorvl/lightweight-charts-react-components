@@ -183,11 +183,11 @@ const MultipleSeriesTooltipChart = () => {
       containerProps={{ style: { flexGrow: "1", position: "relative" } }}
       onCrosshairMove={onCrosshairMove}
     >
-      {multipleSeriesData.map(({ data, color }, index) => (
+      {multipleSeriesData.map(({ data: seriesData, color }, index) => (
         <LineSeries
           key={index}
           ref={refs[index]}
-          data={data}
+          data={seriesData}
           options={{
             color,
             lineWidth: 2,

@@ -9,7 +9,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "echo 'No tests available' && exit 0"
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:all": "npm run test:e2e"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",
@@ -31,6 +33,7 @@
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-error-boundary": "^6.0.0",
     "zustand": "^5.0.3"
   }
 }

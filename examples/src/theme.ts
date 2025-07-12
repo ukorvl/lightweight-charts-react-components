@@ -81,6 +81,9 @@ const theme = createTheme({
       disabled: colors.gray100,
     },
     divider: colors.gray100,
+    error: {
+      main: colors.red,
+    },
   },
   typography: {
     fontFamily: "Roboto",

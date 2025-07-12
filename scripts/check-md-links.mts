@@ -40,8 +40,8 @@ class LinkChecker {
     const links: Array<Link> = [];
     const tokens = md.parse(content, {});
 
-    const extractFromTokens = (tokens: ReturnType<typeof md.parse>) => {
-      for (const token of tokens) {
+    const extractFromTokens = (tks: ReturnType<typeof md.parse>) => {
+      for (const token of tks) {
         if (token.type === "link_open") {
           const href = token.attrGet("href");
 

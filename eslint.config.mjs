@@ -17,6 +17,7 @@ export default [
       "**/.rslib",
       "lib/tests/readme/extracted-snippets",
       "lib/tests/bench/output",
+      "examples/tests/e2e/output",
     ],
   },
   {
@@ -41,11 +42,14 @@ export default [
       "import/resolver": {
         typescript: {
           project: ["./lib/tsconfig.json", "./examples/tsconfig.json"],
+          noWarnOnMultipleProjects: true,
         },
       },
     },
     rules: {
       "no-console": "error",
+      "no-debugger": "error",
+      "no-shadow": "error",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "@typescript-eslint/no-unused-expressions": "off",
