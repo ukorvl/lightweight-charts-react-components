@@ -1,4 +1,4 @@
-# 📦 Migration guide
+# Migration guide
 
 This guide explains how to upgrade to the latest version of `lightweight-charts-react-components`.
 If you're stuck, [open an issue](https://github.com/ukorvl/lightweight-charts-react-components/issues) or ask a question in the [discussions](https://github.com/ukorvl/lightweight-charts-react-components/discussions).

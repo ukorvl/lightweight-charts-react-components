@@ -13,6 +13,8 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@rslib/core"
         update-types: ["version-update:semver-minor"]
+      - dependency-name: "rsbuild-plugin-dts"
+        update-types: ["version-update:semver-minor"]
       - dependency-name: "vitest"
         update-types: ["version-update:semver-minor"]
     groups:
