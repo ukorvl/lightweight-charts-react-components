@@ -19,6 +19,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest
+      options: --user pwuser
     steps:
       - name: Clone repository
         uses: actions/checkout@v4

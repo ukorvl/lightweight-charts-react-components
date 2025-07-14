@@ -12,7 +12,7 @@
     "build": "bash ./scripts/build-all.sh",
     "test:all": "concurrently \"npm run test -w lib\" \"npm run test -w examples\"",
     "install-git-hooks": "npx --no-install simple-git-hooks",
-    "prepare": "npm run install-git-hooks && playwright install --with-deps",
+    "prepare": "npm run install-git-hooks",
     "knip": "knip --production",
     "version": "bash ./scripts/version.sh"
   },
