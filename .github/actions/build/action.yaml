@@ -35,7 +35,9 @@ runs:
 
     - name: Lint commits
       if: ${{ inputs.check-commits == 'true' }}
-      run: npm run lint:commits
+      run: |
+        git config --global --add safe.directory "$(pwd)"
+        npm run lint:commits
       shell: bash
 
     - name: Build

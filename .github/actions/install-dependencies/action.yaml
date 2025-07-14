@@ -24,30 +24,3 @@ runs:
       run: npm ci --ignore-scripts --audit=false
       shell: bash
 
-    - name: Get playwright version
-      if: inputs.install-playwright == 'true'
-      id: playwright-version
-      run: |
-        version=$(npx --no-install playwright --version)
-        echo "playwright_version=$version" >> $GITHUB_OUTPUT
-      shell: bash
-
-    - name: Cache playwright browsers
-      if: inputs.install-playwright == 'true'
-      id: cache-playwright
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.playwright_version }}
-        restore-keys: |
-          ${{ runner.os }}-playwright-
-
-    - name: Install Playwright browsers and dependencies
-      if: inputs.install-playwright == 'true'
-      run: |
-        if [ "${{ steps.cache-playwright.outputs.cache-hit }}" == "true" ]; then
-          npx --no-install playwright install-deps
-        else
-          npx --no-install playwright install --with-deps
-        fi
-      shell: bash
