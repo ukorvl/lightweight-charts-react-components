@@ -16,6 +16,9 @@ fi
 
 # Get the first commit hash (the base commit)
 FIRST_COMMIT=$(git rev-list --max-parents=0 HEAD)
+NUMBER_OF_COMMITS=$(git rev-list --count HEAD)
+
+echo "Linting $NUMBER_OF_COMMITS commits..."
 
 # Run commitlint for all commits
 echo "Running Commitlint on all commits..."
