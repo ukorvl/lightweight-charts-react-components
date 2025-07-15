@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
-          node-version: 24
+          setup-node: false # don't need to setup node, it's already in the container
 
       - name: Build
         uses: ./.github/actions/build
