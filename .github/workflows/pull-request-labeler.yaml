@@ -14,6 +14,10 @@ jobs:
       contents: read
       pull-requests: write
     steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Add Labels for PR
         uses: actions/labeler@v5
         with:
