@@ -27,7 +27,7 @@ runs:
       shell: bash
 
     - name: Run benchmarks
-      if: steps.check-benchmarks-file.outputs.benchmarks-file-exists != 'false'
+      if: steps.check-benchmarks-file.outputs.benchmarks-file-exists == 'false'
       run: |
         cd lib
         npm run test:bench -- --run
