@@ -49,3 +49,6 @@ Thumbs.db
 *.log.*
 
 *.tsbuildinfo
+
+# lighthouse
+.lighthouseci/
