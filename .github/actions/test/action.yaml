@@ -10,6 +10,11 @@ inputs:
   github-token:
     description: "GitHub token to authenticate with Coveralls"
     required: true
+  coverage-report:
+    description: "Whether to generate a coverage report"
+    required: false
+    type: "boolean"
+    default: false
 
 runs:
   using: "composite"
@@ -19,6 +24,15 @@ runs:
         export CI=true
         npm run test:all
       shell: bash
+
+    - name: Report lib coverage
+      uses:  davelosert/vitest-coverage-report-action@v2
+      if: ${{ inputs.coverage-report == 'true' }}
+      with:
+        github-token: ${{ inputs.github-token }}
+        json-summary-path: "coverage/coverage-summary.json"
+        working-directory: "lib"
+        json-summary-compare-path: "coverage/coverage-summary.json"
 
     - name: Upload tests (lib only) coverage to Coveralls
       if: ${{ inputs.upload-coverage == 'true' }}
