@@ -43,6 +43,7 @@ jobs:
         with:
           upload-coverage: ${{ github.event_name == 'push' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          coverage-report: ${{ github.event_name == 'pull_request' }}
 
       - name: Benchmark
         if: github.event_name == 'pull_request'
