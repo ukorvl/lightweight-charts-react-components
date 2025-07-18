@@ -21,6 +21,8 @@ tests:
       - '**/*.spec.ts'
       - '**/*.test.tsx'
       - '**/*.spec.tsx'
+      - '**/vitest.config.ts'
+      - '**/playwright.config.ts'
 
 examples:
   - changed-files:
