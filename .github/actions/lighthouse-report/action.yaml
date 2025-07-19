@@ -1,0 +1,31 @@
+name: "Lighthouse"
+description: "Runs Lighthouse audits"
+
+inputs:
+  github-token:
+    description: "GitHub token to authenticate with Coveralls"
+    required: true
+  results-path:
+    description: "Relative to the root path to the file where Lighthouse results will be stored"
+    required: true
+    default: "examples/.lighthouseci/assertion-results.json"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check that lighthouse results file exists
+      id: check-lighthouse-file
+      run: |
+        if [ ! -f "${{ inputs.results-path }}" ]; then
+          echo "Lighthouse run results file not found: ${{ inputs.results-path }}"
+          echo "results-file-exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Run Lighthouse CI
+      if: steps.check-lighthouse-file.outputs.results-file-exists == 'false'
+      run: |
+        npx --no-install lhc healthcheck --fatal
+        npm run test:lighthouse
+      shell: bash
+      working-directory: examples

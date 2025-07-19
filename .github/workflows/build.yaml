@@ -50,3 +50,9 @@ jobs:
         uses: ./.github/actions/bench
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lighthouse
+        if: github.event_name == 'pull_request'
+        uses: ./.github/actions/lighthouse-report
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

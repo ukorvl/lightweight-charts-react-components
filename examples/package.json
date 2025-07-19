@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test": "npm run test:e2e"
+    "test:lighthouse": "lhci autorun",
+    "test": "run-s test:*"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",

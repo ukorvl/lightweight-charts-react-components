@@ -19,6 +19,7 @@ export default [
       "lib/tests/bench/output",
       "examples/tests/e2e/output",
       "lib/tests/readme/extracted-snippets",
+      ".lighthouseci",
     ],
   },
   {
