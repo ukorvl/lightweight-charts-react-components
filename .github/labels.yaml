@@ -81,3 +81,7 @@
 - name: ai
   description: "Everything related to AI tools, e.g configuration, adjustments"
   color: "f2c94c"
+
+- name: eslint
+  description: "Changes related to ESLint configuration or rules"
+  color: "f0feff"

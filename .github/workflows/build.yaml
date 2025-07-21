@@ -32,7 +32,6 @@ jobs:
         uses: ./.github/actions/install-dependencies
         with:
           setup-node: false # don't need to setup node, it's already in the container
-          install-chrome: true # install Chrome for Lighthouse tests
 
       - name: Build
         uses: ./.github/actions/build
