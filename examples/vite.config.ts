@@ -10,6 +10,9 @@ import type { UserConfigFn } from "vite";
 
 const env = loadEnv("", process.cwd(), "");
 
+const fontHref =
+  "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:ital,wght@0,300..700;1,300..700&display=swap";
+
 export const htmlConfig: Options = {
   title: env.VITE_APP_DEFAULT_TITLE,
   metas: [
@@ -121,6 +124,7 @@ export const htmlConfig: Options = {
       type: "image/svg+xml",
       href: `${env.VITE_GITHUB_STATIC_ASSETS_BASE_URL}/logo.svg`,
     },
+    // Tells browser to establish TLS as early as possible
     {
       rel: "preconnect",
       href: "https://fonts.googleapis.com",
@@ -130,9 +134,17 @@ export const htmlConfig: Options = {
       href: "https://fonts.gstatic.com",
       crossOrigin: "true",
     },
+    // Preload the font and act like a style in order not to block rendering while the font is loading
+    {
+      rel: "preload",
+      as: "style",
+      href: fontHref,
+    },
+    // Reuses the preloaded font and applies it to the document avoiding blocking while the font is loading
     {
       rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:ital,wght@0,300..700;1,300..700&display=swap",
+      href: fontHref,
+      media: "all",
     },
   ],
 };
