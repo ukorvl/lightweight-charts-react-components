@@ -130,8 +130,23 @@ export default [
       jsdoc: pluginJsdoc,
     },
     rules: {
+      "jsdoc/require-jsdoc": [
+        "error",
+        {
+          require: {
+            FunctionDeclaration: true,
+            MethodDefinition: false,
+            ClassDeclaration: false,
+            ArrowFunctionExpression: false,
+            FunctionExpression: false,
+          },
+        },
+      ],
       "jsdoc/check-alignment": "error",
       "jsdoc/check-indentation": "error",
+      "jsdoc/require-description": "warn",
+      "jsdoc/check-syntax": "error",
+      "jsdoc/require-asterisk-prefix": "warn",
       "jsdoc/check-param-names": "warn",
       "jsdoc/check-tag-names": "warn",
       "jsdoc/check-types": "off",

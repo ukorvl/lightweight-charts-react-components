@@ -39,3 +39,9 @@ core:
   - changed-files:
     - any-glob-to-any-file:
       - 'lib/src/**'
+
+eslint:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'eslint.config.*'
+      - '.eslintignore'
