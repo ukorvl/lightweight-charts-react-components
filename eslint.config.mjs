@@ -1,6 +1,7 @@
 import pluginJs from "@eslint/js";
 import pluginImport from "eslint-plugin-import";
 import pluginJsdoc from "eslint-plugin-jsdoc";
+import playwright from "eslint-plugin-playwright";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import vitest from "eslint-plugin-vitest";
@@ -186,6 +187,13 @@ export default [
           ignore: ["describe"],
         },
       ],
+    },
+  },
+  {
+    ...playwright.configs["flat/recommended"],
+    files: ["**/tests/e2e/**/*.ts", "**/tests/e2e/**/*.tsx"],
+    rules: {
+      ...playwright.configs["flat/recommended"].rules,
     },
   },
 ];

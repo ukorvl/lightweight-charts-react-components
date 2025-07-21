@@ -25,7 +25,7 @@ test.describe("Main page", () => {
     const metas = ["description", "keywords", "author"];
 
     for (const meta of metas) {
-      const metaTag = await page.locator(`meta[name="${meta}"]`);
+      const metaTag = page.locator(`meta[name="${meta}"]`);
       await expect(metaTag).toHaveCount(1);
       await expect(metaTag).toHaveAttribute("name", meta);
       await expect(metaTag).toHaveAttribute("content", expect.any(String));
@@ -33,13 +33,13 @@ test.describe("Main page", () => {
   });
 
   test("canvas rendering", async ({ page }) => {
-    const exampleSection = await page.getByLabel("Examples of library usage");
+    const exampleSection = page.getByLabel("Examples of library usage");
     await expect(exampleSection).toHaveCount(1);
 
-    const examples = await exampleSection.locator(">div");
+    const examples = exampleSection.locator(">div");
     await expect(examples).toHaveCount(examplesCount);
 
-    const canvases = await examples.locator("canvas");
+    const canvases = examples.locator("canvas");
     const canvasesCount = await canvases.count();
     for (let i = 0; i < canvasesCount; i++) await expect(canvases.nth(i)).toBeVisible();
   });
@@ -60,7 +60,10 @@ test.describe("Main page", () => {
           .soft(response.ok(), `${externalURl} didn't return Ok response`)
           .toBeTruthy();
       } catch {
-        expect.soft(false, `${externalURl} didnt return Ok response `);
+        // eslint-disable-next-line playwright/no-conditional-expect
+        expect
+          .soft(false, `Failed to fetch ${externalURl}, check if the link is valid`)
+          .toBeFalsy();
       }
     }
   });
