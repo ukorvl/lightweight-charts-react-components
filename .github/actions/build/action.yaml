@@ -50,7 +50,6 @@ runs:
         fi
 
         npm run build
-        ls -la examples/dist
       shell: bash
 
     - name: Check lib exports
