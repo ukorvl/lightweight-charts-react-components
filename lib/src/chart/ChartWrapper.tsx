@@ -39,8 +39,24 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
   );
 };
 
-const ChartWrapper: ForwardRefExoticComponent<
+/**
+ * Chart component that can be used to create a chart.
+ *
+ * @param props - The properties for the chart.
+ * @param ref - The ref to access the chart API.
+ * @returns A React component that renders the chart.
+ * @see {@link https://ukorvl.github.io/lightweight-charts-react-components/docs/chart | Chart documentation}
+ * @see {@link https://tradingview.github.io/lightweight-charts/docs/chart-types | TradingView documentation for charts}
+ * @example
+ * ```tsx
+ * <Chart>
+ *   <Pane stretchFactor={2}>
+ *     ...
+ *   </Pane>
+ * </Chart>
+ * ```
+ */
+export const ChartWrapper: ForwardRefExoticComponent<
   ChartProps & RefAttributes<HTMLDivElement>
 > = forwardRef(ChartRenderFunction);
 ChartWrapper.displayName = "ChartWrapper";
-export { ChartWrapper };

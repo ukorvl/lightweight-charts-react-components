@@ -131,29 +131,50 @@ export default [
       jsdoc: pluginJsdoc,
     },
     rules: {
+      ...pluginJsdoc.configs["recommended-typescript-error"].rules,
+
       "jsdoc/require-jsdoc": [
         "error",
         {
-          require: {
-            FunctionDeclaration: true,
-            MethodDefinition: false,
-            ClassDeclaration: false,
-            ArrowFunctionExpression: false,
-            FunctionExpression: false,
+          publicOnly: {
+            esm: true,
+            cjs: false,
           },
+          contexts: [
+            // We can assume that all React components are functions starting with uppercase
+            // We export only components, so we can skip the check for other functions
+            "VariableDeclarator[id.name=/^[A-Z]/]",
+          ],
         },
       ],
-      "jsdoc/check-alignment": "error",
+
       "jsdoc/check-indentation": "error",
-      "jsdoc/require-description": "warn",
-      "jsdoc/check-syntax": "error",
-      "jsdoc/require-asterisk-prefix": "warn",
-      "jsdoc/check-param-names": "warn",
-      "jsdoc/check-tag-names": "warn",
-      "jsdoc/check-types": "off",
-      "jsdoc/empty-tags": "warn",
-      "jsdoc/require-param": "warn",
-      "jsdoc/require-returns": "warn",
+      "jsdoc/require-asterisk-prefix": "error",
+      "jsdoc/require-throws": "error",
+      "jsdoc/sort-tags": "error",
+      "jsdoc/require-description": "error",
+      "jsdoc/require-example": "error",
+      "jsdoc/require-description-complete-sentence": "error",
+      "jsdoc/tag-lines": [
+        "error",
+        "any",
+        {
+          startLines: 1,
+          endLines: 0,
+        },
+      ],
+      "jsdoc/require-param": [
+        "error",
+        {
+          checkDestructured: false,
+        },
+      ],
+      "jsdoc/check-param-names": [
+        "error",
+        {
+          checkDestructured: false,
+        },
+      ],
     },
   },
   {
