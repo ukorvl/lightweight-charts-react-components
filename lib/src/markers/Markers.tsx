@@ -13,7 +13,25 @@ const MarkersRenderFunction = (
   return null;
 };
 
-const Markers: ForwardRefExoticComponent<MarkersProps & RefAttributes<MarkersApiRef>> =
-  forwardRef(MarkersRenderFunction);
+/**
+ * Markers component that can be used to add markers to a chart pane.
+ *
+ * @param props - The properties for the markers.
+ * @param ref - The ref to access the markers API.
+ * @returns A React component that renders the markers.
+ * @see {@link https://tradingview.github.io/lightweight-charts/tutorials/how_to/series-markers | Markers documentation}
+ * @see {@link https://tradingview.github.io/lightweight-charts/docs/markers | TradingView documentation for markers}
+ * @example
+ * ```tsx
+ * <Markers
+ *  markers={[
+ *    { time: 1622548800, position: "aboveBar", color: "red", shape: "arrowUp" },
+ *    { time: 1622548800, position: "belowBar", color: "green", shape: "arrowDown" },
+ *  ]}
+ * />
+ * ```
+ */
+export const Markers: ForwardRefExoticComponent<
+  MarkersProps & RefAttributes<MarkersApiRef>
+> = forwardRef(MarkersRenderFunction);
 Markers.displayName = "Markers";
-export { Markers };

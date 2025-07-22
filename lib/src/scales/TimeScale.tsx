@@ -27,8 +27,20 @@ const TimeScaleRenderFunction = (
   );
 };
 
-const TimeScale: ForwardRefExoticComponent<
+/**
+ * TimeScale component that can be used to create/customize time scale in a chart.
+ *
+ * @param props - The properties for the time scale.
+ * @param ref - The ref to access the time scale API.
+ * @returns A React component that renders the time scale.
+ * @see {@link https://ukorvl.github.io/lightweight-charts-react-components/docs/time-scale | Time Scale documentation}
+ * @see {@link https://tradingview.github.io/lightweight-charts/docs/time-scale | TradingView documentation for time scale}
+ * @example
+ * ```tsx
+ * <TimeScale visibleRange={{ from: 0, to: 100 }} onVisibleRangeChanged={() => {}} />
+ * ```
+ */
+export const TimeScale: ForwardRefExoticComponent<
   TimeScaleProps & RefAttributes<TimeScaleApiRef>
 > = forwardRef(TimeScaleRenderFunction);
 TimeScale.displayName = "TimeScale";
-export { TimeScale };
