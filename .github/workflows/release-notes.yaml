@@ -1,0 +1,57 @@
+name: Release Notes on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr-release-notes:
+    name: Generate Release Notes on PR
+    if: startsWith(github.head_ref, 'release')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: latest_tag
+        run: |
+          tag=$(git describe --tags --abbrev=0 origin/main || echo "")
+          echo "Latest tag: $tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          since="${{ steps.latest_tag.outputs.tag }}"
+          if [ -z "$since" ]; then
+            notes=$(git log --pretty=format:'- %s (%h)' origin/main..HEAD)
+          else
+            notes=$(git log --pretty=format:'- %s (%h)' "$since"..HEAD)
+          fi
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$notes" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Post release notes as PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            ## Release Notes (Preview)
+            This pull request is created for the release branch `${{ github.head_ref }}`.
+            Please find below the list of changes that will be included in the expected release.
+            
+            ### Changes since last release:
+            ${{ env.RELEASE_NOTES }}
+          recreate: true
