@@ -70,6 +70,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
 5. **Release**:
    When there is a need to release a new version of the library, repository maintainers should create a special commit and a tag, associated with the new version. A new version should be added to the `CHANGELOG.md` file and the version in `package.json` should be updated. The version should follow [Semantic Versioning](https://semver.org/).
    To create a new release, run `Release` workflow in the GitHub Actions tab. This will create a new release and publish it to npm.
+   Always consider to run `Release` workflow on release branch only, to avoid potentially unsuccessful releases on the main branch.
 
 ## Issues and Feature Requests
 
