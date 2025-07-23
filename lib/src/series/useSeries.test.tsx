@@ -16,14 +16,17 @@ vi.mock("@/pane/usePaneContext", () => ({
 }));
 
 const mockApplyOptions = vi.fn();
+const mockSetSeriesOrder = vi.fn();
 const mockAddSeries = vi.fn().mockReturnValue({
   setData: vi.fn(),
   applyOptions: mockApplyOptions,
+  setSeriesOrder: mockSetSeriesOrder,
 });
 const mockRemoveSeries = vi.fn();
 const mockAddCustomSeries = vi.fn().mockReturnValue({
   setData: vi.fn(),
   applyOptions: mockApplyOptions,
+  setSeriesOrder: mockSetSeriesOrder,
 });
 
 const mockChart = {
@@ -220,5 +223,22 @@ describe("useSeries", () => {
         })
       )
     ).toThrow("Custom series requires a plugin to be defined");
+  });
+
+  it("should set series order if provided", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    renderHook(() =>
+      useSeries({
+        type: "Line",
+        data: [],
+        seriesOrder: 1,
+      })
+    );
+
+    expect(mockSetSeriesOrder).toHaveBeenCalledWith(1);
   });
 });

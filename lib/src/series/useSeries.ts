@@ -21,6 +21,7 @@ export const useSeries = <T extends SeriesType>({
   data,
   options = {},
   reactive = true,
+  seriesOrder,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
@@ -63,6 +64,9 @@ export const useSeries = <T extends SeriesType>({
         }
 
         this._series?.setData(data);
+        if (seriesOrder !== undefined) {
+          this._series?.setSeriesOrder(seriesOrder);
+        }
         setIsReady(true);
       }
 
@@ -108,6 +112,14 @@ export const useSeries = <T extends SeriesType>({
       seriesApiRef.current.api()?.applyOptions(options);
     }
   }, [options]);
+
+  useLayoutEffect(() => {
+    if (!chart) return;
+
+    if (seriesOrder !== undefined) {
+      seriesApiRef.current.api()?.setSeriesOrder(seriesOrder);
+    }
+  }, [seriesOrder]);
 
   return { isReady, seriesApiRef };
 };
