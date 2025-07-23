@@ -144,6 +144,8 @@ export default [
             // We can assume that all React components are functions starting with uppercase
             // We export only components, so we can skip the check for other functions
             "VariableDeclarator[id.name=/^[A-Z]/]",
+            "TSTypeAliasDeclaration",
+            "TSInterfaceDeclaration",
           ],
         },
       ],

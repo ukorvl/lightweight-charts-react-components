@@ -7,6 +7,9 @@ import {
 } from "lightweight-charts";
 import type { JSX, ReactNode } from "react";
 
+/**
+ * Chart component props.
+ */
 export type ChartProps = {
   children?: ReactNode;
   containerProps?: JSX.IntrinsicElements["div"];
@@ -17,6 +20,9 @@ export type ChartProps = {
   onDblClick?: MouseEventHandler<Time>;
 };
 
+/**
+ * Chart API reference type that can be used to access the chart plugin API.
+ */
 export type ChartApiRef = {
   _chart: IChartApi | null;
   api: () => IChartApi | null;
@@ -24,15 +30,24 @@ export type ChartApiRef = {
   clear: () => void;
 };
 
+/**
+ * Chart context that provides access to the chart API and readiness state.
+ */
 export interface IChartContext {
   chartApiRef: ChartApiRef | null;
   isReady: boolean;
 }
 
+/**
+ * Chart component properties that can be used to create a chart.
+ */
 export type ChartComponentProps = {
   container: HTMLElement;
 } & Omit<ChartProps, "containerProps">;
 
+/**
+ * Options for the useChart hook.
+ */
 export type UseChartOptions = {
   container: HTMLElement;
 } & Omit<ChartProps, "children" | "containerProps">;
