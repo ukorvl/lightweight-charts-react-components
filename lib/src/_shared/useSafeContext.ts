@@ -1,7 +1,7 @@
 import { type Context, useContext } from "react";
 import { BaseInternalError } from "./InternalError";
 
-export const useSafeContext = <T>(context: Context<T>, errorMessage?: string) => {
+const useSafeContext = <T>(context: Context<T>, errorMessage?: string) => {
   const currentContextValue = useContext(context);
 
   if (!currentContextValue) {
@@ -13,3 +13,5 @@ export const useSafeContext = <T>(context: Context<T>, errorMessage?: string) =>
 
   return currentContextValue;
 };
+
+export { useSafeContext };

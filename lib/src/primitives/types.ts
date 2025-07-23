@@ -5,6 +5,9 @@ import type {
   SeriesType,
 } from "lightweight-charts";
 
+/**
+ * Series primitive API reference type that can be used to access the series primitive plugin API.
+ */
 export type SeriesPrimitiveApiRef = {
   _primitive: ISeriesPrimitive | null;
   api(): ISeriesPrimitive | null;
@@ -12,6 +15,9 @@ export type SeriesPrimitiveApiRef = {
   clear(): void;
 };
 
+/**
+ * Render function type for series primitives.
+ */
 export type RenderPrimitive<T extends SeriesType = SeriesType> = ({
   chart,
   series,
@@ -30,6 +36,9 @@ type SeriesPrimitivePropsWithPlugin = {
   render?: never;
 };
 
+/**
+ * Series primitive properties that can be used to create a series primitive.
+ */
 export type SeriesPrimitiveProps<T extends SeriesType = SeriesType> =
   | SeriesPrimitivePropsWithRender<T>
   | SeriesPrimitivePropsWithPlugin;
