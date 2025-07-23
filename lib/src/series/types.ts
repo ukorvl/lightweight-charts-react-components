@@ -18,6 +18,7 @@ type SeriesParameters<T extends SeriesType> = {
   data: SeriesDataItemTypeMap[T][];
   reactive?: boolean;
   options?: SeriesOptions<T>;
+  seriesOrder?: ReturnType<ISeriesApi<T>["seriesOrder"]>;
 } & (T extends "Custom" ? CustomSeriesUniqueProps : {});
 
 /**
