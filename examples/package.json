@@ -28,6 +28,7 @@
     "@mui/material": "^6.4.7",
     "@react-hook/resize-observer": "^2.0.2",
     "@uiw/react-color-wheel": "^2.7.1",
+    "@ukorvl/react-on-screen": "^1.0.7",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
     "fancy-canvas": "^2.1.0",

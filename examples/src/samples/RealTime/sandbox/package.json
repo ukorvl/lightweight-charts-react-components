@@ -1,5 +1,5 @@
 {
-  "name": "lightweight-charts-react-components-basic-series-example",
+  "name": "lightweight-charts-react-components-real-time-updates-example",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -14,6 +14,7 @@
     "lightweight-charts": ">=5 < 6"
   },
   "devDependencies": {
+    "dayjs": "^1.11.13",
     "vite": "^5.0.0",
     "@types/react": "^19.1.0",
     "@vitejs/plugin-react": "^4.0.0",

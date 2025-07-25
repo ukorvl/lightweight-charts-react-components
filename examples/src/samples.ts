@@ -82,6 +82,11 @@ const samplesLinks = {
     codesandbox: "",
     stackblitz: "",
   },
+  RealTime: {
+    github: `${githubSamplesLocation}/RealTime`,
+    codesandbox: `${codeSandboxUrlBase}/RealTime/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/RealTime/sandbox`,
+  },
 } as const;
 
 export { samplesLinks, type SampleConfig };
