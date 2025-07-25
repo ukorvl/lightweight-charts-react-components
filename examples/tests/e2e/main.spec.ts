@@ -10,6 +10,8 @@ const examplesCount = readdirSync(samplesDir, { withFileTypes: true }).filter(di
   dirent.isDirectory()
 ).length;
 
+const skipExternalLinksTest = process.env.DISABLE_EXTERNAL_LINK_TEST === "true";
+
 test.describe("Main page", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -45,6 +47,9 @@ test.describe("Main page", () => {
   });
 
   test("valid links", async ({ page }) => {
+    // eslint-disable-next-line playwright/no-skipped-test
+    test.skip(skipExternalLinksTest, "Skipping external links test as per configuration");
+
     const hrefAttrs = await page
       .locator("a")
       .evaluateAll(links => links.map(link => link.getAttribute("href")));
