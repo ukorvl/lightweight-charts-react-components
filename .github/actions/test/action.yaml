@@ -15,6 +15,11 @@ inputs:
     required: false
     type: "boolean"
     default: false
+  disable-external-link-e2e-test:
+    description: "Disable external link tests"
+    required: false
+    type: "boolean"
+    default: false
 
 runs:
   using: "composite"
@@ -22,6 +27,7 @@ runs:
     - name: Run tests
       run: |
         export CI=true
+        export DISABLE_EXTERNAL_LINK_TEST=${{ inputs.disable-external-link-e2e-test }}
         npm run test:all
       shell: bash
 
