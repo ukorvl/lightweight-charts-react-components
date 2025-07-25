@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ukorvl/lightweight-charts-react-components",
+    "url": "https://github.com/ukorvl/lightweight-charts-react-components",
     "directory": "lib"
   },
   "sideEffects": false,

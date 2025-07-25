@@ -17,5 +17,5 @@ export VITE_LIGHTWEIGHT_CHARTS_VERSION=$(
 )
 echo "lightweight-charts-version: $VITE_LIGHTWEIGHT_CHARTS_VERSION"
 
-export VITE_GITHUB_URL=$(jq -r .repository $LIB_PACKAGE_JSON)
+export VITE_GITHUB_URL=$(jq -r .repository.url $LIB_PACKAGE_JSON)
 echo "github-url: $VITE_GITHUB_URL"
