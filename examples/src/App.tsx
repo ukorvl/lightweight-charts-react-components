@@ -10,6 +10,7 @@ import { Panes } from "./samples/Panes/Panes";
 import { PriceLines } from "./samples/PriceLines/PriceLines";
 import { Primitives } from "./samples/Primitives/Primitives";
 import { RangeSwitcher } from "./samples/RangeSwitcher/RangeSwitcher";
+import { RealTime } from "./samples/RealTime/RealTime";
 import { Scales } from "./samples/Scales/Scales";
 import { Tooltips } from "./samples/Tooltips/Tooltips";
 import { Watermark } from "./samples/Watermark/Watermark";
@@ -204,6 +205,7 @@ export const App = () => {
           <InfiniteData />
           <PriceLines />
           <Primitives />
+          <RealTime />
         </LayoutGrid>
       </Stack>
       <Footer
