@@ -1,10 +1,11 @@
 import { Link, Stack, Typography, Box } from "@mui/material";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
+import { lazyWithRetry } from "@/common/lazyWithRetry";
 import { logoKeyframes, textBgKeyframes } from "@/common/styles";
 import { ProgressBox } from "@/ui/ProgressBox";
 import { colors } from "../../common/colors";
 
-const Contents = lazy(() => import("./Contents"));
+const Contents = lazyWithRetry(() => import("./Contents"), "Contents");
 
 export const Index = () => {
   const {
