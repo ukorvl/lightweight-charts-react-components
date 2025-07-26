@@ -16,12 +16,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
-    name: Build
+  build-lint:
+    name: Build and Lint
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest
-      options: --user pwuser
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -31,7 +28,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
-          setup-node: false # don't need to setup node, it's already in the container
+          setup-node: true
 
       - name: Lint
         uses: ./.github/actions/lint
@@ -41,13 +38,73 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
 
+  # runs heavy E2E tests for the examples subdirectory (+ container setup)
+  test-e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest
+      options: --user pwuser
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: false # don't need to setup node, it's already in the container
+
+      - name: Run E2E tests
+        working-directory: examples
+        run: |
+          export CI=true
+          export DISABLE_EXTERNAL_LINK_TEST=${{ github.event_name == 'pull_request' }}
+          npm run test:e2e
+
+  # runs heavy Lighthouse tests for the examples subdirectory (+ container setup)
+  tests-lighthouse:
+    name: Lighthouse Tests
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest
+      options: --user pwuser
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: false # don't need to setup node, it's already in the container
+
+      - name: Run Lighthouse tests
+        working-directory: examples
+        run: |
+          export CI=true
+          npm run test:lighthouse
+
+  # runs relatively lightweight tests for the lib subdirectory
+  tests-lib:
+    name: Lib tests
+    needs: build-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
       - name: Test
-        uses: ./.github/actions/test
+        uses: ./.github/actions/test-lib
         with:
           upload-coverage: ${{ github.event_name == 'push' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           coverage-report: ${{ github.event_name == 'pull_request' }}
-          disable-external-link-e2e-test: ${{ github.event_name == 'pull_request' }}
 
       - name: Benchmark
         if: github.event_name == 'pull_request'
