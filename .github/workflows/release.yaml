@@ -81,12 +81,12 @@ jobs:
           base-path: /lightweight-charts-react-components
           deploy: true
 
-      - name: Test
-        uses: ./.github/actions/test
-        with:
-          upload-coverage: false
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-report: false
+      - name: Run all tests
+        run: |
+          export CI=true
+          export DISABLE_EXTERNAL_LINK_TEST=false
+          npm run test:all
+        shell: bash
 
       - name: Create a new release
         uses: ./.github/actions/create-release

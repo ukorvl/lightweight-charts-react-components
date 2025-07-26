@@ -29,13 +29,6 @@ jobs:
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
-        with:
-          node-version: 24
-
-      - name: Lint
-        uses: ./.github/actions/lint
-        with:
-          check-commits: false
 
       - name: Build
         uses: ./.github/actions/build
