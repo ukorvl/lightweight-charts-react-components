@@ -1,6 +1,5 @@
 import { Container, Link, Stack, Typography, styled, Divider } from "@mui/material";
-import { colors } from "./common/colors";
-import { gradientAnimation } from "./common/styles";
+import { gradientLinkStyles } from "./common/styles";
 import { Footer } from "./ui/Footer";
 import type { ReactNode } from "react";
 
@@ -8,21 +7,11 @@ type LayoutProps = {
   children?: ReactNode;
 };
 
-const GradientLink = styled(Link)(() => ({
-  fontWeight: "bold",
-  background: `linear-gradient(90deg, ${colors.blue} 50%, ${colors.red} 70%)`,
-  backgroundSize: "300% 300%",
-  backgroundPosition: "0 0",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  transition: "background-position 0.3s ease-in-out",
-  "&:hover": {
-    animation: `${gradientAnimation} 2s ease-in-out infinite`,
-    "@media (prefers-reduced-motion: reduce)": {
-      animation: "none",
-      backgroundPosition: "0 0",
-    },
-  },
+const GradientLink = styled(Link)(() => gradientLinkStyles);
+const ExternalGradientLink = styled("a")(() => ({
+  ...gradientLinkStyles,
+  textDecoration: "none",
+  color: "inherit",
 }));
 
 export const Layout = ({ children }: LayoutProps) => {
@@ -52,22 +41,20 @@ export const Layout = ({ children }: LayoutProps) => {
         </GradientLink>
         <Typography color="textDisabled">Docs</Typography>
         <Divider aria-hidden="true" orientation="vertical" flexItem />
-        <GradientLink
-          underline="none"
+        <ExternalGradientLink
           target="_blank"
           rel="noopener noreferrer"
           href={VITE_GITHUB_URL}
         >
           GitHub
-        </GradientLink>
-        <GradientLink
+        </ExternalGradientLink>
+        <ExternalGradientLink
           rel="noopener noreferrer"
           target="_blank"
           href={VITE_NPM_PACKAGE_URL}
-          underline="none"
         >
           Npm
-        </GradientLink>
+        </ExternalGradientLink>
       </Stack>
       {children}
       <Footer
