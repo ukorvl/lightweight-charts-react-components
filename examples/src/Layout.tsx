@@ -1,31 +1,12 @@
-import {
-  Container,
-  Link,
-  Stack,
-  Typography,
-  keyframes,
-  styled,
-  Divider,
-} from "@mui/material";
+import { Container, Link, Stack, Typography, styled, Divider } from "@mui/material";
 import { colors } from "./colors";
+import { gradientAnimation } from "./styles";
 import { Footer } from "./ui/Footer";
 import type { ReactNode } from "react";
 
 type LayoutProps = {
   children?: ReactNode;
 };
-
-const gradientAnimation = keyframes`
-  0%   { background-position: 50% 0; }
-  12.5% { background-position: 70% 0; }
-  25%  { background-position: 75% 0; }
-  37.5% { background-position: 70% 0; }
-  50%  { background-position: 60% 0; }
-  62.5% { background-position: 55% 0; }
-  75%  { background-position: 50% 0; }
-  87.5% { background-position: 35% 0; }
-  100% { background-position: 20% 0; }
-`;
 
 const GradientLink = styled(Link)(() => ({
   fontWeight: "bold",
@@ -66,7 +47,11 @@ export const Layout = ({ children }: LayoutProps) => {
         <GradientLink underline="none" href="#">
           Examples
         </GradientLink>
+        {/* <GradientLink underline="none" href="/#/terminal">
+          Terminal
+        </GradientLink> */}
         <Typography color="textDisabled">Terminal</Typography>
+        <Typography color="textDisabled">Docs</Typography>
         <Divider aria-hidden="true" orientation="vertical" flexItem />
         <GradientLink
           underline="none"
