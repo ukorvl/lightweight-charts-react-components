@@ -1,21 +1,10 @@
 import { Link, Stack, Typography, Box } from "@mui/material";
-import { RealTime } from "@/samples/RealTime/RealTime";
+import { lazy, Suspense } from "react";
 import { logoKeyframes, textBgKeyframes } from "@/styles";
-import { colors } from "../colors";
-import { BasicSeries } from "../samples/BasicSeries/BasicSeries";
-import { CompareSeries } from "../samples/CompareSeries/CompareSeries";
-import { CustomSeries } from "../samples/CustomSeries/CustomSeries";
-import { InfiniteData } from "../samples/InfiniteData/InfiniteData";
-import { WithLegend } from "../samples/Legend/WithLegend";
-import { Markers } from "../samples/Markers/Markers";
-import { Panes } from "../samples/Panes/Panes";
-import { PriceLines } from "../samples/PriceLines/PriceLines";
-import { Primitives } from "../samples/Primitives/Primitives";
-import { RangeSwitcher } from "../samples/RangeSwitcher/RangeSwitcher";
-import { Scales } from "../samples/Scales/Scales";
-import { Tooltips } from "../samples/Tooltips/Tooltips";
-import { Watermark } from "../samples/Watermark/Watermark";
-import { LayoutGrid } from "../ui/LayoutGrid";
+import { ProgressBox } from "@/ui/ProgressBox";
+import { colors } from "../../colors";
+
+const Contents = lazy(() => import("./Contents"));
 
 export const Index = () => {
   const {
@@ -133,22 +122,9 @@ export const Index = () => {
         . It provides a simple declarative way to use the Lightweight-charts library in
         your React application.
       </Typography>
-      <LayoutGrid component="section" aria-label="Examples of library usage">
-        <BasicSeries />
-        <CustomSeries />
-        <RangeSwitcher />
-        <Panes />
-        <Watermark />
-        <WithLegend />
-        <CompareSeries />
-        <Scales />
-        <Tooltips />
-        <Markers />
-        <InfiniteData />
-        <PriceLines />
-        <Primitives />
-        <RealTime />
-      </LayoutGrid>
+      <Suspense fallback={<ProgressBox />}>
+        <Contents />
+      </Suspense>
     </Stack>
   );
 };

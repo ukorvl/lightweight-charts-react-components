@@ -1,6 +1,7 @@
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
+import bundlesize from "vite-plugin-bundlesize";
 import checker from "vite-plugin-checker";
 import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
@@ -146,6 +147,12 @@ export const htmlConfig: Options = {
       href: fontHref,
       media: "all",
     },
+    // Preconnect to images CDN
+    {
+      rel: "preconnect",
+      href: "https://raw.githubusercontent.com",
+      crossOrigin: "true",
+    },
   ],
 };
 
@@ -165,6 +172,14 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
           }),
         ]
       : []),
+    bundlesize({
+      limits: [
+        {
+          name: "**/*",
+          limit: "500 kB",
+        },
+      ],
+    }),
   ],
   build: {
     emptyOutDir: true,

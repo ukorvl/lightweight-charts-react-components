@@ -12,8 +12,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import Wheel from "@uiw/react-color-wheel";
 import { CrosshairMode, type Time } from "lightweight-charts";
-import { lazy, memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { getContrastingTextColor } from "@/common/utils";
@@ -54,8 +55,6 @@ type TooltipProps = {
   onAddPrimitive?: (p: PrimitiveData) => void;
   onClose?: () => void;
 };
-
-const Wheel = lazy(() => import("@uiw/react-color-wheel"));
 
 const VerticalLinePrimitive = ({ time, options }: VerticalLinePrimitiveProps) => {
   const renderVertLine: RenderPrimitive = useCallback(

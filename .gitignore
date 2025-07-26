@@ -12,6 +12,7 @@ node_modules/
 dist/
 build/
 !.github/**/build
+bundlemeta.json
 
 # Cache and temporary files
 .cache/
