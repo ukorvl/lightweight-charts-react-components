@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   build-lint:
-    name: Build and Lint
+    name: Build and Lint code and run lib subdirectory tests
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -38,6 +38,20 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
 
+      # runs relatively lightweight tests for the lib subdirectory
+      - name: Test
+        uses: ./.github/actions/test-lib
+        with:
+          upload-coverage: ${{ github.event_name == 'push' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          coverage-report: ${{ github.event_name == 'pull_request' }}
+
+      - name: Benchmark
+        if: github.event_name == 'pull_request'
+        uses: ./.github/actions/bench
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
   # runs heavy E2E tests for the examples subdirectory (+ container setup)
   test-e2e:
     name: E2E Tests
@@ -55,6 +69,9 @@ jobs:
         with:
           setup-node: false # don't need to setup node, it's already in the container
 
+      - name: Build
+        uses: ./.github/actions/build
+
       - name: Run E2E tests
         working-directory: examples
         run: |
@@ -62,8 +79,16 @@ jobs:
           export DISABLE_EXTERNAL_LINK_TEST=${{ github.event_name == 'pull_request' }}
           npm run test:e2e
 
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: examples/tests/e2e/output/playwright-report
+          if-no-files-found: "warn"
+          retention-days: 30
+
   # runs heavy Lighthouse tests for the examples subdirectory (+ container setup)
-  tests-lighthouse:
+  test-lighthouse:
     name: Lighthouse Tests
     runs-on: ubuntu-latest
     container:
@@ -79,35 +104,11 @@ jobs:
         with:
           setup-node: false # don't need to setup node, it's already in the container
 
+      - name: Build
+        uses: ./.github/actions/build
+
       - name: Run Lighthouse tests
         working-directory: examples
         run: |
           export CI=true
           npm run test:lighthouse
-
-  # runs relatively lightweight tests for the lib subdirectory
-  tests-lib:
-    name: Lib tests
-    needs: build-lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-        with:
-          setup-node: true
-
-      - name: Test
-        uses: ./.github/actions/test-lib
-        with:
-          upload-coverage: ${{ github.event_name == 'push' }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-report: ${{ github.event_name == 'pull_request' }}
-
-      - name: Benchmark
-        if: github.event_name == 'pull_request'
-        uses: ./.github/actions/bench
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
