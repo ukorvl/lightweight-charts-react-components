@@ -70,10 +70,14 @@ jobs:
         with:
           setup-node: false # don't need to setup node, it's already in the container
 
+      - name: Lint
+        uses: ./.github/actions/lint
+        with:
+          check-commits: false
+
       - name: Build
         uses: ./.github/actions/build
         with:
-          check-commits: false
           base-path: /lightweight-charts-react-components
           deploy: true
 
