@@ -5,7 +5,7 @@ inputs:
   base-path:
     description: "Base path for the project assets"
     required: false
-    default: "/"
+    default: ""
     type: "string"
   deploy:
     description: "Build the project for deployment"
