@@ -32,10 +32,14 @@ jobs:
         with:
           node-version: 24
 
+      - name: Lint
+        uses: ./.github/actions/lint
+        with:
+          check-commits: false
+
       - name: Build
         uses: ./.github/actions/build
         with:
-          check-commits: false
           base-path: /lightweight-charts-react-components
           deploy: true
 

@@ -33,10 +33,13 @@ jobs:
         with:
           setup-node: false # don't need to setup node, it's already in the container
 
-      - name: Build
-        uses: ./.github/actions/build
+      - name: Lint
+        uses: ./.github/actions/lint
         with:
           check-commits: ${{ github.event_name == 'pull_request' }}
+
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Test
         uses: ./.github/actions/test
