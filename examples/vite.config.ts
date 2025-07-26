@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
@@ -6,6 +7,7 @@ import checker from "vite-plugin-checker";
 import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
 import htmlPlugin, { type Options } from "vite-plugin-html-config";
+import sitemapPlugin from "vite-plugin-sitemap";
 import { homepage, description } from "./package.json";
 import type { UserConfigFn } from "vite";
 
@@ -13,6 +15,10 @@ const env = loadEnv("", process.cwd(), "");
 
 const fontHref =
   "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:ital,wght@0,300..700;1,300..700&display=swap";
+
+console.log("VARIABLES:");
+console.log(homepage);
+console.log(env.VITE_BASE_URL);
 
 export const htmlConfig: Options = {
   title: env.VITE_APP_DEFAULT_TITLE,
@@ -150,7 +156,7 @@ export const htmlConfig: Options = {
     // Preconnect to images CDN
     {
       rel: "preconnect",
-      href: "https://raw.githubusercontent.com",
+      href: env.VITE_GITHUB_STATIC_ASSETS_BASE_URL,
       crossOrigin: "true",
     },
   ],
@@ -179,6 +185,13 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
           limit: "500 kB",
         },
       ],
+    }),
+    sitemapPlugin({
+      hostname: homepage,
+      dynamicRoutes: ["/terminal"],
+      basePath: env.VITE_BASE_URL,
+      changefreq: "daily",
+      priority: 1,
     }),
   ],
   build: {
