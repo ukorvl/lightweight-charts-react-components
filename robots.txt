@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ukorvl.github.io/lightweight-charts-react-components/sitemap.xml
