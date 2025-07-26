@@ -92,7 +92,8 @@
       "lib/src/pane/**",
       "lib/rslib.config.ts",
       "lib/tests/**",
-      "scripts/check-md-links.mts"
+      "scripts/check-md-links.mts",
+      "examples/scripts/prelhci.ts"
     ],
     "ignoreBinaries": [
       "lint-staged",

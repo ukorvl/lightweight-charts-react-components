@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
@@ -7,7 +6,9 @@ import checker from "vite-plugin-checker";
 import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
 import htmlPlugin, { type Options } from "vite-plugin-html-config";
+import { VitePWA } from "vite-plugin-pwa";
 import sitemapPlugin from "vite-plugin-sitemap";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 import { homepage, description } from "./package.json";
 import type { UserConfigFn } from "vite";
 
@@ -15,10 +16,6 @@ const env = loadEnv("", process.cwd(), "");
 
 const fontHref =
   "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:ital,wght@0,300..700;1,300..700&display=swap";
-
-console.log("VARIABLES:");
-console.log(homepage);
-console.log(env.VITE_BASE_URL);
 
 export const htmlConfig: Options = {
   title: env.VITE_APP_DEFAULT_TITLE,
@@ -188,10 +185,27 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
     }),
     sitemapPlugin({
       hostname: homepage,
-      dynamicRoutes: ["/terminal"],
+      dynamicRoutes: ["/terminal", "/docs"],
       basePath: env.VITE_BASE_URL,
       changefreq: "daily",
       priority: 1,
+      readable: true,
+    }),
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+      },
+      manifest: false,
+    }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: "./index.html",
+          dest: ".",
+          rename: "404.html",
+        },
+      ],
     }),
   ],
   build: {
@@ -208,6 +222,9 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
+  },
+  preview: {
+    port: 4173,
   },
 });
 

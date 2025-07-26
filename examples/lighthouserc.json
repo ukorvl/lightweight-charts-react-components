@@ -1,7 +1,9 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "dist",
+      "startServerCommand": "npm run preview",
+      "startServerReadyPattern": "Local:",
+      "url": ["http://localhost:4173/", "http://localhost:4173/terminal"],
       "numberOfRuns": 3,
       "settings": {
         "chromeFlags": "--headless --no-sandbox --disable-gpu --disable-dev-shm-usage"

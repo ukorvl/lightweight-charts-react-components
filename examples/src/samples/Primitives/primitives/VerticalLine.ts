@@ -1,4 +1,4 @@
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import type { CanvasRenderingTarget2D } from "fancy-canvas";
 import type {
   Coordinate,

@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
 import { useMemo } from "react";
-import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { colors } from "@/common/colors";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {

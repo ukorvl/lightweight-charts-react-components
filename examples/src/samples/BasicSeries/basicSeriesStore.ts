@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import {
   generateHistogramData,
   generateLineData,

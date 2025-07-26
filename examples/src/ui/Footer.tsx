@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import copy from "copy-to-clipboard";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import { FigmaIcon } from "./FigmaIcon";
 import type { ComponentProps, FC } from "react";
 
