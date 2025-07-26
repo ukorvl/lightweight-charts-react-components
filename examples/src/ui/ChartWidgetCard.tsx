@@ -1,4 +1,4 @@
-import { GitHub, TableChart } from "@mui/icons-material";
+import { GitHub } from "@mui/icons-material";
 import {
   Card,
   CardContent,
@@ -57,7 +57,7 @@ const ActionPanelElement = ({
 );
 
 const ActionPanel: FC<ActionPanelProps> = ({
-  sampleConfig: { github, codesandbox, stackblitz, terminal },
+  sampleConfig: { github, codesandbox, stackblitz },
 }) => {
   return (
     <Stack direction="row" spacing={1.5}>
@@ -84,15 +84,6 @@ const ActionPanel: FC<ActionPanelProps> = ({
         href={stackblitz}
       >
         <StackBlitzIcon inheritViewBox />
-      </ActionPanelElement>
-      <ActionPanelElement
-        disabled={!terminal}
-        tooltipTitle="Open in terminal"
-        tooltipDisabledTitle="Terminal not available"
-        href={terminal}
-        isExternal={false}
-      >
-        <TableChart />
       </ActionPanelElement>
     </Stack>
   );

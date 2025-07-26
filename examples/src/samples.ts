@@ -2,7 +2,6 @@ type SampleConfig = {
   github?: string;
   codesandbox?: string;
   stackblitz?: string;
-  terminal?: string;
 };
 
 const repoSandboxSamplesPath =
