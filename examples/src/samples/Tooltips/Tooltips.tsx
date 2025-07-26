@@ -1,8 +1,8 @@
 import { Circle } from "@mui/icons-material";
 import { Box, Grow, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { useMemo, useRef } from "react";
-import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { colors } from "@/common/colors";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import {

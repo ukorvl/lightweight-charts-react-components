@@ -15,8 +15,8 @@ import {
 import Wheel from "@uiw/react-color-wheel";
 import { CrosshairMode, type Time } from "lightweight-charts";
 import { memo, useCallback, useRef, useState } from "react";
-import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { colors } from "@/common/colors";
 import { getContrastingTextColor } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";

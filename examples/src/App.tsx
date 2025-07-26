@@ -17,7 +17,7 @@ const TerminalLazy = () => {
 
 export const App = () => {
   return (
-    <Router>
+    <Router base={import.meta.env.VITE_BASE_URL}>
       <Layout>
         <Switch>
           <Route path="/" component={Index} />

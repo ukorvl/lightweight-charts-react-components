@@ -1,6 +1,6 @@
 import { Container, Link, Stack, Typography, styled, Divider } from "@mui/material";
-import { colors } from "./colors";
-import { gradientAnimation } from "./styles";
+import { colors } from "./common/colors";
+import { gradientAnimation } from "./common/styles";
 import { Footer } from "./ui/Footer";
 import type { ReactNode } from "react";
 
@@ -44,13 +44,12 @@ export const Layout = ({ children }: LayoutProps) => {
         useFlexGap
         gap={4}
       >
-        <GradientLink underline="none" href="#">
+        <GradientLink underline="none" href="/">
           Examples
         </GradientLink>
-        {/* <GradientLink underline="none" href="/#/terminal">
+        <GradientLink underline="none" href="/terminal">
           Terminal
-        </GradientLink> */}
-        <Typography color="textDisabled">Terminal</Typography>
+        </GradientLink>
         <Typography color="textDisabled">Docs</Typography>
         <Divider aria-hidden="true" orientation="vertical" flexItem />
         <GradientLink

@@ -1,6 +1,6 @@
 import { type LineData } from "lightweight-charts";
 import { create } from "zustand";
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import { generateLineData } from "@/common/generateSeriesData";
 import { LineSeries } from "lightweight-charts-react-components";
 import type { SeriesProps } from "lightweight-charts-react-components";

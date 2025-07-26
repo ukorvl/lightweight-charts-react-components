@@ -1,6 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
-import { colors } from "@/colors";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { colors } from "@/common/colors";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {

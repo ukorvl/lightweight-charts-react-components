@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import { generateOHLCData } from "@/common/generateSeriesData";
 import type { SeriesMarker, Time } from "lightweight-charts";
 

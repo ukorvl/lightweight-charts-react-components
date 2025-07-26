@@ -7,8 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import { CrosshairMode } from "lightweight-charts";
-import { colors } from "@/colors";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
+import { colors } from "@/common/colors";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {

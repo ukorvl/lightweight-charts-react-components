@@ -1,8 +1,8 @@
 import { Link, Stack, Typography, Box } from "@mui/material";
 import { lazy, Suspense } from "react";
-import { logoKeyframes, textBgKeyframes } from "@/styles";
+import { logoKeyframes, textBgKeyframes } from "@/common/styles";
 import { ProgressBox } from "@/ui/ProgressBox";
-import { colors } from "../../colors";
+import { colors } from "../../common/colors";
 
 const Contents = lazy(() => import("./Contents"));
 

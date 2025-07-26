@@ -1,4 +1,4 @@
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import { deepMergePlainObjects } from "./utils";
 import type { ChartOptions, DeepPartial } from "lightweight-charts";
 

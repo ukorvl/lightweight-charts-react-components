@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useCallback, useRef, useState } from "react";
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import { generateOHLCData } from "@/common/generateSeriesData";
 import type { SeriesApiRef } from "lightweight-charts-react-components";
 import type { CandlestickData } from "lightweight-charts";

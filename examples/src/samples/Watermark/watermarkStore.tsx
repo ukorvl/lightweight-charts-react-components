@@ -1,6 +1,6 @@
 import { useTheme } from "@mui/material/styles";
 import { create } from "zustand";
-import { colors } from "@/colors";
+import { colors } from "@/common/colors";
 import { generateLineData } from "@/common/generateSeriesData";
 import { encodeInlineSvg } from "@/common/utils";
 import { WatermarkText, WatermarkImage } from "lightweight-charts-react-components";
