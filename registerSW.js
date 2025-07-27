@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/lightweight-charts-react-components/sw.js', { scope: '/lightweight-charts-react-components/' })})}
