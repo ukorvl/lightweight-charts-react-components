@@ -6,7 +6,7 @@ import checker from "vite-plugin-checker";
 import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
 import htmlPlugin, { type Options } from "vite-plugin-html-config";
-//import { VitePWA } from "vite-plugin-pwa";
+import { VitePWA } from "vite-plugin-pwa";
 import sitemapPlugin from "vite-plugin-sitemap";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { homepage, description } from "./package.json";
@@ -191,19 +191,30 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
       priority: 1,
       readable: true,
     }),
-    // VitePWA({
-    //   registerType: "autoUpdate",
-    //   workbox: {
-    //     globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
-    //   },
-    //   manifest: false,
-    // }),
+    VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/raw\.githubusercontent\.com\/.*\.svg$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "images",
+              expiration: { maxEntries: 1000, maxAgeSeconds: 30 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
+      },
+      manifest: false,
+    }),
     ...(command === "build"
       ? [
           viteStaticCopy({
             targets: [
               {
-                src: "./index.html",
+                src: "dist/index.html",
                 dest: ".",
                 rename: "404.html",
               },
