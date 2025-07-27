@@ -1,6 +1,8 @@
 import { Container, Link, Stack, Typography, styled, Divider } from "@mui/material";
+import { Link as WouterLink } from "wouter";
 import { gradientLinkStyles } from "./common/styles";
 import { Footer } from "./ui/Footer";
+import type { LinkProps } from "@mui/material";
 import type { ReactNode } from "react";
 
 type LayoutProps = {
@@ -8,11 +10,21 @@ type LayoutProps = {
 };
 
 const GradientLink = styled(Link)(() => gradientLinkStyles);
-const ExternalGradientLink = styled("a")(() => ({
-  ...gradientLinkStyles,
-  textDecoration: "none",
-  color: "inherit",
-}));
+const InternalGradientLink = (props: LinkProps) => {
+  const { href, sx, ...other } = props;
+
+  return (
+    <Link
+      component={WouterLink}
+      href={href}
+      sx={{
+        ...gradientLinkStyles,
+        ...sx,
+      }}
+      {...other}
+    />
+  );
+};
 
 export const Layout = ({ children }: LayoutProps) => {
   const { VITE_GITHUB_URL, VITE_NPM_PACKAGE_URL } = import.meta.env;
@@ -33,28 +45,20 @@ export const Layout = ({ children }: LayoutProps) => {
         useFlexGap
         gap={4}
       >
-        <GradientLink underline="none" href="/">
-          Examples
-        </GradientLink>
-        <GradientLink underline="none" href="/terminal">
-          Terminal
-        </GradientLink>
+        <InternalGradientLink href="/">Examples</InternalGradientLink>
+        <InternalGradientLink href="/terminal">Terminal</InternalGradientLink>
         <Typography color="textDisabled">Docs</Typography>
         <Divider aria-hidden="true" orientation="vertical" flexItem />
-        <ExternalGradientLink
-          target="_blank"
-          rel="noopener noreferrer"
-          href={VITE_GITHUB_URL}
-        >
+        <GradientLink target="_blank" rel="noopener noreferrer" href={VITE_GITHUB_URL}>
           GitHub
-        </ExternalGradientLink>
-        <ExternalGradientLink
+        </GradientLink>
+        <GradientLink
           rel="noopener noreferrer"
           target="_blank"
           href={VITE_NPM_PACKAGE_URL}
         >
           Npm
-        </ExternalGradientLink>
+        </GradientLink>
       </Stack>
       {children}
       <Footer

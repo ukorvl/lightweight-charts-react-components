@@ -50,6 +50,7 @@ const gradientLinkStyles = {
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   transition: "background-position 0.3s ease-in-out",
+  textDecoration: "none",
   "&:hover": {
     animation: `${gradientAnimation} 2s ease-in-out infinite`,
     "@media (prefers-reduced-motion: reduce)": {

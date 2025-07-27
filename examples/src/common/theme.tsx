@@ -1,11 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { Link } from "wouter";
 import { colors } from "./colors";
-import type { LinkProps } from "wouter";
-
-const LinkBehavior = (props: LinkProps) => {
-  return <Link {...props} />;
-};
 
 const theme = createTheme({
   cssVariables: true,
@@ -64,16 +58,6 @@ const theme = createTheme({
             backgroundColor: `${colors.pink}50`,
           },
         },
-      },
-    },
-    MuiLink: {
-      defaultProps: {
-        component: LinkBehavior,
-      },
-    },
-    MuiButtonBase: {
-      defaultProps: {
-        LinkComponent: LinkBehavior,
       },
     },
   },
