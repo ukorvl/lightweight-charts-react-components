@@ -186,6 +186,7 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
     sitemapPlugin({
       hostname: homepage,
       dynamicRoutes: ["/terminal", "/docs"],
+      exclude: ["/404"],
       basePath: env.VITE_BASE_URL,
       changefreq: "daily",
       priority: 1,
@@ -195,6 +196,7 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+        navigateFallbackDenylist: [/sitemap\.xml$/, /robots\.txt$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/raw\.githubusercontent\.com\/.*\.svg$/,
