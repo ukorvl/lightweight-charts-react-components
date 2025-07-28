@@ -54,24 +54,12 @@ export const Index = () => {
           height: { xs: 120, md: 200 },
           alignSelf: "center",
           position: "relative",
-          overflow: "visible",
           userSelect: "none",
-          transformOrigin: "center",
-          ":hover": {
-            animation: `${logoKeyframes} 1.5s ease-in-out infinite`,
-            ":before": {
-              opacity: 1,
-            },
-            "@media (prefers-reduced-motion: reduce)": {
-              animation: "none",
-              ":before": {
-                opacity: 0.75,
-              },
-            },
-          },
+          overflow: "visible",
           ":before": {
             content: '""',
             position: "absolute",
+            zIndex: 2,
             pointerEvents: "none",
             top: "-50%",
             left: "-50%",
@@ -79,24 +67,47 @@ export const Index = () => {
             height: "200%",
             background: `radial-gradient(
                 circle at center,
-                ${colors.violet}95,
+                ${colors.violet}85,
                 ${colors.blue100}30 40%,
                 ${colors.blue100}10 60%,
                 transparent 100%)`,
-            filter: "blur(60px)",
-            transition: "opacity 0.6s ease-in-out",
-            opacity: 0.75,
+            filter: "blur(60px) brightness(0.75)",
+            transition: "filter 0.3s ease-in-out",
+          },
+          ":hover": {
+            ":before": {
+              filter: "blur(80px) brightness(1)",
+            },
+            "@media (prefers-reduced-motion: reduce)": {
+              ":before": {
+                filter: "blur(60px) brightness(0.75)",
+              },
+            },
           },
         }}
       >
-        <img
-          alt=""
-          src={`${VITE_GITHUB_STATIC_ASSETS_BASE_URL}/logo.svg`}
-          loading="lazy"
-          decoding="async"
-          width="100%"
-          height="100%"
-        />
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            transformOrigin: "center",
+            ":hover": {
+              animation: `${logoKeyframes} 1.5s ease-in-out infinite`,
+              "@media (prefers-reduced-motion: reduce)": {
+                animation: "none",
+              },
+            },
+          }}
+        >
+          <img
+            alt=""
+            src={`${VITE_GITHUB_STATIC_ASSETS_BASE_URL}/logo.svg`}
+            loading="lazy"
+            decoding="async"
+            width="100%"
+            height="100%"
+          />
+        </Box>
       </Box>
       <Typography
         sx={{
