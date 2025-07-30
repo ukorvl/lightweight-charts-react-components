@@ -11,6 +11,9 @@ import type { ReactNode } from "react";
  * Unique properties for the custom series component.
  */
 export type CustomSeriesUniqueProps = {
+  /**
+   * Custom pane view plugin instance that can be used to render custom series.
+   */
   plugin?: ICustomSeriesPaneView;
 };
 
@@ -33,9 +36,21 @@ export type SeriesTemplateProps<T extends SeriesType> = {
  * Series API reference type that can be used to access the series plugin API.
  */
 export type SeriesApiRef<T extends SeriesType> = {
+  /**
+   * Internal reference to the series API instance.
+   */
   _series: ISeriesApi<T> | null;
+  /**
+   * Function to get the series API instance.
+   */
   api: () => ISeriesApi<T> | null;
+  /**
+   * Function to initialize the series API instance.
+   */
   init: () => ISeriesApi<T> | null;
+  /**
+   * Function to clear the series API instance.
+   */
   clear: () => void;
 };
 
@@ -43,7 +58,13 @@ export type SeriesApiRef<T extends SeriesType> = {
  * Context for the series component that provides access to the series API and readiness state.
  */
 export interface ISeriesContext {
+  /**
+   * Reference to the series API.
+   */
   seriesApiRef: SeriesApiRef<SeriesType> | null;
+  /**
+   * Readiness state of the series component.
+   */
   isReady: boolean;
 }
 
