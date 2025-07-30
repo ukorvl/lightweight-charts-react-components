@@ -146,6 +146,8 @@ export default [
             "VariableDeclarator[id.name=/^[A-Z]/]",
             "TSTypeAliasDeclaration",
             "TSInterfaceDeclaration",
+            "TSPropertySignature",
+            "TSMethodSignature",
           ],
         },
       ],
