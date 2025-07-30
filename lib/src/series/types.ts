@@ -22,6 +22,7 @@ type SeriesParameters<T extends SeriesType> = {
   reactive?: boolean;
   options?: SeriesOptions<T>;
   seriesOrder?: ReturnType<ISeriesApi<T>["seriesOrder"]>;
+  alwaysReplaceData?: boolean;
 } & (T extends "Custom" ? CustomSeriesUniqueProps : {});
 
 /**
