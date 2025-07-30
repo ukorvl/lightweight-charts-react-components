@@ -22,6 +22,7 @@ export const useSeries = <T extends SeriesType>({
   options = {},
   reactive = true,
   seriesOrder,
+  alwaysReplaceData = false,
   ...rest
 }: Omit<SeriesTemplateProps<T>, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
@@ -101,9 +102,29 @@ export const useSeries = <T extends SeriesType>({
     if (!chart) return;
 
     if (data && reactive) {
-      seriesApiRef.current.api()?.setData(data);
+      const seriesApi = seriesApiRef.current.api();
+
+      if (!seriesApi) {
+        return;
+      }
+
+      const currentData = seriesApi.data();
+      const dataLengthDifference = data.length - currentData.length;
+      const shouldReplaceData =
+        alwaysReplaceData ||
+        seriesApi.data().length === 0 ||
+        data.length === 0 ||
+        dataLengthDifference < 0 ||
+        dataLengthDifference > 1;
+
+      if (shouldReplaceData) {
+        seriesApi.setData(data);
+        return;
+      }
+
+      seriesApi.update(data[data.length - 1]);
     }
-  }, [data, reactive]);
+  }, [data, reactive, alwaysReplaceData]);
 
   useLayoutEffect(() => {
     if (!chart) return;

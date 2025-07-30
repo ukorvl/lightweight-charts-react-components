@@ -74,7 +74,7 @@ const RealTime = () => {
         options={chartCommonOptions}
         ref={ref}
       >
-        <CandlestickSeries data={data} reactive={reactive} />
+        <CandlestickSeries data={structuredClone(data)} reactive={reactive} />
         <TimeScale>
           <TimeScaleFitContentTrigger deps={resizeOnUpdate ? [data.length] : []} />
         </TimeScale>
