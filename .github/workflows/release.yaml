@@ -77,9 +77,6 @@ jobs:
 
       - name: Build
         uses: ./.github/actions/build
-        with:
-          base-path: /lightweight-charts-react-components
-          deploy: true
 
       - name: Run all tests
         run: |
@@ -102,8 +99,28 @@ jobs:
           tag: ${{ needs.check-semver-tag.outputs.tag_name }}
           npm-token: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  deploy:
+    name: Deploy examples
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: release
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          base-path: /lightweight-charts-react-components
+          deploy: true
+
       - name: Deploy
-        if: ${{ github.event.inputs.deploy-examples == 'true' }}
         uses: ./.github/actions/deploy-examples
         with:
           keep-files: true
