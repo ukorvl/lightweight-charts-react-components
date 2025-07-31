@@ -110,19 +110,21 @@ export const useSeries = <T extends SeriesType>({
 
       const currentData = seriesApi.data();
       const dataLengthDifference = data.length - currentData.length;
+      const maxIncrementalUpdateThreshold = 1;
       const shouldReplaceData =
         alwaysReplaceData ||
-        seriesApi.data().length === 0 ||
+        currentData.length === 0 ||
         data.length === 0 ||
         dataLengthDifference < 0 ||
-        dataLengthDifference > 1;
+        dataLengthDifference > maxIncrementalUpdateThreshold;
 
       if (shouldReplaceData) {
         seriesApi.setData(data);
         return;
       }
 
-      seriesApi.update(data[data.length - 1]);
+      const lastDataPoint = { ...data[data.length - 1] };
+      seriesApi.update(lastDataPoint);
     }
   }, [data, reactive, alwaysReplaceData]);
 
