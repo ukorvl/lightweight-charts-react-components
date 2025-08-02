@@ -1,19 +1,11 @@
 import { GitHub } from "@mui/icons-material";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Stack,
-  Link,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, CardHeader, Stack, Link, Tooltip } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
 import type { SampleConfig } from "@/samples";
 import { CodesandboxIcon } from "./CodesandboxIcon";
+import { ErrorFallback } from "./ErrorFallback";
 import { StackBlitzIcon } from "./StackBlitzIcon";
 import type { FC, ReactNode } from "react";
-import type { FallbackProps } from "react-error-boundary";
 
 type ChartWidgetCardProps = {
   title: string;
@@ -85,21 +77,6 @@ const ActionPanel: FC<ActionPanelProps> = ({
       >
         <StackBlitzIcon inheritViewBox />
       </ActionPanelElement>
-    </Stack>
-  );
-};
-
-const ErrorFallback = ({ error }: FallbackProps) => {
-  const { message } = error;
-
-  return (
-    <Stack justifyContent="center" alignItems="center" flexGrow={1} textAlign="center">
-      <Typography variant="h6" color="info">
-        An error occurred while rendering this example:
-      </Typography>
-      <Typography color="error" fontFamily="Roboto Mono, monospace" mt={1}>
-        {message}
-      </Typography>
     </Stack>
   );
 };

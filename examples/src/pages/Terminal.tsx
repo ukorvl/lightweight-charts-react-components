@@ -1,6 +1,9 @@
-import { Stack } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
+import { ErrorBoundary } from "react-error-boundary";
 import { ControlledMeta } from "@/common/ControlledMeta";
 import { ControlledTitle } from "@/common/ControlledTitle";
+import { ChartContainer } from "@/terminal/components/ChartContainer";
+import { ErrorFallback } from "@/ui/ErrorFallback";
 import { homepage } from "../../package.json";
 
 const { VITE_APP_DEFAULT_TITLE } = import.meta.env;
@@ -40,6 +43,9 @@ const PageMeta = () => {
 };
 
 const Terminal = () => {
+  const { spacing } = useTheme();
+  const navbarHeight = "24px";
+
   return (
     <Stack
       component="main"
@@ -48,10 +54,13 @@ const Terminal = () => {
       sx={{
         marginTop: 4,
         marginBottom: 12,
+        height: `calc(100vh - (${spacing(4)} * 3) - ${navbarHeight})`,
       }}
     >
       <PageMeta />
-      Terminal
+      <ErrorBoundary fallbackRender={ErrorFallback}>
+        <ChartContainer />
+      </ErrorBoundary>
     </Stack>
   );
 };

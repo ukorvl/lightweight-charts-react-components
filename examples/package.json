@@ -37,6 +37,7 @@
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
     "fancy-canvas": "^2.1.0",
+    "idb": "^7.1.1",
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

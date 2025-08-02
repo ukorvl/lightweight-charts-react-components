@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { colors } from "@/common/colors";
 import { FigmaIcon } from "./FigmaIcon";
+import { GitHubStarsCounter } from "./GitHubStarsCounter";
 import type { ComponentProps, FC } from "react";
 
 type FooterProps = {
@@ -132,6 +133,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
           )}
           {`: ${dayjs.utc(VITE_SITE_PUBLISHED_TIMESTAMP).local().format("YYYY-MM-DD")}`}
         </FooterText>
+        <GitHubStarsCounter />
       </Stack>
       <Stack useFlexGap spacing={2} alignItems="center">
         <Link
