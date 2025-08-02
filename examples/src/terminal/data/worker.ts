@@ -1,39 +1,34 @@
-// dataWorker.js
-let dataset = [];
+// src/workers/data.worker.ts
 
-// Generate initial mock data for a year
-function generateInitialData() {
-  const now = Date.now();
-  const oneDay = 24 * 60 * 60 * 1000;
-  for (let i = 365; i > 0; i--) {
-    dataset.push({
-      timestamp: now - i * oneDay,
-      value: Math.random(),
-    });
-  }
-}
+import { openDB } from "idb";
+import { generateSeriesData } from "./populate";
+import type { GenerateOptions } from "./populate";
 
-// Add new data every second
-function startStreaming() {
-  setInterval(() => {
-    const newItem = {
-      timestamp: Date.now(),
-      value: Math.random(),
-    };
-    dataset.push(newItem);
-    postMessage({ type: "new-item", payload: newItem });
-  }, 1000);
-}
+const dbPromise = openDB("ChartDB", 1, {
+  upgrade(db) {
+    db.createObjectStore("ohlc", { keyPath: "timestamp" });
+    db.createObjectStore("line", { keyPath: "timestamp" });
+  },
+});
 
-onmessage = e => {
-  const { type } = e.data;
-  if (type === "init") {
-    dataset = [];
-    generateInitialData();
-    startStreaming();
-    postMessage({ type: "ready", payload: dataset });
-  } else if (type === "get-data") {
-    // Return current dataset
-    postMessage({ type: "data", payload: dataset });
+self.onmessage = async event => {
+  const { type, payload } = event.data;
+
+  if (type === "generateAndSave") {
+    const { count, interval, seriesType } = payload as GenerateOptions;
+
+    const data = generateSeriesData({ count, interval, seriesType });
+
+    const db = await dbPromise;
+    const tx = db.transaction(seriesType, "readwrite");
+    const store = tx.objectStore(seriesType);
+
+    for (const item of data) {
+      store.put(item);
+    }
+
+    await tx.done;
+
+    self.postMessage({ type: "done", seriesType, count });
   }
 };
