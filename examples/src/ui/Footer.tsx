@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { colors } from "@/common/colors";
 import { FigmaIcon } from "./FigmaIcon";
+import { GitHubStarsCounter } from "./GitHubStarsCounter";
 import type { ComponentProps, FC } from "react";
 
 type FooterProps = {
@@ -61,6 +62,8 @@ const Footer: FC<FooterProps> = ({ sx }) => {
     VITE_TRADINGVIEW_URL,
     VITE_LIGHTWEIGHT_CHARTS_REPO_URL,
     VITE_PUBLISH_COMMIT_URL,
+    VITE_BRAND_IDENTITY_CREATOR_URL,
+    VITE_BRAND_IDENTITY_CREATOR_NAME,
   } = import.meta.env;
 
   return (
@@ -130,8 +133,9 @@ const Footer: FC<FooterProps> = ({ sx }) => {
           )}
           {`: ${dayjs.utc(VITE_SITE_PUBLISHED_TIMESTAMP).local().format("YYYY-MM-DD")}`}
         </FooterText>
+        <GitHubStarsCounter />
       </Stack>
-      <Stack useFlexGap spacing={2}>
+      <Stack useFlexGap spacing={2} alignItems="center">
         <Link
           href={VITE_GITHUB_URL}
           underline="hover"
@@ -145,7 +149,7 @@ const Footer: FC<FooterProps> = ({ sx }) => {
             textWrap: "nowrap",
           }}
         >
-          <GitHub />
+          <GitHub fontSize="small" />
           GitHub repository
         </Link>
         <Link
@@ -161,9 +165,26 @@ const Footer: FC<FooterProps> = ({ sx }) => {
             textWrap: "nowrap",
           }}
         >
-          <FigmaIcon />
+          <FigmaIcon
+            sx={{
+              fontSize: "1rem",
+            }}
+          />
           Design System
         </Link>
+        {VITE_BRAND_IDENTITY_CREATOR_NAME && VITE_BRAND_IDENTITY_CREATOR_URL && (
+          <FooterText>
+            Brand identity by{" "}
+            <Link
+              underline="hover"
+              href={VITE_BRAND_IDENTITY_CREATOR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {VITE_BRAND_IDENTITY_CREATOR_NAME}
+            </Link>
+          </FooterText>
+        )}
       </Stack>
     </Stack>
   );

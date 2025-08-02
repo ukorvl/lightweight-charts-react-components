@@ -1,6 +1,12 @@
-import { Stack } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
+import { ErrorBoundary } from "react-error-boundary";
+import { ChartContainer } from "@/terminal/components/ChartContainer";
+import { ErrorFallback } from "@/ui/ErrorFallback";
 
 const Terminal = () => {
+  const { spacing } = useTheme();
+  const navbarHeight = "24px";
+
   return (
     <Stack
       component="main"
@@ -9,9 +15,12 @@ const Terminal = () => {
       sx={{
         marginTop: 4,
         marginBottom: 12,
+        height: `calc(100vh - (${spacing(4)} * 3) - ${navbarHeight})`,
       }}
     >
-      Terminal
+      <ErrorBoundary fallbackRender={ErrorFallback}>
+        <ChartContainer />
+      </ErrorBoundary>
     </Stack>
   );
 };

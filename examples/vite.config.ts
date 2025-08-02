@@ -207,6 +207,20 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
+          {
+            urlPattern: /^https:\/\/api\.github\.com\/repos\/[^/]+\/[^/]+$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "github-api",
+              expiration: {
+                maxAgeSeconds: 60 * 60 * 24,
+                maxEntries: 10,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
         ],
       },
       manifest: false,
