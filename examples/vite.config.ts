@@ -116,6 +116,10 @@ export const htmlConfig: Options = {
       name: "og:image:height",
       content: "630",
     },
+    {
+      name: "google-site-verification",
+      content: env.VITE_GOOGLE_SITE_VERIFICATION || "",
+    },
   ],
   links: [
     {
