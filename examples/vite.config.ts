@@ -211,6 +211,20 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
+          {
+            urlPattern: /\/sitemap\.xml$/,
+            handler: "NetworkOnly",
+            options: {
+              cacheName: "sitemap-no-cache",
+            },
+          },
+          {
+            urlPattern: /\/robots\.txt$/,
+            handler: "NetworkOnly",
+            options: {
+              cacheName: "robots-no-cache",
+            },
+          },
         ],
       },
       manifest: false,
