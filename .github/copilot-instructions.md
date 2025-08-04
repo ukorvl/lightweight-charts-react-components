@@ -37,3 +37,4 @@ The repository contains library code and example usage.
 - Write maintainable, self-documenting code
 - Follow security best practices
 - Ensure proper type coverage
+- Avoid default exports unless absolutely necessary
