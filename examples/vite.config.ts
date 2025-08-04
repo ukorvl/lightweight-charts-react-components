@@ -2,6 +2,7 @@ import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
 import bundlesize from "vite-plugin-bundlesize";
+import { capo } from "vite-plugin-capo";
 import checker from "vite-plugin-checker";
 import circleDependency from "vite-plugin-circular-dependency";
 import viteCompression from "vite-plugin-compression";
@@ -77,43 +78,43 @@ export const htmlConfig: Options = {
       content: `${homepage}/og.jpg`,
     },
     {
-      name: "og:title",
+      property: "og:title",
       content: env.VITE_APP_DEFAULT_TITLE,
     },
     {
-      name: "og:description",
+      property: "og:description",
       content: description,
     },
     {
-      name: "og:url",
+      property: "og:url",
       content: homepage,
     },
     {
-      name: "og:image",
+      property: "og:image",
       content: `${homepage}/og.jpg`,
     },
     {
-      name: "og:type",
+      property: "og:type",
       content: "website",
     },
     {
-      name: "og:image:alt",
+      property: "og:image:alt",
       content: env.VITE_APP_DEFAULT_TITLE,
     },
     {
-      name: "og:locale",
+      property: "og:locale",
       content: "en_US",
     },
     {
-      name: "og:site_name",
+      property: "og:site_name",
       content: env.VITE_APP_DEFAULT_TITLE,
     },
     {
-      name: "og:image:width",
+      property: "og:image:width",
       content: "1200",
     },
     {
-      name: "og:image:height",
+      property: "og:image:height",
       content: "630",
     },
     {
@@ -242,6 +243,7 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
           }),
         ]
       : []),
+    capo(),
   ],
   build: {
     emptyOutDir: true,
