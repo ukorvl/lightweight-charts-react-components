@@ -15,17 +15,41 @@ const ChartPanelRenderFunction = (_: object, ref: ForwardedRef<HTMLDivElement>) 
       sx={{
         width: "100%",
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
         flexGrow: 1,
         backgroundColor: colors.blue200,
+        display: "grid",
+        gridTemplateColumns: "100px 1fr",
+        gridTemplateRows: "auto 1fr auto",
+        gridTemplateAreas: `
+          "toolbar toolbar"
+          "aside chart"
+          "bottom bottom"
+        `,
       }}
     >
-      <Toolbar />
-      <Aisde />
-      <Chart />
-      <BottoomBar />
+      <Toolbar
+        sx={{
+          gridArea: "toolbar",
+          borderBottom: `1px solid ${colors.gray100}`,
+        }}
+      />
+      <Aisde
+        sx={{
+          gridArea: "aside",
+          borderRight: `1px solid ${colors.gray100}`,
+        }}
+      />
+      <Chart
+        sx={{
+          gridArea: "chart",
+        }}
+      />
+      <BottoomBar
+        sx={{
+          gridArea: "bottom",
+          borderTop: `1px solid ${colors.gray100}`,
+        }}
+      />
     </Box>
   );
 };

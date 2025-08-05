@@ -5,6 +5,7 @@ import { ControlledTitle } from "@/common/ControlledTitle";
 import { ChartContainer } from "@/terminal/components/ChartContainer";
 import { ErrorFallback } from "@/ui/ErrorFallback";
 import { homepage } from "../../package.json";
+import "../terminal/data/populate";
 
 const { VITE_APP_DEFAULT_TITLE } = import.meta.env;
 
