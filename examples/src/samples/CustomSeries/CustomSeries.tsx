@@ -39,6 +39,9 @@ const CustomSeries = () => {
             },
           ]}
           plugin={new GroupedBarsSeries()}
+          options={{
+            priceLineVisible: false,
+          }}
         />
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />

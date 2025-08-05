@@ -1,19 +1,63 @@
-import { openDB } from "idb";
+import type { TimeFrame } from "@/common/timeInterval";
+import { getIntervalInSeconds } from "@/common/timeInterval";
+import { initDb } from "./idb";
+import type { CandlestickData } from "lightweight-charts";
 
-const dbPromise = openDB("ChartDB", 1, {
-  upgrade(db) {
-    db.createObjectStore("ohlc", { keyPath: "timestamp" });
-  },
-});
+const getDatabase = async () => {
+  const db = await initDb();
 
-export async function getCandles(from: number, to: number): Promise<[]> {
-  const db = await dbPromise;
-  const store = db.transaction("ohlc").objectStore("ohlc");
-  const result = [];
-  let cursor = await store.openCursor(IDBKeyRange.bound(from, to));
-  while (cursor) {
-    result.push(cursor.value);
-    cursor = await cursor.continue();
+  if (!db) {
+    throw new Error("Database is not initialized");
   }
-  return result;
-}
+  return db;
+};
+
+const getStore = async (seriesType: string) => {
+  const db = await getDatabase();
+  if (!db.objectStoreNames.contains(seriesType)) {
+    throw new Error(`Object store ${seriesType} does not exist`);
+  }
+  return db.transaction(seriesType, "readwrite").objectStore(seriesType);
+};
+
+const getCandles = async (from: string, to: string, timeFrame: TimeFrame) => {
+  const store = await getStore("Candlestick");
+
+  const range = IDBKeyRange.bound(from, to, true, false);
+  const cursor = await store.openCursor(range);
+
+  const bucketSize = getIntervalInSeconds(timeFrame) * 1000; // Convert to milliseconds
+  const buckets = new Map<number, CandlestickData>();
+
+  let current = cursor;
+  while (current) {
+    const item = current.value;
+    const time = item.timestamp;
+
+    const bucketStart = Math.floor(time / bucketSize) * bucketSize;
+    const existing = buckets.get(bucketStart);
+
+    if (!existing) {
+      buckets.set(bucketStart, {
+        time: bucketStart,
+        open: item.open,
+        high: item.high,
+        low: item.low,
+        close: item.close,
+      });
+    } else {
+      existing.high = Math.max(existing.high, item.high);
+      existing.low = Math.min(existing.low, item.low);
+      existing.close = item.close;
+    }
+
+    current = await current.continue();
+  }
+
+  const result: CandlestickData[] = [];
+  buckets.forEach(value => {
+    result.push(value);
+  });
+};
+
+export { getCandles };

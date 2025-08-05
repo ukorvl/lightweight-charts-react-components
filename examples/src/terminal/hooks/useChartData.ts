@@ -1,5 +1,5 @@
 import { useSyncExternalStore, useEffect, useState } from "react";
-import { getCandles } from "../data/api"; // your read function
+import { getCandles } from "../data/api";
 import { subscribe, getSnapshot } from "../stores/chartStore";
 
 export function useChartData(from: number, to: number) {

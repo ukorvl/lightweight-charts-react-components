@@ -1,7 +1,7 @@
 const waitForGlobal = (name: string, timeout = 5000): Promise<void> => {
   return new Promise((resolve, reject) => {
-    const interval = 50;
-    const maxAttempts = timeout / interval;
+    const timeFrame = 50;
+    const maxAttempts = timeout / timeFrame;
     let attempts = 0;
 
     const handle = setInterval(() => {
@@ -13,7 +13,7 @@ const waitForGlobal = (name: string, timeout = 5000): Promise<void> => {
         clearInterval(handle);
         reject(new Error(`${name} not found on window within ${timeout}ms`));
       }
-    }, interval);
+    }, timeFrame);
   });
 };
 
