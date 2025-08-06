@@ -29,3 +29,7 @@ runs:
         git config --global --add safe.directory "$(pwd)"
         npm run lint:commits
       shell: bash
+
+    - name: Check markdown links
+      run: npm run check:md-links
+      shell: bash
