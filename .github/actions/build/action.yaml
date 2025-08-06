@@ -33,3 +33,7 @@ runs:
         cd lib
         npm run check-exports
       shell: bash
+
+    - name: Check generated jsdoc links
+      run: npm run check:jsdoc-links
+      shell: bash

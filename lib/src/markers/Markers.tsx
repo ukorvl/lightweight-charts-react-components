@@ -19,8 +19,8 @@ const MarkersRenderFunction = (
  * @param props - The properties for the markers.
  * @param ref - The ref to access the markers API.
  * @returns A React component that renders the markers.
- * @see {@link https://tradingview.github.io/lightweight-charts/tutorials/how_to/series-markers | Markers documentation}
- * @see {@link https://tradingview.github.io/lightweight-charts/docs/markers | TradingView documentation for markers}
+ * @see {@link https://ukorvl.github.io/lightweight-charts-react-components/docs/markers | Documentation for Markers}
+ * @see {@link https://tradingview.github.io/lightweight-charts/tutorials/how_to/series-markers | TradingView documentation for markers}
  * @example
  * ```tsx
  * <Markers
