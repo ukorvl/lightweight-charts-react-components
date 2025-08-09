@@ -1,4 +1,4 @@
-import { getIntervalInSeconds } from "@/common/timeInterval";
+import { getIntervalInSeconds } from "@/common/timeFrame";
 import { doneMessageType, generateMessageType, generateSeriesData } from "./generate";
 import { initDb } from "./idb";
 import type { GenerateOptions } from "./generate";

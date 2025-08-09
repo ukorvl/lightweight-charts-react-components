@@ -13,12 +13,10 @@ const ChartPanelRenderFunction = (_: object, ref: ForwardedRef<HTMLDivElement>) 
       component="div"
       ref={ref}
       sx={{
-        width: "100%",
         height: "100%",
         flexGrow: 1,
-        backgroundColor: colors.blue200,
         display: "grid",
-        gridTemplateColumns: "100px 1fr",
+        gridTemplateColumns: "200px 1fr",
         gridTemplateRows: "auto 1fr auto",
         gridTemplateAreas: `
           "toolbar toolbar"

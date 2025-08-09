@@ -1,5 +1,5 @@
-import type { TimeFrame } from "@/common/timeInterval";
-import { getIntervalInSeconds } from "@/common/timeInterval";
+import type { TimeFrame } from "@/common/timeFrame";
+import { getIntervalInSeconds } from "@/common/timeFrame";
 import { initDb } from "./idb";
 import type { CandlestickData } from "lightweight-charts";
 

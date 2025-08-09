@@ -1,4 +1,4 @@
-import { Grid2 as Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Children } from "react";
 import type { ElementType, FC, ReactNode } from "react";
 
@@ -14,7 +14,7 @@ const LayoutGrid: FC<LayoutGridProps> = ({ children, component, ...rest }) => {
   return (
     <Grid
       container
-      spacing={{ xs: 2, sm: 4 }}
+      spacing={{ xs: 2, sm: 2 }}
       justifyContent={numberOfChildrenIsOdd ? "center" : "stretch"}
       component={component ?? "div"}
       {...rest}

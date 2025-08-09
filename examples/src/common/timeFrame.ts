@@ -13,7 +13,21 @@ type TimeFrame =
   | "4h"
   | "1d";
 
-const intervalToDayjsUnitMap: Record<TimeFrame, ManipulateType> = {
+const TIME_FRAME_OPTIONS: TimeFrame[] = [
+  "1s",
+  "5s",
+  "15s",
+  "30s",
+  "1m",
+  "5m",
+  "15m",
+  "30m",
+  "1h",
+  "4h",
+  "1d",
+] as const;
+
+const timeFrameToDayjsUnitMap: Record<TimeFrame, ManipulateType> = {
   "1s": "second",
   "5s": "second",
   "15s": "second",
@@ -27,7 +41,7 @@ const intervalToDayjsUnitMap: Record<TimeFrame, ManipulateType> = {
   "1d": "day",
 };
 
-const intervalMap: Record<TimeFrame, number> = {
+const timeFrameMap: Record<TimeFrame, number> = {
   "1s": 1,
   "5s": 5,
   "15s": 15,
@@ -41,7 +55,7 @@ const intervalMap: Record<TimeFrame, number> = {
   "1d": 1,
 };
 
-const intervalToSecondsMap: Record<TimeFrame, number> = {
+const timeFrameToSecondsMap: Record<TimeFrame, number> = {
   "1s": 1,
   "5s": 5,
   "15s": 15,
@@ -55,24 +69,24 @@ const intervalToSecondsMap: Record<TimeFrame, number> = {
   "1d": 86400,
 };
 
-const mapIntervalToDayjsUnit = (timeFrame: TimeFrame): ManipulateType => {
-  const unit = intervalToDayjsUnitMap[timeFrame];
+const mapTimeFrameToDayjsUnit = (timeFrame: TimeFrame): ManipulateType => {
+  const unit = timeFrameToDayjsUnitMap[timeFrame];
   if (unit === undefined) {
     throw new Error(`Unsupported time frame: ${timeFrame}`);
   }
   return unit;
 };
 
-const getIntervalDigit = (timeFrame: TimeFrame): number => {
-  const digit = intervalMap[timeFrame];
+const getTimeFrameDigit = (timeFrame: TimeFrame): number => {
+  const digit = timeFrameMap[timeFrame];
   if (digit === undefined) {
     throw new Error(`Unsupported time frame: ${timeFrame}`);
   }
   return digit;
 };
 
-const getIntervalInSeconds = (timeFrame: TimeFrame): number => {
-  const seconds = intervalToSecondsMap[timeFrame];
+const getTimeFrameInSeconds = (timeFrame: TimeFrame): number => {
+  const seconds = timeFrameToSecondsMap[timeFrame];
   if (seconds === undefined) {
     throw new Error(`Unsupported time frame: ${timeFrame}`);
   }
@@ -80,4 +94,9 @@ const getIntervalInSeconds = (timeFrame: TimeFrame): number => {
 };
 
 export type { TimeFrame };
-export { mapIntervalToDayjsUnit, getIntervalDigit, getIntervalInSeconds };
+export {
+  mapTimeFrameToDayjsUnit,
+  getTimeFrameDigit,
+  getTimeFrameInSeconds,
+  TIME_FRAME_OPTIONS,
+};
