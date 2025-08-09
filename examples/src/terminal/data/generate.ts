@@ -1,5 +1,5 @@
 import { generateOHLCData, generateLineData } from "@/common/generateSeriesData";
-import type { TimeFrame } from "@/common/timeInterval";
+import type { TimeFrame } from "@/common/timeFrame";
 import type { SeriesType, UTCTimestamp } from "lightweight-charts";
 
 type GenerateOptions = {

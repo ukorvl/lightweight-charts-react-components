@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { TimeFrame } from "@/common/timeInterval";
+import type { TimeFrame } from "@/common/timeFrame";
+import { TIME_FRAME_STORE_VERSION } from "./storeVersions";
 
 interface TimeFrameStore {
   timeFrame: TimeFrame;
@@ -15,7 +16,7 @@ const useTimeFrameStore = create<TimeFrameStore>()(
     }),
     {
       name: "timeFrame-storage",
-      version: 0,
+      version: TIME_FRAME_STORE_VERSION,
     }
   )
 );

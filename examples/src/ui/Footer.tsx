@@ -64,6 +64,8 @@ const Footer: FC<FooterProps> = ({ sx }) => {
     VITE_PUBLISH_COMMIT_URL,
     VITE_BRAND_IDENTITY_CREATOR_URL,
     VITE_BRAND_IDENTITY_CREATOR_NAME,
+    VITE_BUY_ME_A_COFFEE_URL,
+    VITE_GITHUB_SPONSORS_URL,
   } = import.meta.env;
 
   return (
@@ -135,7 +137,14 @@ const Footer: FC<FooterProps> = ({ sx }) => {
         </FooterText>
         <GitHubStarsCounter />
       </Stack>
-      <Stack useFlexGap spacing={2} alignItems="center">
+      <Stack
+        useFlexGap
+        spacing={2}
+        alignItems={{
+          xs: "cnter",
+          sm: "flex-end",
+        }}
+      >
         <Link
           href={VITE_GITHUB_URL}
           underline="hover"
@@ -183,6 +192,39 @@ const Footer: FC<FooterProps> = ({ sx }) => {
             >
               {VITE_BRAND_IDENTITY_CREATOR_NAME}
             </Link>
+          </FooterText>
+        )}
+        {VITE_GITHUB_SPONSORS_URL && (
+          <FooterText>
+            <Link
+              underline="hover"
+              href={VITE_GITHUB_SPONSORS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sponsor
+            </Link>{" "}
+            this project
+          </FooterText>
+        )}
+        {VITE_BUY_ME_A_COFFEE_URL && (
+          <FooterText
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Link
+              underline="hover"
+              href={VITE_BUY_ME_A_COFFEE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Buy me a coffee
+            </Link>
+            <Typography paddingLeft={1} component="span" fontSize={16}>
+              ☕
+            </Typography>
           </FooterText>
         )}
       </Stack>

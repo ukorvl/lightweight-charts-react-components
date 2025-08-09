@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { getIntervalDigit, mapIntervalToDayjsUnit, type TimeFrame } from "./timeInterval";
+import { getTimeFrameDigit, mapTimeFrameToDayjsUnit, type TimeFrame } from "./timeFrame";
 import { createStubArray } from "./utils";
 import type { ManipulateType } from "dayjs";
 import type { CandlestickData, HistogramData, LineData, Time } from "lightweight-charts";
@@ -26,15 +26,15 @@ const getObjectToSubtract = (
   timeFrame: TimeFrame,
   length: number
 ): [number, ManipulateType] => {
-  const unit = mapIntervalToDayjsUnit(timeFrame);
+  const unit = mapTimeFrameToDayjsUnit(timeFrame);
 
-  return [getIntervalDigit(timeFrame) * length, unit];
+  return [getTimeFrameDigit(timeFrame) * length, unit];
 };
 
 const getObjectToAdd = (timeFrame: TimeFrame, i: number): [number, ManipulateType] => {
-  const unit = mapIntervalToDayjsUnit(timeFrame);
+  const unit = mapTimeFrameToDayjsUnit(timeFrame);
 
-  return [getIntervalDigit(timeFrame) * i, unit];
+  return [getTimeFrameDigit(timeFrame) * i, unit];
 };
 
 const generateLineData = <T extends Time = string>(

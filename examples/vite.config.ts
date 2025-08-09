@@ -267,6 +267,7 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
       input: "./index.html",
     },
     copyPublicDir: true,
+    assetsInlineLimit: 8192,
   },
   base: env.VITE_BASE_URL,
   resolve: {
