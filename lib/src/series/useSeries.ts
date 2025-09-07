@@ -123,7 +123,7 @@ export const useSeries = <T extends SeriesType>({
         return;
       }
 
-      const lastDataPoint = { ...data[data.length - 1] };
+      const lastDataPoint = data[data.length - 1];
       seriesApi.update(lastDataPoint);
     }
   }, [data, reactive, alwaysReplaceData]);
