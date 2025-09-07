@@ -28,6 +28,7 @@ const RealTime = () => {
     ref: ref as RefObject<HTMLDivElement>,
     margin: "100px",
   });
+  const clonedData = structuredClone(data); // to avoid mutation by the chart library
 
   useEffect(() => {
     if (isOnScreen) {
@@ -74,7 +75,7 @@ const RealTime = () => {
         options={chartCommonOptions}
         ref={ref}
       >
-        <CandlestickSeries data={data} reactive={reactive} />
+        <CandlestickSeries data={clonedData} reactive={reactive} />
         <TimeScale>
           <TimeScaleFitContentTrigger deps={resizeOnUpdate ? [data.length] : []} />
         </TimeScale>

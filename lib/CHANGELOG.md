@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- let `lightweight-charts` handle data mutation internally, instead of cloning data on every update
+
 ## [1.3.0] - 2025-07-31
 ### Added
 - add `alwaysReplaceData` prop to all series components to control data update behavior
