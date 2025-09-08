@@ -1,7 +1,8 @@
 import { SvgIcon } from "@mui/material";
+import type { SvgIconTypeMap } from "@mui/material";
 
-const FigmaIcon = () => (
-  <SvgIcon>
+const FigmaIcon = (props: SvgIconTypeMap["props"]) => (
+  <SvgIcon {...props}>
     {/* Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools */}
     <svg
       xmlns="http://www.w3.org/2000/svg"

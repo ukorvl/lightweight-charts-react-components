@@ -61,7 +61,7 @@ const RangeSwitcher = () => {
         })}
         containerProps={{ style: { flexGrow: "1" } }}
       >
-        <AreaSeries options={seriesCustomOptions} data={data} />
+        <AreaSeries options={seriesCustomOptions} data={data} alwaysReplaceData />
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />
         </TimeScale>
