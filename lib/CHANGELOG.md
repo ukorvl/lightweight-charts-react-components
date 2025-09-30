@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - let `lightweight-charts` handle data mutation internally, instead of cloning data on every update
+- fix `TimeScale` prop `visibleRange` error "Value is null" when series are inside `Pane`
 
 ## [1.3.0] - 2025-07-31
 ### Added
