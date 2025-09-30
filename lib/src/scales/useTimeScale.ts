@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import { usePaneContext } from "@/pane/usePaneContext";
 import type { TimeScaleApiRef, TimeScaleProps } from "./types";
 
 export const useTimeScale = ({
@@ -12,6 +13,7 @@ export const useTimeScale = ({
   options = {},
 }: Omit<TimeScaleProps, "children">) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
+  const { isPaneReady, isInsidePane } = usePaneContext();
   const [isReady, setIsReady] = useState(false);
 
   const timeScaleApiRef = useRef<TimeScaleApiRef>({
@@ -67,8 +69,12 @@ export const useTimeScale = ({
   useLayoutEffect(() => {
     if (!chartIsReady) return;
 
+    if (isInsidePane && !isPaneReady) {
+      return;
+    }
+
     timeScaleApiRef.current.init();
-  }, [chartIsReady]);
+  }, [chartIsReady, isInsidePane, isPaneReady]);
 
   useLayoutEffect(() => {
     return () => {
