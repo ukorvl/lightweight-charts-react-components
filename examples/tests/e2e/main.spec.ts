@@ -11,6 +11,7 @@ const examplesCount = readdirSync(samplesDir, { withFileTypes: true }).filter(di
 ).length;
 
 const skipExternalLinksTest = process.env.DISABLE_EXTERNAL_LINK_TEST === "true";
+const externalOriginsToSkip = ["https://www.npmjs.com"];
 
 test.describe("Main page", () => {
   test.beforeEach(async ({ page }) => {
@@ -57,8 +58,11 @@ test.describe("Main page", () => {
     const externalURLs = hrefAttrs.filter(
       (url): url is string => url !== null && !url.startsWith("#") && !url.startsWith("/")
     );
+    const allowedExternalURLs = externalURLs.filter(url => {
+      return !externalOriginsToSkip.some(origin => url.startsWith(origin));
+    });
 
-    for (const externalURl of externalURLs) {
+    for (const externalURl of allowedExternalURLs) {
       try {
         const response = await page.request.get(externalURl);
         expect
