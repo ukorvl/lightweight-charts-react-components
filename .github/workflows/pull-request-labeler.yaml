@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 1
       - name: Add Labels for PR
-        uses: actions/labeler@v5
+        uses: actions/labeler@v6
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
