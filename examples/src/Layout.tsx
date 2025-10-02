@@ -59,6 +59,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <Stack
         sx={{
           marginTop,
+          height: "24px",
         }}
         component="nav"
         direction="row"

@@ -1,0 +1,2 @@
+export const SERIES_TYPE_STORE_VERSION = 0;
+export const TIME_FRAME_STORE_VERSION = 0;
