@@ -39,7 +39,7 @@
     "@types/node": "^24.0.13",
     "chalk": "^5.5.0",
     "concurrently": "^9.1.2",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.28.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
