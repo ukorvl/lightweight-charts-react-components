@@ -15,7 +15,7 @@
     "test": "run-s test:*"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.4.1",
+    "@vitejs/plugin-react": "^4.7.0",
     "vite-plugin-bundlesize": "^0.3.0",
     "vite-plugin-capo": "^1.0.3",
     "vite-plugin-checker": "^0.9.3",
