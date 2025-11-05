@@ -8,6 +8,10 @@ on:
     types:
       - opened
 
+permissions:
+  pull-requests: write
+  issues: write
+
 jobs:
   welcome:
     runs-on: ubuntu-latest
@@ -15,13 +19,13 @@ jobs:
       - name: Welcome for First Issue or Pull Request
         uses: actions/first-interaction@v3
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-message: |
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_message: |
             ### :wave: Welcome! Looks like this is your first issue.
 
             Thanks for opening an issue!
             We appreciate your attention to our project and are looking forward to continuing to collaborate with you.
-          pr-message: |
+          pr_message: |
             ### :wave: Welcome! Looks like this is your first pull request.
 
             Thanks for your pull request!
