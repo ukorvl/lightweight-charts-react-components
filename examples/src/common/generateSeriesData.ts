@@ -1,41 +1,85 @@
 import dayjs from "dayjs";
+import { getTimeFrameDigit, mapTimeFrameToDayjsUnit, type TimeFrame } from "./timeFrame";
 import { createStubArray } from "./utils";
-import type { CandlestickData, HistogramData, LineData } from "lightweight-charts";
+import type { ManipulateType } from "dayjs";
+import type { CandlestickData, HistogramData, LineData, Time } from "lightweight-charts";
+
+type GenerateDataCommonOptions = {
+  /** @default 1d */
+  timeFrame?: TimeFrame;
+  /** @default "YYYY-MM-DD" */
+  format?: string;
+  /** @default true */
+  shouldFormat?: boolean;
+};
 
 type GenerateHistogramDataOptions = {
   upColor?: string;
   downColor?: string;
-};
+} & GenerateDataCommonOptions;
 
 type GenerateLineDataOptions = {
   lastItemTime?: string;
+} & GenerateDataCommonOptions;
+
+const getObjectToSubtract = (
+  timeFrame: TimeFrame,
+  length: number
+): [number, ManipulateType] => {
+  const unit = mapTimeFrameToDayjsUnit(timeFrame);
+
+  return [getTimeFrameDigit(timeFrame) * length, unit];
 };
 
-const generateLineData = (
+const getObjectToAdd = (timeFrame: TimeFrame, i: number): [number, ManipulateType] => {
+  const unit = mapTimeFrameToDayjsUnit(timeFrame);
+
+  return [getTimeFrameDigit(timeFrame) * i, unit];
+};
+
+const generateLineData = <T extends Time = string>(
   length: number,
-  { lastItemTime }: GenerateLineDataOptions = {}
-): LineData<string>[] => {
+  {
+    lastItemTime,
+    timeFrame = "1d",
+    format = "YYYY-MM-DD",
+    shouldFormat = true,
+  }: GenerateLineDataOptions = {}
+): LineData<T>[] => {
+  const subtract = getObjectToSubtract(timeFrame, length);
+
   const start = lastItemTime
-    ? dayjs(lastItemTime).subtract(length, "day")
-    : dayjs().subtract(length, "day");
+    ? dayjs(lastItemTime).subtract(...subtract)
+    : dayjs().subtract(...subtract);
   let lastValue = Math.floor(Math.random() * 100);
 
   return createStubArray(length).map((_, i) => {
     const change = Math.floor(Math.random() * 21) - 10;
     lastValue = Math.max(0, lastValue + change);
+    const add = getObjectToAdd(timeFrame, i);
+    const time = start.add(...add);
 
     return {
-      time: start.add(i, "day").format("YYYY-MM-DD"),
+      time: (shouldFormat ? time.format(format) : time.valueOf()) as T,
       value: lastValue,
     };
   });
 };
 
-const generateOHLCData = (length: number): CandlestickData<string>[] => {
-  const start = dayjs().subtract(length, "day");
+const generateOHLCData = <T extends Time = string>(
+  length: number,
+  {
+    timeFrame = "1d",
+    format = "YYYY-MM-DD",
+    shouldFormat = true,
+  }: GenerateDataCommonOptions = {}
+): CandlestickData<T>[] => {
+  const subtract = getObjectToSubtract(timeFrame, length);
+  const start = dayjs().subtract(...subtract);
   let previousClose = Math.max(1, Math.random() * 100);
 
   return createStubArray(length).map((_, i) => {
+    const add = getObjectToAdd(timeFrame, i);
     const open = previousClose;
     const high = open + Math.random() * 10;
     let low = open - Math.random() * 10;
@@ -48,9 +92,10 @@ const generateOHLCData = (length: number): CandlestickData<string>[] => {
     const close = low + Math.random() * (adjustedHigh - low);
 
     previousClose = close;
+    const time = start.add(...add);
 
     return {
-      time: start.add(i, "day").format("YYYY-MM-DD"),
+      time: (shouldFormat ? time.format(format) : time.unix()) as T,
       open,
       high: adjustedHigh,
       low,
@@ -59,11 +104,17 @@ const generateOHLCData = (length: number): CandlestickData<string>[] => {
   });
 };
 
-const generateHistogramData = (
+const generateHistogramData = <T extends Time = string>(
   length: number,
-  { upColor, downColor }: GenerateHistogramDataOptions = {}
-): HistogramData<string>[] => {
-  const lineData = generateLineData(length);
+  {
+    upColor,
+    downColor,
+    timeFrame = "1d",
+    format = "YYYY-MM-DD",
+    shouldFormat = true,
+  }: GenerateHistogramDataOptions = {}
+): HistogramData<T>[] => {
+  const lineData = generateLineData<T>(length, { timeFrame, format, shouldFormat });
 
   return lineData.map((data, i) => {
     const isFirst = i === 0;
