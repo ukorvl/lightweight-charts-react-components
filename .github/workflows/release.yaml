@@ -50,7 +50,7 @@ jobs:
       id-token: write
     steps:
       - name: Clone repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Check Changelog
         uses: ukorvl/custom-github-actions/check-version-changelog@v1
@@ -107,7 +107,7 @@ jobs:
     needs: release
     steps:
       - name: Clone repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
