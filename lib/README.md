@@ -188,6 +188,12 @@ const volumeData = [
 ];
 
 const chartOptions = {
+  // Important to set width and height for the chart
+  // Otherwise make chart container scale to its parent size by using containerProps, like:
+  // <Chart containerProps={{ style: { width: '100%', height: '100%' } }} />
+  // Chart itself automatically resizes to fit its container
+  width: 600,
+  height: 400,
   // Chart options can be customized here
 };
 
@@ -214,6 +220,13 @@ const App = () => {
 
 export { App };
 ```
+
+### Chart Container Sizing
+
+The `Chart` component requires explicit width and height to render correctly. You can set these dimensions directly via the `options` prop or make the chart container scale to its parent size using the `containerProps` prop.
+Note that the chart will automatically resize to fit its container.
+
+There may be cases where the chart's parent HTML element has no size defined (for example, when the parent is a flex container with no defined height). In such cases, you need to ensure that the parent element has a defined size (width and height) for the chart to render properly.
 
 ## Examples
 
