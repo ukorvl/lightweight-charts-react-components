@@ -17,6 +17,8 @@ updates:
         update-types: ["version-update:semver-minor"]
       - dependency-name: "vitest"
         update-types: ["version-update:semver-minor"]
+      - dependency-name: "@playwright/test"
+        update-types: ["version-update:semver-minor"]
     groups:
       react-packages:
         patterns:
