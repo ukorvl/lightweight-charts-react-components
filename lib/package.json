@@ -65,7 +65,7 @@
     "@rsbuild/plugin-react": "^1.4.1",
     "@rslib/core": "^0.6.1",
     "@types/markdown-it": "^14.1.2",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.2",
     "@vitest/coverage-v8": "^3.2.4",
     "jsr": "^0.13.4",
