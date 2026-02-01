@@ -51,7 +51,7 @@
     "glob": "^11.0.3",
     "globals": "^16.2.0",
     "jsdom": "^26.1.0",
-    "knip": "^5.62.0",
+    "knip": "^5.82.1",
     "lint-staged": "^15.5.2",
     "markdown-it-anchor": "^9.2.0",
     "npm-run-all": "^4.1.5",
