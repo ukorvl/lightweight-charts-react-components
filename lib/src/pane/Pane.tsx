@@ -9,12 +9,14 @@ const PaneRenderFunction = (
   { children, stretchFactor }: PaneProps,
   ref: ForwardedRef<PaneApiRef>
 ) => {
+  // const { paneApiRef, isReady } = usePane({ stretchFactor });
+  // useImperativeHandle(ref, () => paneApiRef.current, []);
   const {
     paneApiRef: { current: paneApiRef },
     isReady,
   } = usePane({ stretchFactor });
-  useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
 
+  useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
   return (
     <PaneContext.Provider
       value={{
