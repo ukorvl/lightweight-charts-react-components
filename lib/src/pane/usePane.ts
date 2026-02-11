@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { PaneApiRef, PaneProps } from "./types";
@@ -43,7 +43,7 @@ export const usePane = ({ stretchFactor }: Omit<PaneProps, "children"> = {}) => 
     paneApiRef.current.init();
   }, [chartIsReady]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     return () => {
       paneApiRef.current.clear();
     };
