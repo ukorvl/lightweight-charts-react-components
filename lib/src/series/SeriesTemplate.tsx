@@ -22,8 +22,8 @@ const SeriesTemplateRenderFunction = <T extends SeriesType>(
     seriesApiRef: { current: seriesApiRef },
     isReady,
   } = useSeries(rest);
-
   useImperativeHandle(ref, () => seriesApiRef, [seriesApiRef]);
+
   return (
     <SeriesContext.Provider
       value={{

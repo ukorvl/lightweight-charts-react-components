@@ -13,8 +13,8 @@ const PaneRenderFunction = (
     paneApiRef: { current: paneApiRef },
     isReady,
   } = usePane({ stretchFactor });
-
   useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
+
   return (
     <PaneContext.Provider
       value={{
