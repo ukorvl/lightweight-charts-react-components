@@ -42,6 +42,7 @@ const Watermark = ({ text }: WatermarkProps) => {
 
 const Panes = () => {
   const [showWithPane, setShowWithPane] = useState(false);
+
   return (
     <>
       <ChartWidgetCard
@@ -53,6 +54,7 @@ const Panes = () => {
           onClick={() => {
             setShowWithPane(prevShowWithPane => !prevShowWithPane);
           }}
+          sx={{ mb: 2 }}
         >
           {showWithPane ? "Hide pane" : "Show pane"}
         </Button>
