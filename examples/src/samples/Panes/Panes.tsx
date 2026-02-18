@@ -51,7 +51,7 @@ const Panes = () => {
       >
         <Button
           onClick={() => {
-            setShowWithPane(!showWithPane);
+            setShowWithPane(prevShowWithPane => !prevShowWithPane);
           }}
         >
           {showWithPane ? "Hide pane" : "Show pane"}

@@ -18,8 +18,6 @@ const SeriesTemplateRenderFunction = <T extends SeriesType>(
   { children, ...rest }: SeriesTemplateProps<T>,
   ref: ForwardedRef<SeriesApiRef<T>>
 ) => {
-  // const { seriesApiRef, isReady } = useSeries(rest);
-  // useImperativeHandle(ref, () => seriesApiRef.current, []);
   const {
     seriesApiRef: { current: seriesApiRef },
     isReady,
