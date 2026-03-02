@@ -25,6 +25,7 @@ const Configuration = {
     ],
     "type-case": [2, "always", "lower-case"],
     "body-max-line-length": [0],
+    "header-trim": [0],
   },
   helpUrl: "https://github.com/conventional-changelog/commitlint/#what-is-commitlint",
 } satisfies UserConfig;
