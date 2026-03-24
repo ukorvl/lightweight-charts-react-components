@@ -47,7 +47,12 @@ const MarkersSample = () => {
             wickDownColor: colors.blue,
           }}
         >
-          <Markers markers={getMarkersData()} />
+          <Markers
+            markers={getMarkersData()}
+            options={{
+              zOrder: "normal",
+            }}
+          />
         </CandlestickSeries>
         <TimeScale>
           <TimeScaleFitContentTrigger deps={[]} />

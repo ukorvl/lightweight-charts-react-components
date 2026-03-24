@@ -36,12 +36,13 @@ describe("useMarkers", () => {
     const { result } = renderHook(() =>
       useMarkers({
         markers: [],
+        options: { zOrder: "top" },
       })
     );
 
     const api = result.current.current.api();
     expect(api).toBeDefined();
-    expect(createSeriesMarkers).toHaveBeenCalled();
+    expect(createSeriesMarkers).toHaveBeenCalledWith({}, [], { zOrder: "top" });
   });
 
   it("should detach markers on unmount", () => {
