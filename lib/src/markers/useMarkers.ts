@@ -4,7 +4,7 @@ import { useSafeContext } from "@/_shared/useSafeContext";
 import { SeriesContext } from "@/series/SeriesContext";
 import type { MarkersApiRef, MarkersProps } from "./types";
 
-export const useMarkers = ({ reactive = true, markers }: MarkersProps) => {
+export const useMarkers = ({ reactive = true, markers, options }: MarkersProps) => {
   const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(SeriesContext);
 
   const markersApiRef = useRef<MarkersApiRef>({
@@ -20,7 +20,7 @@ export const useMarkers = ({ reactive = true, markers }: MarkersProps) => {
           return null;
         }
 
-        this._markers = createSeriesMarkers(seriesApi, markers);
+        this._markers = createSeriesMarkers(seriesApi, markers, options);
       }
 
       return this._markers;

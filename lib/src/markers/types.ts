@@ -1,4 +1,10 @@
-import type { ISeriesMarkersPluginApi, SeriesMarker, Time } from "lightweight-charts";
+import type {
+  DeepPartial,
+  ISeriesMarkersPluginApi,
+  SeriesMarker,
+  SeriesMarkersOptions,
+  Time,
+} from "lightweight-charts";
 
 /**
  * Markers API reference type that can be used to access the series markers plugin API.
@@ -32,6 +38,10 @@ export type MarkersProps = {
   markers: SeriesMarker<Time>[];
   /**
    * Options for the markers.
+   */
+  options?: DeepPartial<SeriesMarkersOptions>;
+  /**
+   * Whether markers should update reactively when marker list changes.
    */
   reactive?: boolean;
 };
