@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.4.1] - 2025-03-26
+## [1.4.1] - 2026-03-26
 ### Added
 - Series markers `options` prop to control markers options which reflects [new api](https://tradingview.github.io/lightweight-charts/docs/next/api/interfaces/SeriesMarkersOptions)
 ### Changed
