@@ -64,7 +64,10 @@ export type PriceScaleApiRef = {
 };
 
 /**
- * TimeScale component props.
+ * Props for the TimeScale component that controls chart time scale behavior.
+ *
+ * Use this component to configure how the chart's visible time/logical range is initialized
+ * and updated, and to react to time scale updates via event handlers.
  */
 export type TimeScaleProps = {
   /**
