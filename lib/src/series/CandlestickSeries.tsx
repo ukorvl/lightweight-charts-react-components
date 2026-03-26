@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 import React from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
-import type { SeriesApiRef, SeriesProps } from "./types";
-import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
+import type { SeriesApiRef, SeriesForwardRefComponent, SeriesProps } from "./types";
+import type { ForwardedRef, JSX } from "react";
 
 const CandlestickSeriesRenderFunction = (
   { children, ...rest }: SeriesProps<"Candlestick">,
@@ -34,7 +34,7 @@ const CandlestickSeriesRenderFunction = (
  * />
  * ```
  */
-export const CandlestickSeries: ForwardRefExoticComponent<
-  SeriesProps<"Candlestick"> & RefAttributes<SeriesApiRef<"Candlestick">>
-> = forwardRef(CandlestickSeriesRenderFunction);
+export const CandlestickSeries: SeriesForwardRefComponent<"Candlestick"> = forwardRef(
+  CandlestickSeriesRenderFunction
+);
 CandlestickSeries.displayName = "CandlestickSeries";

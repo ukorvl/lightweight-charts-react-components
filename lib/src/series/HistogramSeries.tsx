@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 import React from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
-import type { SeriesApiRef, SeriesProps } from "./types";
-import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
+import type { SeriesApiRef, SeriesForwardRefComponent, SeriesProps } from "./types";
+import type { ForwardedRef, JSX } from "react";
 
 const HistogramSeriesRenderFunction = (
   { children, ...rest }: SeriesProps<"Histogram">,
@@ -34,7 +34,7 @@ const HistogramSeriesRenderFunction = (
  * />
  * ```
  */
-export const HistogramSeries: ForwardRefExoticComponent<
-  SeriesProps<"Histogram"> & RefAttributes<SeriesApiRef<"Histogram">>
-> = forwardRef(HistogramSeriesRenderFunction);
+export const HistogramSeries: SeriesForwardRefComponent<"Histogram"> = forwardRef(
+  HistogramSeriesRenderFunction
+);
 HistogramSeries.displayName = "HistogramSeries";
