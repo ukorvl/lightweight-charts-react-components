@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Series markers `options` prop to control markers options which reflects [new api](https://tradingview.github.io/lightweight-charts/docs/next/api/interfaces/SeriesMarkersOptions)
 ### Changed
 - Refactor series components to use a shared generic forward-ref helper type and reduce duplicated type declarations
+- Expand `TimeScaleProps` JSDoc with clearer purpose and event handler usage details
 ### Fixed
 - Pane unmount crash by clearing series during cleanup
 
