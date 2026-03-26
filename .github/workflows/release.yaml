@@ -97,7 +97,6 @@ jobs:
         uses: ./.github/actions/create-release
         with:
           tag: ${{ needs.check-semver-tag.outputs.tag_name }}
-          npm-token: ${{ secrets.NPM_AUTH_TOKEN }}
 
   deploy:
     name: Deploy examples

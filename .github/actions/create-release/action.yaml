@@ -5,9 +5,6 @@ inputs:
   tag:
     description: "Tag to release"
     required: true
-  npm-token:
-    description: "Token to authenticate with npm"
-    required: true
 
 runs:
   using: "composite"
@@ -42,10 +39,6 @@ runs:
         name: ${{ inputs.tag }}
         make_latest: true
         generate_release_notes: true
-
-    - name: Authenticate with npm
-      run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > ~/.npmrc
-      shell: bash
 
     - name: Publish package on npm
       working-directory: lib
