@@ -5,7 +5,7 @@ import type {
   SeriesPartialOptionsMap,
   SeriesType,
 } from "lightweight-charts";
-import type { ReactNode } from "react";
+import type { ForwardRefExoticComponent, ReactNode, RefAttributes } from "react";
 
 /**
  * Unique properties for the custom series component.
@@ -84,3 +84,10 @@ export type SeriesOptions<T extends SeriesType> = SeriesPartialOptionsMap[T];
  * Series component properties that can be used to create a series of a specific type.
  */
 export type SeriesProps<T extends SeriesType> = Omit<SeriesTemplateProps<T>, "type">;
+
+/**
+ * Forward ref component type for a series component.
+ */
+export type SeriesForwardRefComponent<T extends SeriesType> = ForwardRefExoticComponent<
+  SeriesProps<T> & RefAttributes<SeriesApiRef<T>>
+>;
