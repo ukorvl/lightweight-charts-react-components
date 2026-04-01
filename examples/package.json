@@ -35,7 +35,7 @@
     "@uiw/react-color-wheel": "^2.7.1",
     "@ukorvl/react-on-screen": "^1.0.7",
     "copy-to-clipboard": "^3.3.3",
-    "dayjs": "^1.11.13",
+    "dayjs": "^1.11.20",
     "fancy-canvas": "^2.1.0",
     "lightweight-charts-react-components": "file:../lib",
     "react": "^19.2.4",
