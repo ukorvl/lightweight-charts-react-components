@@ -43,8 +43,8 @@ const samplesLinks = {
   },
   Legend: {
     github: `${githubSamplesLocation}/Legend`,
-    codesandbox: "",
-    stackblitz: "",
+    codesandbox: `${codeSandboxUrlBase}/Legend/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/Legend/sandbox`,
   },
   CompareSeries: {
     github: `${githubSamplesLocation}/CompareSeries`,
