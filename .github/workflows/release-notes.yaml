@@ -45,7 +45,7 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Post release notes as PR comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           message: |
             ## Release Notes (Preview)
