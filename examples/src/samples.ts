@@ -73,8 +73,8 @@ const samplesLinks = {
   },
   PriceLines: {
     github: `${githubSamplesLocation}/PriceLines`,
-    codesandbox: "",
-    stackblitz: "",
+    codesandbox: `${codeSandboxUrlBase}/PriceLines/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/PriceLines/sandbox`,
   },
   Primitives: {
     github: `${githubSamplesLocation}/Primitives`,
