@@ -108,7 +108,7 @@
     ]
   },
   "optionalDependencies": {
-    "@ast-grep/napi-linux-x64-gnu": "0.40.3",
+    "@ast-grep/napi-linux-x64-gnu": "0.42.1",
     "@esbuild/linux-x64": "0.25.8",
     "@rollup/rollup-linux-x64-gnu": "4.60.2",
     "@rspack/binding-darwin-arm64": "1.7.11",
