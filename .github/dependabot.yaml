@@ -7,6 +7,8 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    exclude-paths:
+      - "examples/src/samples/*/sandbox/**"
     ignore:
       - dependency-name: "lightweight-charts"
       - dependency-name: "*"
@@ -26,6 +28,24 @@ updates:
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+    labels:
+      - "dependencies"
+  - package-ecosystem: "npm"
+    directories:
+      - "/examples/src/samples/*/sandbox"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      sandbox-packages:
+        patterns:
+          - "*"
+        group-by: "dependency-name"
     labels:
       - "dependencies"
   - package-ecosystem: "github-actions"
