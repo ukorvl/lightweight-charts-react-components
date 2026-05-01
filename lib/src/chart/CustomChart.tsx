@@ -8,7 +8,7 @@ import { forwardRef, useCallback, useState } from "react";
 import React from "react";
 import { ChartComponent } from "./ChartComponent";
 import type { CustomChartProps } from "./types";
-import type { ForwardedRef, RefAttributes } from "react";
+import type { ForwardedRef, JSX, RefAttributes } from "react";
 
 type CustomChartForwardRefComponent = (<
   HorzScaleItem,
@@ -16,7 +16,7 @@ type CustomChartForwardRefComponent = (<
 >(
   props: CustomChartProps<HorzScaleItem, THorzScaleBehavior> &
     RefAttributes<HTMLDivElement>
-) => ReturnType<typeof CustomChartRenderFunction>) & {
+) => JSX.Element) & {
   displayName: string;
 };
 
@@ -31,7 +31,7 @@ const CustomChartRenderFunction = <
     ...rest
   }: CustomChartProps<HorzScaleItem, THorzScaleBehavior>,
   ref: ForwardedRef<HTMLDivElement>
-) => {
+): JSX.Element => {
   const [container, setContainer] = useState<HTMLDivElement>();
   const containerRef = useCallback(
     (node: HTMLDivElement | null) => {
