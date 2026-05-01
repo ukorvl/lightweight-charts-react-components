@@ -41,7 +41,7 @@
     "chalk": "^5.5.0",
     "concurrently": "^9.1.2",
     "deno": "^2.7.10",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.4.2",
     "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
