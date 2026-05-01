@@ -4,20 +4,20 @@ import { PaneContext } from "./PaneContext";
 import { usePane } from "./usePane";
 import type { PaneProps, PaneApiRef } from "./types";
 import type { Time } from "lightweight-charts";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, JSX } from "react";
 
 type GenericPaneComponent = (<HorzScaleItem = Time>(
   props: PaneProps & {
     ref?: ForwardedRef<PaneApiRef<HorzScaleItem>>;
   }
-) => ReturnType<typeof PaneRenderFunction>) & {
+) => JSX.Element) & {
   displayName: string;
 };
 
 const PaneRenderFunction = <HorzScaleItem = Time,>(
   { children, stretchFactor }: PaneProps,
   ref: ForwardedRef<PaneApiRef<HorzScaleItem>>
-) => {
+): JSX.Element => {
   const {
     paneApiRef: { current: paneApiRef },
     isReady,
