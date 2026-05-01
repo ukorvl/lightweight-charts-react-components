@@ -1,22 +1,26 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import type { IChartContext } from "@/chart/types";
 import { usePaneContext } from "@/pane/usePaneContext";
 import type { TimeScaleApiRef, TimeScaleProps } from "./types";
+import type { IChartApiBase, Time } from "lightweight-charts";
 
-export const useTimeScale = ({
+export const useTimeScale = <HorzScaleItem = Time>({
   onVisibleTimeRangeChange,
   onVisibleLogicalRangeChange,
   onSizeChange,
   visibleRange,
   visibleLogicalRange,
   options = {},
-}: Omit<TimeScaleProps, "children">) => {
-  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isPaneReady, isInsidePane } = usePaneContext();
+}: Omit<TimeScaleProps<HorzScaleItem>, "children">) => {
+  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(
+    ChartContext
+  ) as IChartContext<HorzScaleItem, IChartApiBase<HorzScaleItem>>;
+  const { isPaneReady, isInsidePane } = usePaneContext<HorzScaleItem>();
   const [isReady, setIsReady] = useState(false);
 
-  const timeScaleApiRef = useRef<TimeScaleApiRef>({
+  const timeScaleApiRef = useRef<TimeScaleApiRef<HorzScaleItem>>({
     _timeScale: null,
     api() {
       return this._timeScale;

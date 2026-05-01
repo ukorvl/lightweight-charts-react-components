@@ -37,6 +37,7 @@
     "@testing-library/react": "^16.3.2",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.10.9",
+    "baseline-browser-mapping": "^2.10.21",
     "chalk": "^5.5.0",
     "concurrently": "^9.1.2",
     "deno": "^2.7.10",

@@ -230,6 +230,23 @@ describe("useSeries", () => {
     ).toThrow("Custom series requires a plugin to be defined");
   });
 
+  it("throws for unsupported yield curve series types", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+      chartKind: "yield-curve",
+    });
+
+    expect(() =>
+      renderHook(() =>
+        useSeries({
+          type: "Candlestick",
+          data: [],
+        })
+      )
+    ).toThrow("YieldCurveChart only supports LineSeries and AreaSeries.");
+  });
+
   it("should set series order if provided", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       chartApiRef: mockChart,

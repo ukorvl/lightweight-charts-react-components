@@ -2,11 +2,12 @@ import { forwardRef } from "react";
 import React from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesForwardRefComponent, SeriesProps } from "./types";
+import type { Time } from "lightweight-charts";
 import type { ForwardedRef, JSX } from "react";
 
-const LineSeriesRenderFunction = (
-  { children, ...rest }: SeriesProps<"Line">,
-  ref: ForwardedRef<SeriesApiRef<"Line">>
+const LineSeriesRenderFunction = <HorzScaleItem = Time,>(
+  { children, ...rest }: SeriesProps<"Line", HorzScaleItem>,
+  ref: ForwardedRef<SeriesApiRef<"Line", HorzScaleItem>>
 ): JSX.Element => {
   return (
     <SeriesTemplate type="Line" ref={ref} {...rest}>
@@ -34,7 +35,7 @@ const LineSeriesRenderFunction = (
  * />
  * ```
  */
-export const LineSeries: SeriesForwardRefComponent<"Line"> = forwardRef(
+export const LineSeries = forwardRef(
   LineSeriesRenderFunction
-);
+) as SeriesForwardRefComponent<"Line">;
 LineSeries.displayName = "LineSeries";

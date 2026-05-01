@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 
 const __filename = fileURLToPath(import.meta.url);
 dotenv.config({ path: path.join(path.dirname(__filename), ".env"), quiet: true });
+const shouldIncludeWebkit =
+  process.env.CI === "true" ||
+  !(process.platform === "darwin" && process.arch === "arm64");
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -26,10 +29,14 @@ export default defineConfig({
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
     },
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    ...(shouldIncludeWebkit
+      ? [
+          {
+            name: "webkit",
+            use: { ...devices["Desktop Safari"] },
+          },
+        ]
+      : []),
     {
       name: "Microsoft Edge",
       use: { ...devices["Desktop Edge"] },

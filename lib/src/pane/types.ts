@@ -18,19 +18,19 @@ export type PaneProps = {
 /**
  * Pane API reference type that can be used to access the pane plugin API.
  */
-export type PaneApiRef = {
+export type PaneApiRef<HorzScaleItem = Time> = {
   /**
    * Reference to the pane API.
    */
-  _pane: IPaneApi<Time> | null;
+  _pane: IPaneApi<HorzScaleItem> | null;
   /**
    * Function to get the pane API.
    */
-  api: () => IPaneApi<Time> | null;
+  api: () => IPaneApi<HorzScaleItem> | null;
   /**
    * Function to initialize the pane API.
    */
-  init: () => IPaneApi<Time> | null;
+  init: () => IPaneApi<HorzScaleItem> | null;
   /**
    * Function to clear the pane API.
    */
@@ -40,11 +40,11 @@ export type PaneApiRef = {
 /**
  * Pane context that provides access to the pane API and readiness state.
  */
-export interface IPaneContext {
+export interface IPaneContext<HorzScaleItem = Time> {
   /**
    * Reference to the pane API.
    */
-  paneApiRef?: PaneApiRef;
+  paneApiRef?: PaneApiRef<HorzScaleItem>;
   /**
    * Readiness state of the pane component.
    */

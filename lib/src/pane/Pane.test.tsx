@@ -34,7 +34,7 @@ describe("Pane component", () => {
   });
 
   it("does not render anything to the DOM", () => {
-    const { container } = render(<Pane ref={createRef()} />);
+    const { container } = render(<Pane ref={createRef<PaneApiRef>()} />);
     expect(container.firstChild).toBeNull();
   });
 

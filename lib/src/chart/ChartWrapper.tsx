@@ -1,3 +1,4 @@
+import { createChart } from "lightweight-charts";
 import { forwardRef, useCallback, useState } from "react";
 import React from "react";
 import { ChartComponent } from "./ChartComponent";
@@ -14,14 +15,14 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
 ) => {
   const [container, setContainer] = useState<HTMLDivElement>();
   const containerRef = useCallback(
-    (r: HTMLDivElement) => {
-      setContainer(r);
+    (node: HTMLDivElement | null) => {
+      setContainer(node ?? undefined);
 
       if (ref) {
         if (typeof ref === "function") {
-          containerRef(r);
+          ref(node);
         } else {
-          ref.current = r;
+          ref.current = node;
         }
       }
     },
@@ -31,7 +32,12 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
   return (
     <div ref={containerRef} {...containerProps}>
       {!!container && (
-        <ChartComponent container={container} {...rest}>
+        <ChartComponent
+          container={container}
+          createChartApi={createChart}
+          chartKind="time"
+          {...rest}
+        >
           {children}
         </ChartComponent>
       )}

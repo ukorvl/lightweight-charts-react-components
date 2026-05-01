@@ -2,11 +2,12 @@ import { forwardRef } from "react";
 import React from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesForwardRefComponent, SeriesProps } from "./types";
+import type { Time } from "lightweight-charts";
 import type { ForwardedRef, JSX } from "react";
 
-const CustomSeriesRenderFunction = (
-  { children, ...rest }: SeriesProps<"Custom">,
-  ref: ForwardedRef<SeriesApiRef<"Custom">>
+const CustomSeriesRenderFunction = <HorzScaleItem = Time,>(
+  { children, ...rest }: SeriesProps<"Custom", HorzScaleItem>,
+  ref: ForwardedRef<SeriesApiRef<"Custom", HorzScaleItem>>
 ): JSX.Element => {
   return (
     <SeriesTemplate type="Custom" ref={ref} {...rest}>
@@ -35,7 +36,7 @@ const CustomSeriesRenderFunction = (
  * />
  * ```
  */
-export const CustomSeries: SeriesForwardRefComponent<"Custom"> = forwardRef(
+export const CustomSeries = forwardRef(
   CustomSeriesRenderFunction
-);
+) as SeriesForwardRefComponent<"Custom">;
 CustomSeries.displayName = "CustomSeries";

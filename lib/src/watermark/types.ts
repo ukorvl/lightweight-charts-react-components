@@ -33,23 +33,22 @@ export type WatermarkProps<T extends WatermarkType> = {
   type: T;
 } & (T extends "text" ? TextWatermarkProps : ImageWatermarkProps);
 
-type WatermarkTextApiRefBase = {
-  _watermark: ITextWatermarkPluginApi<Time> | null;
-  api: () => ITextWatermarkPluginApi<Time> | null;
-  init: () => ITextWatermarkPluginApi<Time> | null;
-  clear: () => void;
-};
-
-type WatermarkImageApiRefBase = {
-  _watermark: IImageWatermarkPluginApi<Time> | null;
-  api: () => IImageWatermarkPluginApi<Time> | null;
-  init: () => IImageWatermarkPluginApi<Time> | null;
-  clear: () => void;
-};
-
 /**
  * Watermark API reference type that can be used to access the watermark plugin API.
  */
-export type WatermarkApiRef<T extends WatermarkType> = T extends "text"
-  ? WatermarkTextApiRefBase
-  : WatermarkImageApiRefBase;
+export type WatermarkApiRef<
+  T extends WatermarkType,
+  HorzScaleItem = Time,
+> = T extends "text"
+  ? {
+      _watermark: ITextWatermarkPluginApi<HorzScaleItem> | null;
+      api: () => ITextWatermarkPluginApi<HorzScaleItem> | null;
+      init: () => ITextWatermarkPluginApi<HorzScaleItem> | null;
+      clear: () => void;
+    }
+  : {
+      _watermark: IImageWatermarkPluginApi<HorzScaleItem> | null;
+      api: () => IImageWatermarkPluginApi<HorzScaleItem> | null;
+      init: () => IImageWatermarkPluginApi<HorzScaleItem> | null;
+      clear: () => void;
+    };

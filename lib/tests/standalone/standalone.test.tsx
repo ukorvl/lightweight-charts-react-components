@@ -3,6 +3,9 @@ import { prepareGlobalEnvironment } from "./utils";
 
 const symbolsToTest = new Set([
   "Chart",
+  "OptionsChart",
+  "YieldCurveChart",
+  "CustomChart",
   "LineSeries",
   "AreaSeries",
   "BarSeries",

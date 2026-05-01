@@ -5,18 +5,21 @@ import {
   AreaSeries,
   BaselineSeries,
   BarSeries,
+  type IChartApiBase,
+  type Time,
 } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import type { IChartContext } from "@/chart/types";
 import { usePaneContext } from "@/pane/usePaneContext";
 import type { CustomSeriesUniqueProps, SeriesApiRef, SeriesTemplateProps } from "./types";
 import type { SeriesDefinition, ISeriesApi, SeriesType } from "lightweight-charts";
 
 type SeriesTypeWithoutCustom = Exclude<SeriesType, "Custom">;
 
-export const useSeries = <T extends SeriesType>({
+export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
   type,
   data,
   options = {},
@@ -24,12 +27,19 @@ export const useSeries = <T extends SeriesType>({
   seriesOrder,
   alwaysReplaceData = false,
   ...rest
-}: Omit<SeriesTemplateProps<T>, "children">) => {
-  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext();
+}: Omit<SeriesTemplateProps<T, HorzScaleItem>, "children">) => {
+  const {
+    isReady: chartIsReady,
+    chartApiRef: chart,
+    chartKind,
+  } = useSafeContext(ChartContext) as IChartContext<
+    HorzScaleItem,
+    IChartApiBase<HorzScaleItem>
+  >;
+  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext<HorzScaleItem>();
   const [isReady, setIsReady] = useState(false);
 
-  const seriesApiRef = useRef<SeriesApiRef<T>>({
+  const seriesApiRef = useRef<SeriesApiRef<T, HorzScaleItem>>({
     _series: null,
     api() {
       return this._series;
@@ -45,18 +55,24 @@ export const useSeries = <T extends SeriesType>({
         const paneIndex = isInsidePane ? paneApiRef?.api()?.paneIndex() : undefined;
 
         if (type === "Custom") {
-          const plugin = (rest as CustomSeriesUniqueProps).plugin;
+          const plugin = (rest as CustomSeriesUniqueProps<HorzScaleItem>).plugin;
           if (!plugin) {
             throw new BaseInternalError("Custom series requires a plugin to be defined");
           }
 
           // TODO: Fix this type cast and infer the correct type
-          (this._series as unknown as ISeriesApi<"Custom">) = chartApi.addCustomSeries(
-            plugin,
-            options,
-            paneIndex
-          );
+          (this._series as unknown as ISeriesApi<"Custom", HorzScaleItem>) =
+            chartApi.addCustomSeries(plugin, options, paneIndex);
         } else {
+          if (chartKind === "yield-curve" && type !== "Area" && type !== "Line") {
+            throw new BaseInternalError(
+              "YieldCurveChart only supports LineSeries and AreaSeries.",
+              {
+                isOperational: true,
+              }
+            );
+          }
+
           this._series = chartApi.addSeries(
             seriesMap[type as SeriesTypeWithoutCustom] as SeriesDefinition<T>,
             options,

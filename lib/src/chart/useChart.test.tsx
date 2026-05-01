@@ -64,6 +64,20 @@ describe("useChart", () => {
     expect(mockRemoveChart).toHaveBeenCalled();
   });
 
+  it("should use a custom chart constructor when provided", () => {
+    const createChartApi = vi.fn().mockReturnValue(mockChart);
+
+    renderHook(() =>
+      useChart({
+        container: mockContainer,
+        createChartApi,
+      })
+    );
+
+    expect(createChartApi).toHaveBeenCalledWith(mockContainer, defaultChartOptions);
+    expect(createChart).not.toHaveBeenCalled();
+  });
+
   it("should apply options", () => {
     vi.mocked(createChart).mockReturnValue(mockChart);
 

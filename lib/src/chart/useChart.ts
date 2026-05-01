@@ -1,29 +1,48 @@
-import { createChart } from "lightweight-charts";
+import {
+  createChart,
+  type ChartOptionsImpl,
+  type DeepPartial,
+  type Time,
+} from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
 import { defaultChartOptions } from "./defaultChartOptions";
-import type { ChartApiRef, UseChartOptions } from "./types";
+import type {
+  ChartApiInstance,
+  ChartApiRef,
+  CreateChartApi,
+  UseChartOptions,
+} from "./types";
 
-export const useChart = ({
+export const useChart = <
+  HorzScaleItem = Time,
+  TChartApi extends ChartApiInstance<HorzScaleItem> = ChartApiInstance<HorzScaleItem>,
+  TOptions extends ChartOptionsImpl<HorzScaleItem> = ChartOptionsImpl<HorzScaleItem>,
+>({
   container,
   onClick,
   onCrosshairMove,
   onInit,
   options = {},
   onDblClick,
-}: UseChartOptions) => {
+  createChartApi = createChart as unknown as CreateChartApi<
+    HorzScaleItem,
+    TChartApi,
+    TOptions
+  >,
+}: UseChartOptions<HorzScaleItem, TChartApi, TOptions>) => {
   const [isReady, setIsReady] = useState(false);
 
-  const chartApiRef = useRef<ChartApiRef>({
+  const chartApiRef = useRef<ChartApiRef<HorzScaleItem, TChartApi>>({
     _chart: null,
     api() {
       return this._chart;
     },
     init() {
       if (this._chart === null) {
-        const chart = createChart(container, {
+        const chart = createChartApi(container, {
           ...defaultChartOptions,
           ...options,
-        });
+        } as DeepPartial<TOptions>);
         this._chart = chart;
 
         if (onInit) {
@@ -102,7 +121,7 @@ export const useChart = ({
     chartApiRef.current.api()?.applyOptions({
       ...defaultChartOptions,
       ...options,
-    });
+    } as DeepPartial<TOptions>);
   }, [options]);
 
   return { chartApiRef, isReady };

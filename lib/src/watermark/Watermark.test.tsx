@@ -38,7 +38,10 @@ describe("Watermark components", () => {
 
   it("does not render anything to the DOM", () => {
     const { container } = render(
-      <WatermarkText ref={createRef()} lines={[{ text: "Test", fontSize: 20 }]} />
+      <WatermarkText
+        ref={createRef<WatermarkApiRef<"text">>()}
+        lines={[{ text: "Test", fontSize: 20 }]}
+      />
     );
     expect(container.firstChild).toBeNull();
   });

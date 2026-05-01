@@ -24,7 +24,7 @@ const mockPane = {
   api: () => ({
     paneIndex: () => 0,
   }),
-} as unknown as PaneApiRef;
+} as unknown as PaneApiRef<unknown>;
 
 describe("useWatermark", () => {
   beforeEach(() => {

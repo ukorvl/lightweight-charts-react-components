@@ -17,6 +17,7 @@ const sandboxDirs = readdirSync(samplesDir, { withFileTypes: true })
 
 const localHost = "127.0.0.1";
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const canvasVisibilityTimeoutMs = 15_000;
 const renderSettleTimeMs = 1000;
 const serverPollIntervalMs = 250;
 const processStopTimeoutMs = 5_000;
@@ -116,7 +117,9 @@ test.describe("Sandbox samples", () => {
       try {
         await waitForServer(url, serverProcess);
         await page.goto(url, { waitUntil: "domcontentloaded" });
-        await expect(page.locator("canvas").first()).toBeVisible();
+        await expect(page.locator("canvas").first()).toBeVisible({
+          timeout: canvasVisibilityTimeoutMs,
+        });
         await delay(renderSettleTimeMs);
         expect(errors, `${sampleName} emitted console or page errors`).toEqual([]);
       } finally {

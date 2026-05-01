@@ -26,6 +26,11 @@ const samplesLinks = {
     codesandbox: "",
     stackblitz: "",
   },
+  ChartTypes: {
+    github: `${githubSamplesLocation}/ChartTypes`,
+    codesandbox: `${codeSandboxUrlBase}/ChartTypes/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/ChartTypes/sandbox`,
+  },
   RangeSwitcher: {
     github: `${githubSamplesLocation}/RangeSwitcher`,
     codesandbox: "",

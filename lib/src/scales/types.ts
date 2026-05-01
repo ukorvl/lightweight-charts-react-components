@@ -18,19 +18,19 @@ type PriceScaleOptions = DeepPartial<PriceScaleNativeOptions>;
 /**
  * Time scale API reference type that can be used to access the time scale plugin API.
  */
-export type TimeScaleApiRef = {
+export type TimeScaleApiRef<HorzScaleItem = Time> = {
   /**
    * Reference to the time scale API.
    */
-  _timeScale: ITimeScaleApi<Time> | null;
+  _timeScale: ITimeScaleApi<HorzScaleItem> | null;
   /**
    * Function to get the time scale API.
    */
-  api: () => ITimeScaleApi<Time> | null;
+  api: () => ITimeScaleApi<HorzScaleItem> | null;
   /**
    * Function to initialize the time scale API.
    */
-  init: () => ITimeScaleApi<Time> | null;
+  init: () => ITimeScaleApi<HorzScaleItem> | null;
   /**
    * Function to clear the time scale API.
    */
@@ -69,11 +69,11 @@ export type PriceScaleApiRef = {
  * Use this component to configure how the chart's visible time/logical range is initialized
  * and updated, and to react to time scale updates via event handlers.
  */
-export type TimeScaleProps = {
+export type TimeScaleProps<HorzScaleItem = Time> = {
   /**
    * Callback for when the visible time range changes.
    */
-  onVisibleTimeRangeChange?: TimeRangeChangeEventHandler<Time>;
+  onVisibleTimeRangeChange?: TimeRangeChangeEventHandler<HorzScaleItem>;
   /**
    * Callback for when the visible logical range changes.
    */
@@ -85,7 +85,7 @@ export type TimeScaleProps = {
   /**
    * The visible time range for the time scale.
    */
-  visibleRange?: IRange<Time>;
+  visibleRange?: IRange<HorzScaleItem>;
   /**
    * The visible logical range for the time scale.
    */
@@ -127,11 +127,11 @@ export type TimeScaleFitContentTriggerProps = {
 /**
  * TimeScaleContext that provides access to the time scale API and readiness state.
  */
-export interface ITimeScaleContext {
+export interface ITimeScaleContext<HorzScaleItem = Time> {
   /**
    * Reference to the time scale API.
    */
-  timeScaleApiRef: TimeScaleApiRef | null;
+  timeScaleApiRef: TimeScaleApiRef<HorzScaleItem> | null;
   /**
    * Readiness state of the time scale component.
    */

@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New chart types: `YieldCurveChart`, `OptionsChart`, `CustomChart` components
+### Changed
+- Generalize public chart-related types and refs to support non-time horizontal scales across `TimeScale`, `Pane`, series, markers, watermarks, and series primitives
+### Fixed
+- Wire the chart `onDblClick` prop through the React wrapper so double-click handlers fire correctly
+- Fix forwarded function refs on `Chart` so they receive the container element correctly
 
 ## [1.4.1] - 2026-03-26
 ### Added

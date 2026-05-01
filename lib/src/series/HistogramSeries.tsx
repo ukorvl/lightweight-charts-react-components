@@ -2,11 +2,12 @@ import { forwardRef } from "react";
 import React from "react";
 import { SeriesTemplate } from "./SeriesTemplate";
 import type { SeriesApiRef, SeriesForwardRefComponent, SeriesProps } from "./types";
+import type { Time } from "lightweight-charts";
 import type { ForwardedRef, JSX } from "react";
 
-const HistogramSeriesRenderFunction = (
-  { children, ...rest }: SeriesProps<"Histogram">,
-  ref: ForwardedRef<SeriesApiRef<"Histogram">>
+const HistogramSeriesRenderFunction = <HorzScaleItem = Time,>(
+  { children, ...rest }: SeriesProps<"Histogram", HorzScaleItem>,
+  ref: ForwardedRef<SeriesApiRef<"Histogram", HorzScaleItem>>
 ): JSX.Element => {
   return (
     <SeriesTemplate type="Histogram" ref={ref} {...rest}>
@@ -34,7 +35,7 @@ const HistogramSeriesRenderFunction = (
  * />
  * ```
  */
-export const HistogramSeries: SeriesForwardRefComponent<"Histogram"> = forwardRef(
+export const HistogramSeries = forwardRef(
   HistogramSeriesRenderFunction
-);
+) as SeriesForwardRefComponent<"Histogram">;
 HistogramSeries.displayName = "HistogramSeries";
