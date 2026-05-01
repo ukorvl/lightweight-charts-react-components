@@ -3,6 +3,7 @@ import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { PaneContext } from "./PaneContext";
 import { usePaneContext } from "./usePaneContext";
+import type { PaneApiRef } from "./types";
 import type { PropsWithChildren } from "react";
 
 const mockPaneApiRef = {
@@ -17,7 +18,7 @@ describe("usePaneContext", () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <PaneContext.Provider
         value={{
-          paneApiRef: mockPaneApiRef,
+          paneApiRef: mockPaneApiRef as unknown as PaneApiRef<unknown>,
           isReady: true,
         }}
       >
@@ -30,7 +31,7 @@ describe("usePaneContext", () => {
     expect(result.current).toStrictEqual({
       isInsidePane: true,
       isPaneReady: true,
-      paneApiRef: mockPaneApiRef,
+      paneApiRef: mockPaneApiRef as unknown as PaneApiRef<unknown>,
     });
   });
 

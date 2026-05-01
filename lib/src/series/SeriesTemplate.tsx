@@ -3,20 +3,20 @@ import React from "react";
 import { SeriesContext } from "./SeriesContext";
 import { useSeries } from "./useSeries";
 import type { SeriesTemplateProps, SeriesApiRef } from "./types";
-import type { SeriesType } from "lightweight-charts";
+import type { SeriesType, Time } from "lightweight-charts";
 import type { ForwardedRef } from "react";
 
-type GenericSeriesComponent = (<T extends SeriesType>(
-  props: SeriesTemplateProps<T> & {
-    ref?: ForwardedRef<SeriesApiRef<T>>;
+type GenericSeriesComponent = (<T extends SeriesType, HorzScaleItem = Time>(
+  props: SeriesTemplateProps<T, HorzScaleItem> & {
+    ref?: ForwardedRef<SeriesApiRef<T, HorzScaleItem>>;
   }
 ) => ReturnType<typeof SeriesTemplateRenderFunction>) & {
   displayName: string;
 };
 
-const SeriesTemplateRenderFunction = <T extends SeriesType>(
-  { children, ...rest }: SeriesTemplateProps<T>,
-  ref: ForwardedRef<SeriesApiRef<T>>
+const SeriesTemplateRenderFunction = <T extends SeriesType, HorzScaleItem = Time>(
+  { children, ...rest }: SeriesTemplateProps<T, HorzScaleItem>,
+  ref: ForwardedRef<SeriesApiRef<T, HorzScaleItem>>
 ) => {
   const {
     seriesApiRef: { current: seriesApiRef },
@@ -27,7 +27,7 @@ const SeriesTemplateRenderFunction = <T extends SeriesType>(
   return (
     <SeriesContext.Provider
       value={{
-        seriesApiRef,
+        seriesApiRef: seriesApiRef as never,
         isReady,
       }}
     >

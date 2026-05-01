@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { type ISeriesContext } from "./types";
 
-const SeriesContext = createContext<ISeriesContext>({
+const SeriesContext = createContext<ISeriesContext<unknown>>({
   seriesApiRef: null,
   isReady: false,
 });

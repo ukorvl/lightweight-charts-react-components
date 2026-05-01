@@ -1,5 +1,6 @@
 import { RealTime } from "@/samples/RealTime/RealTime";
 import { BasicSeries } from "../../samples/BasicSeries/BasicSeries";
+import { ChartTypes } from "../../samples/ChartTypes/ChartTypes";
 import { CompareSeries } from "../../samples/CompareSeries/CompareSeries";
 import { CustomSeries } from "../../samples/CustomSeries/CustomSeries";
 import { InfiniteData } from "../../samples/InfiniteData/InfiniteData";
@@ -18,6 +19,7 @@ const Contents = () => {
   return (
     <LayoutGrid component="section" aria-label="Examples of library usage">
       <BasicSeries />
+      <ChartTypes />
       <CustomSeries />
       <RangeSwitcher />
       <Panes />

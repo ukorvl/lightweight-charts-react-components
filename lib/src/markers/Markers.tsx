@@ -1,11 +1,20 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { useMarkers } from "./useMarkers";
 import type { MarkersApiRef, MarkersProps } from "./types";
-import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
+import type { Time } from "lightweight-charts";
+import type { ForwardedRef, JSX } from "react";
 
-const MarkersRenderFunction = (
-  { ...rest }: MarkersProps,
-  ref: ForwardedRef<MarkersApiRef>
+type GenericMarkersComponent = (<HorzScaleItem = Time>(
+  props: MarkersProps<HorzScaleItem> & {
+    ref?: ForwardedRef<MarkersApiRef<HorzScaleItem>>;
+  }
+) => JSX.Element | null) & {
+  displayName: string;
+};
+
+const MarkersRenderFunction = <HorzScaleItem = Time,>(
+  { ...rest }: MarkersProps<HorzScaleItem>,
+  ref: ForwardedRef<MarkersApiRef<HorzScaleItem>>
 ): JSX.Element | null => {
   const markersApiRef = useMarkers(rest);
   useImperativeHandle(ref, () => markersApiRef.current, [markersApiRef]);
@@ -31,7 +40,5 @@ const MarkersRenderFunction = (
  * />
  * ```
  */
-export const Markers: ForwardRefExoticComponent<
-  MarkersProps & RefAttributes<MarkersApiRef>
-> = forwardRef(MarkersRenderFunction);
+export const Markers = forwardRef(MarkersRenderFunction) as GenericMarkersComponent;
 Markers.displayName = "Markers";

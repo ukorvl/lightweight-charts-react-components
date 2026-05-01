@@ -9,19 +9,19 @@ import type {
 /**
  * Markers API reference type that can be used to access the series markers plugin API.
  */
-export type MarkersApiRef = {
+export type MarkersApiRef<HorzScaleItem = Time> = {
   /**
    * Internal reference to the series markers API instance.
    */
-  _markers: ISeriesMarkersPluginApi<Time> | null;
+  _markers: ISeriesMarkersPluginApi<HorzScaleItem> | null;
   /**
    * Function to get the series markers API instance.
    */
-  api: () => ISeriesMarkersPluginApi<Time> | null;
+  api: () => ISeriesMarkersPluginApi<HorzScaleItem> | null;
   /**
    * Function to initialize the series markers API instance.
    */
-  init: () => ISeriesMarkersPluginApi<Time> | null;
+  init: () => ISeriesMarkersPluginApi<HorzScaleItem> | null;
   /**
    * Function to clear the series markers API instance.
    */
@@ -31,11 +31,11 @@ export type MarkersApiRef = {
 /**
  * Markers component properties that can be used to create a series markers component.
  */
-export type MarkersProps = {
+export type MarkersProps<HorzScaleItem = Time> = {
   /**
    * List of markers to be displayed on the series.
    */
-  markers: SeriesMarker<Time>[];
+  markers: SeriesMarker<HorzScaleItem>[];
   /**
    * Options for the markers.
    */

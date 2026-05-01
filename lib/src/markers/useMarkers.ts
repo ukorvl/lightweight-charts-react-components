@@ -2,12 +2,20 @@ import { createSeriesMarkers } from "lightweight-charts";
 import { useLayoutEffect, useRef } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { SeriesContext } from "@/series/SeriesContext";
+import type { ISeriesContext } from "@/series/types";
 import type { MarkersApiRef, MarkersProps } from "./types";
+import type { Time } from "lightweight-charts";
 
-export const useMarkers = ({ reactive = true, markers, options }: MarkersProps) => {
-  const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(SeriesContext);
+export const useMarkers = <HorzScaleItem = Time>({
+  reactive = true,
+  markers,
+  options,
+}: MarkersProps<HorzScaleItem>) => {
+  const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(
+    SeriesContext
+  ) as ISeriesContext<HorzScaleItem>;
 
-  const markersApiRef = useRef<MarkersApiRef>({
+  const markersApiRef = useRef<MarkersApiRef<HorzScaleItem>>({
     _markers: null,
     api() {
       return this._markers;

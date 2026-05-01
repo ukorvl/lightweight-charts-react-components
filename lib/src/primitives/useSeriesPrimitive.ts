@@ -1,18 +1,25 @@
 import { useLayoutEffect, useRef } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import type { IChartContext } from "@/chart/types";
 import { SeriesContext } from "@/series/SeriesContext";
+import type { ISeriesContext } from "@/series/types";
 import type { SeriesPrimitiveApiRef, SeriesPrimitiveProps } from "./types";
-import type { ISeriesApi, SeriesType } from "lightweight-charts";
+import type { IChartApiBase, SeriesType, Time } from "lightweight-charts";
+import type { ISeriesApi } from "lightweight-charts";
 
-export const useSeriesPrimitive = <T extends SeriesType>({
+export const useSeriesPrimitive = <T extends SeriesType, HorzScaleItem = Time>({
   render,
   plugin,
-}: SeriesPrimitiveProps<T>) => {
-  const { isReady: isChartReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(SeriesContext);
+}: SeriesPrimitiveProps<T, HorzScaleItem>) => {
+  const { isReady: isChartReady, chartApiRef: chart } = useSafeContext(
+    ChartContext
+  ) as IChartContext<HorzScaleItem, IChartApiBase<HorzScaleItem>>;
+  const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(
+    SeriesContext
+  ) as ISeriesContext<HorzScaleItem>;
 
-  const seriesPrimitiveApiRef = useRef<SeriesPrimitiveApiRef>({
+  const seriesPrimitiveApiRef = useRef<SeriesPrimitiveApiRef<HorzScaleItem>>({
     _primitive: null,
     api() {
       return this._primitive;
@@ -30,7 +37,7 @@ export const useSeriesPrimitive = <T extends SeriesType>({
           ? plugin
           : render({
               chart: chartApi,
-              series: seriesApi as ISeriesApi<T>,
+              series: seriesApi as ISeriesApi<T, HorzScaleItem>,
             });
 
         seriesApi.attachPrimitive(primitive);

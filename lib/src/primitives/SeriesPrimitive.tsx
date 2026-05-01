@@ -1,20 +1,20 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { useSeriesPrimitive } from "./useSeriesPrimitive";
 import type { SeriesPrimitiveApiRef, SeriesPrimitiveProps } from "./types";
-import type { SeriesType } from "lightweight-charts";
+import type { SeriesType, Time } from "lightweight-charts";
 import type { ForwardedRef, JSX } from "react";
 
-type GenericSeriesPrimitiveComponent = (<T extends SeriesType>(
-  props: SeriesPrimitiveProps<T> & {
-    ref?: ForwardedRef<SeriesPrimitiveApiRef>;
+type GenericSeriesPrimitiveComponent = (<T extends SeriesType, HorzScaleItem = Time>(
+  props: SeriesPrimitiveProps<T, HorzScaleItem> & {
+    ref?: ForwardedRef<SeriesPrimitiveApiRef<HorzScaleItem>>;
   }
 ) => ReturnType<typeof SeriesPrimitiveRenderFunction>) & {
   displayName: string;
 };
 
-const SeriesPrimitiveRenderFunction = <T extends SeriesType>(
-  props: SeriesPrimitiveProps<T>,
-  ref: ForwardedRef<SeriesPrimitiveApiRef>
+const SeriesPrimitiveRenderFunction = <T extends SeriesType, HorzScaleItem = Time>(
+  props: SeriesPrimitiveProps<T, HorzScaleItem>,
+  ref: ForwardedRef<SeriesPrimitiveApiRef<HorzScaleItem>>
 ): JSX.Element | null => {
   const seriesPrimitiveApiRef = useSeriesPrimitive(props);
   useImperativeHandle(ref, () => seriesPrimitiveApiRef.current, [seriesPrimitiveApiRef]);

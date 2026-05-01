@@ -3,11 +3,20 @@ import React from "react";
 import { TimeScaleContext } from "./TimeScaleContext";
 import { useTimeScale } from "./useTimeScale";
 import type { TimeScaleApiRef, TimeScaleProps } from "./types";
-import type { ForwardedRef, ForwardRefExoticComponent, JSX, RefAttributes } from "react";
+import type { Time } from "lightweight-charts";
+import type { ForwardedRef, JSX } from "react";
 
-const TimeScaleRenderFunction = (
-  { children, ...props }: TimeScaleProps,
-  ref: ForwardedRef<TimeScaleApiRef>
+type GenericTimeScaleComponent = (<HorzScaleItem = Time>(
+  props: TimeScaleProps<HorzScaleItem> & {
+    ref?: ForwardedRef<TimeScaleApiRef<HorzScaleItem>>;
+  }
+) => JSX.Element) & {
+  displayName: string;
+};
+
+const TimeScaleRenderFunction = <HorzScaleItem = Time,>(
+  { children, ...props }: TimeScaleProps<HorzScaleItem>,
+  ref: ForwardedRef<TimeScaleApiRef<HorzScaleItem>>
 ): JSX.Element => {
   const {
     timeScaleApiRef: { current: timeScaleApiRef },
@@ -18,7 +27,7 @@ const TimeScaleRenderFunction = (
   return (
     <TimeScaleContext.Provider
       value={{
-        timeScaleApiRef,
+        timeScaleApiRef: timeScaleApiRef as never,
         isReady,
       }}
     >
@@ -37,10 +46,11 @@ const TimeScaleRenderFunction = (
  * @see {@link https://tradingview.github.io/lightweight-charts/docs/time-scale | TradingView documentation for time scale}
  * @example
  * ```tsx
- * <TimeScale visibleRange={{ from: 0, to: 100 }} onVisibleRangeChanged={() => {}} />
+ * <TimeScale
+ *   visibleRange={{ from: 0, to: 100 }}
+ *   onVisibleTimeRangeChange={() => {}}
+ * />
  * ```
  */
-export const TimeScale: ForwardRefExoticComponent<
-  TimeScaleProps & RefAttributes<TimeScaleApiRef>
-> = forwardRef(TimeScaleRenderFunction);
+export const TimeScale = forwardRef(TimeScaleRenderFunction) as GenericTimeScaleComponent;
 TimeScale.displayName = "TimeScale";

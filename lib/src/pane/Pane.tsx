@@ -3,22 +3,33 @@ import React from "react";
 import { PaneContext } from "./PaneContext";
 import { usePane } from "./usePane";
 import type { PaneProps, PaneApiRef } from "./types";
-import type { ForwardedRef, ForwardRefExoticComponent, RefAttributes } from "react";
+import type { Time } from "lightweight-charts";
+import type { ForwardedRef } from "react";
 
-const PaneRenderFunction = (
+type GenericPaneComponent = (<HorzScaleItem = Time>(
+  props: PaneProps & {
+    ref?: ForwardedRef<PaneApiRef<HorzScaleItem>>;
+  }
+) => ReturnType<typeof PaneRenderFunction>) & {
+  displayName: string;
+};
+
+const PaneRenderFunction = <HorzScaleItem = Time,>(
   { children, stretchFactor }: PaneProps,
-  ref: ForwardedRef<PaneApiRef>
+  ref: ForwardedRef<PaneApiRef<HorzScaleItem>>
 ) => {
   const {
     paneApiRef: { current: paneApiRef },
     isReady,
-  } = usePane({ stretchFactor });
+  } = usePane<HorzScaleItem>({
+    stretchFactor,
+  });
   useImperativeHandle(ref, () => paneApiRef, [paneApiRef]);
 
   return (
     <PaneContext.Provider
       value={{
-        paneApiRef,
+        paneApiRef: paneApiRef as never,
         isReady,
       }}
     >
@@ -42,6 +53,5 @@ const PaneRenderFunction = (
  * </Pane>
  * ```
  */
-export const Pane: ForwardRefExoticComponent<PaneProps & RefAttributes<PaneApiRef>> =
-  forwardRef(PaneRenderFunction);
+export const Pane = forwardRef(PaneRenderFunction) as GenericPaneComponent;
 Pane.displayName = "Pane";

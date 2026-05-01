@@ -1,6 +1,6 @@
-import type { ChartOptions, DeepPartial } from "lightweight-charts";
+import type { DefaultChartOptions } from "./types";
 
-const defaultChartOptions: DeepPartial<ChartOptions> = {
+const defaultChartOptions: DefaultChartOptions = {
   addDefaultPane: false,
 };
 

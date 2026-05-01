@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ChartComponent } from "./ChartComponent";
 import { ChartContext } from "./ChartContext";
 import * as useChartModule from "./useChart";
-import type { IChartContext } from "./types";
+import type { ContextType } from "react";
 
 vi.mock("./useChart");
 
@@ -39,7 +39,7 @@ describe("Chart component", () => {
   });
 
   it("provides chartApiRef and isReady via context", () => {
-    let contextValue: null | IChartContext = null;
+    let contextValue: ContextType<typeof ChartContext> = null;
 
     const Consumer = () => {
       contextValue = useContext(ChartContext);
@@ -55,21 +55,31 @@ describe("Chart component", () => {
     expect(contextValue).toEqual({
       chartApiRef: mockApiRef,
       isReady: true,
+      chartKind: "time",
     });
   });
 
   it("calls useChart with correct parameters", () => {
     const mockUseChart = vi.mocked(useChartModule.useChart);
     render(
-      <ChartComponent container={mockContainer} options={{}} onInit={vi.fn()}>
+      <ChartComponent
+        container={mockContainer}
+        options={{}}
+        onInit={vi.fn()}
+        onDblClick={vi.fn()}
+      >
         <div>Child Content</div>
       </ChartComponent>
     );
 
-    expect(mockUseChart).toHaveBeenCalledWith({
+    expect(mockUseChart).toHaveBeenLastCalledWith({
       container: mockContainer,
+      onClick: undefined,
+      onCrosshairMove: undefined,
       options: {},
       onInit: expect.any(Function),
+      onDblClick: expect.any(Function),
+      createChartApi: undefined,
     });
   });
 });

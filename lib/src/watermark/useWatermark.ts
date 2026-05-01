@@ -3,14 +3,20 @@ import { useLayoutEffect, useRef } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import type { IChartContext } from "@/chart/types";
 import { usePaneContext } from "@/pane/usePaneContext";
 import type { WatermarkApiRef, WatermarkProps, WatermarkType } from "./types";
+import type { IChartApiBase, Time } from "lightweight-charts";
 
-const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
-  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext();
+const useWatermark = <T extends WatermarkType, HorzScaleItem = Time>(
+  props: WatermarkProps<T>
+) => {
+  const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(
+    ChartContext
+  ) as IChartContext<HorzScaleItem, IChartApiBase<HorzScaleItem>>;
+  const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext<HorzScaleItem>();
 
-  const watermarkApiRef = useRef<WatermarkApiRef<T>>({
+  const watermarkApiRef = useRef<WatermarkApiRef<T, HorzScaleItem>>({
     _watermark: null,
     api() {
       return this._watermark;
@@ -40,7 +46,7 @@ const useWatermark = <T extends WatermarkType>(props: WatermarkProps<T>) => {
         this._watermark = null;
       }
     },
-  } as WatermarkApiRef<T>);
+  } as WatermarkApiRef<T, HorzScaleItem>);
 
   useLayoutEffect(() => {
     if (!chartIsReady) return;

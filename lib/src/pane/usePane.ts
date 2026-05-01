@@ -1,13 +1,19 @@
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
+import type { IChartContext } from "@/chart/types";
 import type { PaneApiRef, PaneProps } from "./types";
+import type { IChartApiBase, Time } from "lightweight-charts";
 
-export const usePane = ({ stretchFactor }: Omit<PaneProps, "children"> = {}) => {
-  const { chartApiRef: chart, isReady: chartIsReady } = useSafeContext(ChartContext);
+export const usePane = <HorzScaleItem = Time>({
+  stretchFactor,
+}: Omit<PaneProps, "children"> = {}) => {
+  const { chartApiRef: chart, isReady: chartIsReady } = useSafeContext(
+    ChartContext
+  ) as IChartContext<HorzScaleItem, IChartApiBase<HorzScaleItem>>;
   const [isReady, setIsReady] = useState(false);
 
-  const paneApiRef = useRef<PaneApiRef>({
+  const paneApiRef = useRef<PaneApiRef<HorzScaleItem>>({
     _pane: null,
     api() {
       return this._pane;
