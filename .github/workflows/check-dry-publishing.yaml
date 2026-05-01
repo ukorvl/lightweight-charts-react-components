@@ -1,0 +1,35 @@
+name: Check dry publishing
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check-dry-publishing:
+    name: Check npm and JSR dry publishing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Build
+        uses: ./.github/actions/build
+
+      - name: Check dry publishing
+        uses: ./.github/actions/check-dry-publishing
+        with:
+          package-directory: lib

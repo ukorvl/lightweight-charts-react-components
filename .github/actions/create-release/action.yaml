@@ -22,15 +22,10 @@ runs:
         fi
       shell: bash
 
-    - name: Check npm publishing (dry run)
-      working-directory: lib
-      run: npm publish --dry-run
-      shell: bash
-
-    - name: Check JSR publishing (dry run)
-      working-directory: lib
-      run: npx jsr publish --dry-run
-      shell: bash
+    - name: Check dry publishing
+      uses: ./.github/actions/check-dry-publishing
+      with:
+        package-directory: lib
 
     - name: Create a new release
       uses: softprops/action-gh-release@v2
