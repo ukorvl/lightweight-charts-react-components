@@ -15,6 +15,11 @@ import { useInfiniteDataStore } from "./infiniteDataStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { LogicalRange, LogicalRangeChangeEventHandler } from "lightweight-charts";
 
+const timeScaleOptions = {
+  barSpacing: 10,
+  fixRightEdge: true,
+};
+
 const InfiniteData = () => {
   const { data, loading, fetchMoreData } = useInfiniteDataStore();
   const theme = useTheme();
@@ -66,10 +71,7 @@ const InfiniteData = () => {
         <Pane>
           <LineSeries data={data} options={{ color: colors.green }} />
           <TimeScale
-            options={{
-              barSpacing: 10,
-              fixRightEdge: true,
-            }}
+            options={timeScaleOptions}
             onVisibleLogicalRangeChange={onVisibleLogicalRangeChange}
           >
             <TimeScaleFitContentTrigger deps={[]} />
