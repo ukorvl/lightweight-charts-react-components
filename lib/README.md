@@ -31,6 +31,10 @@
     </picture>
   </a>
 
+  <a href="https://pkg.pr.new/~/ukorvl/lightweight-charts-react-components">
+    <img src="https://pkg.pr.new/badge/ukorvl/lightweight-charts-react-components" alt="pkg.pr.new">
+  </a>
+
   <a href="https://github.com/ukorvl/lightweight-charts-react-components/blob/main/LICENSE">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/npm/l/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat">
@@ -94,10 +98,14 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
 
 ## Table of Contents
 
+- [Description](#description)
+- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Chart Container Sizing](#chart-container-sizing)
 - [Examples](#examples)
 - [Contributing](#contributing)
+  - [How to Contribute](#how-to-contribute)
 - [Related Projects](#related-projects)
 - [License](#license)
 
@@ -108,6 +116,20 @@ You can install the library via npm, pnpm or yarn:
 ```bash
 npm install lightweight-charts-react-components lightweight-charts
 ```
+
+If you want to test the unreleased version from `main`, you can install the preview build published via `pkg.pr.new`:
+
+```bash
+npm install https://pkg.pr.new/lightweight-charts-react-components@main lightweight-charts
+```
+
+Or choose any commit from `main` and install the preview build for that commit by using its hash:
+
+```bash
+npm install https://pkg.pr.new/lightweight-charts-react-components@<commit-hash> lightweight-charts
+```
+
+For security reasons, preview builds are published only from commits pushed to `main`. Pull request builds are not published.
 
 Standalone version of the library is also available for use in the browser without a build step. You can include it in your HTML file using a script tag. Note that library expects global `React`, `ReactDOM` and `LightweightCharts` variables to be available in the global scope.
 
