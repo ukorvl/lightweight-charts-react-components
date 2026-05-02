@@ -101,6 +101,9 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
 - [Description](#description)
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
+  - [Stable release](#stable-release)
+  - [Preview builds](#preview-builds)
+  - [Standalone browser build](#standalone-browser-build)
 - [Usage](#usage)
   - [Chart Container Sizing](#chart-container-sizing)
 - [Examples](#examples)
@@ -111,19 +114,23 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
 
 ## Installation
 
-You can install the library via npm, pnpm or yarn:
+### Stable release
+
+Install the latest published version from npm:
 
 ```bash
 npm install lightweight-charts-react-components lightweight-charts
 ```
 
-If you want to test the unreleased version from `main`, you can install the preview build published via `pkg.pr.new`:
+### Preview builds
+
+To test the latest unreleased version from `main`, install the preview build published via `pkg.pr.new`:
 
 ```bash
 npm install https://pkg.pr.new/lightweight-charts-react-components@main lightweight-charts
 ```
 
-Or choose any commit from `main` and install the preview build for that commit by using its hash:
+Or choose a specific commit from `main` and install the preview build for that commit:
 
 ```bash
 npm install https://pkg.pr.new/lightweight-charts-react-components@<commit-hash> lightweight-charts
@@ -131,7 +138,9 @@ npm install https://pkg.pr.new/lightweight-charts-react-components@<commit-hash>
 
 For security reasons, preview builds are published only from commits pushed to `main`. Pull request builds are not published.
 
-Standalone version of the library is also available for use in the browser without a build step. You can include it in your HTML file using a script tag. Note that library expects global `React`, `ReactDOM` and `LightweightCharts` variables to be available in the global scope.
+### Standalone browser build
+
+The standalone version is also available for use in the browser without a build step. The library expects global `React`, `ReactDOM`, and `LightweightCharts` variables to be available in the global scope.
 
 ```html
 <head>
