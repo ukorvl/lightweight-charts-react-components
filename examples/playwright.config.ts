@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 const __filename = fileURLToPath(import.meta.url);
 dotenv.config({ path: path.join(path.dirname(__filename), ".env"), quiet: true });
+const shouldUseBlobReporter = process.env.PLAYWRIGHT_BLOB_REPORT === "true";
 const shouldIncludeWebkit =
   process.env.CI === "true" ||
   !(process.platform === "darwin" && process.arch === "arm64");
@@ -46,10 +47,12 @@ export default defineConfig({
       use: { ...devices["Pixel 5"] },
     },
   ],
-  reporter: [
-    ["html", { open: "never", outputFolder: "tests/e2e/output/playwright-report" }],
-    ["list"],
-  ],
+  reporter: shouldUseBlobReporter
+    ? [["blob", { outputDir: "tests/e2e/output/blob-report" }], ["list"]]
+    : [
+        ["html", { open: "never", outputFolder: "tests/e2e/output/playwright-report" }],
+        ["list"],
+      ],
   webServer: {
     command: "npm run dev",
     url: "http://localhost:5173",

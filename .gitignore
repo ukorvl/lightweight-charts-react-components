@@ -53,3 +53,6 @@ Thumbs.db
 
 # lighthouse
 .lighthouseci/
+
+# playwright
+playwright-report/
