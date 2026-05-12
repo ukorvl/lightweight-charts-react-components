@@ -96,7 +96,7 @@ jobs:
   merge-e2e-reports:
     name: Merge E2E Reports
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+    if: ${{ always() && !cancelled() && github.event_name == 'pull_request' }}
     needs: test-e2e
     steps:
       - name: Clone repository
