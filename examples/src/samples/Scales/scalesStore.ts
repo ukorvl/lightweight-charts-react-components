@@ -10,6 +10,13 @@ import type {
 
 type PriceScaleType = "normal" | "logarithmic" | "percentage" | "inverted";
 type PriceScalePosition = "left" | "right";
+const currencySelectOptions = [
+  { value: "USD", label: "USD ($)" },
+  { value: "EUR", label: "EUR (€)" },
+  { value: "GBP", label: "GBP (£)" },
+  { value: "JPY", label: "JPY (¥)" },
+] as const;
+type PriceCurrency = (typeof currencySelectOptions)[number]["value"];
 
 interface PriceScalePositionStore {
   priceScalePosition: PriceScalePosition;
@@ -32,23 +39,18 @@ interface PriceScaleOptionsStore {
 }
 
 interface PriceCurrencyStore {
-  currency: string;
-  setCurrency: (currency: string) => void;
+  currency: PriceCurrency;
+  setCurrency: (currency: PriceCurrency) => void;
 }
 
-interface ChartLocalizationOptionsStore {
-  priceFormatter?: PriceFormatterFn;
-  setPriceFormatter: (formatter: PriceFormatterFn | undefined) => void;
-}
+const createPriceFormatter = (currency: PriceCurrency): PriceFormatterFn => {
+  const formatter = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency,
+  });
 
-const createPriceFormatter = (currency: string): PriceFormatterFn => {
-  return (price: number) => {
-    return `${currency} ${price.toFixed(2)}`;
-  };
+  return (price: number) => formatter.format(price);
 };
-
-const LKRFormatter = createPriceFormatter("Rs");
-const AMDFormatter = createPriceFormatter("AMD");
 
 const mainSeriesData = generateLineData(50);
 const secondSeriesData = generateHistogramData(50, {
@@ -70,12 +72,8 @@ const priceScalesNumberSelectOptions = [
   { value: 1, label: "1" },
   { value: 2, label: "2" },
 ] as const;
-const currencySelectOptions = [
-  { value: "LKR", label: "LKR" },
-  { value: "AMD", label: "AMD" },
-] as const;
 
-const getpriceScaleOptions = (t: PriceScaleType): DeepPartial<PriceScaleOptions> => {
+const getPriceScaleOptions = (t: PriceScaleType): DeepPartial<PriceScaleOptions> => {
   switch (t) {
     case "normal":
       return { mode: PriceScaleMode.Normal, invertScale: false };
@@ -109,13 +107,8 @@ const usePriceScaleOptionsStore = create<PriceScaleOptionsStore>(set => ({
 }));
 
 const usePriceCurrencyStore = create<PriceCurrencyStore>(set => ({
-  currency: "LKR",
+  currency: "USD",
   setCurrency: currency => set({ currency }),
-}));
-
-const useChartLocalizationOptionsStore = create<ChartLocalizationOptionsStore>(set => ({
-  priceFormatter: LKRFormatter,
-  setPriceFormatter: formatter => set({ priceFormatter: formatter }),
 }));
 
 usePriceScaleTypeStore.subscribe(state => {
@@ -125,48 +118,21 @@ usePriceScaleTypeStore.subscribe(state => {
 
   setPriceScaleOptions({
     ...priceScaleOptions,
-    ...getpriceScaleOptions(priceScaleType),
+    ...getPriceScaleOptions(priceScaleType),
   });
 });
 
-usePriceCurrencyStore.subscribe(state => {
-  const { currency } = state;
-  const { setPriceFormatter } = useChartLocalizationOptionsStore.getState();
-
-  if (currency === "LKR") {
-    setPriceFormatter(LKRFormatter);
-  } else if (currency === "AMD") {
-    setPriceFormatter(AMDFormatter);
-  } else {
-    setPriceFormatter(undefined);
-  }
-});
-
-usePriceScaleTypeStore.subscribe(state => {
-  const { priceScaleType } = state;
-  const { setPriceFormatter } = useChartLocalizationOptionsStore.getState();
-  const shouldFormatPrice =
-    priceScaleType !== "percentage" && priceScaleType !== "logarithmic";
-
-  if (shouldFormatPrice) {
-    const { currency } = usePriceCurrencyStore.getState();
-    setPriceFormatter(createPriceFormatter(currency));
-  } else {
-    setPriceFormatter(undefined);
-  }
-});
-
 export {
+  createPriceFormatter,
+  currencySelectOptions,
   mainSeriesData,
-  secondSeriesData,
-  usePriceScalesNumberStore,
-  usePriceScaleTypeStore,
-  usePriceScalePositionStore,
+  priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
-  priceScalePositionSelectOptions,
-  currencySelectOptions,
-  usePriceScaleOptionsStore,
+  secondSeriesData,
   usePriceCurrencyStore,
-  useChartLocalizationOptionsStore,
+  usePriceScaleOptionsStore,
+  usePriceScalePositionStore,
+  usePriceScaleTypeStore,
+  usePriceScalesNumberStore,
 };
