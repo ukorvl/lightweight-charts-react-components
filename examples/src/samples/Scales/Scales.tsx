@@ -13,13 +13,13 @@ import {
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
 import {
+  createPriceFormatter,
   currencySelectOptions,
   mainSeriesData,
   priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
   secondSeriesData,
-  useChartLocalizationOptionsStore,
   usePriceCurrencyStore,
   usePriceScaleOptionsStore,
   usePriceScalePositionStore,
@@ -71,7 +71,13 @@ const Scales = () => {
   const { priceScalePosition, setPriceScalePosition } = usePriceScalePositionStore();
   const { priceScaleOptions } = usePriceScaleOptionsStore();
   const { currency, setCurrency } = usePriceCurrencyStore();
-  const { priceFormatter } = useChartLocalizationOptionsStore();
+  const priceFormatter = useMemo(() => {
+    if (priceScaleType === "logarithmic" || priceScaleType === "percentage") {
+      return undefined;
+    }
+
+    return createPriceFormatter(currency);
+  }, [currency, priceScaleType]);
 
   const chartOptions = useMemo(() => {
     const localizationOpts: DeepPartial<ChartOptions> = priceFormatter
@@ -104,7 +110,7 @@ const Scales = () => {
   return (
     <ChartWidgetCard
       title="Scales"
-      subTitle="Customize the scales of the chart"
+      subTitle="Customize chart scales and price formatting"
       sampleConfig={samplesLinks.Scales}
     >
       <ScrollableContainer sx={{ marginBottom: 2 }}>
@@ -128,7 +134,7 @@ const Scales = () => {
           disabled={priceScalesNumber === 2}
         />
         <SelectFormField
-          label="Price currency"
+          label="Price formatter"
           value={currency}
           setValue={setCurrency}
           options={currencySelectOptions}
