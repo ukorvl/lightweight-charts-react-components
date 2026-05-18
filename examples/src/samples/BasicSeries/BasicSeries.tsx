@@ -2,6 +2,7 @@ import { Tab, Tabs } from "@mui/material";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
+import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
   Chart,
   TimeScale,
@@ -14,11 +15,6 @@ const BasicSeries = () => {
   const { activeTab, setActiveTab } = useTabStore();
   const { seriesData, seriesComponent: Component } = useSeriesStore();
   const options = basicSeriesMap[activeTab]?.options || {};
-
-  const a11yProps = (key: string) => ({
-    id: `line-series-tab-${key}`,
-    "aria-controls": `basic-series-tabpanel-${key}`,
-  });
 
   return (
     <ChartWidgetCard
@@ -36,15 +32,24 @@ const BasicSeries = () => {
         scrollButtons="auto"
       >
         {typedObjectKeys(basicSeriesMap).map(key => (
-          <Tab key={key} value={key} label={key} {...a11yProps(key)} />
+          <Tab
+            key={key}
+            value={key}
+            label={key}
+            {...getTabA11yProps("basic-series", key)}
+          />
         ))}
       </Tabs>
-      <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
-        {Component && <Component data={seriesData} options={options} reactive={false} />}
-        <TimeScale>
-          <TimeScaleFitContentTrigger deps={[]} />
-        </TimeScale>
-      </Chart>
+      <TabPanel sampleId="basic-series" tabValue={activeTab}>
+        <Chart options={chartCommonOptions} containerProps={{ style: { flexGrow: "1" } }}>
+          {Component && (
+            <Component data={seriesData} options={options} reactive={false} />
+          )}
+          <TimeScale>
+            <TimeScaleFitContentTrigger deps={[]} />
+          </TimeScale>
+        </Chart>
+      </TabPanel>
     </ChartWidgetCard>
   );
 };

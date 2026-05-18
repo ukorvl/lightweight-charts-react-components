@@ -43,18 +43,26 @@ const ActionPanelElement = ({
   disabled = false,
   isExternal = true,
   hrefTarget = "_blank",
-}: ActionPanelElementProps) => (
-  <Tooltip title={disabled ? tooltipDisabledTitle : tooltipTitle} placement="bottom">
-    <Link
-      href={disabled ? undefined : href}
-      target={disabled ? undefined : hrefTarget}
-      rel={isExternal ? "noopener noreferrer" : undefined}
-      color={disabled ? "textDisabled" : "secondary"}
+}: ActionPanelElementProps) => {
+  return (
+    <Tooltip
+      title={disabled ? tooltipDisabledTitle : tooltipTitle}
+      placement="bottom"
+      describeChild
     >
-      {children}
-    </Link>
-  </Tooltip>
-);
+      <Link
+        component={disabled ? "span" : "a"}
+        href={disabled ? undefined : href}
+        target={disabled ? undefined : hrefTarget}
+        rel={disabled || !isExternal ? undefined : "noopener noreferrer"}
+        aria-label={disabled ? undefined : tooltipTitle}
+        color={disabled ? "textDisabled" : "secondary"}
+      >
+        {children}
+      </Link>
+    </Tooltip>
+  );
+};
 
 const ActionPanel: FC<ActionPanelProps> = ({
   sampleConfig: { github, codesandbox, stackblitz },

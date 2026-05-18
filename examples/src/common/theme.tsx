@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { colors } from "./colors";
+import { fontFamily } from "./fontFamily";
 
 const theme = createTheme({
   cssVariables: true,
@@ -86,7 +87,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Roboto",
+    fontFamily,
   },
 });
 

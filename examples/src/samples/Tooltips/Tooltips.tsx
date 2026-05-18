@@ -5,6 +5,7 @@ import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
+import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
   Chart,
   LineSeries,
@@ -240,10 +241,6 @@ const tooltipMap: Record<TooltipType, ComponentType> = {
 
 const Tooltips = () => {
   const { activeTab, setActiveTab } = useTabStore();
-  const a11yProps = (key: string) => ({
-    id: `tooltips-tab-${key}`,
-    "aria-controls": `tooltips-tabpanel-${key}`,
-  });
   const ChartComponent = tooltipMap[activeTab];
 
   return (
@@ -262,10 +259,12 @@ const Tooltips = () => {
         scrollButtons="auto"
       >
         {typedObjectKeys(tooltipMap).map(key => (
-          <Tab key={key} value={key} label={key} {...a11yProps(key)} />
+          <Tab key={key} value={key} label={key} {...getTabA11yProps("tooltips", key)} />
         ))}
       </Tabs>
-      <ChartComponent />
+      <TabPanel sampleId="tooltips" tabValue={activeTab}>
+        <ChartComponent />
+      </TabPanel>
     </ChartWidgetCard>
   );
 };

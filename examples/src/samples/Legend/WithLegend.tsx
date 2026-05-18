@@ -90,7 +90,7 @@ const WithLegend = () => {
         </Chart>
         {legendData !== null && legendVisible && (
           <Legend>
-            <Typography variant="h6" gutterBottom>
+            <Typography component="h3" variant="h6" gutterBottom>
               Your awesome chart legend
             </Typography>
             <Typography variant="body2">{legendData.time}</Typography>

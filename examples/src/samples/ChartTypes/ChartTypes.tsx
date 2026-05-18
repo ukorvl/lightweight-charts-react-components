@@ -1,6 +1,7 @@
 import { Tab, Tabs } from "@mui/material";
 import { useState, type ReactElement } from "react";
 import { samplesLinks } from "@/samples";
+import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
   AreaSeries,
   CustomChart,
@@ -98,11 +99,6 @@ const ChartTypes = () => {
   const [activeTab, setActiveTab] = useState<ChartTypeTab>("Options");
   const ActiveChart = chartTypeComponentMap[activeTab];
 
-  const a11yProps = (key: ChartTypeTab) => ({
-    id: `chart-types-tab-${key}`,
-    "aria-controls": `chart-types-tabpanel-${key}`,
-  });
-
   return (
     <ChartWidgetCard
       title="Chart types"
@@ -119,10 +115,17 @@ const ChartTypes = () => {
         scrollButtons="auto"
       >
         {chartTypeTabs.map(key => (
-          <Tab key={key} value={key} label={key} {...a11yProps(key)} />
+          <Tab
+            key={key}
+            value={key}
+            label={key}
+            {...getTabA11yProps("chart-types", key)}
+          />
         ))}
       </Tabs>
-      <ActiveChart />
+      <TabPanel sampleId="chart-types" tabValue={activeTab}>
+        <ActiveChart />
+      </TabPanel>
     </ChartWidgetCard>
   );
 };
