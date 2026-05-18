@@ -1,4 +1,5 @@
 import { colors } from "@/common/colors";
+import { fontFamily } from "./fontFamily";
 import { deepMergePlainObjects } from "./utils";
 import type { ChartOptions, DeepPartial } from "lightweight-charts";
 
@@ -6,7 +7,7 @@ const chartCommonOptions = {
   autoSize: true,
   layout: {
     attributionLogo: false,
-    fontFamily: "Roboto",
+    fontFamily,
     background: {
       color: "transparent",
     },

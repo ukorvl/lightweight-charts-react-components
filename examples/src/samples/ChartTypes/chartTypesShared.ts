@@ -14,12 +14,13 @@ import {
   type YieldCurveChartOptions,
 } from "lightweight-charts";
 import { colors } from "../../common/colors";
+import { fontFamily } from "../../common/fontFamily";
 
 const baseChartOptions = {
   autoSize: true,
   layout: {
     attributionLogo: false,
-    fontFamily: "Roboto",
+    fontFamily,
     background: {
       color: "transparent",
     },
