@@ -11,13 +11,19 @@ The library is published as an npm package and as a JSR package. The library is 
 
 The examples app is deployed and hosted on GitHub Pages as a static site.
 
+## Environment
+
+- Required runtime: Node 24 and npm >= 11.10.
+- Use `.nvmrc`: `nvm use`.
+- Prefer `npm ci --ignore-scripts` for clean agent/CI installs.
+
 ## Main working principles
 
 - Make sure to update the documentation (`/lib` README and JSDoc comments) if you are adding new features or changing existing ones. Ensure all documentation is synced with the code and up-to-date.
 - If you encounter docs that are outdated or incorrect, explicitly report it to developer or mention in the PR description.
 - If applicable, update the changelog (`lib/CHANGELOG.md`) with a brief description of the changes made. Keep changelog entries concise and informative, following the format of previous entries.
 - If you are adding new features or making significant changes, consider adding new examples to the `/examples` app to demonstrate how to use the new functionality. Keep the examples clear and focused on showcasing the specific feature or change you have implemented. Follow the existing structure and style of the examples to maintain consistency across the project.
-- Make sure that tests pass. Run it with `test:all` script to run all tests, including unit and integration tests. If you have added new features or made changes to existing ones, consider adding new tests to cover those changes and ensure that they work as expected. Follow the existing testing structure and conventions to maintain consistency across the project.
+- Make sure that the relevant tests and checks pass. Prefer fast, targeted validation while iterating; use the fast validation matrix below, and reserve `npm run test:all` for full release confidence or broad cross-workspace changes. If you have added new features or made changes to existing ones, consider adding new tests to cover those changes and ensure that they work as expected. Follow the existing testing structure and conventions to maintain consistency across the project.
 - Maintain security. Ensure that any new code you add does not introduce security vulnerabilities. Ensure that no extra code is getting into the production library bundle. Ensure that no secrets or sensitive information are included in the codebase or documentation.
 - When writing React components, use functional components patterns and React Hooks. Avoid using class components. Follow the existing code style and conventions to maintain consistency across the project.
 - If you encounter conflicting instructions, always prefer local instructions in the codebase over general instructions. The hierarchy of instructions is as follows: 1) local instructions in the codebase, such as a local README or nested AGENTS.md, 2) the root README, `AGENTS.md`, or `.github/copilot-instructions.md`. If you are unsure about which instructions to follow, report it explicitly or mention it in the PR description.
@@ -27,6 +33,25 @@ The examples app is deployed and hosted on GitHub Pages as a static site.
 - Before marking new code as ready for review, run additional checks: `npm run build` to ensure the project builds, `npm run lint` to check for linting issues, and `npm run format` to ensure code is properly formatted. Address any issues that arise from these checks before submitting your code for review. Also run `npm run knip` to check for unused dependencies and remove them if any are found.
 - When you need to name new component/variable/function, follow the existing naming conventions and patterns in the relevant part of the codebase. Use PascalCase for React components and camelCase for functions and variables. For folders, match the surrounding area instead of forcing a repo-wide rule: for example, library source folders use camelCase, while many example sample folders use PascalCase.
 - Prefer strict TypeScript typing. Avoid using `any` unless absolutely necessary. If you need to use `any`, provide a clear justification in the code comments and consider adding a TODO to replace it with a more specific type in the future.
+
+## Fast validation matrix
+
+- Library source change:
+  - `npm run test:unit -w lib -- --run`
+  - `npm run build -w lib`
+- Public API / package export change:
+  - `npm run build -w lib`
+  - `npm run check-exports -w lib`
+- README/JSDoc change:
+  - `npm run build`
+  - `npm run check:jsdoc-links`
+  - `npm run check:md-links`
+- Examples UI change:
+  - `npm run build -w examples`
+  - `npm run test:e2e -w examples`
+- Full release confidence:
+  - `npm run build`
+  - `npm run test:all`
 
 ## Other references
 
