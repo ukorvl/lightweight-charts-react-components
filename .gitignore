@@ -56,3 +56,9 @@ Thumbs.db
 
 # playwright
 playwright-report/
+
+# skills
+.agents/skills
+.claude/skills
+.cursor/skills
+skills-lock.json

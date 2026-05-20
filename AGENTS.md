@@ -1,0 +1,34 @@
+# Agents guide
+
+## Project overview
+
+This project provides a collection of React components that wrap the Lightweight Charts library, allowing developers to easily integrate financial charts into their React applications. The components are designed to be flexible and customizable, enabling users to create a wide variety of chart types and styles.
+
+The project is an npm monorepo with npm workspaces and consists of two main parts: the examples app (`/examples`) and the library (`/lib`).
+The examples app contains a React + MUI application that demonstrates how to use the components in various scenarios, while the library contains the actual React components that can be imported and used in other projects.
+
+The library is published as an npm package and as a JSR package. The library is written in TypeScript and is designed to be tree-shakable. Most library React components are headless and do not render DOM elements. The chart wrapper components (`ChartWrapper`, `CustomChart`, `YieldCurveChart`, and `OptionsChart`) render container `<div>` elements, while the underlying chart and series APIs are exposed through refs and React context rather than being returned directly. The library does not include any styling or CSS.
+
+The examples app is deployed and hosted on GitHub Pages as a static site.
+
+## Main working principles
+
+- Make sure to update the documentation (`/lib` README and JSDoc comments) if you are adding new features or changing existing ones. Ensure all documentation is synced with the code and up-to-date.
+- If you encounter docs that are outdated or incorrect, explicitly report it to developer or mention in the PR description.
+- If applicable, update the changelog (`lib/CHANGELOG.md`) with a brief description of the changes made. Keep changelog entries concise and informative, following the format of previous entries.
+- If you are adding new features or making significant changes, consider adding new examples to the `/examples` app to demonstrate how to use the new functionality. Keep the examples clear and focused on showcasing the specific feature or change you have implemented. Follow the existing structure and style of the examples to maintain consistency across the project.
+- Make sure that tests pass. Run it with `test:all` script to run all tests, including unit and integration tests. If you have added new features or made changes to existing ones, consider adding new tests to cover those changes and ensure that they work as expected. Follow the existing testing structure and conventions to maintain consistency across the project.
+- Maintain security. Ensure that any new code you add does not introduce security vulnerabilities. Ensure that no extra code is getting into the production library bundle. Ensure that no secrets or sensitive information are included in the codebase or documentation.
+- When writing React components, use functional components patterns and React Hooks. Avoid using class components. Follow the existing code style and conventions to maintain consistency across the project.
+- If you encounter conflicting instructions, always prefer local instructions in the codebase over general instructions. The hierarchy of instructions is as follows: 1) local instructions in the codebase, such as a local README or nested AGENTS.md, 2) the root README, `AGENTS.md`, or `.github/copilot-instructions.md`. If you are unsure about which instructions to follow, report it explicitly or mention it in the PR description.
+- Use `npm` only, don't switch to `yarn` or `pnpm` without explicit instructions. If you encounter any issues with npm, report it explicitly or mention in the PR description.
+- When making a commit, ensure it follows the conventional commit format. Commit message requirements are defined in `commitlint.config.ts`. If you are unsure about the commit message format, refer to the commitlint documentation or report it explicitly or mention in the PR description.
+- Prefer the following commit logic: one feature - one commit. If you are making multiple changes that are related to the same feature or issue, consider grouping them into a single commit to maintain a clear and concise commit history.
+- Before marking new code as ready for review, run additional checks: `npm run build` to ensure the project builds, `npm run lint` to check for linting issues, and `npm run format` to ensure code is properly formatted. Address any issues that arise from these checks before submitting your code for review. Also run `npm run knip` to check for unused dependencies and remove them if any are found.
+- When you need to name new component/variable/function, follow the existing naming conventions and patterns in the relevant part of the codebase. Use PascalCase for React components and camelCase for functions and variables. For folders, match the surrounding area instead of forcing a repo-wide rule: for example, library source folders use camelCase, while many example sample folders use PascalCase.
+- Prefer strict TypeScript typing. Avoid using `any` unless absolutely necessary. If you need to use `any`, provide a clear justification in the code comments and consider adding a TODO to replace it with a more specific type in the future.
+
+## Other references
+
+- [Contributing guidelines](CONTRIBUTING.md)
+- Examples app has its own README with instructions on how to run it and add new examples: `/examples/README.md`

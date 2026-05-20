@@ -34,7 +34,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
   ```
 - Run tests:
   ```sh
-  npm run test # Runs tests across all workspaces
+  npm run test:all # Runs tests across all workspaces
   ```
 - Build the library:
   ```sh
