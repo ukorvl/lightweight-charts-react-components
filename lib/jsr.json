@@ -12,6 +12,6 @@
     "@/": "./src/",
     "react": "npm:react@^19.1.0",
     "react-dom": "npm:react-dom@^19.1.0",
-    "lightweight-charts": "npm:lightweight-charts@^5.0.5"
+    "lightweight-charts": "npm:lightweight-charts@^5.0.9"
   }
 }

@@ -25,7 +25,8 @@ type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {
   seriesOrder?: ReturnType<ISeriesApi<T>["seriesOrder"]>;
   /**
    * If true, the series will replace its data on every update.
-   * If false, it will try to append data to the existing series, that can be useful for performance.
+   * If false, it will try to apply incremental updates to the existing series when possible,
+   * which can be useful for performance.
    *
    * @see {@link https://tradingview.github.io/lightweight-charts/docs#updating-the-data-in-a-series | TradingView documentation for updating series data}
    */
