@@ -17,19 +17,20 @@ vi.mock("@/pane/usePaneContext", () => ({
 
 const mockApplyOptions = vi.fn();
 const mockSetSeriesOrder = vi.fn();
+const mockSetData = vi.fn();
 const mockUpdate = vi.fn();
 const mockGetData = vi.fn().mockReturnValue([]);
 const mockAddSeries = vi.fn().mockReturnValue({
   update: mockUpdate,
   data: mockGetData,
-  setData: vi.fn(),
+  setData: mockSetData,
   applyOptions: mockApplyOptions,
   setSeriesOrder: mockSetSeriesOrder,
 });
 const mockRemoveSeries = vi.fn();
 const mockAddCustomSeries = vi.fn().mockReturnValue({
   data: vi.fn().mockReturnValue([]),
-  setData: vi.fn(),
+  setData: mockSetData,
   applyOptions: mockApplyOptions,
   setSeriesOrder: mockSetSeriesOrder,
 });
@@ -294,5 +295,40 @@ describe("useSeries", () => {
     });
 
     expect(mockUpdate).toHaveBeenCalledWith(newData);
+  });
+
+  it("uses setData() when reactive data shrinks", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [
+      { time: "2023-01-01", value: 100 },
+      { time: "2023-01-02", value: 200 },
+    ];
+    const nextData = [{ time: "2023-01-01", value: 150 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      {
+        initialProps: {
+          type: "Line",
+          data: existingData,
+          reactive: true,
+        },
+      }
+    );
+
+    mockSetData.mockClear();
+    vi.mocked(mockGetData).mockReturnValue(existingData);
+
+    rerender({
+      type: "Line",
+      data: nextData,
+      reactive: true,
+    });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
   });
 });

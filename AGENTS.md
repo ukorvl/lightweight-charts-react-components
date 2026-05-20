@@ -2,7 +2,7 @@
 
 ## Project overview
 
-This project provides a collection of React components that wrap the Lightweight Charts library, allowing developers to easily integrate financial charts into their React applications. The components are designed to be flexible and customizable, enabling users to create a wide variety of chart types and styles.
+This project provides a collection of React components that wrap the Lightweight Charts by TradingView library, allowing developers to easily integrate financial charts into their React applications. The components are designed to be flexible and customizable, enabling users to create a wide variety of chart types and styles.
 
 The project is an npm monorepo with npm workspaces and consists of two main parts: the examples app (`/examples`) and the library (`/lib`).
 The examples app contains a React + MUI application that demonstrates how to use the components in various scenarios, while the library contains the actual React components that can be imported and used in other projects.
