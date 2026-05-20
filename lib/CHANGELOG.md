@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.1.0] - 2026-05-20
 ### Changed
 - extend wrapper-exposed upstream types for the `lightweight-charts` `v5.0.9` additions: chart and time scale options now include `rightOffsetPixels`, marker options include `autoScale`, series price format options include `base`, and chart/series refs expose the updated `takeScreenshot()`, `pop()`, and `lastValueData()` APIs
 
