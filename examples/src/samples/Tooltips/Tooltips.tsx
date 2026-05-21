@@ -1,5 +1,10 @@
-import { Circle } from "@mui/icons-material";
-import { Box, Grow, Stack, Tab, Tabs, Typography } from "@mui/material";
+import Circle from "@mui/icons-material/Circle";
+import Box from "@mui/material/Box";
+import Grow from "@mui/material/Grow";
+import Stack from "@mui/material/Stack";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Typography from "@mui/material/Typography";
 import { useMemo, useRef } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
@@ -17,7 +22,7 @@ import { useBasicTooltip, useMultipleSeriesTooltip } from "./hooks";
 import { basicTooltipSeriesData, multipleSeriesData, useTabStore } from "./tooltipsStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { TooltipType } from "./tooltipsStore";
-import type { SxProps } from "@mui/material";
+import type { SxProps } from "@mui/material/styles";
 import type { ComponentType, FC, ReactNode, RefObject } from "react";
 
 type TooltipProps = {

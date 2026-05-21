@@ -1,17 +1,15 @@
-import {
-  Box,
-  Button,
-  ClickAwayListener,
-  FormControl,
-  FormLabel,
-  Grow,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Grow from "@mui/material/Grow";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Wheel from "@uiw/react-color-wheel";
 import { CrosshairMode, type Time } from "lightweight-charts";
 import { memo, useCallback, useRef, useState } from "react";

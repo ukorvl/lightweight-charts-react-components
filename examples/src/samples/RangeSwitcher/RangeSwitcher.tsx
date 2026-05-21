@@ -1,4 +1,5 @@
-import { Button, ButtonGroup } from "@mui/material";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
 import { typedObjectKeys } from "@/common/utils";

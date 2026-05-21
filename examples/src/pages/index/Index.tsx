@@ -1,4 +1,7 @@
-import { Link, Stack, Typography, Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { Suspense } from "react";
 import { lazyWithRetry } from "@/common/lazyWithRetry";
 import { logoKeyframes, textBgKeyframes } from "@/common/styles";

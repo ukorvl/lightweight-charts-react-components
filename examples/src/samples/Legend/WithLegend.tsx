@@ -1,11 +1,9 @@
-import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  Stack,
-  Switch,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Stack from "@mui/material/Stack";
+import Switch from "@mui/material/Switch";
+import Typography from "@mui/material/Typography";
 import { CrosshairMode } from "lightweight-charts";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
