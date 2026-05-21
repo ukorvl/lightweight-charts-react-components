@@ -1,4 +1,4 @@
 interface:
   display_name: "Release Manager"
   short_description: "Prepare repo release branches and tags"
-  default_prompt: "Use $release-manager to prepare a patch, minor, or major release in /path/to/repo."
+  default_prompt: "Use $release-manager to prepare a release branch or finalize a reviewed release tag in /path/to/repo."

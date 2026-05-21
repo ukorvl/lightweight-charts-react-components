@@ -58,7 +58,9 @@ Thumbs.db
 playwright-report/
 
 # skills
-.agents/skills
-.claude/skills
-.cursor/skills
+.agents/skills/*
 skills-lock.json
+
+# repo-native skills that should not be ignored
+!.agents/skills/release-manager/
+!.agents/skills/release-manager/**

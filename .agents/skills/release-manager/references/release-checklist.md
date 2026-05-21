@@ -5,10 +5,11 @@
 - Runtime: Node 24 from `.nvmrc`
 - Package manager: `npm` only
 - Version bump entrypoint: `npm run version -- <major|minor|patch>`
-- Version files that must match:
+- Version-related files normally changed by a release:
   - `lib/package.json`
   - `lib/jsr.json`
   - `lib/src/version.ts`
+  - `package-lock.json`
 - Release workflows to mirror locally:
   - `.github/actions/check-versions-in-sync/action.yaml`
   - `.github/workflows/check-changelog.yaml`
@@ -47,12 +48,21 @@
 
 ## Git flow
 
-- Ensure `main` is up to date with `origin/main`
-- Create or resume `release-vX.Y.Z`
+- Recommended order:
+  - create or resume `release-vX.Y.Z`
+  - commit `chore: vX.Y.Z`
+  - open PR to `main`
+  - review and merge
+  - identify the reviewed commit to release
+  - create annotated tag `vX.Y.Z` on that reviewed commit
+  - push the tag
+  - run the GitHub `Release` workflow on that tag
+- Ensure `main` is up to date with `origin/main` before branch prep or tag finalization
 - Keep the release commit message exactly `chore: vX.Y.Z`
-- Create the annotated tag with `git tag -a vX.Y.Z -m "release vX.Y.Z"`
+- Never create or push the release tag from an unreviewed local-only release branch
 - Check for existing tags before creating a new one:
   - local: `git rev-parse -q --verify refs/tags/vX.Y.Z`
   - remote: `git ls-remote --tags origin vX.Y.Z`
 - Push and open a PR to `main` only when the user asks for that extra step
+- Push the tag only after the maintainer confirms the reviewed commit that should be released
 - Do not run publish commands or the GitHub `Release` workflow unless the user explicitly asks

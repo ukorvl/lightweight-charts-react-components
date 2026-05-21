@@ -16,7 +16,7 @@ Thank you for helping keep this project and its users safe!
 | Version | Supported          |
 | ------- | ------------------ |
 | 2.x     | :white_check_mark: |
-| 1.x     | :x: |
+| 1.x     | :x:                |
 | < 1.0   | :x:                |
 
 Unsupported versions are not actively maintained and may contain known vulnerabilities.
