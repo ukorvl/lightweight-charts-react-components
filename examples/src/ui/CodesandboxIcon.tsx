@@ -1,5 +1,5 @@
-import { SvgIcon } from "@mui/material";
-import type { SvgIconProps } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
+import type { SvgIconProps } from "@mui/material/SvgIcon";
 
 const CodesandboxIcon = (props: SvgIconProps) => (
   <SvgIcon {...props}>

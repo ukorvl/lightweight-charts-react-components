@@ -1,4 +1,4 @@
-import { keyframes } from "@mui/material";
+import { keyframes } from "@mui/material/styles";
 import { colors } from "./colors";
 
 const gradientAnimation = keyframes`

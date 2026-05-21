@@ -52,6 +52,12 @@ export default [
     rules: {
       "no-console": "error",
       "no-debugger": "error",
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [{ regex: "^@mui/[^/]+$" }],
+        },
+      ],
       "no-shadow": "error",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",

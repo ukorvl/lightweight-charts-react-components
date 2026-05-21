@@ -1,6 +1,12 @@
-import { GitHub, ContentCopy } from "@mui/icons-material";
-import { Divider, IconButton, Link, Stack, Tooltip, Typography } from "@mui/material";
+import ContentCopy from "@mui/icons-material/ContentCopy";
+import GitHub from "@mui/icons-material/GitHub";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";

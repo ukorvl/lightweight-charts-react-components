@@ -1,20 +1,18 @@
-import { Close, Menu } from "@mui/icons-material";
-import {
-  Container,
-  Link,
-  Stack,
-  Typography,
-  styled,
-  Divider,
-  SwipeableDrawer,
-  IconButton,
-  useTheme,
-} from "@mui/material";
+import Close from "@mui/icons-material/Close";
+import Menu from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import { styled, useTheme } from "@mui/material/styles";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Typography from "@mui/material/Typography";
 import { useState, type ReactNode } from "react";
 import { Link as WouterLink } from "wouter";
 import { gradientLinkStyles } from "./common/styles";
 import { Footer } from "./ui/Footer";
-import type { LinkProps } from "@mui/material";
+import type { LinkProps } from "@mui/material/Link";
 
 type LayoutProps = {
   children?: ReactNode;

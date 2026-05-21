@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { ControlledMeta } from "@/common/ControlledMeta";
 import { ControlledTitle } from "@/common/ControlledTitle";
 import { homepage } from "../../package.json";

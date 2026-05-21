@@ -1,4 +1,5 @@
-import { debounce, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import debounce from "@mui/material/utils/debounce";
 import { useCallback, useMemo } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";

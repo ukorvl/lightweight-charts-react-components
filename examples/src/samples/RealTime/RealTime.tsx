@@ -1,4 +1,6 @@
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import { useOnScreen } from "@ukorvl/react-on-screen";
 import { useEffect, useRef } from "react";
 import { chartCommonOptions } from "@/common/chartCommonOptions";

@@ -1,4 +1,5 @@
-import { Button, useTheme } from "@mui/material";
+import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";

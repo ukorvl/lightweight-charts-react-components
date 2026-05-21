@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { ComponentProps, FC, ReactNode } from "react";
 

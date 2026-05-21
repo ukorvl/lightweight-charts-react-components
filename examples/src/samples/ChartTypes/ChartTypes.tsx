@@ -1,4 +1,5 @@
-import { Tab, Tabs } from "@mui/material";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import { useState, type ReactElement } from "react";
 import { samplesLinks } from "@/samples";
 import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";

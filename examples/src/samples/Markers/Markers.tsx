@@ -1,4 +1,6 @@
-import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Switch from "@mui/material/Switch";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
 import { samplesLinks } from "@/samples";

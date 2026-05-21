@@ -1,13 +1,11 @@
-import { GitHub } from "@mui/icons-material";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Stack,
-  Link,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import GitHub from "@mui/icons-material/GitHub";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { ErrorBoundary } from "react-error-boundary";
 import type { SampleConfig } from "@/samples";
 import { CodesandboxIcon } from "./CodesandboxIcon";
