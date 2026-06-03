@@ -10,6 +10,7 @@
   - `lib/jsr.json`
   - `lib/src/version.ts`
   - `package-lock.json`
+  - `examples/src/samples/*/sandbox/package.json` when the library major changes; keep the `lightweight-charts-react-components` dependency on the current major line
 - Release workflows to mirror locally:
   - `.github/actions/check-versions-in-sync/action.yaml`
   - `.github/workflows/check-changelog.yaml`

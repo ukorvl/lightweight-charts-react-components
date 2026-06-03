@@ -1,6 +1,6 @@
 ---
 name: release-manager
-description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, and the library entry in `package-lock.json` stay in sync, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
+description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, the library entry in `package-lock.json`, and the standalone sandbox dependency references in `examples/src/samples/*/sandbox/package.json` stay in sync, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
 ---
 
 # Release Manager
@@ -38,7 +38,7 @@ Choose the mode first and keep the semantics explicit.
    - It updates `main` from `origin/main` unless `--skip-fetch` is needed.
    - It creates or resumes `release-vX.Y.Z`.
    - It runs the repository version bump entrypoint only if the release branch still has the base version.
-   - It verifies all version touchpoints match after the branch switch and bump, including the library entry in `package-lock.json`.
+   - It verifies all version touchpoints match after the branch switch and bump, including the library entry in `package-lock.json` and the standalone sandbox dependency major references.
 4. If `mode` is `prepare-release-branch`, update release documentation.
    - Always update `lib/CHANGELOG.md`.
    - Update `MIGRATION.md` for breaking changes or new upgrade steps.
@@ -77,3 +77,4 @@ Choose the mode first and keep the semantics explicit.
 - Tag only after PR review and maintainer confirmation of the exact commit being released.
 - If documentation updates are unclear, inspect the source changes and existing changelog style before writing notes.
 - If a new major release changes supported lines, make sure `SECURITY.md` reflects the new support policy.
+- If the release crosses a major version boundary, update every `examples/src/samples/*/sandbox/package.json` reference to `lightweight-charts-react-components` so the standalone sandboxes track the new library major.
