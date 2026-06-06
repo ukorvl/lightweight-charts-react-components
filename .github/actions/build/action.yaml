@@ -6,18 +6,16 @@ inputs:
     description: "Base path for the project assets"
     required: false
     default: ""
-    type: "string"
   deploy:
     description: "Build the project for deployment"
     required: false
-    default: false
-    type: "boolean"
+    default: "false"
 
 runs:
   using: "composite"
   steps:
     - name: Build
-      run: |
+      run: | # zizmor: ignore[template-injection] composite action inputs are repo-maintained workflow values
         export VITE_BASE_URL=${{ inputs.base-path }}
 
         if [ ${{ inputs.deploy }} = true ]; then

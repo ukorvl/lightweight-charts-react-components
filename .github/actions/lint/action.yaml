@@ -5,8 +5,7 @@ inputs:
   check-commits:
     description: "Check if the commits follow the conventional commits specification"
     required: false
-    type: "boolean"
-    default: false
+    default: "false"
 
 runs:
   using: "composite"

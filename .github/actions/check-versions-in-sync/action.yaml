@@ -20,13 +20,13 @@ runs:
   steps:
     - name: Get package.json version
       shell: bash
-      run: |
+      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
         PKG_VERSION=$(jq -r .version ${{ inputs.PACKAGE_JSON }})
         echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
     - name: Check jsr.json version
       shell: bash
-      run: |
+      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
         JS_VERSION=$(jq -r .version ${{ inputs.JSR_JSON }})
         if [[ "$JS_VERSION" != "$PKG_VERSION" ]]; then
           echo "Error: jsr.json version ($JS_VERSION) does not match package.json version ($PKG_VERSION)"
@@ -36,7 +36,7 @@ runs:
 
     - name: Check version.ts version
       shell: bash
-      run: |
+      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
         if [[ -f ${{ inputs.VERSION_FILE }} ]]; then
           TS_VERSION=$(grep -oP '(?<=export const version = ")[^"]+' ${{ inputs.VERSION_FILE }})
           if [[ "$TS_VERSION" != "$PKG_VERSION" ]]; then

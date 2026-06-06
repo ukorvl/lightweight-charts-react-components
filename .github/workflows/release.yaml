@@ -9,8 +9,9 @@ on:
       deploy-examples:
         description: "Deploy the examples to GitHub Pages"
         required: false
-        default: true
-        type: boolean
+        default: "true"
+
+permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.run_id }}
@@ -19,6 +20,7 @@ concurrency:
 jobs:
   check-semver-tag:
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       tag_name: ${{ steps.check-semver-tag.outputs.tag_name }}
     steps:
@@ -43,17 +45,17 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest
+      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest@sha256:2b6d906960e2d2a9a9980a309ca8182bf319ada617bd25b27dc40d6e83ced409
       options: --user pwuser
     permissions:
       contents: write
       id-token: write
     steps:
       - name: Clone repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Check Changelog
-        uses: ukorvl/custom-github-actions/check-version-changelog@v1
+        uses: ukorvl/custom-github-actions/check-version-changelog@5cd8d8ee71202c54b29d61148fafb76a3a014519 # v1.1
         with:
           PACKAGE_JSON: "lib/package.json"
           CHANGELOG_FILE: "lib/CHANGELOG.md"
@@ -85,7 +87,7 @@ jobs:
           npm run test:all
         shell: bash
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
@@ -106,7 +108,7 @@ jobs:
     needs: release
     steps:
       - name: Clone repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies

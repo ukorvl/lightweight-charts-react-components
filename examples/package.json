@@ -12,6 +12,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
