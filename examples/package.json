@@ -47,7 +47,7 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-error-boundary": "^6.0.0",
-    "wouter": "^3.9.0",
+    "wouter": "^3.10.0",
     "zustand": "^5.0.3"
   }
 }
