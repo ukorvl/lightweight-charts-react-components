@@ -19,7 +19,7 @@ runs:
   steps:
     - name: Check that vitest benchmarks are available
       id: check-benchmarks-file
-      run: |
+      run: | # zizmor: ignore[template-injection] benchmark file paths are maintained in this repository
         if [ ! -f "${{ inputs.bench-results-path }}" ]; then
           echo "Benchmark results file not found: ${{ inputs.bench-results-path }}"
           echo "benchmarks-file-exists=false" >> $GITHUB_OUTPUT

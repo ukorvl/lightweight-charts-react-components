@@ -9,13 +9,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   check-versions-in-sync:
     name: Check Versions in Sync
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Check versions in sync
         uses: ./.github/actions/check-versions-in-sync

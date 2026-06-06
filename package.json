@@ -5,6 +5,12 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
+    "typecheck:lib": "npm run typecheck -w lib",
+    "typecheck:lib-tests": "npm run typecheck:tests -w lib",
+    "typecheck:examples": "npm run typecheck -w examples",
+    "typecheck:examples-node": "npm run typecheck:node -w examples",
+    "typecheck": "run-s typecheck:*",
+    "check:coverage-regression": "node ./scripts/check-coverage-regression.mts",
     "check:md-links": "node ./scripts/check-md-links.mts",
     "check:jsdoc-links": "node ./scripts/check-jsdoc-links.mts",
     "format": "prettier --check './**/*.{ts,tsx,json,mjs,md}'",
@@ -100,7 +106,8 @@
       "lib/tests/**",
       "scripts/check-md-links.mts",
       "examples/scripts/prelhci.ts",
-      "scripts/check-jsdoc-links.mts"
+      "scripts/check-jsdoc-links.mts",
+      "scripts/check-coverage-regression.mts"
     ],
     "ignoreBinaries": [
       "lint-staged",

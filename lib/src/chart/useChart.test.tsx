@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { createChart, type IChartApi } from "lightweight-charts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultChartOptions } from "./defaultChartOptions";
@@ -76,6 +76,20 @@ describe("useChart", () => {
 
     expect(createChartApi).toHaveBeenCalledWith(mockContainer, defaultChartOptions);
     expect(createChart).not.toHaveBeenCalled();
+  });
+
+  it("should call onInit with the created chart api", () => {
+    vi.mocked(createChart).mockReturnValue(mockChart);
+    const onInit = vi.fn();
+
+    renderHook(() =>
+      useChart({
+        container: mockContainer,
+        onInit,
+      })
+    );
+
+    expect(onInit).toHaveBeenCalledWith(mockChart);
   });
 
   it("should apply options", () => {
@@ -255,5 +269,23 @@ describe("useChart", () => {
     });
 
     expect(mockUnsubscribeDblClick).toHaveBeenCalled();
+  });
+
+  it("should return the same chart when init is called again", () => {
+    vi.mocked(createChart).mockReturnValue(mockChart);
+
+    const { result } = renderHook(() =>
+      useChart({
+        container: mockContainer,
+      })
+    );
+
+    let chart: ReturnType<typeof result.current.chartApiRef.current.init> = null;
+    act(() => {
+      chart = result.current.chartApiRef.current.init();
+    });
+
+    expect(chart).toBe(mockChart);
+    expect(createChart).toHaveBeenCalledTimes(1);
   });
 });

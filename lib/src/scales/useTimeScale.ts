@@ -48,18 +48,6 @@ export const useTimeScale = <HorzScaleItem = Time>({
         this._timeScale.setVisibleLogicalRange(visibleLogicalRange);
       }
 
-      if (onVisibleTimeRangeChange) {
-        this._timeScale.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
-      }
-
-      if (onVisibleLogicalRangeChange) {
-        this._timeScale.subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
-      }
-
-      if (onSizeChange) {
-        this._timeScale.subscribeSizeChange(onSizeChange);
-      }
-
       setIsReady(true);
 
       return this._timeScale;
@@ -95,54 +83,52 @@ export const useTimeScale = <HorzScaleItem = Time>({
   }, [options]);
 
   useLayoutEffect(() => {
-    if (!chart) return;
+    if (!chart || !isReady) return;
 
-    if (onSizeChange) {
-      timeScaleApiRef.current?.api()?.subscribeSizeChange(onSizeChange);
+    const timeScaleApi = timeScaleApiRef.current.api();
+
+    if (onSizeChange && timeScaleApi) {
+      timeScaleApi.subscribeSizeChange(onSizeChange);
     }
 
     return () => {
-      if (onSizeChange) {
-        timeScaleApiRef.current?.api()?.unsubscribeSizeChange(onSizeChange);
+      if (onSizeChange && timeScaleApi) {
+        timeScaleApi.unsubscribeSizeChange(onSizeChange);
       }
     };
-  }, [onSizeChange]);
+  }, [chart, isReady, onSizeChange]);
 
   useLayoutEffect(() => {
-    if (!chart) return;
+    if (!chart || !isReady) return;
 
-    if (onVisibleLogicalRangeChange) {
-      timeScaleApiRef.current
-        ?.api()
-        ?.subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
+    const timeScaleApi = timeScaleApiRef.current.api();
+
+    if (onVisibleLogicalRangeChange && timeScaleApi) {
+      timeScaleApi.subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
     }
 
     return () => {
-      if (onVisibleLogicalRangeChange) {
-        timeScaleApiRef.current
-          ?.api()
-          ?.unsubscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
+      if (onVisibleLogicalRangeChange && timeScaleApi) {
+        timeScaleApi.unsubscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChange);
       }
     };
-  }, [onVisibleLogicalRangeChange]);
+  }, [chart, isReady, onVisibleLogicalRangeChange]);
 
   useLayoutEffect(() => {
-    if (!chart) return;
+    if (!chart || !isReady) return;
 
-    if (onVisibleTimeRangeChange) {
-      timeScaleApiRef.current
-        ?.api()
-        ?.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
+    const timeScaleApi = timeScaleApiRef.current.api();
+
+    if (onVisibleTimeRangeChange && timeScaleApi) {
+      timeScaleApi.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
     }
 
     return () => {
-      if (onVisibleTimeRangeChange) {
-        timeScaleApiRef.current
-          ?.api()
-          ?.unsubscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
+      if (onVisibleTimeRangeChange && timeScaleApi) {
+        timeScaleApi.unsubscribeVisibleTimeRangeChange(onVisibleTimeRangeChange);
       }
     };
-  }, [onVisibleTimeRangeChange]);
+  }, [chart, isReady, onVisibleTimeRangeChange]);
 
   useLayoutEffect(() => {
     if (!chart) return;

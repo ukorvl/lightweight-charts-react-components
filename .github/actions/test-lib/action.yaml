@@ -5,16 +5,14 @@ inputs:
   upload-coverage:
     description: "Upload coverage results to Coveralls"
     required: false
-    type: "boolean"
-    default: false
+    default: "false"
   github-token:
     description: "GitHub token to authenticate"
     required: true
   coverage-report:
     description: "Whether to generate a coverage report"
     required: false
-    type: "boolean"
-    default: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -26,18 +24,29 @@ runs:
         npm run test
       shell: bash
 
+    - name: Prepare base branch lib coverage summary
+      if: ${{ inputs.coverage-report == 'true' }}
+      shell: bash
+      run: | # zizmor: ignore[template-injection] base refs come from GitHub pull request metadata
+        bash ./.github/scripts/prepare-base-lib-coverage.sh "${{ github.event.pull_request.base.ref }}"
+
     - name: Report lib coverage
-      uses:  davelosert/vitest-coverage-report-action@v2
+      uses: davelosert/vitest-coverage-report-action@02f3c2e641286b7fa308cd3e430783103ce6103b # v2.12.0
       if: ${{ inputs.coverage-report == 'true' }}
       with:
         github-token: ${{ inputs.github-token }}
         json-summary-path: "coverage/coverage-summary.json"
         working-directory: "lib"
-        json-summary-compare-path: "coverage/coverage-summary.json"
+        json-summary-compare-path: "coverage-base/coverage-summary.json"
+
+    - name: Enforce non-regressing lib coverage
+      if: ${{ inputs.coverage-report == 'true' }}
+      shell: bash
+      run: npm run check:coverage-regression
 
     - name: Upload tests (lib only) coverage to Coveralls
       if: ${{ inputs.upload-coverage == 'true' }}
-      uses: coverallsapp/github-action@v2
+      uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
       with:
         github-token: ${{ inputs.github-token }}
         base-path: "lib"

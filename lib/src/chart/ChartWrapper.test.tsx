@@ -1,17 +1,29 @@
 import { render } from "@testing-library/react";
+import { createChartEx } from "lightweight-charts";
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
+import { beforeEach, describe, it, expect, vi } from "vitest";
 import { ChartComponent } from "./ChartComponent";
 import { ChartWrapper } from "./ChartWrapper";
 import { CustomChart } from "./CustomChart";
 import { OptionsChart } from "./OptionsChart";
 import { YieldCurveChart } from "./YieldCurveChart";
 
+vi.mock("lightweight-charts", () => ({
+  createChart: vi.fn(),
+  createChartEx: vi.fn(),
+  createOptionsChart: vi.fn(),
+  createYieldCurveChart: vi.fn(),
+}));
+
 vi.mock("./ChartComponent", () => ({
   ChartComponent: vi.fn(({ children }) => <>{children}</>),
 }));
 
 describe("ChartWrapper", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("renders children when container is set", () => {
     const { getByText } = render(
       <ChartWrapper>
@@ -32,6 +44,17 @@ describe("ChartWrapper", () => {
     );
 
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("forwards function refs on ChartWrapper", () => {
+    const ref = vi.fn();
+    render(
+      <ChartWrapper ref={ref}>
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });
 
   it("handles containerProps correctly", () => {
@@ -61,6 +84,28 @@ describe("ChartWrapper", () => {
     );
   });
 
+  it("forwards object refs on OptionsChart", () => {
+    const ref = { current: null };
+    render(
+      <OptionsChart ref={ref}>
+        <div>Child</div>
+      </OptionsChart>
+    );
+
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("forwards function refs on OptionsChart", () => {
+    const ref = vi.fn();
+    render(
+      <OptionsChart ref={ref}>
+        <div>Child</div>
+      </OptionsChart>
+    );
+
+    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+  });
+
   it("passes yield curve chart constructor metadata to ChartComponent", () => {
     render(
       <YieldCurveChart>
@@ -77,6 +122,28 @@ describe("ChartWrapper", () => {
     );
   });
 
+  it("forwards object refs on YieldCurveChart", () => {
+    const ref = { current: null };
+    render(
+      <YieldCurveChart ref={ref}>
+        <div>Child</div>
+      </YieldCurveChart>
+    );
+
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("forwards function refs on YieldCurveChart", () => {
+    const ref = vi.fn();
+    render(
+      <YieldCurveChart ref={ref}>
+        <div>Child</div>
+      </YieldCurveChart>
+    );
+
+    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+  });
+
   it("passes custom chart constructor metadata to ChartComponent", () => {
     render(
       <CustomChart horzScaleBehavior={{} as never}>
@@ -91,5 +158,45 @@ describe("ChartWrapper", () => {
       }),
       undefined
     );
+  });
+
+  it("forwards object refs on CustomChart", () => {
+    const ref = { current: null };
+    render(
+      <CustomChart horzScaleBehavior={{} as never} ref={ref}>
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("forwards function refs on CustomChart", () => {
+    const ref = vi.fn();
+    render(
+      <CustomChart horzScaleBehavior={{} as never} ref={ref}>
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+  });
+
+  it("delegates custom chart creation to createChartEx", () => {
+    const horzScaleBehavior = { options: vi.fn() } as never;
+    render(
+      <CustomChart horzScaleBehavior={horzScaleBehavior}>
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    const createChartApi = vi.mocked(ChartComponent).mock.calls.at(-1)?.[0]
+      .createChartApi as (container: HTMLElement, options?: object) => unknown;
+    const container = document.createElement("div");
+    const options = { layout: { backgroundColor: "red" } };
+
+    createChartApi(container, options);
+
+    expect(createChartEx).toHaveBeenCalledWith(container, horzScaleBehavior, options);
   });
 });

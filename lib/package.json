@@ -4,6 +4,8 @@
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:tests": "tsc -p tests/tsconfig.json --noEmit",
     "test:unit": "vitest --coverage",
     "test:standalone": "vitest -c tests/standalone/vitest.config.ts",
     "test:readme": "vitest -c tests/readme/vitest.config.ts",
