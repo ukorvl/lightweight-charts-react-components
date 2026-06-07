@@ -1,6 +1,6 @@
 {
   "name": "@ukorvl/lightweight-charts-react-components",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "$schema": "https://jsr.io/schema/config-file.v1.json",
   "license": "MIT",
   "exports": "./src/index.ts",
@@ -12,6 +12,6 @@
     "@/": "./src/",
     "react": "npm:react@^19.1.0",
     "react-dom": "npm:react-dom@^19.1.0",
-    "lightweight-charts": "npm:lightweight-charts@^5.0.9"
+    "lightweight-charts": "npm:lightweight-charts@^5.2.0"
   }
 }
