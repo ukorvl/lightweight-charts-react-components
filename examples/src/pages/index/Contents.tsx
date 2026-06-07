@@ -6,6 +6,7 @@ import { CustomSeries } from "../../samples/CustomSeries/CustomSeries";
 import { InfiniteData } from "../../samples/InfiniteData/InfiniteData";
 import { WithLegend } from "../../samples/Legend/WithLegend";
 import { Markers } from "../../samples/Markers/Markers";
+import { PanePrimitives } from "../../samples/PanePrimitives/PanePrimitives";
 import { Panes } from "../../samples/Panes/Panes";
 import { PriceLines } from "../../samples/PriceLines/PriceLines";
 import { Primitives } from "../../samples/Primitives/Primitives";
@@ -23,6 +24,7 @@ const Contents = () => {
       <CustomSeries />
       <RangeSwitcher />
       <Panes />
+      <PanePrimitives />
       <Watermark />
       <WithLegend />
       <CompareSeries />

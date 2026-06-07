@@ -30,7 +30,11 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
   );
 
   return (
-    <div ref={containerRef} {...containerProps}>
+    <div
+      ref={containerRef}
+      aria-hidden={containerProps?.["aria-hidden"] ?? true}
+      {...containerProps}
+    >
       {!!container && (
         <ChartComponent
           container={container}

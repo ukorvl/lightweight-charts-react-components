@@ -64,8 +64,31 @@ describe("ChartWrapper", () => {
       </ChartWrapper>
     );
 
-    const containerDiv = getByRole("main");
+    const containerDiv = getByRole("main", { hidden: true });
     expect(containerDiv).toBeInTheDocument();
+  });
+
+  it("hides chart containers from the accessibility tree by default", () => {
+    const { container } = render(
+      <ChartWrapper>
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("allows overriding default chart container accessibility props", () => {
+    const { container } = render(
+      <ChartWrapper
+        containerProps={{ "aria-hidden": false, "aria-label": "Price chart" }}
+      >
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "false");
+    expect(container.firstChild).toHaveAttribute("aria-label", "Price chart");
   });
 
   it("passes options chart constructor metadata to ChartComponent", () => {
@@ -106,6 +129,29 @@ describe("ChartWrapper", () => {
     expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });
 
+  it("hides OptionsChart containers from the accessibility tree by default", () => {
+    const { container } = render(
+      <OptionsChart>
+        <div>Child</div>
+      </OptionsChart>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("allows overriding OptionsChart container accessibility props", () => {
+    const { container } = render(
+      <OptionsChart
+        containerProps={{ "aria-hidden": false, "aria-label": "Options chart" }}
+      >
+        <div>Child</div>
+      </OptionsChart>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "false");
+    expect(container.firstChild).toHaveAttribute("aria-label", "Options chart");
+  });
+
   it("passes yield curve chart constructor metadata to ChartComponent", () => {
     render(
       <YieldCurveChart>
@@ -144,6 +190,29 @@ describe("ChartWrapper", () => {
     expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });
 
+  it("hides YieldCurveChart containers from the accessibility tree by default", () => {
+    const { container } = render(
+      <YieldCurveChart>
+        <div>Child</div>
+      </YieldCurveChart>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("allows overriding YieldCurveChart container accessibility props", () => {
+    const { container } = render(
+      <YieldCurveChart
+        containerProps={{ "aria-hidden": false, "aria-label": "Yield curve chart" }}
+      >
+        <div>Child</div>
+      </YieldCurveChart>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "false");
+    expect(container.firstChild).toHaveAttribute("aria-label", "Yield curve chart");
+  });
+
   it("passes custom chart constructor metadata to ChartComponent", () => {
     render(
       <CustomChart horzScaleBehavior={{} as never}>
@@ -180,6 +249,30 @@ describe("ChartWrapper", () => {
     );
 
     expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+  });
+
+  it("hides CustomChart containers from the accessibility tree by default", () => {
+    const { container } = render(
+      <CustomChart horzScaleBehavior={{} as never}>
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("allows overriding CustomChart container accessibility props", () => {
+    const { container } = render(
+      <CustomChart
+        horzScaleBehavior={{} as never}
+        containerProps={{ "aria-hidden": false, "aria-label": "Custom chart" }}
+      >
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "false");
+    expect(container.firstChild).toHaveAttribute("aria-label", "Custom chart");
   });
 
   it("delegates custom chart creation to createChartEx", () => {

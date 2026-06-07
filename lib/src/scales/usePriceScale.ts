@@ -46,6 +46,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     if (!chartIsReady) return;
 
     if (!isInsidePane) {
+      // TODO: Replace the empty docsPath with the published price scale docs route.
       throw new BaseInternalError(
         "PriceScale must be used inside a pane. Please ensure that the component is wrapped in a pane component.",
         {

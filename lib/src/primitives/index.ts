@@ -1,6 +1,10 @@
+export { PanePrimitive } from "./PanePrimitive";
 export { SeriesPrimitive } from "./SeriesPrimitive";
 export type {
-  SeriesPrimitiveProps,
+  PanePrimitiveApiRef,
+  PanePrimitiveProps,
+  RenderPanePrimitive,
   RenderPrimitive,
+  SeriesPrimitiveProps,
   SeriesPrimitiveApiRef,
 } from "./types";

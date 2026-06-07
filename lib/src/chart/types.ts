@@ -48,6 +48,9 @@ export type GenericChartProps<
   children?: ReactNode;
   /**
    * The props for the container element on which the chart will be rendered.
+   * The wrapper sets `aria-hidden` to `true` by default because Lightweight Charts
+   * renders layout tables internally; override it explicitly if you provide your own
+   * accessible labelling strategy.
    */
   containerProps?: JSX.IntrinsicElements["div"];
   /**
