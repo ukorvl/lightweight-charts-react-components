@@ -63,7 +63,11 @@ const CustomChartRenderFunction = <
   );
 
   return (
-    <div ref={containerRef} {...containerProps}>
+    <div
+      ref={containerRef}
+      aria-hidden={containerProps?.["aria-hidden"] ?? true}
+      {...containerProps}
+    >
       {!!container && (
         <ChartComponent<
           HorzScaleItem,

@@ -34,7 +34,11 @@ const OptionsChartRenderFunction: ForwardRefRenderFunction<
   );
 
   return (
-    <div ref={containerRef} {...containerProps}>
+    <div
+      ref={containerRef}
+      aria-hidden={containerProps?.["aria-hidden"] ?? true}
+      {...containerProps}
+    >
       {!!container && (
         <ChartComponent<number, IChartApiBase<number>, PriceChartOptions>
           container={container}

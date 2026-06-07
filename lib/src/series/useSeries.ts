@@ -57,6 +57,7 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
         if (type === "Custom") {
           const plugin = (rest as CustomSeriesUniqueProps<HorzScaleItem>).plugin;
           if (!plugin) {
+            // TODO: Link this error to docs covering custom series plugin requirements.
             throw new BaseInternalError("Custom series requires a plugin to be defined");
           }
 
@@ -65,6 +66,7 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
             chartApi.addCustomSeries(plugin, options, paneIndex);
         } else {
           if (chartKind === "yield-curve" && type !== "Area" && type !== "Line") {
+            // TODO: Link this error to docs covering YieldCurveChart series constraints.
             throw new BaseInternalError(
               "YieldCurveChart only supports LineSeries and AreaSeries.",
               {

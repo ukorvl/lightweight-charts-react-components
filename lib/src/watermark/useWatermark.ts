@@ -52,6 +52,7 @@ const useWatermark = <T extends WatermarkType, HorzScaleItem = Time>(
     if (!chartIsReady) return;
 
     if (!isInsidePane) {
+      // TODO: Replace the empty docsPath with the published watermarks docs route.
       throw new BaseInternalError(
         "Watermark must be used inside a pane. Please ensure that the component is wrapped in a pane component.",
         {

@@ -252,6 +252,8 @@ const App = () => {
 export { App };
 ```
 
+Pane-wide overlays that belong to a whole pane rather than a single series can be mounted declaratively with `PanePrimitive` inside `Pane`. This works well for session bands, pane-scoped annotations, and background highlights that need access to both the chart and the target pane. See the `PanePrimitives` sample in the examples app for a full working example, and the upstream [pane primitives documentation](https://tradingview.github.io/lightweight-charts/docs/plugins/pane-primitives) for the underlying Lightweight Charts plugin contract.
+
 ### Chart Container Sizing
 
 The `Chart` component requires explicit width and height to render correctly. You can set these dimensions directly via the `options` prop or make the chart container scale to its parent size using the `containerProps` prop.

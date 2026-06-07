@@ -71,6 +71,11 @@ const samplesLinks = {
     codesandbox: `${codeSandboxUrlBase}/Panes/sandbox`,
     stackblitz: `${stackBlitzUrlBase}/Panes/sandbox`,
   },
+  PanePrimitives: {
+    github: `${githubSamplesLocation}/PanePrimitives`,
+    codesandbox: `${codeSandboxUrlBase}/PanePrimitives/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/PanePrimitives/sandbox`,
+  },
   InfiniteData: {
     github: `${githubSamplesLocation}/InfiniteData`,
     codesandbox: "",
