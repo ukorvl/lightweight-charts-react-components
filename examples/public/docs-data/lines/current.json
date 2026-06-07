@@ -1,0 +1,1468 @@
+{
+  "id": "current",
+  "title": "Current",
+  "status": "unreleased",
+  "description": "Editable working docs source for the next docs line.",
+  "generatedAt": "2026-06-07T13:49:18.111Z",
+  "topics": [
+    {
+      "id": "chart",
+      "title": "Chart",
+      "summary": "Chart containers and chart variants.",
+      "description": "Create chart containers and choose the Lightweight Charts constructor that matches your horizontal scale.",
+      "html": "<p>The chart family is the top-level entry point for the wrapper. Start with <code>Chart</code> for\ntime-based charts, then reach for <code>OptionsChart</code>, <code>YieldCurveChart</code>, or <code>CustomChart</code>\nwhen you need a different horizontal scale model.</p>\n<p><code>Chart</code> renders the container <code>&lt;div&gt;</code> for you and passes the chart API down through React\ncontext so nested panes, series, scales, watermarks, and primitives can attach\ndeclaratively.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"chart-basic.tsx\"><figcaption class=\"docs-code-example__title\">Minimal chart</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport { Chart, LineSeries } from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data} /&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>Use chart variants when your data model is not the default time scale. The chart topic\nalso owns <code>containerProps</code>, click handlers, crosshair handlers, and the generic\n<code>ChartApiRef</code> / <code>GenericChartProps</code> types exposed by the package.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"chart-panes.tsx\"><figcaption class=\"docs-code-example__title\">Multi-pane chart</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  CandlestickSeries,\n  Chart,\n  HistogramSeries,\n  Pane,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst ohlcData = [\n  { time: &quot;2026-06-02&quot;, open: 101, high: 106, low: 99, close: 104 },\n  { time: &quot;2026-06-03&quot;, open: 104, high: 109, low: 102, close: 108 },\n  { time: &quot;2026-06-04&quot;, open: 108, high: 110, low: 105, close: 106 },\n];\n\nconst volumeData = [\n  { time: &quot;2026-06-02&quot;, value: 1200, color: &quot;rgba(33, 150, 243, 0.45)&quot; },\n  { time: &quot;2026-06-03&quot;, value: 1800, color: &quot;rgba(33, 150, 243, 0.45)&quot; },\n  { time: &quot;2026-06-04&quot;, value: 1600, color: &quot;rgba(255, 152, 0, 0.45)&quot; },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 720, height: 420 }}&gt;\n      &lt;Pane stretchFactor={3}&gt;\n        &lt;CandlestickSeries data={ohlcData} /&gt;\n      &lt;/Pane&gt;\n      &lt;Pane stretchFactor={1}&gt;\n        &lt;HistogramSeries\n          data={volumeData}\n          options={{ priceFormat: { type: &quot;volume&quot; }, priceLineVisible: false }}\n        /&gt;\n      &lt;/Pane&gt;\n      &lt;TimeScale&gt;\n        &lt;TimeScaleFitContentTrigger deps={[]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/BasicSeries\">Basic series sample</a>\nand\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/ChartTypes\">Chart types sample</a>\nfor larger integrations.</p>",
+      "exports": [
+        "Chart",
+        "ChartApiRef",
+        "ChartProps",
+        "CustomChart",
+        "CustomChartProps",
+        "GenericChartProps",
+        "OptionsChart",
+        "OptionsChartProps",
+        "YieldCurveChart",
+        "YieldCurveChartProps"
+      ],
+      "api": [
+        {
+          "name": "Chart",
+          "kind": "Variable",
+          "summary": "Chart component that can be used to create a chart.",
+          "type": "ForwardRefExoticComponent<ChartProps & RefAttributes<HTMLDivElement>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/chart",
+              "label": "Chart documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/chart-types",
+              "label": "TradingView documentation for charts"
+            }
+          ],
+          "examples": [
+            "```tsx\n<Chart>\n  <Pane stretchFactor={2}>\n    ...\n  </Pane>\n</Chart>\n```"
+          ]
+        },
+        {
+          "name": "ChartApiRef",
+          "kind": "TypeAlias",
+          "summary": "Chart API reference type that can be used to access the chart plugin API.",
+          "properties": [
+            {
+              "name": "_chart",
+              "kind": "Property",
+              "summary": "Internal reference to the chart API instance.",
+              "type": "TChartApi | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the chart API instance.",
+              "type": "() => TChartApi | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the chart API instance.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the chart API instance.",
+              "type": "() => TChartApi | null",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "ChartProps",
+          "kind": "TypeAlias",
+          "summary": "Chart component props.",
+          "type": "GenericChartProps<Time, IChartApi, TimeChartOptions>",
+          "properties": [
+            {
+              "name": "children",
+              "kind": "Property",
+              "summary": "Children of the chart component.",
+              "type": "ReactNode",
+              "optional": true
+            },
+            {
+              "name": "containerProps",
+              "kind": "Property",
+              "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
+              "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "onClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onCrosshairMove",
+              "kind": "Property",
+              "summary": "Callback function that is called when the crosshair moves.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onDblClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is double-clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onInit",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is initialized.",
+              "type": "(chart: TChartApi) => void",
+              "optional": true
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the chart.",
+              "type": "DeepPartial<TOptions>",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": [],
+          "aliasOf": "GenericChartProps"
+        },
+        {
+          "name": "CustomChart",
+          "kind": "Variable",
+          "summary": "CustomChart component that can be used to create a chart with a custom horizontal scale behavior.",
+          "type": "CustomChartForwardRefComponent",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/chart",
+              "label": "Chart documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/chart-types#custom-horizontal-scale-chart",
+              "label": "TradingView documentation for custom horizontal scale charts"
+            }
+          ],
+          "examples": [
+            "```tsx\n<CustomChart horzScaleBehavior={new (defaultHorzScaleBehavior())()}>\n  <LineSeries data={[{ time: \"2025-01-01\", value: 100 }]} />\n</CustomChart>\n```"
+          ]
+        },
+        {
+          "name": "CustomChartProps",
+          "kind": "TypeAlias",
+          "summary": "CustomChart component props.",
+          "type": "GenericChartProps<HorzScaleItem, IChartApiBase<HorzScaleItem>, ReturnType<THorzScaleBehavior[\"options\"]>> & { horzScaleBehavior: THorzScaleBehavior }",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "GenericChartProps",
+          "kind": "TypeAlias",
+          "summary": "Generic chart component props.",
+          "properties": [
+            {
+              "name": "children",
+              "kind": "Property",
+              "summary": "Children of the chart component.",
+              "type": "ReactNode",
+              "optional": true
+            },
+            {
+              "name": "containerProps",
+              "kind": "Property",
+              "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
+              "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "onClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onCrosshairMove",
+              "kind": "Property",
+              "summary": "Callback function that is called when the crosshair moves.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onDblClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is double-clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onInit",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is initialized.",
+              "type": "(chart: TChartApi) => void",
+              "optional": true
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the chart.",
+              "type": "DeepPartial<TOptions>",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "OptionsChart",
+          "kind": "Variable",
+          "summary": "OptionsChart component that can be used to create a price-based horizontal scale chart.",
+          "type": "ForwardRefExoticComponent<OptionsChartProps & RefAttributes<HTMLDivElement>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/chart",
+              "label": "Chart documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/chart-types#options-chart-price-based",
+              "label": "TradingView documentation for options charts"
+            }
+          ],
+          "examples": [
+            "```tsx\n<OptionsChart>\n  <LineSeries data={[{ time: 95, value: 1.2 }, { time: 100, value: 2.8 }]} />\n</OptionsChart>\n```"
+          ]
+        },
+        {
+          "name": "OptionsChartProps",
+          "kind": "TypeAlias",
+          "summary": "OptionsChart component props.",
+          "type": "GenericChartProps<number, IChartApiBase<number>, PriceChartOptions>",
+          "properties": [
+            {
+              "name": "children",
+              "kind": "Property",
+              "summary": "Children of the chart component.",
+              "type": "ReactNode",
+              "optional": true
+            },
+            {
+              "name": "containerProps",
+              "kind": "Property",
+              "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
+              "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "onClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onCrosshairMove",
+              "kind": "Property",
+              "summary": "Callback function that is called when the crosshair moves.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onDblClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is double-clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onInit",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is initialized.",
+              "type": "(chart: TChartApi) => void",
+              "optional": true
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the chart.",
+              "type": "DeepPartial<TOptions>",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": [],
+          "aliasOf": "GenericChartProps"
+        },
+        {
+          "name": "YieldCurveChart",
+          "kind": "Variable",
+          "summary": "YieldCurveChart component that can be used to create a yield curve chart.",
+          "type": "ForwardRefExoticComponent<YieldCurveChartProps & RefAttributes<HTMLDivElement>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/chart",
+              "label": "Chart documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/chart-types#yield-curve-chart",
+              "label": "TradingView documentation for yield curve charts"
+            }
+          ],
+          "examples": [
+            "```tsx\n<YieldCurveChart>\n  <LineSeries data={[{ time: 1, value: 5.2 }, { time: 12, value: 4.7 }]} />\n</YieldCurveChart>\n```"
+          ]
+        },
+        {
+          "name": "YieldCurveChartProps",
+          "kind": "TypeAlias",
+          "summary": "YieldCurveChart component props.",
+          "type": "GenericChartProps<number, IYieldCurveChartApi, YieldCurveChartOptions>",
+          "properties": [
+            {
+              "name": "children",
+              "kind": "Property",
+              "summary": "Children of the chart component.",
+              "type": "ReactNode",
+              "optional": true
+            },
+            {
+              "name": "containerProps",
+              "kind": "Property",
+              "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
+              "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "onClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onCrosshairMove",
+              "kind": "Property",
+              "summary": "Callback function that is called when the crosshair moves.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onDblClick",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is double-clicked.",
+              "type": "MouseEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "onInit",
+              "kind": "Property",
+              "summary": "Callback function that is called when the chart is initialized.",
+              "type": "(chart: TChartApi) => void",
+              "optional": true
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the chart.",
+              "type": "DeepPartial<TOptions>",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": [],
+          "aliasOf": "GenericChartProps"
+        }
+      ]
+    },
+    {
+      "id": "series",
+      "title": "Series",
+      "summary": "Built-in series components, refs, and shared series props.",
+      "description": "Use built-in series components and shared series props without dropping down to imperative chart code.",
+      "html": "<p>Series components wrap the matching Lightweight Charts series constructors and stay close\nto the upstream API. The wrapper keeps the props thin: you mostly pass <code>data</code>, <code>options</code>,\nand a few wrapper-specific controls such as <code>reactive</code>, <code>seriesOrder</code>, and\n<code>alwaysReplaceData</code>.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"chart-basic.tsx\"><figcaption class=\"docs-code-example__title\">Series inside a chart</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport { Chart, LineSeries } from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data} /&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>When you need multiple panes, multiple series types, or price and volume overlays, you\ncan compose them as regular React children.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"chart-panes.tsx\"><figcaption class=\"docs-code-example__title\">Multiple series across panes</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  CandlestickSeries,\n  Chart,\n  HistogramSeries,\n  Pane,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst ohlcData = [\n  { time: &quot;2026-06-02&quot;, open: 101, high: 106, low: 99, close: 104 },\n  { time: &quot;2026-06-03&quot;, open: 104, high: 109, low: 102, close: 108 },\n  { time: &quot;2026-06-04&quot;, open: 108, high: 110, low: 105, close: 106 },\n];\n\nconst volumeData = [\n  { time: &quot;2026-06-02&quot;, value: 1200, color: &quot;rgba(33, 150, 243, 0.45)&quot; },\n  { time: &quot;2026-06-03&quot;, value: 1800, color: &quot;rgba(33, 150, 243, 0.45)&quot; },\n  { time: &quot;2026-06-04&quot;, value: 1600, color: &quot;rgba(255, 152, 0, 0.45)&quot; },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 720, height: 420 }}&gt;\n      &lt;Pane stretchFactor={3}&gt;\n        &lt;CandlestickSeries data={ohlcData} /&gt;\n      &lt;/Pane&gt;\n      &lt;Pane stretchFactor={1}&gt;\n        &lt;HistogramSeries\n          data={volumeData}\n          options={{ priceFormat: { type: &quot;volume&quot; }, priceLineVisible: false }}\n        /&gt;\n      &lt;/Pane&gt;\n      &lt;TimeScale&gt;\n        &lt;TimeScaleFitContentTrigger deps={[]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>For a more complete example, see the\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/BasicSeries\">Basic series sample</a>\nand\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/CompareSeries\">Compare series sample</a>.</p>",
+      "exports": [
+        "AreaSeries",
+        "BarSeries",
+        "BaselineSeries",
+        "CandlestickSeries",
+        "CustomSeries",
+        "HistogramSeries",
+        "LineSeries",
+        "SeriesApiRef",
+        "SeriesOptions",
+        "SeriesProps"
+      ],
+      "api": [
+        {
+          "name": "AreaSeries",
+          "kind": "Variable",
+          "summary": "AreaSeries component that can be used to create an area series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Area\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#area",
+              "label": "TradingView documentation for area series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<AreaSeries\n data={[\n   { time: '2021-01-01', value: 100 },\n   { time: '2021-01-02', value: 200 }\n ]}\n options={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "BarSeries",
+          "kind": "Variable",
+          "summary": "BarSeries component that can be used to create a bar series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Bar\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#bar",
+              "label": "TradingView documentation for bar series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<BarSeries\n data={[\n   { time: '2021-01-01', open: 100, high: 110, low: 90, close: 105 },\n   { time: '2021-01-02', open: 105, high: 115, low: 95, close: 110 }\n ]}\n options={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "BaselineSeries",
+          "kind": "Variable",
+          "summary": "BaselineSeries component that can be used to create a baseline series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Baseline\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#baseline",
+              "label": "TradingView documentation for baseline series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<BaselineSeries\n data={[\n   { time: '2021-01-01', value: 100 },\n   { time: '2021-01-02', value: 200 }\n ]}\n options={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "CandlestickSeries",
+          "kind": "Variable",
+          "summary": "CandlestickSeries component that can be used to create a candlestick series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Candlestick\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#candlestick",
+              "label": "TradingView documentation for candlestick series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<CandlestickSeries\n data={[\n   { time: '2021-01-01', open: 100, high: 110, low: 90, close: 105 },\n   { time: '2021-01-02', open: 105, high: 115, low: 95, close: 110 }\n ]}\n options={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "CustomSeries",
+          "kind": "Variable",
+          "summary": "CustomSeries component that can be used to create a custom series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Custom\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#custom-series-plugins",
+              "label": "TradingView documentation for custom series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<CustomSeries\n data={[\n   { time: '2021-01-01', value: 100 },\n   { time: '2021-01-02', value: 200 }\n ]}\n options={{}}\n plugin={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "HistogramSeries",
+          "kind": "Variable",
+          "summary": "HistogramSeries component that can be used to create a histogram series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Histogram\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#histogram",
+              "label": "TradingView documentation for histogram series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<HistogramSeries\n data={[\n   { time: '2021-01-01', value: 100 },\n   { time: '2021-01-02', value: 200 }\n ]}\n options={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "LineSeries",
+          "kind": "Variable",
+          "summary": "LineSeries component that can be used to create a line series in a chart.",
+          "type": "SeriesForwardRefComponent<\"Line\">",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series",
+              "label": "Series documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/series-types#line",
+              "label": "TradingView documentation for line series"
+            }
+          ],
+          "examples": [
+            "```tsx\n<LineSeries\n data={[\n   { time: '2021-01-01', value: 100 },\n   { time: '2021-01-02', value: 200 }\n ]}\n options={{}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "SeriesApiRef",
+          "kind": "TypeAlias",
+          "summary": "Series API reference type that can be used to access the series plugin API.",
+          "properties": [
+            {
+              "name": "_series",
+              "kind": "Property",
+              "summary": "Internal reference to the series API instance.",
+              "type": "ISeriesApi<T, HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the series API instance.",
+              "type": "() => ISeriesApi<T, HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the series API instance.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the series API instance.",
+              "type": "() => ISeriesApi<T, HorzScaleItem> | null",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "SeriesOptions",
+          "kind": "TypeAlias",
+          "summary": "Series options that can be used to customize the appearance and behavior of a series.",
+          "type": "SeriesPartialOptionsMap[T]",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "SeriesProps",
+          "kind": "TypeAlias",
+          "summary": "Series component properties that can be used to create a series of a specific type.",
+          "type": "Omit<SeriesTemplateProps<T, HorzScaleItem>, \"type\">",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "price-lines",
+      "title": "Price Lines",
+      "summary": "Declarative price line management for chart series.",
+      "description": "Attach declarative horizontal price lines to any series.",
+      "html": "<p><code>PriceLine</code> is nested inside a series and manages the lifecycle of the matching upstream\nprice line plugin for you. It is a good fit for alerts, targets, thresholds, and other\nreference levels that should move with the series.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"price-line.tsx\"><figcaption class=\"docs-code-example__title\">Series with a price line</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  PriceLine,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 100 },\n  { time: &quot;2026-06-03&quot;, value: 102 },\n  { time: &quot;2026-06-04&quot;, value: 107 },\n  { time: &quot;2026-06-05&quot;, value: 105 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data}&gt;\n        &lt;PriceLine\n          price={104}\n          options={{ color: &quot;#ff9800&quot;, lineStyle: 2, title: &quot;Alert level&quot; }}\n        /&gt;\n      &lt;/LineSeries&gt;\n      &lt;TimeScale&gt;\n        &lt;TimeScaleFitContentTrigger deps={[]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>The component keeps the wrapper-specific surface small: you provide the target <code>price</code>\nand pass upstream line styling through <code>options</code>.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/PriceLines\">Price lines sample</a>\nfor a more interactive example.</p>",
+      "exports": ["PriceLine", "PriceLineApiRef", "PriceLineProps"],
+      "api": [
+        {
+          "name": "PriceLine",
+          "kind": "Variable",
+          "summary": "PriceLine component that can be used to add a price line to a chart pane.",
+          "type": "ForwardRefExoticComponent<PriceLineProps & RefAttributes<PriceLineApiRef>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/price-lines",
+              "label": "Price Lines documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/tutorials/how_to/price-line",
+              "label": "TradingView documentation for price lines"
+            }
+          ],
+          "examples": ["```tsx\n<PriceLine price={100} options={{}} />\n```"]
+        },
+        {
+          "name": "PriceLineApiRef",
+          "kind": "TypeAlias",
+          "summary": "PriceLine API reference type that can be used to access the price line plugin API.",
+          "properties": [
+            {
+              "name": "_priceLine",
+              "kind": "Property",
+              "summary": "Reference to the price line API.",
+              "type": "IPriceLine | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the price line API.",
+              "type": "() => IPriceLine | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the price line API.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the price line API.",
+              "type": "() => IPriceLine | null",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "PriceLineProps",
+          "kind": "TypeAlias",
+          "summary": "PriceLine component props.",
+          "properties": [
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the price line.",
+              "type": "Omit<Partial<PriceLineOptions>, \"price\">",
+              "optional": true
+            },
+            {
+              "name": "price",
+              "kind": "Property",
+              "summary": "The price at which the price line should be drawn.",
+              "type": "number",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "markers",
+      "title": "Markers",
+      "summary": "Series markers and their typed props.",
+      "description": "Render typed marker arrays on top of a series.",
+      "html": "<p><code>Markers</code> is attached to a series and exposes the upstream series markers plugin through a\nReact component. Use it when trading signals, annotations, or point-in-time events should\nfollow the series data rather than be rendered as custom primitives.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"markers.tsx\"><figcaption class=\"docs-code-example__title\">Marker annotations</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport { Chart, LineSeries, Markers } from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 100 },\n  { time: &quot;2026-06-03&quot;, value: 98 },\n  { time: &quot;2026-06-04&quot;, value: 104 },\n  { time: &quot;2026-06-05&quot;, value: 109 },\n];\n\nconst markers = [\n  {\n    time: &quot;2026-06-03&quot;,\n    position: &quot;belowBar&quot; as const,\n    color: &quot;#2196f3&quot;,\n    shape: &quot;arrowUp&quot; as const,\n    text: &quot;Buy&quot;,\n  },\n  {\n    time: &quot;2026-06-05&quot;,\n    position: &quot;aboveBar&quot; as const,\n    color: &quot;#f44336&quot;,\n    shape: &quot;arrowDown&quot; as const,\n    text: &quot;Take profit&quot;,\n  },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data}&gt;\n        &lt;Markers markers={markers} /&gt;\n      &lt;/LineSeries&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>The wrapper-owned API is intentionally small: provide a <code>markers</code> array, optional marker\n<code>options</code>, and choose whether updates should be reactive.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Markers\">Markers sample</a>\nfor a richer demo.</p>",
+      "exports": ["Markers", "MarkersApiRef", "MarkersProps"],
+      "api": [
+        {
+          "name": "Markers",
+          "kind": "Variable",
+          "summary": "Markers component that can be used to add markers to a chart pane.",
+          "type": "GenericMarkersComponent",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/markers",
+              "label": "Documentation for Markers"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/tutorials/how_to/series-markers",
+              "label": "TradingView documentation for markers"
+            }
+          ],
+          "examples": [
+            "```tsx\n<Markers\n markers={[\n   { time: 1622548800, position: \"aboveBar\", color: \"red\", shape: \"arrowUp\" },\n   { time: 1622548800, position: \"belowBar\", color: \"green\", shape: \"arrowDown\" },\n ]}\n/>\n```"
+          ]
+        },
+        {
+          "name": "MarkersApiRef",
+          "kind": "TypeAlias",
+          "summary": "Markers API reference type that can be used to access the series markers plugin API.",
+          "properties": [
+            {
+              "name": "_markers",
+              "kind": "Property",
+              "summary": "Internal reference to the series markers API instance.",
+              "type": "ISeriesMarkersPluginApi<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the series markers API instance.",
+              "type": "() => ISeriesMarkersPluginApi<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the series markers API instance.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the series markers API instance.",
+              "type": "() => ISeriesMarkersPluginApi<HorzScaleItem> | null",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "MarkersProps",
+          "kind": "TypeAlias",
+          "summary": "Markers component properties that can be used to create a series markers component.",
+          "properties": [
+            {
+              "name": "markers",
+              "kind": "Property",
+              "summary": "List of markers to be displayed on the series.",
+              "type": "SeriesMarker<HorzScaleItem>[]",
+              "optional": false
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the markers.",
+              "type": "DeepPartial<SeriesMarkersOptions>",
+              "optional": true
+            },
+            {
+              "name": "reactive",
+              "kind": "Property",
+              "summary": "Whether markers should update reactively when marker list changes.",
+              "type": "boolean",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "watermarks",
+      "title": "Watermarks",
+      "summary": "Text and image watermarks attached to charts.",
+      "description": "Add text or image watermarks to the chart using declarative components.",
+      "html": "<p>The watermark components stay close to the upstream plugin model while keeping the React\ncomposition story simple. Add a text watermark with <code>WatermarkText</code> or supply an image\nsource with <code>WatermarkImage</code>.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"watermark.tsx\"><figcaption class=\"docs-code-example__title\">Text watermark</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  AreaSeries,\n  Chart,\n  Pane,\n  WatermarkText,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 103 },\n  { time: &quot;2026-06-04&quot;, value: 107 },\n  { time: &quot;2026-06-05&quot;, value: 105 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;Pane&gt;\n        &lt;AreaSeries data={data} /&gt;\n        &lt;WatermarkText\n          visible\n          text=&quot;Demo chart&quot;\n          color=&quot;rgba(33, 150, 243, 0.18)&quot;\n          fontSize={28}\n        /&gt;\n      &lt;/Pane&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>Use watermarks for branding, scenario labels, or background status indicators without\nhaving to drop into imperative chart plugin code.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Watermark\">Watermark sample</a>\nfor more styling ideas.</p>",
+      "exports": [
+        "ImageWatermarkProps",
+        "TextWatermarkProps",
+        "WatermarkApiRef",
+        "WatermarkImage",
+        "WatermarkText",
+        "WatermarkType"
+      ],
+      "api": [
+        {
+          "name": "ImageWatermarkProps",
+          "kind": "TypeAlias",
+          "summary": "Unique properties for the image watermark component.",
+          "type": "{ src: string } & DeepPartial<ImageWatermarkOptions>",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "TextWatermarkProps",
+          "kind": "TypeAlias",
+          "summary": "Unique properties for the text watermark component.",
+          "type": "DeepPartial<TextWatermarkOptions>",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "WatermarkApiRef",
+          "kind": "TypeAlias",
+          "summary": "Watermark API reference type that can be used to access the watermark plugin API.",
+          "type": "T extends \"text\" ? { _watermark: ITextWatermarkPluginApi<HorzScaleItem> | null; api: () => ITextWatermarkPluginApi<HorzScaleItem> | null; clear: () => void; init: () => ITextWatermarkPluginApi<HorzScaleItem> | null } : { _watermark: IImageWatermarkPluginApi<HorzScaleItem> | null; api: () => IImageWatermarkPluginApi<HorzScaleItem> | null; clear: () => void; init: () => IImageWatermarkPluginApi<HorzScaleItem> | null }",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "WatermarkImage",
+          "kind": "Variable",
+          "summary": "Watermark component that can be used to add an image watermark to a chart pane.",
+          "type": "ForwardRefExoticComponent<ImageWatermarkProps & RefAttributes<WatermarkApiRef<\"image\">>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/watermarks",
+              "label": "Watermarks documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/tutorials/how_to/watermark",
+              "label": "TradingView documentation for watermarks"
+            }
+          ],
+          "examples": [
+            "```tsx\n<WatermarkImage\n src=\"data:image/svg+xml;base64,...\"\n alpha={0.5}\n padding={20}\n/>\n```"
+          ]
+        },
+        {
+          "name": "WatermarkText",
+          "kind": "Variable",
+          "summary": "Watermark component that can be used to add a text or image watermark to a chart pane.",
+          "type": "ForwardRefExoticComponent<TextWatermarkProps & RefAttributes<WatermarkApiRef<\"text\">>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/watermarks",
+              "label": "Watermarks documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/tutorials/how_to/watermark",
+              "label": "TradingView documentation for watermarks"
+            }
+          ],
+          "examples": [
+            "```tsx\n<WatermarkText\n lines={[\n   { text: \"Your chart name\", color: \"blue\", fontSize: 24 },\n   { text: \"Some other text\", color: \"pink\", fontSize: 16 },\n ]}\n horzAlign=\"center\"\n/>\n```"
+          ]
+        },
+        {
+          "name": "WatermarkType",
+          "kind": "TypeAlias",
+          "summary": "Watermark types supported by the library.\n- `text`: A text watermark.\n- `image`: An image watermark.",
+          "type": "\"text\" | \"image\"",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "time-scale",
+      "title": "Time Scale",
+      "summary": "Time scale options, refs, and event handlers.",
+      "description": "Configure visible ranges, subscribe to scale events, and nest time-scale helpers under a chart.",
+      "html": "<p><code>TimeScale</code> is the wrapper entry point for upstream time scale options and range-change\nevents. Nest it inside a chart when you want to control the visible range declaratively or\nsubscribe to time-scale updates.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"time-scale.tsx\"><figcaption class=\"docs-code-example__title\">Time scale options and fit-content</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data} /&gt;\n      &lt;TimeScale options={{ rightOffset: 4 }}&gt;\n        &lt;TimeScaleFitContentTrigger deps={[data.length]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>The wrapper exposes thin types such as <code>TimeScaleProps</code> and <code>TimeScaleApiRef</code>, while the\nlarge option surface stays owned by Lightweight Charts itself.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Scales\">Scales sample</a>\nfor more event-driven scale usage.</p>",
+      "exports": ["TimeScale", "TimeScaleApiRef", "TimeScaleProps"],
+      "api": [
+        {
+          "name": "TimeScale",
+          "kind": "Variable",
+          "summary": "TimeScale component that can be used to create/customize time scale in a chart.",
+          "type": "GenericTimeScaleComponent",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/time-scale",
+              "label": "Time Scale documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/time-scale",
+              "label": "TradingView documentation for time scale"
+            }
+          ],
+          "examples": [
+            "```tsx\n<TimeScale\n  visibleRange={{ from: 0, to: 100 }}\n  onVisibleTimeRangeChange={() => {}}\n/>\n```"
+          ]
+        },
+        {
+          "name": "TimeScaleApiRef",
+          "kind": "TypeAlias",
+          "summary": "Time scale API reference type that can be used to access the time scale plugin API.",
+          "properties": [
+            {
+              "name": "_timeScale",
+              "kind": "Property",
+              "summary": "Reference to the time scale API.",
+              "type": "ITimeScaleApi<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the time scale API.",
+              "type": "() => ITimeScaleApi<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the time scale API.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the time scale API.",
+              "type": "() => ITimeScaleApi<HorzScaleItem> | null",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "TimeScaleProps",
+          "kind": "TypeAlias",
+          "summary": "Props for the TimeScale component that controls chart time scale behavior.\n\nUse this component to configure how the chart's visible time/logical range is initialized\nand updated, and to react to time scale updates via event handlers.",
+          "properties": [
+            {
+              "name": "children",
+              "kind": "Property",
+              "summary": "Children of the time scale component.",
+              "type": "ReactNode",
+              "optional": true
+            },
+            {
+              "name": "onSizeChange",
+              "kind": "Property",
+              "summary": "Callback for when the size of the time scale changes.",
+              "type": "SizeChangeEventHandler",
+              "optional": true
+            },
+            {
+              "name": "onVisibleLogicalRangeChange",
+              "kind": "Property",
+              "summary": "Callback for when the visible logical range changes.",
+              "type": "LogicalRangeChangeEventHandler",
+              "optional": true
+            },
+            {
+              "name": "onVisibleTimeRangeChange",
+              "kind": "Property",
+              "summary": "Callback for when the visible time range changes.",
+              "type": "TimeRangeChangeEventHandler<HorzScaleItem>",
+              "optional": true
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the time scale.",
+              "type": "TimeScaleOptions",
+              "optional": true
+            },
+            {
+              "name": "visibleLogicalRange",
+              "kind": "Property",
+              "summary": "The visible logical range for the time scale.",
+              "type": "IRange<number>",
+              "optional": true
+            },
+            {
+              "name": "visibleRange",
+              "kind": "Property",
+              "summary": "The visible time range for the time scale.",
+              "type": "IRange<HorzScaleItem>",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "time-scale-fit-content-trigger",
+      "title": "Time Scale Fit Content Trigger",
+      "summary": "Declarative helper for fitting the time scale to current content.",
+      "description": "Trigger `fitContent()` declaratively whenever a dependency list changes.",
+      "html": "<p><code>TimeScaleFitContentTrigger</code> is a small wrapper-owned helper for a common chart behavior:\ncalling <code>fitContent()</code> after data or layout changes. Keep it nested inside <code>TimeScale</code>\nand point <code>deps</code> at the values that should trigger the fit.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"time-scale.tsx\"><figcaption class=\"docs-code-example__title\">Fit content after dependency changes</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data} /&gt;\n      &lt;TimeScale options={{ rightOffset: 4 }}&gt;\n        &lt;TimeScaleFitContentTrigger deps={[data.length]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>This helper is especially useful when data arrives asynchronously or when users toggle\nseries and panes on and off.</p>",
+      "exports": ["TimeScaleFitContentTrigger", "TimeScaleFitContentTriggerProps"],
+      "api": [
+        {
+          "name": "TimeScaleFitContentTrigger",
+          "kind": "Function",
+          "summary": "",
+          "properties": [],
+          "signatures": [
+            {
+              "summary": "TimeScaleFitContentTrigger component that triggers a fit content operation on the time scale.",
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "TimeScaleFitContentTriggerProps",
+                  "summary": "The properties for the time scale fit content trigger.",
+                  "optional": false
+                }
+              ],
+              "returns": "Element | null"
+            }
+          ],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "TimeScaleFitContentTriggerProps",
+          "kind": "TypeAlias",
+          "summary": "TimeScaleFitContentTriggerProps component props.",
+          "properties": [
+            {
+              "name": "deps",
+              "kind": "Property",
+              "summary": "List of dependencies that trigger the time scale to fit content.",
+              "type": "DependencyList",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "price-scale",
+      "title": "Price Scale",
+      "summary": "Declarative access to chart price scales.",
+      "description": "Address named price scales from React and pass through upstream options.",
+      "html": "<p>Use <code>PriceScale</code> inside a pane when you need to configure a specific named price scale\ndeclaratively. This is the component to reach for when you want a visible left scale, a\ncustom scale id, or scale-specific option changes.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"price-scale.tsx\"><figcaption class=\"docs-code-example__title\">Attach and configure a left price scale</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  Pane,\n  PriceScale,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;Pane&gt;\n        &lt;LineSeries data={data} /&gt;\n        &lt;PriceScale id=&quot;left&quot; options={{ visible: true, borderVisible: false }} /&gt;\n      &lt;/Pane&gt;\n      &lt;TimeScale&gt;\n        &lt;TimeScaleFitContentTrigger deps={[]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>The wrapper keeps the API small: identify the scale with <code>id</code> and pass the rest of the\nconfiguration through the upstream <code>options</code> type.</p>",
+      "exports": ["PriceScale", "PriceScaleApiRef", "PriceScaleProps"],
+      "api": [
+        {
+          "name": "PriceScale",
+          "kind": "Variable",
+          "summary": "PriceScale component that can be used to create/customize price scale in a chart.",
+          "type": "ForwardRefExoticComponent<PriceScaleProps & RefAttributes<PriceScaleApiRef>>",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/price-scale",
+              "label": "Price Scale documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/price-scale",
+              "label": "TradingView documentation for price scale"
+            }
+          ],
+          "examples": ["```tsx\n<PriceScale id=\"right\" options={{}} />\n```"]
+        },
+        {
+          "name": "PriceScaleApiRef",
+          "kind": "TypeAlias",
+          "summary": "Price scale API reference type that can be used to access the price scale plugin API.",
+          "properties": [
+            {
+              "name": "_priceScale",
+              "kind": "Property",
+              "summary": "Reference to the price scale API.",
+              "type": "IPriceScaleApi | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the price scale API.",
+              "type": "() => IPriceScaleApi | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the price scale API.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the price scale API.",
+              "type": "() => IPriceScaleApi | null",
+              "optional": false
+            },
+            {
+              "name": "setId",
+              "kind": "Property",
+              "summary": "Function to set the ID of the price scale.",
+              "type": "(id: string) => void",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "PriceScaleProps",
+          "kind": "TypeAlias",
+          "summary": "PriceScale component props.",
+          "properties": [
+            {
+              "name": "id",
+              "kind": "Property",
+              "summary": "The ID of the price scale.",
+              "type": "string",
+              "optional": false
+            },
+            {
+              "name": "options",
+              "kind": "Property",
+              "summary": "Options for the price scale.",
+              "type": "PriceScaleOptions",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "panes",
+      "title": "Panes",
+      "summary": "Pane containers and pane refs for multi-pane charts.",
+      "description": "Split a chart into stacked panes and control their relative size.",
+      "html": "<p><code>Pane</code> gives you declarative access to Lightweight Charts panes. Group related series into\ntheir own pane, then use <code>stretchFactor</code> to control how much vertical space each pane\nreceives relative to its siblings.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"chart-panes.tsx\"><figcaption class=\"docs-code-example__title\">Price and volume panes</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  CandlestickSeries,\n  Chart,\n  HistogramSeries,\n  Pane,\n  TimeScale,\n  TimeScaleFitContentTrigger,\n} from &quot;lightweight-charts-react-components&quot;;\n\nconst ohlcData = [\n  { time: &quot;2026-06-02&quot;, open: 101, high: 106, low: 99, close: 104 },\n  { time: &quot;2026-06-03&quot;, open: 104, high: 109, low: 102, close: 108 },\n  { time: &quot;2026-06-04&quot;, open: 108, high: 110, low: 105, close: 106 },\n];\n\nconst volumeData = [\n  { time: &quot;2026-06-02&quot;, value: 1200, color: &quot;rgba(33, 150, 243, 0.45)&quot; },\n  { time: &quot;2026-06-03&quot;, value: 1800, color: &quot;rgba(33, 150, 243, 0.45)&quot; },\n  { time: &quot;2026-06-04&quot;, value: 1600, color: &quot;rgba(255, 152, 0, 0.45)&quot; },\n];\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 720, height: 420 }}&gt;\n      &lt;Pane stretchFactor={3}&gt;\n        &lt;CandlestickSeries data={ohlcData} /&gt;\n      &lt;/Pane&gt;\n      &lt;Pane stretchFactor={1}&gt;\n        &lt;HistogramSeries\n          data={volumeData}\n          options={{ priceFormat: { type: &quot;volume&quot; }, priceLineVisible: false }}\n        /&gt;\n      &lt;/Pane&gt;\n      &lt;TimeScale&gt;\n        &lt;TimeScaleFitContentTrigger deps={[]} /&gt;\n      &lt;/TimeScale&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>Panes are also the attachment point for pane-wide primitives, so they become the natural\nunit for more advanced chart layouts.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Panes\">Panes sample</a>\nfor a production-style layout.</p>",
+      "exports": ["Pane", "PaneApiRef", "PaneProps"],
+      "api": [
+        {
+          "name": "Pane",
+          "kind": "Variable",
+          "summary": "Pane component that can be used to create a pane in a chart.",
+          "type": "GenericPaneComponent",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/panes",
+              "label": "Panes documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/panes",
+              "label": "TradingView documentation for panes"
+            }
+          ],
+          "examples": ["```tsx\n<Pane stretchFactor={2}>\n...\n</Pane>\n```"]
+        },
+        {
+          "name": "PaneApiRef",
+          "kind": "TypeAlias",
+          "summary": "Pane API reference type that can be used to access the pane plugin API.",
+          "properties": [
+            {
+              "name": "_pane",
+              "kind": "Property",
+              "summary": "Reference to the pane API.",
+              "type": "IPaneApi<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Property",
+              "summary": "Function to get the pane API.",
+              "type": "() => IPaneApi<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Property",
+              "summary": "Function to clear the pane API.",
+              "type": "() => void",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Property",
+              "summary": "Function to initialize the pane API.",
+              "type": "() => IPaneApi<HorzScaleItem> | null",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "PaneProps",
+          "kind": "TypeAlias",
+          "summary": "Pane component props.",
+          "properties": [
+            {
+              "name": "children",
+              "kind": "Property",
+              "summary": "Children of the pane component.",
+              "type": "ReactNode",
+              "optional": true
+            },
+            {
+              "name": "stretchFactor",
+              "kind": "Property",
+              "summary": "Stretch factor for the pane, which determines how much space the pane should take relative to other panes.",
+              "type": "number",
+              "optional": true
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "series-primitives",
+      "title": "Series Primitives",
+      "summary": "Series-scoped Lightweight Charts plugins rendered declaratively.",
+      "description": "Attach Lightweight Charts series plugins through a React component boundary.",
+      "html": "<p>Use <code>SeriesPrimitive</code> when you need custom drawing that belongs to exactly one series. The\ncomponent accepts either an already-created upstream plugin instance or a <code>render</code>\nfunction that receives the current chart and series APIs.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"series-primitive.tsx\"><figcaption class=\"docs-code-example__title\">Attach a custom series primitive</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  SeriesPrimitive,\n} from &quot;lightweight-charts-react-components&quot;;\nimport type { ISeriesPrimitive, Time } from &quot;lightweight-charts&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nclass NoopSeriesPrimitive implements ISeriesPrimitive&lt;Time&gt; {\n  paneViews() {\n    return [];\n  }\n}\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data}&gt;\n        &lt;SeriesPrimitive render={() =&gt; new NoopSeriesPrimitive()} /&gt;\n      &lt;/LineSeries&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>For a complete visual primitive example, see the\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Primitives\">Primitives sample</a>.</p>",
+      "exports": [
+        "RenderPrimitive",
+        "SeriesPrimitive",
+        "SeriesPrimitiveApiRef",
+        "SeriesPrimitiveProps"
+      ],
+      "api": [
+        {
+          "name": "RenderPrimitive",
+          "kind": "TypeAlias",
+          "summary": "Render function type for series primitives.",
+          "type": "({\n  chart,\n  series,\n}: { chart: IChartApiBase<HorzScaleItem>; series: ISeriesApi<T, HorzScaleItem> }) => ISeriesPrimitive<HorzScaleItem>",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "SeriesPrimitive",
+          "kind": "Variable",
+          "summary": "SeriesPrimitive component that can be used to create a primitive on series.",
+          "type": "GenericSeriesPrimitiveComponent",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/series-primitives",
+              "label": "Series primitives documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/plugins/series-primitives",
+              "label": "TradingView documentation for series primitive"
+            }
+          ],
+          "examples": [
+            "```tsx\n<SeriesPrimitive render={{}} />\n<SeriesPrimitive plugin={{}} />\n```"
+          ]
+        },
+        {
+          "name": "SeriesPrimitiveApiRef",
+          "kind": "TypeAlias",
+          "summary": "Series primitive API reference type that can be used to access the series primitive plugin API.",
+          "properties": [
+            {
+              "name": "_primitive",
+              "kind": "Property",
+              "summary": "Internal reference to the series primitive API instance.",
+              "type": "ISeriesPrimitive<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Method",
+              "summary": "",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Method",
+              "summary": "",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Method",
+              "summary": "",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "SeriesPrimitiveProps",
+          "kind": "TypeAlias",
+          "summary": "Series primitive properties that can be used to create a series primitive.",
+          "type": "SeriesPrimitivePropsWithRender<T, HorzScaleItem> | SeriesPrimitivePropsWithPlugin<HorzScaleItem>",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "pane-primitives",
+      "title": "Pane Primitives",
+      "summary": "Pane-wide Lightweight Charts plugins rendered declaratively.",
+      "description": "Attach pane-wide Lightweight Charts plugins through React.",
+      "html": "<p><code>PanePrimitive</code> is the pane-scoped sibling of <code>SeriesPrimitive</code>. Reach for it when the\nplugin belongs to the whole pane rather than to a specific series, such as session bands,\nbackground highlights, or pane-level overlays.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"pane-primitive.tsx\"><figcaption class=\"docs-code-example__title\">Attach a pane-wide primitive</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport { Chart, LineSeries, Pane, PanePrimitive } from &quot;lightweight-charts-react-components&quot;;\nimport type { IPanePrimitive, Time } from &quot;lightweight-charts&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nclass NoopPanePrimitive implements IPanePrimitive&lt;Time&gt; {\n  paneViews() {\n    return [];\n  }\n}\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;Pane&gt;\n        &lt;LineSeries data={data} /&gt;\n        &lt;PanePrimitive render={() =&gt; new NoopPanePrimitive()} /&gt;\n      &lt;/Pane&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>This topic is new in the <code>v2.3</code> docs line and is intentionally separate from series\nprimitives because the attachment target and the upstream plugin interfaces are different.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/PanePrimitives\">Pane primitives sample</a>\nfor a richer example with pane-wide highlights.</p>",
+      "exports": [
+        "PanePrimitive",
+        "PanePrimitiveApiRef",
+        "PanePrimitiveProps",
+        "RenderPanePrimitive"
+      ],
+      "api": [
+        {
+          "name": "PanePrimitive",
+          "kind": "Variable",
+          "summary": "PanePrimitive component that can be used to create a primitive on a pane.",
+          "type": "GenericPanePrimitiveComponent",
+          "properties": [],
+          "signatures": [],
+          "see": [
+            {
+              "href": "https://ukorvl.github.io/lightweight-charts-react-components/docs/pane-primitives",
+              "label": "Pane primitives documentation"
+            },
+            {
+              "href": "https://tradingview.github.io/lightweight-charts/docs/plugins/pane-primitives",
+              "label": "TradingView documentation for pane primitive"
+            }
+          ],
+          "examples": [
+            "```tsx\n<Pane>\n  <PanePrimitive render={({ chart, pane }) => new MyPanePrimitive(chart, pane)} />\n</Pane>\n```"
+          ]
+        },
+        {
+          "name": "PanePrimitiveApiRef",
+          "kind": "TypeAlias",
+          "summary": "Pane primitive API reference type that can be used to access the pane primitive plugin API.",
+          "properties": [
+            {
+              "name": "_primitive",
+              "kind": "Property",
+              "summary": "Internal reference to the pane primitive API instance.",
+              "type": "IPanePrimitive<HorzScaleItem> | null",
+              "optional": false
+            },
+            {
+              "name": "api",
+              "kind": "Method",
+              "summary": "",
+              "optional": false
+            },
+            {
+              "name": "clear",
+              "kind": "Method",
+              "summary": "",
+              "optional": false
+            },
+            {
+              "name": "init",
+              "kind": "Method",
+              "summary": "",
+              "optional": false
+            }
+          ],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "PanePrimitiveProps",
+          "kind": "TypeAlias",
+          "summary": "Pane primitive properties that can be used to create a pane primitive.",
+          "type": "PanePrimitivePropsWithRender<HorzScaleItem> | PanePrimitivePropsWithPlugin<HorzScaleItem>",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        },
+        {
+          "name": "RenderPanePrimitive",
+          "kind": "TypeAlias",
+          "summary": "Render function type for pane primitives.",
+          "type": "({\n  chart,\n  pane,\n}: { chart: IChartApiBase<HorzScaleItem>; pane: IPaneApi<HorzScaleItem> }) => IPanePrimitive<HorzScaleItem>",
+          "properties": [],
+          "signatures": [],
+          "see": [],
+          "examples": []
+        }
+      ]
+    }
+  ]
+}

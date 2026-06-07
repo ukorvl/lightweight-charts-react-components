@@ -1,0 +1,17 @@
+---
+title: Price Lines
+description: Attach declarative horizontal price lines to any series.
+---
+
+`PriceLine` is nested inside a series and manages the lifecycle of the matching upstream
+price line plugin for you. It is a good fit for alerts, targets, thresholds, and other
+reference levels that should move with the series.
+
+<CodeExample path="price-line.tsx" title="Series with a price line" />
+
+The component keeps the wrapper-specific surface small: you provide the target `price`
+and pass upstream line styling through `options`.
+
+See the full
+[Price lines sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/PriceLines)
+for a more interactive example.

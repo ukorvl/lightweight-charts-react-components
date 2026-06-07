@@ -7,7 +7,6 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Typography from "@mui/material/Typography";
 import { useState, type ReactNode } from "react";
 import { Link as WouterLink } from "wouter";
 import { gradientLinkStyles } from "./common/styles";
@@ -75,7 +74,7 @@ export const Layout = ({ children }: LayoutProps) => {
         >
           <InternalGradientLink href="/">Examples</InternalGradientLink>
           <InternalGradientLink href="/terminal">Terminal</InternalGradientLink>
-          <Typography color="textDisabled">Docs</Typography>
+          <InternalGradientLink href="/docs">Docs</InternalGradientLink>
           <Divider aria-hidden="true" orientation="vertical" flexItem />
           <GradientLink target="_blank" rel="noopener noreferrer" href={VITE_GITHUB_URL}>
             GitHub
@@ -130,9 +129,9 @@ export const Layout = ({ children }: LayoutProps) => {
               <InternalGradientLink href="/terminal" onClick={closeDrawer}>
                 Terminal
               </InternalGradientLink>
-              <Typography color="textDisabled" onClick={closeDrawer}>
+              <InternalGradientLink href="/docs" onClick={closeDrawer}>
                 Docs
-              </Typography>
+              </InternalGradientLink>
               <Divider aria-hidden="true" flexItem />
               <GradientLink
                 target="_blank"

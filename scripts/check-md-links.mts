@@ -353,7 +353,12 @@ async function main() {
   const markdownFiles = await glob("**/*.md", {
     cwd: rootDir,
     absolute: true,
-    ignore: ["**/node_modules/**", "**/dist/**", "**/coverage/**"],
+    ignore: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/tests/e2e/output/**",
+    ],
   });
 
   console.log(`Found ${markdownFiles.length} markdown files to check\n`);

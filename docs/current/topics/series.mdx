@@ -1,0 +1,22 @@
+---
+title: Series
+description: Use built-in series components and shared series props without dropping down
+  to imperative chart code.
+---
+
+Series components wrap the matching Lightweight Charts series constructors and stay close
+to the upstream API. The wrapper keeps the props thin: you mostly pass `data`, `options`,
+and a few wrapper-specific controls such as `reactive`, `seriesOrder`, and
+`alwaysReplaceData`.
+
+<CodeExample path="chart-basic.tsx" title="Series inside a chart" />
+
+When you need multiple panes, multiple series types, or price and volume overlays, you
+can compose them as regular React children.
+
+<CodeExample path="chart-panes.tsx" title="Multiple series across panes" />
+
+For a more complete example, see the
+[Basic series sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/BasicSeries)
+and
+[Compare series sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/CompareSeries).

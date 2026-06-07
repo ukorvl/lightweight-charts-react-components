@@ -1,0 +1,13 @@
+---
+title: Time Scale Fit Content Trigger
+description: Trigger `fitContent()` declaratively whenever a dependency list changes.
+---
+
+`TimeScaleFitContentTrigger` is a small wrapper-owned helper for a common chart behavior:
+calling `fitContent()` after data or layout changes. Keep it nested inside `TimeScale`
+and point `deps` at the values that should trigger the fit.
+
+<CodeExample path="time-scale.tsx" title="Fit content after dependency changes" />
+
+This helper is especially useful when data arrives asynchronously or when users toggle
+series and panes on and off.

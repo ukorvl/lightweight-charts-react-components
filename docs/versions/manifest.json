@@ -1,0 +1,54 @@
+{
+  "latestDocsLine": "v2.3",
+  "lines": [
+    {
+      "id": "v2.3",
+      "label": "2.3",
+      "title": "Docs v2.3",
+      "status": "latest",
+      "packageVersionRange": ">=2.3.0 <2.4.0",
+      "topics": [
+        "chart",
+        "series",
+        "price-lines",
+        "markers",
+        "watermarks",
+        "time-scale",
+        "time-scale-fit-content-trigger",
+        "price-scale",
+        "panes",
+        "series-primitives",
+        "pane-primitives"
+      ]
+    },
+    {
+      "id": "v2.2",
+      "label": "2.2",
+      "title": "Docs v2.2",
+      "status": "supported",
+      "packageVersionRange": ">=2.2.0 <2.3.0",
+      "topics": [
+        "chart",
+        "series",
+        "price-lines",
+        "markers",
+        "watermarks",
+        "time-scale",
+        "time-scale-fit-content-trigger",
+        "price-scale",
+        "panes",
+        "series-primitives"
+      ]
+    }
+  ],
+  "packageVersionToDocsLine": [
+    {
+      "range": ">=2.3.0 <2.4.0",
+      "docsLine": "v2.3"
+    },
+    {
+      "range": ">=2.2.0 <2.3.0",
+      "docsLine": "v2.2"
+    }
+  ]
+}

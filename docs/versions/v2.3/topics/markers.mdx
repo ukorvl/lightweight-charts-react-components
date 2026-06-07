@@ -1,0 +1,17 @@
+---
+title: Markers
+description: Render typed marker arrays on top of a series.
+---
+
+`Markers` is attached to a series and exposes the upstream series markers plugin through a
+React component. Use it when trading signals, annotations, or point-in-time events should
+follow the series data rather than be rendered as custom primitives.
+
+<CodeExample path="markers.tsx" title="Marker annotations" />
+
+The wrapper-owned API is intentionally small: provide a `markers` array, optional marker
+`options`, and choose whether updates should be reactive.
+
+See the full
+[Markers sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Markers)
+for a richer demo.
