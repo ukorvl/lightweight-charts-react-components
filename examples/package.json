@@ -10,8 +10,8 @@
     "npm": ">=11.10.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "npm --prefix .. run generate:docs && vite",
+    "build": "npm --prefix .. run generate:docs && vite build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
     "preview": "vite preview",

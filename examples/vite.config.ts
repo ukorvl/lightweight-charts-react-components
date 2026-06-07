@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
@@ -13,7 +14,33 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import { homepage, description } from "./package.json";
 import type { UserConfigFn } from "vite";
 
+type DocsTopicRegistryEntry = {
+  id: string;
+};
+
+type DocsVersionsManifest = {
+  lines: Array<{
+    id: string;
+    topics: string[];
+  }>;
+};
+
 const env = loadEnv("", process.cwd(), "");
+const repoRoot = path.resolve(__dirname, "..");
+const docsTopicRegistry = JSON.parse(
+  readFileSync(path.join(repoRoot, "docs", "topic-registry.json"), "utf8")
+) as DocsTopicRegistryEntry[];
+const docsVersionsManifest = JSON.parse(
+  readFileSync(path.join(repoRoot, "docs", "versions", "manifest.json"), "utf8")
+) as DocsVersionsManifest;
+const docsDynamicRoutes = [
+  "/docs",
+  ...docsTopicRegistry.map(topic => `/docs/${topic.id}`),
+  ...docsVersionsManifest.lines.flatMap(line => [
+    `/docs/${line.id}`,
+    ...line.topics.map(topicId => `/docs/${line.id}/${topicId}`),
+  ]),
+];
 
 const fontHref =
   "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:ital,wght@0,300..700;1,300..700&display=swap";
@@ -166,6 +193,7 @@ export const htmlConfig: Options = {
 
 const getUserConfig: UserConfigFn = ({ command }) => ({
   server: {
+    host: "127.0.0.1",
     port: Number(env.PORT) || 5173,
   },
   plugins: [
@@ -190,7 +218,7 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
     }),
     sitemapPlugin({
       hostname: homepage,
-      dynamicRoutes: ["/terminal", "/docs"],
+      dynamicRoutes: ["/terminal", ...docsDynamicRoutes],
       exclude: ["/404"],
       basePath: env.VITE_BASE_URL,
       changefreq: "daily",

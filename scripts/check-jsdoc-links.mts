@@ -17,16 +17,27 @@ type LinksMap = Map<string, Set<string>>;
 
 const rootDir = getRepoRoot(import.meta.url);
 const libOutputDir = path.join(rootDir, "lib", "dist");
+const docsTopicRegistryPath = path.join(rootDir, "docs", "topic-registry.json");
 const fileName = "index.d.ts";
 const potentiallyDTSBundleFile = path.join(libOutputDir, fileName);
+const localDocsHost = "ukorvl.github.io";
+const localDocsBasePath = "/lightweight-charts-react-components/docs";
+const topicRegistry = JSON.parse(
+  await readFile(docsTopicRegistryPath, "utf8")
+) as Array<{ id: string }>;
+const localDocsPaths = new Set([
+  `${localDocsBasePath}`,
+  `${localDocsBasePath}/`,
+  ...topicRegistry.flatMap(topic => [
+    `${localDocsBasePath}/${topic.id}`,
+    `${localDocsBasePath}/${topic.id}/`,
+  ]),
+]);
 
 const limitPerTCPConnection = pLimit(10);
 
 /** Avoid throwing errors to check all links even if one of them is broken, push errors to an array instead */
 const scriptErrors: string[] = [];
-
-// TODO: remove after deploying docs page
-const ignoreDomains = new Set(["ukorvl.github.io"]);
 
 const sourceFile = ts.createSourceFile(
   potentiallyDTSBundleFile,
@@ -85,7 +96,10 @@ const main = async () => {
           const urlObj = new URL(url);
           const domain = urlObj.hostname;
 
-          if (ignoreDomains.has(domain)) {
+          if (domain === localDocsHost) {
+            if (!localDocsPaths.has(urlObj.pathname)) {
+              scriptErrors.push(`Invalid local docs link: ${url}`);
+            }
             continue;
           }
 

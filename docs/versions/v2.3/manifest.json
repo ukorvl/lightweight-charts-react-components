@@ -1,0 +1,21 @@
+{
+  "id": "v2.3",
+  "title": "Docs v2.3",
+  "status": "released",
+  "description": "Snapshot of the released v2.3 docs line.",
+  "apiSource": "git:v2.3.0",
+  "topics": [
+    "chart",
+    "series",
+    "price-lines",
+    "markers",
+    "watermarks",
+    "time-scale",
+    "time-scale-fit-content-trigger",
+    "price-scale",
+    "panes",
+    "series-primitives",
+    "pane-primitives"
+  ],
+  "packageVersionRange": ">=2.3.0 <2.4.0"
+}
