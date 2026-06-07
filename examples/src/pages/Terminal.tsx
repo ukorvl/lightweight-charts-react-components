@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack";
 import { ControlledMeta } from "@/common/ControlledMeta";
 import { ControlledTitle } from "@/common/ControlledTitle";
+import { TerminalWorkspaceCard } from "@/terminal/TerminalWorkspaceCard";
 import { homepage } from "../../package.json";
 
 const { VITE_APP_DEFAULT_TITLE } = import.meta.env;
@@ -51,7 +52,7 @@ const Terminal = () => {
       }}
     >
       <PageMeta />
-      Terminal
+      <TerminalWorkspaceCard />
     </Stack>
   );
 };

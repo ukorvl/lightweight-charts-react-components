@@ -1,7 +1,4 @@
 import GitHub from "@mui/icons-material/GitHub";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
@@ -10,6 +7,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import type { SampleConfig } from "@/samples";
 import { CodesandboxIcon } from "./CodesandboxIcon";
 import { StackBlitzIcon } from "./StackBlitzIcon";
+import { WidgetCardShell } from "./WidgetCardShell";
 import type { FC, ReactNode } from "react";
 import type { FallbackProps } from "react-error-boundary";
 
@@ -117,30 +115,18 @@ const ChartWidgetCard: FC<ChartWidgetCardProps> = ({
   sampleConfig,
 }) => {
   return (
-    <Card
+    <WidgetCardShell
+      title={title}
+      subTitle={subTitle}
+      action={<ActionPanel sampleConfig={sampleConfig} />}
       sx={{
         minWidth: 275,
         borderRadius: 3,
         height: { xs: 480, md: 575 },
-        display: "flex",
-        flexDirection: "column",
       }}
     >
-      <CardHeader
-        title={title}
-        subheader={subTitle}
-        action={<ActionPanel sampleConfig={sampleConfig} />}
-      />
-      <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          flexGrow: 1,
-        }}
-      >
-        <ErrorBoundary fallbackRender={ErrorFallback}>{children}</ErrorBoundary>
-      </CardContent>
-    </Card>
+      <ErrorBoundary fallbackRender={ErrorFallback}>{children}</ErrorBoundary>
+    </WidgetCardShell>
   );
 };
 
