@@ -10,12 +10,12 @@ import path from "node:path";
 import chalk from "chalk";
 import pLimit from "p-limit";
 import ts from "typescript";
+import { getErrorMessage, getRepoRoot } from "./common.mts";
 
 /** Key is domain name, value is an array of links, using Set to avoid duplicates */
 type LinksMap = Map<string, Set<string>>;
 
-const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-const rootDir = path.join(scriptDir, "..");
+const rootDir = getRepoRoot(import.meta.url);
 const libOutputDir = path.join(rootDir, "lib", "dist");
 const fileName = "index.d.ts";
 const potentiallyDTSBundleFile = path.join(libOutputDir, fileName);
@@ -144,7 +144,7 @@ main()
   .catch(error => {
     console.error(
       `An error occurred while checking jsdoc links in ${potentiallyDTSBundleFile}:`,
-      error
+      getErrorMessage(error)
     );
     process.exit(1);
   });

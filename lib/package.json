@@ -10,7 +10,7 @@
     "test:standalone": "vitest -c tests/standalone/vitest.config.ts",
     "test:readme": "vitest -c tests/readme/vitest.config.ts",
     "test:deno": "vitest -c tests/deno/vitest.config.ts",
-    "test:bench": "vitest bench -c tests/bench/vitest.config.ts",
+    "test:unit:bench": "vitest bench -c tests/bench/vitest.config.ts",
     "test": "run-s \"test:* -- --run\"",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm"
   },

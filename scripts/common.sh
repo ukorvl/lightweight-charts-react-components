@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Utility functions and common variables for scripts
+# Utility functions and common variables for bash scripts
 
 set -euo pipefail
 

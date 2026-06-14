@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import fs from "node:fs";
 import path from "node:path";
+import { readJsonFile } from "./common.mts";
 
 type CoverageMetricKey = "lines" | "statements" | "functions" | "branches";
 
@@ -13,36 +13,21 @@ type CoverageSummary = {
   total: Record<CoverageMetricKey, CoverageMetric>;
 };
 
-const metricKeys: CoverageMetricKey[] = [
-  "lines",
-  "statements",
-  "functions",
-  "branches",
-];
+const metricKeys: CoverageMetricKey[] = ["lines", "statements", "functions", "branches"];
 
 const [, , currentArg, baseArg] = process.argv;
 
-const currentPath = path.resolve(
-  currentArg ?? "lib/coverage/coverage-summary.json"
-);
+const currentPath = path.resolve(currentArg ?? "lib/coverage/coverage-summary.json");
 const basePath = path.resolve(baseArg ?? "lib/coverage-base/coverage-summary.json");
-
-const readSummary = (filePath: string): CoverageSummary => {
-  const raw = fs.readFileSync(filePath, "utf8");
-  return JSON.parse(raw) as CoverageSummary;
-};
-
-const currentSummary = readSummary(currentPath);
-const baseSummary = readSummary(basePath);
+const currentSummary = readJsonFile<CoverageSummary>(currentPath);
+const baseSummary = readJsonFile<CoverageSummary>(basePath);
 
 const regressions = metricKeys.flatMap(metric => {
   const currentPct = currentSummary.total[metric].pct;
   const basePct = baseSummary.total[metric].pct;
 
   if (currentPct < basePct) {
-    return [
-      `${metric}: current ${currentPct.toFixed(2)}% < base ${basePct.toFixed(2)}%`,
-    ];
+    return [`${metric}: current ${currentPct.toFixed(2)}% < base ${basePct.toFixed(2)}%`];
   }
 
   return [];

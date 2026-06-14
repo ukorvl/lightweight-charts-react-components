@@ -32,3 +32,13 @@ runs:
     - name: Check markdown links
       run: npm run check:md-links
       shell: bash
+
+    - name: Validate JSON and YAML files
+      uses: GrantBirki/json-yaml-validate@9bbaa8474e3af4e91f25eda8ac194fdc30564d96 # v4.0.0
+
+    - name: Lint shell scripts with ShellCheck
+      uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # v2.0.0
+      with:
+        scandir: "."
+        ignore_paths: "node_modules dist coverage .pnpm-store"
+        severity: error

@@ -1,34 +1,102 @@
 name: Benchmark check
-description: "Runs performance benchmarks on the code in the repo and compares them with previous results"
+description: "Runs base-vs-current benchmarks and fails on meaningful regressions"
 
 inputs:
-  bench-results-path:
-    description: "Relative to the root path to the file where benchmark results are stored"
-    required: true
-    default: "lib/tests/bench/output/benchmark-results.json"
-  gh-bench-output-path:
-    description: "Relative to the root path to the file where GitHub Action benchmark results will be stored"
-    required: true
-    default: "lib/tests/bench/output/github-action-benchmark-results.json"
   github-token:
     description: "GitHub token"
     required: true
+  base-path:
+    description: "Repository-relative checkout directory for the base revision"
+    required: false
+    default: ".benchmark/base"
+  current-path:
+    description: "Repository-relative checkout directory for the current revision"
+    required: false
+    default: ".benchmark/current"
+  artifact-dir:
+    description: "Directory where raw benchmark outputs and reports are stored"
+    required: false
+    default: ".benchmark/results"
+  report-path:
+    description: "Path to the generated markdown benchmark report"
+    required: false
+    default: ".benchmark/results/benchmark-report.md"
+  benchmark-runs:
+    description: "How many times to run each benchmark suite per revision"
+    required: false
+    default: "3"
+  relative-threshold:
+    description: "Relative slowdown threshold that counts as a regression"
+    required: false
+    default: "0.15"
+  min-absolute-ms:
+    description: "Minimum absolute slowdown in milliseconds required to fail"
+    required: false
+    default: "0.75"
+  max-cv:
+    description: "Maximum allowed coefficient of variation before a benchmark is considered unstable"
+    required: false
+    default: "0.15"
 
 runs:
   using: "composite"
   steps:
-    - name: Check that vitest benchmarks are available
-      id: check-benchmarks-file
-      run: | # zizmor: ignore[template-injection] benchmark file paths are maintained in this repository
-        if [ ! -f "${{ inputs.bench-results-path }}" ]; then
-          echo "Benchmark results file not found: ${{ inputs.bench-results-path }}"
-          echo "benchmarks-file-exists=false" >> $GITHUB_OUTPUT
-        fi
-      shell: bash
+    - name: Checkout base revision
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      with:
+        ref: ${{ github.event.pull_request.base.sha }}
+        path: ${{ inputs.base-path }}
+        token: ${{ inputs.github-token }}
+        fetch-depth: 1
 
-    - name: Run benchmarks
-      if: steps.check-benchmarks-file.outputs.benchmarks-file-exists == 'false'
-      run: |
-        cd lib
-        npm run test:bench -- --run
+    - name: Checkout current revision
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      with:
+        ref: ${{ github.sha }}
+        path: ${{ inputs.current-path }}
+        token: ${{ inputs.github-token }}
+        fetch-depth: 1
+
+    - name: Run benchmark comparison
+      id: compare
+      continue-on-error: true
       shell: bash
+      env:
+        BASE_DIR: ${{ inputs.base-path }}
+        CURRENT_DIR: ${{ inputs.current-path }}
+        OUTPUT_DIR: ${{ inputs.artifact-dir }}
+        REPORT_PATH: ${{ inputs.report-path }}
+        BENCH_RUNS: ${{ inputs.benchmark-runs }}
+        RELATIVE_THRESHOLD: ${{ inputs.relative-threshold }}
+        MIN_ABSOLUTE_MS: ${{ inputs.min-absolute-ms }}
+        MAX_CV: ${{ inputs.max-cv }}
+        BASE_LABEL: ${{ github.event.pull_request.base.ref }}
+        CURRENT_LABEL: ${{ github.head_ref || github.sha }}
+      run: bash ./.github/scripts/run-benchmark-comparison.sh
+
+    - name: Detect generated benchmark report
+      id: report
+      if: always()
+      shell: bash
+      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
+        test -f "${{ inputs.report-path }}" && echo "exists=true" >> "$GITHUB_OUTPUT" || echo "exists=false" >> "$GITHUB_OUTPUT"
+
+    - name: Add benchmark summary to job summary
+      if: always() && steps.report.outputs.exists == 'true'
+      shell: bash
+      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
+        cat "${{ inputs.report-path }}" >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload benchmark artifacts
+      if: always()
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: benchmark-results
+        path: ${{ inputs.artifact-dir }}
+        if-no-files-found: "warn"
+        retention-days: 30
+
+    - name: Fail on benchmark regression
+      if: steps.compare.outcome == 'failure'
+      shell: bash
+      run: echo "Meaningful benchmark regression detected. See benchmark report." >&2; exit 1
