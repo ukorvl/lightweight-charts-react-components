@@ -6,13 +6,12 @@
 
 import { existsSync, readFileSync, statSync } from "node:fs";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
 import { glob } from "glob";
 import MarkdownIt from "markdown-it";
 import markdownAnchors from "markdown-it-anchor";
+import { getErrorMessage, getRepoRoot, isMainModule } from "./common.mts";
 
-const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-const rootDir = path.join(scriptDir, "..");
+const rootDir = getRepoRoot(import.meta.url);
 const md = MarkdownIt().use(markdownAnchors);
 
 type LinkError = {
@@ -34,9 +33,6 @@ const MIN_SUCCESS_STATUS_CODE = 200;
 const MAX_SUCCESS_STATUS_CODE = 399;
 const FILE_CONCURRENCY_LIMIT = 5;
 const LINK_CONCURRENCY_LIMIT = 10;
-
-const getErrorMessage = (error: unknown) =>
-  error instanceof Error ? error.message : String(error);
 
 export class LinkChecker {
   errors: Array<LinkError>;
@@ -334,7 +330,8 @@ export class LinkChecker {
       if (!errorsByFile.has(relativePath)) {
         errorsByFile.set(relativePath, []);
       }
-      errorsByFile.get(relativePath).push(error);
+
+      errorsByFile.get(relativePath)!.push(error);
     }
 
     for (const [file, errors] of errorsByFile) {
@@ -400,13 +397,9 @@ async function processWithConcurrency<T>(
   }
 }
 
-const isMainModule =
-  process.argv[1] &&
-  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
-
-if (isMainModule) {
+if (isMainModule(import.meta.url)) {
   main().catch(error => {
-    console.error("Script failed:", error);
+    console.error("Script failed:", getErrorMessage(error));
     process.exit(1);
   });
 }

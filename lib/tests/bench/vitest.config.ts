@@ -10,7 +10,7 @@ export default defineConfig({
     globals: true,
     benchmark: {
       include: ["tests/bench/**/*.bench.{ts,tsx}"],
-      outputJson: "tests/bench/output/benchmark-results.json",
+      outputJson: process.env.BENCH_OUTPUT ?? "tests/bench/output/benchmark-results.json",
     },
   },
 });

@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build-lint:
-    name: Build and Lint code and run lib subdirectory tests
+    name: Lint code
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,10 +37,21 @@ jobs:
         with:
           check-commits: ${{ github.event_name == 'pull_request' }}
 
+  test-lib:
+    name: Build and test lib
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
       - name: Build
         uses: ./.github/actions/build
 
-      # runs relatively lightweight tests for the lib subdirectory
       - name: Test
         uses: ./.github/actions/test-lib
         with:
@@ -48,8 +59,36 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           coverage-report: ${{ github.event_name == 'pull_request' }}
 
+  test-examples:
+    name: Unit test examples
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Run examples unit tests
+        working-directory: examples
+        run: npm run test:unit
+
+  test-bench:
+    name: Benchmark tests
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
       - name: Benchmark
-        if: github.event_name == 'pull_request'
         uses: ./.github/actions/bench
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -191,6 +191,8 @@ export default [
     files: [
       "lib/src/**/*.test.ts",
       "lib/src/**/*.test.tsx",
+      "examples/src/**/*.test.ts",
+      "examples/src/**/*.test.tsx",
       "lib/tests/**/*.test.ts",
       "lib/tests/**/*.test.tsx",
       "lib/tests/**/*.bench.ts",

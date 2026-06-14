@@ -102,10 +102,15 @@ npm run test -w examples
 Useful workspace-specific commands:
 
 ```bash
+npm run test:unit -w examples
+npm run test:unit:watch -w examples
 npm run test:e2e -w examples
 npm run test:e2e:ui -w examples
 npm run test:lighthouse -w examples
 ```
+
+`npm run test -w examples` runs the unit, E2E, and Lighthouse checks together. Use
+`test:unit` for fast business-logic coverage of the examples app without launching browsers.
 
 The root command below is the full monorepo check used when changes affect both the library
 and the examples app:

@@ -2,19 +2,20 @@
   "name": "lightweight-charts-react-components-monorepo",
   "private": true,
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "lint": "eslint . --ext .ts,.tsx,.mts",
+    "lint:fix": "eslint . --ext .ts,.tsx,.mts --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
     "typecheck:lib": "npm run typecheck -w lib",
     "typecheck:lib-tests": "npm run typecheck:tests -w lib",
     "typecheck:examples": "npm run typecheck -w examples",
     "typecheck:examples-node": "npm run typecheck:node -w examples",
+    "typecheck:scripts": "tsc -p scripts/tsconfig.json --noEmit",
     "typecheck": "run-s typecheck:*",
     "check:coverage-regression": "node ./scripts/check-coverage-regression.mts",
     "check:md-links": "node ./scripts/check-md-links.mts",
     "check:jsdoc-links": "node ./scripts/check-jsdoc-links.mts",
-    "format": "prettier --check './**/*.{ts,tsx,json,mjs,md}'",
-    "format:fix": "prettier --write './**/*.{ts,tsx,json,mjs,md}'",
+    "format": "prettier --check './**/*.{ts,tsx,mts,json,mjs,md}'",
+    "format:fix": "prettier --write './**/*.{ts,tsx,mts,json,mjs,md}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
     "build": "bash ./scripts/build-all.sh",
     "test:all": "concurrently \"npm run test -w lib\" \"npm run test -w examples\"",
@@ -93,7 +94,7 @@
     "npm": ">=11.10.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*.{ts,tsx,mts}": [
       "npm run lint",
       "npm run format"
     ]
@@ -104,6 +105,8 @@
       "lib/src/pane/**",
       "lib/rslib.config.ts",
       "lib/tests/**",
+      "scripts/common.mts",
+      "scripts/compare-benchmarks.mts",
       "scripts/check-md-links.mts",
       "examples/scripts/prelhci.ts",
       "scripts/check-jsdoc-links.mts",

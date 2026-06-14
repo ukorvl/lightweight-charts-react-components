@@ -22,12 +22,5 @@ echo "Linting $NUMBER_OF_COMMITS commits..."
 
 # Run commitlint for all commits
 echo "Running Commitlint on all commits..."
-npx commitlint --from=$FIRST_COMMIT --to=HEAD
-
-# Check the result
-if [ $? -eq 0 ]; then
-  echo "All commit messages are valid."
-else
-  echo "Some commit messages are invalid."
-  exit 1
-fi
+npx commitlint --from="$FIRST_COMMIT" --to=HEAD
+echo "All commit messages are valid."

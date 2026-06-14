@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# This script checks out the base branch of the library, runs unit tests with coverage, and copies the resulting coverage summary to a separate folder for later comparison with the current branch's coverage.
+
 set -euo pipefail
 
 BASE_REF="${1:?Base ref is required}"
