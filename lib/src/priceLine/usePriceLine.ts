@@ -58,9 +58,7 @@ export const usePriceLine = ({ options, price }: PriceLineProps) => {
   useLayoutEffect(() => {
     if (!series) return;
 
-    if (price) {
-      priceLineApiRef.current.api()?.applyOptions({ price });
-    }
+    priceLineApiRef.current.api()?.applyOptions({ price });
   }, [price]);
 
   return priceLineApiRef;
