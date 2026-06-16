@@ -94,6 +94,31 @@ describe("usePriceLine", () => {
     expect(mockCreatePriceLine().applyOptions).toHaveBeenCalledWith(newOptions);
   });
 
+  it("should apply a zero price update", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      seriesApiRef: mockSeries,
+      isReady: true,
+    });
+
+    const { rerender } = renderHook(
+      props =>
+        usePriceLine({
+          price: props.price,
+        }),
+      {
+        initialProps: {
+          price: 100,
+        } as PriceLineProps,
+      }
+    );
+
+    rerender({
+      price: 0,
+    });
+
+    expect(mockCreatePriceLine().applyOptions).toHaveBeenLastCalledWith({ price: 0 });
+  });
+
   it("should not create a price line if not ready", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       seriesApiRef: mockSeries,
