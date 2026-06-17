@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - apply `PriceLine` price updates when the new price is `0`
+- recreate image watermarks when `src` changes, and only apply mutable watermark options on updates
 
 ## [2.3.0] - 2026-06-07
 ### Added
