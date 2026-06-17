@@ -36,6 +36,7 @@ jobs:
         uses: ./.github/actions/lint
         with:
           check-commits: ${{ github.event_name == 'pull_request' }}
+          commit_base_sha: ${{ github.event.pull_request.base.sha || '' }}
 
   test-lib:
     name: Build and test lib

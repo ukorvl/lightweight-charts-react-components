@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script checks all commits in the current branch for compliance with the
+# This script checks commits in the configured range for compliance with the
 # commit message format.
 
 set -euo pipefail
@@ -14,13 +14,21 @@ if [ "$IS_SHALLOW" = "true" ]; then
   git fetch --unshallow
 fi
 
-# Get the first commit hash (the base commit)
-FIRST_COMMIT=$(git rev-list --max-parents=0 HEAD)
-NUMBER_OF_COMMITS=$(git rev-list --count HEAD)
+# Allow CI to lint only the commits introduced by a PR.
+COMMITLINT_FROM_REF=${COMMITLINT_FROM_REF:-}
+
+if [ -n "$COMMITLINT_FROM_REF" ]; then
+  FROM_REF="$COMMITLINT_FROM_REF"
+  NUMBER_OF_COMMITS=$(git rev-list --count "$FROM_REF..HEAD")
+else
+  # Fall back to linting the current branch history when no explicit base is provided.
+  FROM_REF=$(git rev-list --max-parents=0 HEAD)
+  NUMBER_OF_COMMITS=$(git rev-list --count HEAD)
+fi
 
 echo "Linting $NUMBER_OF_COMMITS commits..."
 
-# Run commitlint for all commits
-echo "Running Commitlint on all commits..."
-npx commitlint --from="$FIRST_COMMIT" --to=HEAD
+# Run commitlint for the selected range.
+echo "Running Commitlint from $FROM_REF to HEAD..."
+npx commitlint --from="$FROM_REF" --to=HEAD
 echo "All commit messages are valid."
