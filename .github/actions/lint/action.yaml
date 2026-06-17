@@ -6,6 +6,10 @@ inputs:
     description: "Check if the commits follow the conventional commits specification"
     required: false
     default: "false"
+  commit_base_sha:
+    description: "Base commit SHA to exclude when linting PR commits"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -24,6 +28,8 @@ runs:
 
     - name: Lint commits
       if: ${{ inputs.check-commits == 'true' }}
+      env:
+        COMMITLINT_FROM_REF: ${{ inputs.commit_base_sha }}
       run: |
         git config --global --add safe.directory "$(pwd)"
         npm run lint:commits
