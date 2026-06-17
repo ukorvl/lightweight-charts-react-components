@@ -11,7 +11,8 @@ on:
         required: false
         default: "true"
 
-permissions: {}
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.run_id }}
@@ -20,7 +21,6 @@ concurrency:
 jobs:
   check-semver-tag:
     runs-on: ubuntu-latest
-    permissions: {}
     outputs:
       tag_name: ${{ steps.check-semver-tag.outputs.tag_name }}
     steps:
@@ -40,16 +40,10 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
         shell: bash
 
-  release:
+  validate-release-metadata:
+    name: Validate release metadata
     needs: check-semver-tag
-    name: Release
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest@sha256:2b6d906960e2d2a9a9980a309ca8182bf319ada617bd25b27dc40d6e83ced409
-      options: --user pwuser
-    permissions:
-      contents: write
-      id-token: write
     steps:
       - name: Clone repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -67,24 +61,134 @@ jobs:
           JSR_JSON: lib/jsr.json
           VERSION_FILE: lib/src/version.ts
 
+  lint:
+    name: Lint
+    needs: check-semver-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
-          setup-node: false # don't need to setup node, it's already in the container
+          setup-node: true
 
       - name: Lint
         uses: ./.github/actions/lint
         with:
           check-commits: false
 
-      - name: Build
+  build-artifacts:
+    name: Build release artifacts
+    needs: check-semver-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Build release artifacts
         uses: ./.github/actions/build
 
-      - name: Run all tests
+      - name: Upload lib build artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-lib-dist
+          path: lib/dist/**
+          if-no-files-found: "error"
+          retention-days: 7
+
+      - name: Upload examples build artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-examples-dist
+          path: examples/dist/**
+          if-no-files-found: "error"
+          retention-days: 7
+
+  test-lib:
+    name: Test lib
+    needs: build-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Restore lib build artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: release-lib-dist
+          path: lib/dist
+
+      - name: Test lib
+        uses: ./.github/actions/test-lib
+        with:
+          upload-coverage: false
+          coverage-report: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  test-examples-unit:
+    name: Test examples unit
+    needs: build-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Restore lib build artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: release-lib-dist
+          path: lib/dist
+
+      - name: Run examples unit tests
+        working-directory: examples
+        run: npm run test:unit
+        shell: bash
+
+  test-e2e:
+    name: Release E2E tests
+    needs: build-artifacts
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest@sha256:2b6d906960e2d2a9a9980a309ca8182bf319ada617bd25b27dc40d6e83ced409
+      options: --user pwuser
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: false # don't need to setup node, it's already in the container
+
+      - name: Restore lib build artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: release-lib-dist
+          path: lib/dist
+
+      - name: Run E2E tests
+        working-directory: examples
         run: |
           export CI=true
           export DISABLE_EXTERNAL_LINK_TEST=false
-          npm run test:all
+          npm run test:e2e
         shell: bash
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -95,12 +199,72 @@ jobs:
           if-no-files-found: "warn"
           retention-days: 30
 
+  test-lighthouse:
+    name: Release Lighthouse tests
+    needs: build-artifacts
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ukorvl/custom-github-actions-playwright:latest@sha256:2b6d906960e2d2a9a9980a309ca8182bf319ada617bd25b27dc40d6e83ced409
+      options: --user pwuser
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: false # don't need to setup node, it's already in the container
+
+      - name: Restore examples build artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: release-examples-dist
+          path: examples/dist
+
+      - name: Run Lighthouse tests
+        working-directory: examples
+        run: |
+          export CI=true
+          npm run test:lighthouse
+        shell: bash
+
+  release:
+    needs:
+      - check-semver-tag
+      - validate-release-metadata
+      - lint
+      - build-artifacts
+      - test-lib
+      - test-examples-unit
+      - test-e2e
+      - test-lighthouse
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Restore lib build artifact
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: release-lib-dist
+          path: lib/dist
+
       - name: Create a new release
         uses: ./.github/actions/create-release
         with:
           tag: ${{ needs.check-semver-tag.outputs.tag_name }}
 
   deploy:
+    if: ${{ github.event.inputs['deploy-examples'] != 'false' }}
     name: Deploy examples
     runs-on: ubuntu-latest
     permissions:
@@ -115,7 +279,7 @@ jobs:
         with:
           setup-node: true
 
-      - name: Build
+      - name: Build deployable examples
         uses: ./.github/actions/build
         with:
           base-path: /lightweight-charts-react-components
