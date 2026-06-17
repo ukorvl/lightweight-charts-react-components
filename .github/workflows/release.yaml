@@ -10,6 +10,10 @@ on:
         description: "Deploy the examples to GitHub Pages"
         required: false
         default: "true"
+      dry-run:
+        description: "Run checks and tests without publishing a release or deploying examples"
+        required: false
+        default: "false"
 
 permissions:
   contents: read
@@ -79,8 +83,8 @@ jobs:
         with:
           check-commits: false
 
-  build-artifacts:
-    name: Build release artifacts
+  test-lib:
+    name: Test lib
     needs: check-semver-tag
     runs-on: ubuntu-latest
     steps:
@@ -92,43 +96,8 @@ jobs:
         with:
           setup-node: true
 
-      - name: Build release artifacts
+      - name: Build
         uses: ./.github/actions/build
-
-      - name: Upload lib build artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: release-lib-dist
-          path: lib/dist/**
-          if-no-files-found: "error"
-          retention-days: 7
-
-      - name: Upload examples build artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: release-examples-dist
-          path: examples/dist/**
-          if-no-files-found: "error"
-          retention-days: 7
-
-  test-lib:
-    name: Test lib
-    needs: build-artifacts
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-        with:
-          setup-node: true
-
-      - name: Restore lib build artifact
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
-        with:
-          name: release-lib-dist
-          path: lib/dist
 
       - name: Test lib
         uses: ./.github/actions/test-lib
@@ -139,7 +108,7 @@ jobs:
 
   test-examples-unit:
     name: Test examples unit
-    needs: build-artifacts
+    needs: check-semver-tag
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -150,11 +119,8 @@ jobs:
         with:
           setup-node: true
 
-      - name: Restore lib build artifact
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
-        with:
-          name: release-lib-dist
-          path: lib/dist
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Run examples unit tests
         working-directory: examples
@@ -163,7 +129,7 @@ jobs:
 
   test-e2e:
     name: Release E2E tests
-    needs: build-artifacts
+    needs: check-semver-tag
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/ukorvl/custom-github-actions-playwright:latest@sha256:2b6d906960e2d2a9a9980a309ca8182bf319ada617bd25b27dc40d6e83ced409
@@ -177,11 +143,8 @@ jobs:
         with:
           setup-node: false # don't need to setup node, it's already in the container
 
-      - name: Restore lib build artifact
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
-        with:
-          name: release-lib-dist
-          path: lib/dist
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Run E2E tests
         working-directory: examples
@@ -201,7 +164,7 @@ jobs:
 
   test-lighthouse:
     name: Release Lighthouse tests
-    needs: build-artifacts
+    needs: check-semver-tag
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/ukorvl/custom-github-actions-playwright:latest@sha256:2b6d906960e2d2a9a9980a309ca8182bf319ada617bd25b27dc40d6e83ced409
@@ -215,11 +178,8 @@ jobs:
         with:
           setup-node: false # don't need to setup node, it's already in the container
 
-      - name: Restore examples build artifact
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
-        with:
-          name: release-examples-dist
-          path: examples/dist
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Run Lighthouse tests
         working-directory: examples
@@ -233,7 +193,6 @@ jobs:
       - check-semver-tag
       - validate-release-metadata
       - lint
-      - build-artifacts
       - test-lib
       - test-examples-unit
       - test-e2e
@@ -252,19 +211,17 @@ jobs:
         with:
           setup-node: true
 
-      - name: Restore lib build artifact
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
-        with:
-          name: release-lib-dist
-          path: lib/dist
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Create a new release
         uses: ./.github/actions/create-release
         with:
           tag: ${{ needs.check-semver-tag.outputs.tag_name }}
+          dry-run: ${{ github.event.inputs['dry-run'] }}
 
   deploy:
-    if: ${{ github.event.inputs['deploy-examples'] != 'false' }}
+    if: ${{ github.event.inputs['dry-run'] != 'true' && github.event.inputs['deploy-examples'] != 'false' }}
     name: Deploy examples
     runs-on: ubuntu-latest
     permissions:
