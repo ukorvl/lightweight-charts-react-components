@@ -48,3 +48,4 @@ runs:
         scandir: "."
         ignore_paths: "node_modules dist coverage .pnpm-store"
         severity: error
+        version: v0.11.0
