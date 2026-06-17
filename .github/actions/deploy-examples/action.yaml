@@ -25,6 +25,6 @@ runs:
         publish_branch: ${{ inputs.branch }}
         allow_empty_commit: true
         enable_jekyll: false
-        keep_files: ${{ inputs.keep_files }}
+        keep_files: ${{ inputs['keep-files'] }}
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
