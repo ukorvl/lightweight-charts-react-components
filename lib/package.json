@@ -4,6 +4,7 @@
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch",
+    "publint": "publint --strict",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:tests": "tsc -p tests/tsconfig.json --noEmit",
     "test:unit": "vitest --coverage",
@@ -27,7 +28,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ukorvl/lightweight-charts-react-components",
+    "url": "git+https://github.com/ukorvl/lightweight-charts-react-components.git",
     "directory": "lib"
   },
   "sideEffects": false,
@@ -73,6 +74,7 @@
     "@vitest/coverage-v8": "^3.2.4",
     "jsr": "^0.14.3",
     "markdown-it": "^14.2.0",
+    "publint": "^0.3.21",
     "rsbuild-plugin-dts": "^0.5.5",
     "vitest-canvas-mock": "^0.3.3"
   }
