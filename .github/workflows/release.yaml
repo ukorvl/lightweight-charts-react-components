@@ -150,7 +150,6 @@ jobs:
         working-directory: examples
         run: |
           export CI=true
-          export DISABLE_EXTERNAL_LINK_TEST=false
           npm run test:e2e
         shell: bash
 

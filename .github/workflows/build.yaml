@@ -123,7 +123,6 @@ jobs:
         working-directory: examples
         run: |
           export CI=true
-          export DISABLE_EXTERNAL_LINK_TEST=${{ github.event_name == 'pull_request' }}
           export PLAYWRIGHT_BLOB_REPORT=true
           npm run test:e2e -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
