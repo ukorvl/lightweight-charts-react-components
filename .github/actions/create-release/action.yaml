@@ -26,6 +26,11 @@ runs:
         fi
       shell: bash
 
+    - name: Run publint
+      working-directory: lib
+      run: npm run publint
+      shell: bash
+
     - name: Check npm publishing (dry run)
       working-directory: lib
       run: npm publish --dry-run
