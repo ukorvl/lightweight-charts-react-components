@@ -5,6 +5,10 @@ inputs:
   tag:
     description: "Tag to release"
     required: true
+  dry-run:
+    description: "Skip side-effecting release and publish steps after validation"
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -32,7 +36,13 @@ runs:
       run: npx jsr publish --dry-run
       shell: bash
 
+    - name: Dry run notice
+      if: ${{ inputs['dry-run'] == 'true' }}
+      run: echo "Dry run mode enabled. Skipping GitHub release creation and package publishing."
+      shell: bash
+
     - name: Create a new release
+      if: ${{ inputs['dry-run'] != 'true' }}
       uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
       with:
         tag_name: ${{ inputs.tag }}
@@ -41,11 +51,13 @@ runs:
         generate_release_notes: true
 
     - name: Publish package on npm
+      if: ${{ inputs['dry-run'] != 'true' }}
       working-directory: lib
       run: npm publish
       shell: bash
 
     - name: Publish package on jsr
+      if: ${{ inputs['dry-run'] != 'true' }}
       working-directory: lib
       run: npx jsr publish
       shell: bash
