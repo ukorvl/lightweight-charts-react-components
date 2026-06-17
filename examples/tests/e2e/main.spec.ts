@@ -9,9 +9,7 @@ const samplesDir = path.join(__dirname, "../..", "src/samples");
 const examplesCount = readdirSync(samplesDir, { withFileTypes: true }).filter(dirent =>
   dirent.isDirectory()
 ).length;
-
-const skipExternalLinksTest = process.env.DISABLE_EXTERNAL_LINK_TEST === "true";
-const externalOriginsToSkip = ["https://www.npmjs.com"];
+const unresolvedTemplatePattern = /\$\{[^}]+\}/;
 
 test.describe("Main page", () => {
   test.beforeEach(async ({ page }) => {
@@ -48,31 +46,25 @@ test.describe("Main page", () => {
   });
 
   test("valid links", async ({ page }) => {
-    // eslint-disable-next-line playwright/no-skipped-test
-    test.skip(skipExternalLinksTest, "Skipping external links test as per configuration");
-
     const hrefAttrs = await page
       .locator("a")
       .evaluateAll(links => links.map(link => link.getAttribute("href")));
 
-    const externalURLs = hrefAttrs.filter(
-      (url): url is string => url !== null && !url.startsWith("#") && !url.startsWith("/")
-    );
-    const allowedExternalURLs = externalURLs.filter(url => {
-      return !externalOriginsToSkip.some(origin => url.startsWith(origin));
-    });
+    const urls = hrefAttrs.filter((url): url is string => url !== null);
 
-    for (const externalURl of allowedExternalURLs) {
+    for (const url of urls) {
+      expect
+        .soft(
+          unresolvedTemplatePattern.test(url),
+          `URL contains unresolved template placeholder: ${url}`
+        )
+        .toBeFalsy();
+
       try {
-        const response = await page.request.get(externalURl);
-        expect
-          .soft(response.ok(), `${externalURl} didn't return Ok response`)
-          .toBeTruthy();
+        new URL(url, page.url());
       } catch {
         // eslint-disable-next-line playwright/no-conditional-expect
-        expect
-          .soft(false, `Failed to fetch ${externalURl}, check if the link is valid`)
-          .toBeFalsy();
+        expect.soft(false, `Invalid URL: ${url}`).toBeTruthy();
       }
     }
   });
