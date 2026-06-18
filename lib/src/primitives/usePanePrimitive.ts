@@ -4,55 +4,56 @@ import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { IChartContext } from "@/chart/types";
 import { usePaneContext } from "@/pane/usePaneContext";
+import { useReactivePrimitive } from "./useReactivePrimitive";
 import type { PanePrimitiveApiRef, PanePrimitiveProps } from "./types";
 import type { IChartApiBase, Time } from "lightweight-charts";
+import type { RefObject } from "react";
 
-export const usePanePrimitive = <HorzScaleItem = Time>({
-  render,
-  plugin,
-}: PanePrimitiveProps<HorzScaleItem>) => {
+export const usePanePrimitive = <HorzScaleItem = Time>(
+  props: PanePrimitiveProps<HorzScaleItem>
+): RefObject<PanePrimitiveApiRef<HorzScaleItem>> => {
   const { isReady: isChartReady, chartApiRef: chart } = useSafeContext(
     ChartContext
   ) as IChartContext<HorzScaleItem, IChartApiBase<HorzScaleItem>>;
   const { isInsidePane, isPaneReady, paneApiRef: pane } = usePaneContext<HorzScaleItem>();
+  const chartApiRef = useRef(chart);
+  const paneApiRef = useRef(pane);
 
-  const panePrimitiveApiRef = useRef<PanePrimitiveApiRef<HorzScaleItem>>({
-    _primitive: null,
-    api() {
-      return this._primitive;
-    },
-    init() {
-      if (!this._primitive) {
-        const chartApi = chart?.api();
-        const paneApi = pane?.api();
+  chartApiRef.current = chart;
+  paneApiRef.current = pane;
+  const panePrimitiveApiRef = useReactivePrimitive({
+    isReady: isChartReady && isInsidePane && isPaneReady,
+    props,
+    primitiveIdentity: props.plugin ?? props.render,
+    mountPrimitive(currentProps) {
+      const chartApi = chartApiRef.current?.api();
+      const paneApi = paneApiRef.current?.api();
 
-        if (!chartApi || !paneApi) {
-          return null;
-        }
+      if (!chartApi || !paneApi) {
+        return null;
+      }
 
-        const primitive = plugin
-          ? plugin
-          : render({
+      const primitive =
+        currentProps.plugin !== undefined
+          ? currentProps.plugin
+          : currentProps.render({
               chart: chartApi,
               pane: paneApi,
             });
 
-        paneApi.attachPrimitive(primitive);
-        this._primitive = primitive;
-      }
+      paneApi.attachPrimitive(primitive);
 
-      return this._primitive;
-    },
-    clear() {
-      if (this._primitive !== null) {
-        pane?.api()?.detachPrimitive(this._primitive);
-        this._primitive = null;
-      }
+      return {
+        primitive,
+        detach: () => paneApi.detachPrimitive(primitive),
+      };
     },
   });
 
   useLayoutEffect(() => {
-    if (!isChartReady) return;
+    if (!isChartReady) {
+      return;
+    }
 
     if (!isInsidePane) {
       throw new BaseInternalError(
@@ -63,19 +64,7 @@ export const usePanePrimitive = <HorzScaleItem = Time>({
         }
       );
     }
-
-    if (!isPaneReady) {
-      return;
-    }
-
-    panePrimitiveApiRef.current.init();
-  }, [isChartReady, isInsidePane, isPaneReady]);
-
-  useLayoutEffect(() => {
-    return () => {
-      panePrimitiveApiRef.current.clear();
-    };
-  }, []);
+  }, [isChartReady, isInsidePane]);
 
   return panePrimitiveApiRef;
 };

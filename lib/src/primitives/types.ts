@@ -9,26 +9,43 @@ import type {
 } from "lightweight-charts";
 
 /**
- * Series primitive API reference type that can be used to access the series primitive plugin API.
+ * Shared API reference shape for reactive primitives.
  */
-export type SeriesPrimitiveApiRef<HorzScaleItem = Time> = {
+type ReactivePrimitiveApiRef<TPrimitive> = {
   /**
-   * Internal reference to the series primitive API instance.
+   * Internal reference to the primitive API instance.
    */
-  _primitive: ISeriesPrimitive<HorzScaleItem> | null;
+  _primitive: TPrimitive | null;
   /**
-   * Function to get the series primitive API instance.
+   * Function to get the primitive API instance.
    */
-  api(): ISeriesPrimitive<HorzScaleItem> | null;
+  api(): TPrimitive | null;
   /**
-   * Function to initialize the series primitive API instance.
+   * Function to initialize the primitive API instance.
    */
-  init(): ISeriesPrimitive<HorzScaleItem> | null;
+  init(): TPrimitive | null;
   /**
-   * Function to clear the series primitive API instance.
+   * Function to clear the primitive API instance.
    */
   clear(): void;
 };
+
+type ReactivePrimitiveProps<TPrimitive, TRender> =
+  | {
+      render: TRender;
+      plugin?: never;
+    }
+  | {
+      plugin: TPrimitive;
+      render?: never;
+    };
+
+/**
+ * Series primitive API reference type that can be used to access the series primitive plugin API.
+ */
+export type SeriesPrimitiveApiRef<HorzScaleItem = Time> = ReactivePrimitiveApiRef<
+  ISeriesPrimitive<HorzScaleItem>
+>;
 
 /**
  * Render function type for series primitives.
@@ -44,24 +61,9 @@ export type RenderPrimitive<T extends SeriesType = SeriesType, HorzScaleItem = T
 /**
  * Pane primitive API reference type that can be used to access the pane primitive plugin API.
  */
-export type PanePrimitiveApiRef<HorzScaleItem = Time> = {
-  /**
-   * Internal reference to the pane primitive API instance.
-   */
-  _primitive: IPanePrimitive<HorzScaleItem> | null;
-  /**
-   * Function to get the pane primitive API instance.
-   */
-  api(): IPanePrimitive<HorzScaleItem> | null;
-  /**
-   * Function to initialize the pane primitive API instance.
-   */
-  init(): IPanePrimitive<HorzScaleItem> | null;
-  /**
-   * Function to clear the pane primitive API instance.
-   */
-  clear(): void;
-};
+export type PanePrimitiveApiRef<HorzScaleItem = Time> = ReactivePrimitiveApiRef<
+  IPanePrimitive<HorzScaleItem>
+>;
 
 /**
  * Render function type for pane primitives.
@@ -74,39 +76,21 @@ export type RenderPanePrimitive<HorzScaleItem = Time> = ({
   pane: IPaneApi<HorzScaleItem>;
 }) => IPanePrimitive<HorzScaleItem>;
 
-type SeriesPrimitivePropsWithRender<T extends SeriesType, HorzScaleItem = Time> = {
-  render: RenderPrimitive<T, HorzScaleItem>;
-  plugin?: never;
-};
-
-type SeriesPrimitivePropsWithPlugin<HorzScaleItem = Time> = {
-  plugin: ISeriesPrimitive<HorzScaleItem>;
-  render?: never;
-};
-
-type PanePrimitivePropsWithRender<HorzScaleItem = Time> = {
-  render: RenderPanePrimitive<HorzScaleItem>;
-  plugin?: never;
-};
-
-type PanePrimitivePropsWithPlugin<HorzScaleItem = Time> = {
-  plugin: IPanePrimitive<HorzScaleItem>;
-  render?: never;
-};
-
 /**
  * Series primitive properties that can be used to create a series primitive.
  */
 export type SeriesPrimitiveProps<
   T extends SeriesType = SeriesType,
   HorzScaleItem = Time,
-> =
-  | SeriesPrimitivePropsWithRender<T, HorzScaleItem>
-  | SeriesPrimitivePropsWithPlugin<HorzScaleItem>;
+> = ReactivePrimitiveProps<
+  ISeriesPrimitive<HorzScaleItem>,
+  RenderPrimitive<T, HorzScaleItem>
+>;
 
 /**
  * Pane primitive properties that can be used to create a pane primitive.
  */
-export type PanePrimitiveProps<HorzScaleItem = Time> =
-  | PanePrimitivePropsWithRender<HorzScaleItem>
-  | PanePrimitivePropsWithPlugin<HorzScaleItem>;
+export type PanePrimitiveProps<HorzScaleItem = Time> = ReactivePrimitiveProps<
+  IPanePrimitive<HorzScaleItem>,
+  RenderPanePrimitive<HorzScaleItem>
+>;

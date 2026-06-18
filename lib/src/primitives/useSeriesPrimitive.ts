@@ -1,70 +1,57 @@
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { IChartContext } from "@/chart/types";
 import { SeriesContext } from "@/series/SeriesContext";
 import type { ISeriesContext } from "@/series/types";
+import { useReactivePrimitive } from "./useReactivePrimitive";
 import type { SeriesPrimitiveApiRef, SeriesPrimitiveProps } from "./types";
 import type { IChartApiBase, SeriesType, Time } from "lightweight-charts";
 import type { ISeriesApi } from "lightweight-charts";
+import type { RefObject } from "react";
 
-export const useSeriesPrimitive = <T extends SeriesType, HorzScaleItem = Time>({
-  render,
-  plugin,
-}: SeriesPrimitiveProps<T, HorzScaleItem>) => {
+export const useSeriesPrimitive = <T extends SeriesType, HorzScaleItem = Time>(
+  props: SeriesPrimitiveProps<T, HorzScaleItem>
+): RefObject<SeriesPrimitiveApiRef<HorzScaleItem>> => {
   const { isReady: isChartReady, chartApiRef: chart } = useSafeContext(
     ChartContext
   ) as IChartContext<HorzScaleItem, IChartApiBase<HorzScaleItem>>;
   const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(
     SeriesContext
   ) as ISeriesContext<HorzScaleItem>;
+  const chartApiRef = useRef(chart);
+  const seriesApiRef = useRef(series);
 
-  const seriesPrimitiveApiRef = useRef<SeriesPrimitiveApiRef<HorzScaleItem>>({
-    _primitive: null,
-    api() {
-      return this._primitive;
-    },
-    init() {
-      if (!this._primitive) {
-        const seriesApi = series?.api();
-        const chartApi = chart?.api();
+  chartApiRef.current = chart;
+  seriesApiRef.current = series;
+  const seriesPrimitiveApiRef = useReactivePrimitive({
+    isReady: isChartReady && seriesIsReady,
+    props,
+    primitiveIdentity: props.plugin ?? props.render,
+    mountPrimitive(currentProps) {
+      const seriesApi = seriesApiRef.current?.api();
+      const chartApi = chartApiRef.current?.api();
 
-        if (!chartApi || !seriesApi) {
-          return null;
-        }
+      if (!chartApi || !seriesApi) {
+        return null;
+      }
 
-        const primitive = plugin
-          ? plugin
-          : render({
+      const primitive =
+        currentProps.plugin !== undefined
+          ? currentProps.plugin
+          : currentProps.render({
               chart: chartApi,
               series: seriesApi as ISeriesApi<T, HorzScaleItem>,
             });
 
-        seriesApi.attachPrimitive(primitive);
-        this._primitive = primitive;
-      }
+      seriesApi.attachPrimitive(primitive);
 
-      return this._primitive;
-    },
-    clear() {
-      if (this._primitive !== null) {
-        series?.api()?.detachPrimitive(this._primitive);
-        this._primitive = null;
-      }
+      return {
+        primitive,
+        detach: () => seriesApi.detachPrimitive(primitive),
+      };
     },
   });
-
-  useLayoutEffect(() => {
-    if (!isChartReady || !seriesIsReady) return;
-
-    seriesPrimitiveApiRef.current.init();
-  }, [seriesIsReady, isChartReady]);
-
-  useLayoutEffect(() => {
-    return () => {
-      seriesPrimitiveApiRef.current.clear();
-    };
-  }, []);
 
   return seriesPrimitiveApiRef;
 };

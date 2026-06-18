@@ -8,17 +8,19 @@ import type { PropsWithChildren } from "react";
 
 vi.mock("@/_shared/useSafeContext");
 
+const createMockPaneApi = () => ({
+  attachPrimitive: vi.fn(),
+  detachPrimitive: vi.fn(),
+});
+
 const mockChartApi = {};
 const mockChart = {
   api: () => mockChartApi,
 };
 
-const mockAttachPrimitive = vi.fn();
-const mockDetachPrimitive = vi.fn();
-const mockPaneApi = {
-  attachPrimitive: mockAttachPrimitive,
-  detachPrimitive: mockDetachPrimitive,
-};
+const mockPaneApi = createMockPaneApi();
+const { attachPrimitive: mockAttachPrimitive, detachPrimitive: mockDetachPrimitive } =
+  mockPaneApi;
 
 const createPaneContextWrapper = ({
   isReady = true,
@@ -36,6 +38,31 @@ const createPaneContextWrapper = ({
           _pane: null,
           api: () => paneApi as never,
           init: () => paneApi as never,
+          clear: vi.fn(),
+        },
+      }}
+    >
+      {children}
+    </PaneContext.Provider>
+  );
+};
+
+const createDynamicPaneContextWrapper = ({
+  isReady = true,
+  getPaneApi,
+}: {
+  isReady?: boolean;
+  getPaneApi: () => ReturnType<typeof createMockPaneApi> | null;
+}) => {
+  // eslint-disable-next-line react/display-name
+  return ({ children }: PropsWithChildren) => (
+    <PaneContext.Provider
+      value={{
+        isReady,
+        paneApiRef: {
+          _pane: null,
+          api: () => getPaneApi() as never,
+          init: () => getPaneApi() as never,
           clear: vi.fn(),
         },
       }}
@@ -209,5 +236,131 @@ describe("usePanePrimitive", () => {
 
     expect(result.current.current.api()).toBeNull();
     expect(mockAttachPrimitive).not.toHaveBeenCalled();
+  });
+
+  it("reinitializes panePrimitive when the plugin object changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    const initialPlugin = { id: "initial" };
+    const nextPlugin = { id: "next" };
+
+    const { rerender, result } = renderHook(
+      ({ pluginToUse }: { pluginToUse: object }) =>
+        usePanePrimitive({
+          plugin: pluginToUse,
+        }),
+      {
+        initialProps: { pluginToUse: initialPlugin },
+        wrapper: createPaneContextWrapper(),
+      }
+    );
+
+    rerender({ pluginToUse: nextPlugin });
+
+    expect(mockDetachPrimitive).toHaveBeenCalledWith(initialPlugin);
+    expect(mockAttachPrimitive).toHaveBeenLastCalledWith(nextPlugin);
+    expect(result.current.current.api()).toBe(nextPlugin);
+  });
+
+  it("reinitializes panePrimitive when the render callback changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    const initialPrimitive = { id: "initial-rendered" };
+    const nextPrimitive = { id: "next-rendered" };
+    const initialRender = vi.fn().mockReturnValue(initialPrimitive);
+    const nextRender = vi.fn().mockReturnValue(nextPrimitive);
+
+    const { rerender, result } = renderHook(
+      ({ renderPrimitive }: { renderPrimitive: typeof initialRender }) =>
+        usePanePrimitive({
+          render: renderPrimitive,
+        }),
+      {
+        initialProps: { renderPrimitive: initialRender },
+        wrapper: createPaneContextWrapper(),
+      }
+    );
+
+    rerender({ renderPrimitive: nextRender });
+
+    expect(mockDetachPrimitive).toHaveBeenCalledWith(initialPrimitive);
+    expect(nextRender).toHaveBeenCalledWith({
+      chart: mockChartApi,
+      pane: mockPaneApi,
+    });
+    expect(mockAttachPrimitive).toHaveBeenLastCalledWith(nextPrimitive);
+    expect(result.current.current.api()).toBe(nextPrimitive);
+  });
+
+  it("detaches panePrimitive from the original pane when pane context changes before reinitialization", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    const initialPlugin = { id: "initial" };
+    const nextPlugin = { id: "next" };
+    const initialPaneApi = createMockPaneApi();
+    const nextPaneApi = createMockPaneApi();
+    let currentPaneApi = initialPaneApi;
+
+    const { rerender } = renderHook(
+      ({ pluginToUse }: { pluginToUse: object }) =>
+        usePanePrimitive({
+          plugin: pluginToUse,
+        }),
+      {
+        initialProps: { pluginToUse: initialPlugin },
+        wrapper: createDynamicPaneContextWrapper({
+          getPaneApi: () => currentPaneApi,
+        }),
+      }
+    );
+
+    currentPaneApi = nextPaneApi;
+    rerender({ pluginToUse: initialPlugin });
+    rerender({ pluginToUse: nextPlugin });
+
+    expect(initialPaneApi.detachPrimitive).toHaveBeenCalledWith(initialPlugin);
+    expect(nextPaneApi.detachPrimitive).not.toHaveBeenCalled();
+    expect(nextPaneApi.attachPrimitive).toHaveBeenCalledWith(nextPlugin);
+  });
+
+  it("detaches panePrimitive from the original pane on unmount after pane context changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    const initialPlugin = { id: "initial" };
+    const initialPaneApi = createMockPaneApi();
+    const nextPaneApi = createMockPaneApi();
+    let currentPaneApi = initialPaneApi;
+
+    const { rerender, unmount } = renderHook(
+      ({ pluginToUse }: { pluginToUse: object }) =>
+        usePanePrimitive({
+          plugin: pluginToUse,
+        }),
+      {
+        initialProps: { pluginToUse: initialPlugin },
+        wrapper: createDynamicPaneContextWrapper({
+          getPaneApi: () => currentPaneApi,
+        }),
+      }
+    );
+
+    currentPaneApi = nextPaneApi;
+    rerender({ pluginToUse: initialPlugin });
+    unmount();
+
+    expect(initialPaneApi.detachPrimitive).toHaveBeenCalledWith(initialPlugin);
+    expect(nextPaneApi.detachPrimitive).not.toHaveBeenCalled();
   });
 });
