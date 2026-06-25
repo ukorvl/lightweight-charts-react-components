@@ -43,8 +43,8 @@ const samplesLinks = {
   },
   Watermark: {
     github: `${githubSamplesLocation}/Watermark`,
-    codesandbox: "",
-    stackblitz: "",
+    codesandbox: `${codeSandboxUrlBase}/Watermark/sandbox`,
+    stackblitz: `${stackBlitzUrlBase}/Watermark/sandbox`,
   },
   Legend: {
     github: `${githubSamplesLocation}/Legend`,
