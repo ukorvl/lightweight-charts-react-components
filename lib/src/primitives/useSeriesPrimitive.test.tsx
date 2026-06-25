@@ -61,6 +61,22 @@ describe("useSeriesPrimitive", () => {
     expect(result.current.current.api()).toBeNull();
   });
 
+  it("does not mount when chart or series is not ready", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: null,
+      seriesApiRef: null,
+    });
+
+    const { result } = renderHook(() =>
+      useSeriesPrimitive({
+        plugin: {},
+      })
+    );
+
+    expect(result.current.current.api()).toBeNull();
+  });
+
   it("calls render function if provided", () => {
     const renderMock = vi.fn().mockReturnValue({});
 

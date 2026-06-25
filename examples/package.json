@@ -5,9 +5,18 @@
   "homepage": "https://ukorvl.github.io/lightweight-charts-react-components",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=24",
-    "npm": ">=11.10.0"
+  "packageManager": "npm@11.14.1",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24",
+      "onFail": "warn"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.10.0",
+      "onFail": "warn"
+    }
   },
   "scripts": {
     "dev": "vite",

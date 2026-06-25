@@ -98,7 +98,7 @@ const BasicTooltipChart = () => {
 
   return (
     <Chart
-      ref={containerRef}
+      containerRef={containerRef}
       options={withChartCommonOptions({
         crosshair: {
           vertLine: {
@@ -174,7 +174,7 @@ const MultipleSeriesTooltipChart = () => {
 
   return (
     <Chart
-      ref={containerRef}
+      containerRef={containerRef}
       options={withChartCommonOptions({
         crosshair: {
           vertLine: {

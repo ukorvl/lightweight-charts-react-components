@@ -3,16 +3,14 @@ import {
   type ChartOptionsBase,
   type ChartOptionsImpl,
   type DeepPartial,
-  type IChartApi,
   type IChartApiBase,
   type IHorzScaleBehavior,
-  type IYieldCurveChartApi,
   type MouseEventHandler,
   type PriceChartOptions,
   type Time,
   type YieldCurveChartOptions,
 } from "lightweight-charts";
-import type { JSX, ReactNode } from "react";
+import type { JSX, ReactNode, Ref } from "react";
 
 /**
  * Supported internal chart kinds.
@@ -39,7 +37,6 @@ export type ChartApiInstance<HorzScaleItem = Time> = Pick<
  */
 export type GenericChartProps<
   HorzScaleItem = Time,
-  TChartApi extends ChartApiInstance<HorzScaleItem> = ChartApiInstance<HorzScaleItem>,
   TOptions extends ChartOptionsImpl<HorzScaleItem> = ChartOptionsImpl<HorzScaleItem>,
 > = {
   /**
@@ -54,6 +51,10 @@ export type GenericChartProps<
    */
   containerProps?: JSX.IntrinsicElements["div"];
   /**
+   * Ref for the container element rendered by the chart wrapper component.
+   */
+  containerRef?: Ref<HTMLDivElement>;
+  /**
    * Callback function that is called when the chart is clicked.
    */
   onClick?: MouseEventHandler<HorzScaleItem>;
@@ -61,10 +62,6 @@ export type GenericChartProps<
    * Callback function that is called when the crosshair moves.
    */
   onCrosshairMove?: MouseEventHandler<HorzScaleItem>;
-  /**
-   * Callback function that is called when the chart is initialized.
-   */
-  onInit?: (chart: TChartApi) => void; // TODO remove
   /**
    * Options for the chart.
    */
@@ -78,25 +75,17 @@ export type GenericChartProps<
 /**
  * Chart component props.
  */
-export type ChartProps = GenericChartProps<Time, IChartApi, TimeChartOptions>;
+export type ChartProps = GenericChartProps<Time, TimeChartOptions>;
 
 /**
  * OptionsChart component props.
  */
-export type OptionsChartProps = GenericChartProps<
-  number,
-  IChartApiBase<number>,
-  PriceChartOptions
->;
+export type OptionsChartProps = GenericChartProps<number, PriceChartOptions>;
 
 /**
  * YieldCurveChart component props.
  */
-export type YieldCurveChartProps = GenericChartProps<
-  number,
-  IYieldCurveChartApi,
-  YieldCurveChartOptions
->;
+export type YieldCurveChartProps = GenericChartProps<number, YieldCurveChartOptions>;
 
 /**
  * CustomChart component props.
@@ -105,11 +94,7 @@ export type CustomChartProps<
   HorzScaleItem = Time,
   THorzScaleBehavior extends
     IHorzScaleBehavior<HorzScaleItem> = IHorzScaleBehavior<HorzScaleItem>,
-> = GenericChartProps<
-  HorzScaleItem,
-  IChartApiBase<HorzScaleItem>,
-  ReturnType<THorzScaleBehavior["options"]>
-> & {
+> = GenericChartProps<HorzScaleItem, ReturnType<THorzScaleBehavior["options"]>> & {
   /**
    * Horizontal scale behavior instance passed to `createChartEx`.
    */
@@ -131,7 +116,7 @@ export type CreateChartApi<
 export type DefaultChartOptions = DeepPartial<ChartOptionsBase>;
 
 /**
- * Chart API reference type that can be used to access the chart plugin API.
+ * Chart API reference type that can be used to access the chart API.
  */
 export type ChartApiRef<
   HorzScaleItem = Time,
@@ -193,7 +178,7 @@ export type ChartComponentProps<
    * Chart constructor function.
    */
   createChartApi?: CreateChartApi<HorzScaleItem, TChartApi, TOptions>;
-} & Omit<GenericChartProps<HorzScaleItem, TChartApi, TOptions>, "containerProps">;
+} & Omit<GenericChartProps<HorzScaleItem, TOptions>, "containerProps" | "containerRef">;
 
 /**
  * Options for the useChart hook.
@@ -209,6 +194,6 @@ export type UseChartOptions<
    */
   createChartApi?: CreateChartApi<HorzScaleItem, TChartApi, TOptions>;
 } & Omit<
-  GenericChartProps<HorzScaleItem, TChartApi, TOptions>,
-  "children" | "containerProps"
+  GenericChartProps<HorzScaleItem, TOptions>,
+  "children" | "containerProps" | "containerRef"
 >;

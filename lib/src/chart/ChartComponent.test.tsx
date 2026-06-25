@@ -1,10 +1,11 @@
 import { render } from "@testing-library/react";
-import { useContext } from "react";
+import { createRef, useContext } from "react";
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ChartComponent } from "./ChartComponent";
 import { ChartContext } from "./ChartContext";
 import * as useChartModule from "./useChart";
+import type { ChartApiRef } from "./types";
 import type { ContextType } from "react";
 
 vi.mock("./useChart");
@@ -38,6 +39,14 @@ describe("Chart component", () => {
     expect(getByText("Child Content")).toBeInTheDocument();
   });
 
+  it("forwards the chart api ref", () => {
+    const ref = createRef<ChartApiRef>();
+
+    render(<ChartComponent ref={ref} container={mockContainer} />);
+
+    expect(ref.current).toBe(mockApiRef);
+  });
+
   it("provides chartApiRef and isReady via context", () => {
     let contextValue: ContextType<typeof ChartContext> = null;
 
@@ -62,12 +71,7 @@ describe("Chart component", () => {
   it("calls useChart with correct parameters", () => {
     const mockUseChart = vi.mocked(useChartModule.useChart);
     render(
-      <ChartComponent
-        container={mockContainer}
-        options={{}}
-        onInit={vi.fn()}
-        onDblClick={vi.fn()}
-      >
+      <ChartComponent container={mockContainer} options={{}} onDblClick={vi.fn()}>
         <div>Child Content</div>
       </ChartComponent>
     );
@@ -77,7 +81,6 @@ describe("Chart component", () => {
       onClick: undefined,
       onCrosshairMove: undefined,
       options: {},
-      onInit: expect.any(Function),
       onDblClick: expect.any(Function),
       createChartApi: undefined,
     });

@@ -196,7 +196,7 @@ const Primitives = () => {
             containerProps={{
               style: { height: "100%" },
             }}
-            ref={containerRef}
+            containerRef={containerRef}
             onClick={onChartClick}
           >
             <LineSeries

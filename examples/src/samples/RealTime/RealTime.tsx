@@ -75,7 +75,7 @@ const RealTime = () => {
       <Chart
         containerProps={{ style: { flexGrow: "1" } }}
         options={chartCommonOptions}
-        ref={ref}
+        containerRef={ref}
       >
         <CandlestickSeries data={clonedData} reactive={reactive} />
         <TimeScale>
