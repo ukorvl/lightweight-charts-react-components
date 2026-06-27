@@ -252,6 +252,20 @@ const App = () => {
 export { App };
 ```
 
+`PriceScale` resolves against the pane it is rendered in. When you render it directly under `Chart`, it targets the root pane. When you render it inside `Pane`, it targets that pane. To configure a custom scale, use the same ID on both the series `options.priceScaleId` and the `PriceScale` component:
+
+```tsx
+<Chart options={chartOptions}>
+  <CandlestickSeries data={candles} />
+  <HistogramSeries
+    data={volumeData}
+    options={{ priceScaleId: "volume", priceFormat: { type: "volume" } }}
+  >
+    <PriceScale id="volume" options={{ scaleMargins: { top: 0.7, bottom: 0 } }} />
+  </HistogramSeries>
+</Chart>
+```
+
 Pane-wide overlays that belong to a whole pane rather than a single series can be mounted declaratively with `PanePrimitive` inside `Pane`. This works well for session bands, pane-scoped annotations, and background highlights that need access to both the chart and the target pane. See the `PanePrimitives` sample in the examples app for a full working example, and the upstream [pane primitives documentation](https://tradingview.github.io/lightweight-charts/docs/plugins/pane-primitives) for the underlying Lightweight Charts plugin contract.
 
 ### Chart Container Sizing

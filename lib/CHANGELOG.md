@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- resolve `PriceScale` against the active pane so custom `priceScaleId`s can be configured in root and non-default panes
 
 ## [2.5.0] - 2026-06-24
 ### Fixed

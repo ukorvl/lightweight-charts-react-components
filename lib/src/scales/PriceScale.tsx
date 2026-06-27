@@ -15,6 +15,8 @@ const PriceScaleRenderFunction = (
 
 /**
  * PriceScale component that can be used to create/customize price scale in a chart.
+ * It targets the root pane when rendered directly inside `Chart`, or the active pane when rendered inside `Pane`.
+ * For custom scale IDs, use the same value in the target series `options.priceScaleId`.
  *
  * @param props - The properties for the price scale.
  * @param ref - The ref to access the price scale API.
@@ -23,7 +25,12 @@ const PriceScaleRenderFunction = (
  * @see {@link https://tradingview.github.io/lightweight-charts/docs/price-scale | TradingView documentation for price scale}
  * @example
  * ```tsx
- * <PriceScale id="right" options={{}} />
+ * <HistogramSeries
+ *   data={volumeData}
+ *   options={{ priceScaleId: "volume" }}
+ * >
+ *   <PriceScale id="volume" options={{ scaleMargins: { top: 0.7, bottom: 0 } }} />
+ * </HistogramSeries>
  * ```
  */
 export const PriceScale: ForwardRefExoticComponent<
