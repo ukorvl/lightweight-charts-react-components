@@ -9,14 +9,15 @@ vi.mock("@/_shared/useSafeContext");
 vi.mock("@/pane/usePaneContext");
 
 const mockApplyOptions = vi.fn();
+const mockChartPriceScale = vi.fn().mockReturnValue({
+  applyOptions: mockApplyOptions,
+  options: vi.fn(),
+  width: vi.fn(),
+});
 
 const mockChart = {
   api: () => ({
-    priceScale: vi.fn().mockReturnValue({
-      applyOptions: mockApplyOptions,
-      options: vi.fn(),
-      width: vi.fn(),
-    }),
+    priceScale: mockChartPriceScale,
   }),
 };
 
@@ -51,6 +52,7 @@ describe("usePriceScale", () => {
 
     const api = result.current.current.api();
     expect(api).toBeDefined();
+    expect(mockChartPriceScale).toHaveBeenCalledWith("right", 0);
   });
 
   it("applies options to priceScale", () => {
@@ -137,7 +139,7 @@ describe("usePriceScale", () => {
     expect(result.current.current.api()).toBeNull();
   });
 
-  it("throws error if used outside of a pane", () => {
+  it("defaults to the root pane when used outside of a pane", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       isReady: true,
       chartApiRef: mockChart,
@@ -149,15 +151,14 @@ describe("usePriceScale", () => {
       paneApiRef: mockPane,
     });
 
-    expect(() =>
-      renderHook(() =>
-        usePriceScale({
-          id: "right",
-        })
-      )
-    ).toThrowError(
-      "PriceScale must be used inside a pane. Please ensure that the component is wrapped in a pane component."
+    const { result } = renderHook(() =>
+      usePriceScale({
+        id: "volume",
+      })
     );
+
+    expect(result.current.current.api()).toBeDefined();
+    expect(mockChartPriceScale).toHaveBeenCalledWith("volume", 0);
   });
 
   it("does not initialize if pane is not ready", () => {
@@ -179,5 +180,69 @@ describe("usePriceScale", () => {
     );
 
     expect(result.current.current.api()).toBeNull();
+  });
+
+  it("uses the current pane index when resolving a price scale", () => {
+    const nonDefaultPane = {
+      api: () => ({
+        paneIndex: () => 2,
+      }),
+    } as unknown as PaneApiRef<unknown>;
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: nonDefaultPane,
+    });
+
+    renderHook(() =>
+      usePriceScale({
+        id: "volume",
+      })
+    );
+
+    expect(mockChartPriceScale).toHaveBeenCalledWith("volume", 2);
+  });
+
+  it("keeps the current pane index when the scale id changes", () => {
+    const nonDefaultPane = {
+      api: () => ({
+        paneIndex: () => 3,
+      }),
+    } as unknown as PaneApiRef<unknown>;
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: nonDefaultPane,
+    });
+
+    const { rerender } = renderHook(
+      props =>
+        usePriceScale({
+          id: props.id,
+        }),
+      {
+        initialProps: {
+          id: "left",
+        },
+      }
+    );
+
+    rerender({
+      id: "volume",
+    });
+
+    expect(mockChartPriceScale).toHaveBeenLastCalledWith("volume", 3);
   });
 });
