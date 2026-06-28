@@ -1,0 +1,173 @@
+{
+  "latestDocsLine": "v2.3",
+  "previewLine": "current",
+  "topicRegistry": [
+    {
+      "id": "chart",
+      "title": "Chart",
+      "summary": "Chart containers and chart variants.",
+      "exports": [
+        "Chart",
+        "ChartApiRef",
+        "ChartProps",
+        "CustomChart",
+        "CustomChartProps",
+        "GenericChartProps",
+        "OptionsChart",
+        "OptionsChartProps",
+        "YieldCurveChart",
+        "YieldCurveChartProps"
+      ],
+      "order": 10
+    },
+    {
+      "id": "series",
+      "title": "Series",
+      "summary": "Built-in series components, refs, and shared series props.",
+      "exports": [
+        "AreaSeries",
+        "BarSeries",
+        "BaselineSeries",
+        "CandlestickSeries",
+        "CustomSeries",
+        "HistogramSeries",
+        "LineSeries",
+        "SeriesApiRef",
+        "SeriesOptions",
+        "SeriesProps"
+      ],
+      "order": 20
+    },
+    {
+      "id": "price-lines",
+      "title": "Price Lines",
+      "summary": "Declarative price line management for chart series.",
+      "exports": ["PriceLine", "PriceLineApiRef", "PriceLineProps"],
+      "order": 30
+    },
+    {
+      "id": "markers",
+      "title": "Markers",
+      "summary": "Series markers and their typed props.",
+      "exports": ["Markers", "MarkersApiRef", "MarkersProps"],
+      "order": 40
+    },
+    {
+      "id": "watermarks",
+      "title": "Watermarks",
+      "summary": "Text and image watermarks attached to charts.",
+      "exports": [
+        "ImageWatermarkProps",
+        "TextWatermarkProps",
+        "WatermarkApiRef",
+        "WatermarkImage",
+        "WatermarkText",
+        "WatermarkType"
+      ],
+      "order": 50
+    },
+    {
+      "id": "time-scale",
+      "title": "Time Scale",
+      "summary": "Time scale options, refs, and event handlers.",
+      "exports": ["TimeScale", "TimeScaleApiRef", "TimeScaleProps"],
+      "order": 60
+    },
+    {
+      "id": "time-scale-fit-content-trigger",
+      "title": "Time Scale Fit Content Trigger",
+      "summary": "Declarative helper for fitting the time scale to current content.",
+      "exports": ["TimeScaleFitContentTrigger", "TimeScaleFitContentTriggerProps"],
+      "order": 70
+    },
+    {
+      "id": "price-scale",
+      "title": "Price Scale",
+      "summary": "Declarative access to chart price scales.",
+      "exports": ["PriceScale", "PriceScaleApiRef", "PriceScaleProps"],
+      "order": 80
+    },
+    {
+      "id": "panes",
+      "title": "Panes",
+      "summary": "Pane containers and pane refs for multi-pane charts.",
+      "exports": ["Pane", "PaneApiRef", "PaneProps"],
+      "order": 90
+    },
+    {
+      "id": "series-primitives",
+      "title": "Series Primitives",
+      "summary": "Series-scoped Lightweight Charts plugins rendered declaratively.",
+      "exports": [
+        "RenderPrimitive",
+        "SeriesPrimitive",
+        "SeriesPrimitiveApiRef",
+        "SeriesPrimitiveProps"
+      ],
+      "order": 100
+    },
+    {
+      "id": "pane-primitives",
+      "title": "Pane Primitives",
+      "summary": "Pane-wide Lightweight Charts plugins rendered declaratively.",
+      "exports": [
+        "PanePrimitive",
+        "PanePrimitiveApiRef",
+        "PanePrimitiveProps",
+        "RenderPanePrimitive"
+      ],
+      "order": 110
+    }
+  ],
+  "releasedLines": [
+    {
+      "id": "v2.3",
+      "label": "2.3",
+      "title": "Docs v2.3",
+      "status": "latest",
+      "packageVersionRange": ">=2.3.0 <2.4.0",
+      "topics": [
+        "chart",
+        "series",
+        "price-lines",
+        "markers",
+        "watermarks",
+        "time-scale",
+        "time-scale-fit-content-trigger",
+        "price-scale",
+        "panes",
+        "series-primitives",
+        "pane-primitives"
+      ]
+    },
+    {
+      "id": "v2.2",
+      "label": "2.2",
+      "title": "Docs v2.2",
+      "status": "supported",
+      "packageVersionRange": ">=2.2.0 <2.3.0",
+      "topics": [
+        "chart",
+        "series",
+        "price-lines",
+        "markers",
+        "watermarks",
+        "time-scale",
+        "time-scale-fit-content-trigger",
+        "price-scale",
+        "panes",
+        "series-primitives"
+      ]
+    }
+  ],
+  "packageVersionToDocsLine": [
+    {
+      "range": ">=2.3.0 <2.4.0",
+      "docsLine": "v2.3"
+    },
+    {
+      "range": ">=2.2.0 <2.3.0",
+      "docsLine": "v2.2"
+    }
+  ]
+}

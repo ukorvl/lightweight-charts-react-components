@@ -1,0 +1,18 @@
+---
+title: Time Scale
+description: Configure visible ranges, subscribe to scale events, and nest time-scale
+  helpers under a chart.
+---
+
+`TimeScale` is the wrapper entry point for upstream time scale options and range-change
+events. Nest it inside a chart when you want to control the visible range declaratively or
+subscribe to time-scale updates.
+
+<CodeExample path="time-scale.tsx" title="Time scale options and fit-content" />
+
+The wrapper exposes thin types such as `TimeScaleProps` and `TimeScaleApiRef`, while the
+large option surface stays owned by Lightweight Charts itself.
+
+See the full
+[Scales sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Scales)
+for more event-driven scale usage.

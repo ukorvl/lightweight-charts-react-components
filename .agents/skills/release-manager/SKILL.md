@@ -1,6 +1,6 @@
 ---
 name: release-manager
-description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, the library entry in `package-lock.json`, and the standalone sandbox dependency references in `examples/src/samples/*/sandbox/package.json` stay in sync, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
+description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, the library entry in `package-lock.json`, and the standalone sandbox dependency references in `examples/src/samples/*/sandbox/package.json` stay in sync, make an explicit docs-line decision for `docs/current` and `docs/versions`, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
 ---
 
 # Release Manager
@@ -43,6 +43,14 @@ Choose the mode first and keep the semantics explicit.
    - Always update `lib/CHANGELOG.md`.
    - Update `MIGRATION.md` for breaking changes or new upgrade steps.
    - Update `SECURITY.md` when supported major lines change.
+   - Make an explicit docs-line decision for the native `/docs` app:
+     - Reuse an existing released docs line, or
+     - Create a new snapshot under `docs/versions/`, or
+     - Update only `docs/current/` for unreleased work.
+   - Treat docs snapshots as source/data only. Do not commit generated site artifacts from a
+     separate hosting branch.
+   - If a release should create or move a docs line, update `docs/versions/manifest.json`
+     and regenerate docs payloads.
    - Inspect other markdown files such as `README.md`, `lib/README.md`, `examples/README.md`, and `CONTRIBUTING.md` when the release changes public API, install guidance, or release workflow notes.
 5. If `mode` is `prepare-release-branch`, validate the release branch.
    - Always run `scripts/check_versions_in_sync.sh --repo <repo_path>`.
@@ -77,4 +85,6 @@ Choose the mode first and keep the semantics explicit.
 - Tag only after PR review and maintainer confirmation of the exact commit being released.
 - If documentation updates are unclear, inspect the source changes and existing changelog style before writing notes.
 - If a new major release changes supported lines, make sure `SECURITY.md` reflects the new support policy.
+- Do not assume every minor or patch release needs a new docs snapshot; ask whether the
+  release should reuse an existing docs line or create a new supported subset entry.
 - If the release crosses a major version boundary, update every `examples/src/samples/*/sandbox/package.json` reference to `lightweight-charts-react-components` so the standalone sandboxes track the new library major.

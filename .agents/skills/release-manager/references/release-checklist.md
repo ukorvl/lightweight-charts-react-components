@@ -22,6 +22,11 @@
 - `lib/CHANGELOG.md`: always add `## [X.Y.Z] - YYYY-MM-DD` and move user-facing notes out of `Unreleased`
 - `MIGRATION.md`: update when consumers need upgrade steps, especially for breaking changes
 - `SECURITY.md`: update the supported versions table when the newest supported major line changes
+- `docs/current/` and `docs/versions/`: make an explicit docs-line decision for the native `/docs` app
+  - reuse an existing released docs line when the package release does not need distinct docs
+  - create a new `docs/versions/vX.Y/` snapshot only when the maintained docs subset should change
+  - update `docs/versions/manifest.json` whenever the supported docs lines or package-version mappings change
+  - keep released docs as source/data snapshots only
 - `README.md` and `lib/README.md`: update when install guidance, usage examples, or public API docs changed
 - `examples/README.md`: update only if example authoring or running instructions changed
 - `CONTRIBUTING.md`: update only if the release workflow itself changed

@@ -1,0 +1,17 @@
+---
+title: Pane Primitives
+description: Attach pane-wide Lightweight Charts plugins through React.
+---
+
+`PanePrimitive` is the pane-scoped sibling of `SeriesPrimitive`. Reach for it when the
+plugin belongs to the whole pane rather than to a specific series, such as session bands,
+background highlights, or pane-level overlays.
+
+<CodeExample path="pane-primitive.tsx" title="Attach a pane-wide primitive" />
+
+This topic is new in the `v2.3` docs line and is intentionally separate from series
+primitives because the attachment target and the upstream plugin interfaces are different.
+
+See the full
+[Pane primitives sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/PanePrimitives)
+for a richer example with pane-wide highlights.

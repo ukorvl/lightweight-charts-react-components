@@ -1,0 +1,13 @@
+---
+title: Price Scale
+description: Address named price scales from React and pass through upstream options.
+---
+
+Use `PriceScale` inside a pane when you need to configure a specific named price scale
+declaratively. This is the component to reach for when you want a visible left scale, a
+custom scale id, or scale-specific option changes.
+
+<CodeExample path="price-scale.tsx" title="Attach and configure a left price scale" />
+
+The wrapper keeps the API small: identify the scale with `id` and pass the rest of the
+configuration through the upstream `options` type.
