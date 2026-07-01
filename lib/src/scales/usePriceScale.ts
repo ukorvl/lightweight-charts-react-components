@@ -1,5 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
-import { BaseInternalError } from "@/_shared/InternalError";
+import { useEffect, useRef } from "react";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { usePaneContext } from "@/pane/usePaneContext";
@@ -7,7 +6,16 @@ import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isInsidePane, isPaneReady } = usePaneContext();
+  const { isInsidePane, isPaneReady, paneApiRef } = usePaneContext();
+  const chartRef = useRef(chart);
+  const paneRef = useRef(paneApiRef);
+  const idRef = useRef(id);
+  const optionsRef = useRef(options);
+
+  chartRef.current = chart;
+  paneRef.current = paneApiRef;
+  idRef.current = id;
+  optionsRef.current = options;
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
@@ -15,73 +23,80 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
       return this._priceScale;
     },
     init() {
-      if (!this._priceScale) {
-        const chartApi = chart?.api();
-
-        if (!chartApi) {
-          return null;
-        }
-
-        this._priceScale = chartApi.priceScale(id);
-
-        this._priceScale.applyOptions(options);
-      }
-
       return this._priceScale;
     },
-    setId(idToSet) {
-      if (this._priceScale === null || chart === null) {
-        return;
-      }
-
-      this._priceScale = chart.api()!.priceScale(idToSet);
-      this._priceScale.applyOptions(options);
-    },
+    setId() {},
     clear() {
       this._priceScale = null;
     },
   });
 
-  useLayoutEffect(() => {
-    if (!chartIsReady) return;
+  const resolvePriceScale = (idToResolve: string) => {
+    const chartApi = chartRef.current?.api();
 
-    if (!isInsidePane) {
-      // TODO: Replace the empty docsPath with the published price scale docs route.
-      throw new BaseInternalError(
-        "PriceScale must be used inside a pane. Please ensure that the component is wrapped in a pane component.",
-        {
-          isOperational: true,
-          docsPath: "",
-        }
-      );
+    if (!chartApi) {
+      return null;
     }
 
-    if (!isPaneReady) {
+    const paneIndex = paneRef.current?.api()?.paneIndex() ?? 0;
+    return chartApi.priceScale(idToResolve, paneIndex);
+  };
+
+  priceScaleApiRef.current.init = function initPriceScale() {
+    if (this._priceScale) {
+      return this._priceScale;
+    }
+
+    const priceScale = resolvePriceScale(idRef.current);
+
+    if (!priceScale) {
+      return null;
+    }
+
+    this._priceScale = priceScale;
+    this._priceScale.applyOptions(optionsRef.current);
+
+    return this._priceScale;
+  };
+
+  priceScaleApiRef.current.setId = function setPriceScaleId(idToSet) {
+    const priceScale = resolvePriceScale(idToSet);
+
+    if (!priceScale) {
       return;
     }
 
-    priceScaleApiRef.current.init();
-  }, [chartIsReady, isInsidePane, isPaneReady]);
+    this._priceScale = priceScale;
+    this._priceScale.applyOptions(optionsRef.current);
+  };
+  const isPriceScaleReady = chartIsReady && (!isInsidePane || isPaneReady);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (!chart || !isPriceScaleReady) {
+      return;
+    }
+
+    if (priceScaleApiRef.current.api() === null) {
+      priceScaleApiRef.current.init();
+      return;
+    }
+
+    priceScaleApiRef.current.setId(id);
+  }, [chart, id, isPriceScaleReady]);
+
+  useEffect(() => {
     return () => {
       priceScaleApiRef.current.clear();
     };
   }, []);
 
-  useLayoutEffect(() => {
-    if (!chart) return;
-
-    priceScaleApiRef.current?.setId(id);
-  }, [id]);
-
-  useLayoutEffect(() => {
-    if (!chart) return;
+  useEffect(() => {
+    if (!chart || !isPriceScaleReady) return;
 
     if (options) {
       priceScaleApiRef.current?.api()?.applyOptions(options);
     }
-  }, [options]);
+  }, [chart, isPriceScaleReady, options]);
 
   return priceScaleApiRef;
 };
