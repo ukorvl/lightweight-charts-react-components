@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.1",
-    "@microsoft/api-extractor": "^7.58.7",
+    "@microsoft/api-extractor": "^7.58.9",
     "@rsbuild/plugin-react": "^1.4.6",
     "@rslib/core": "^0.6.1",
     "@types/markdown-it": "^14.1.2",
