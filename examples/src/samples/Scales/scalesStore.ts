@@ -67,7 +67,7 @@ const secondSeriesData = generateHistogramData(50, {
   downColor: colors.red,
 });
 const samePaneCandlestickData = generateOHLCData(60);
-const samePaneVolumeScaleId = "volume";
+const samePaneVolumeScaleId = "whatever";
 
 const priceScaleTypeSelectOptions = [
   { value: "normal", label: "Normal" },

@@ -44,7 +44,7 @@ describe("scalesStore", () => {
 
     expect(options.leftPriceScale).toEqual({ visible: false });
     expect(options.rightPriceScale).toEqual({ visible: true });
-    expect(samePaneVolumeScaleId).toBe("volume");
+    expect(samePaneVolumeScaleId).toBe("whatever");
     expect(samePaneVolumeScaleOptions.scaleMargins).toEqual({
       top: 0.72,
       bottom: 0,

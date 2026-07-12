@@ -243,7 +243,7 @@ const Scales = () => {
         </ScrollableContainer>
         <Typography color="text.secondary" variant="body2">
           {isSinglePaneVolumeMode
-            ? "Candlesticks stay on the selected default scale while volume uses a separate custom overlay scale in the same root pane."
+            ? 'Candlesticks stay on the selected default scale while volume uses a separate custom overlay scale with id "whatever" in the same root pane.'
             : "Compare one or two default left and right price scales while keeping the shared formatting controls the same."}
         </Typography>
         <Stack flexGrow={1} minHeight={0}>
