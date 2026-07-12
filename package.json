@@ -124,6 +124,9 @@
       "lint-staged",
       "commitlint",
       "commit-msg"
+    ],
+    "tags": [
+      "-lintignore"
     ]
   },
   "optionalDependencies": {

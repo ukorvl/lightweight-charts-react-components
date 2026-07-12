@@ -196,6 +196,7 @@ usePriceScaleTypeStore.subscribe(state => {
 });
 
 export {
+  /** @lintignore */
   buildVolumeDataFromCandles,
   createPriceFormatter,
   currencySelectOptions,

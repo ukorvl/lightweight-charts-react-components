@@ -17,20 +17,6 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   idRef.current = id;
   optionsRef.current = options;
 
-  const priceScaleApiRef = useRef<PriceScaleApiRef>({
-    _priceScale: null,
-    api() {
-      return this._priceScale;
-    },
-    init() {
-      return this._priceScale;
-    },
-    setId() {},
-    clear() {
-      this._priceScale = null;
-    },
-  });
-
   const resolvePriceScale = (idToResolve: string) => {
     const chartApi = chartRef.current?.api();
 
@@ -42,7 +28,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     return chartApi.priceScale(idToResolve, paneIndex);
   };
 
-  priceScaleApiRef.current.init = function initPriceScale() {
+  const initPriceScale = function initPriceScale(this: PriceScaleApiRef) {
     if (this._priceScale) {
       return this._priceScale;
     }
@@ -59,7 +45,10 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     return this._priceScale;
   };
 
-  priceScaleApiRef.current.setId = function setPriceScaleId(idToSet) {
+  const setPriceScaleId = function setPriceScaleId(
+    this: PriceScaleApiRef,
+    idToSet: string
+  ) {
     const priceScale = resolvePriceScale(idToSet);
 
     if (!priceScale) {
@@ -69,6 +58,19 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     this._priceScale = priceScale;
     this._priceScale.applyOptions(optionsRef.current);
   };
+
+  const priceScaleApiRef = useRef<PriceScaleApiRef>({
+    _priceScale: null,
+    api() {
+      return this._priceScale;
+    },
+    init: initPriceScale,
+    setId: setPriceScaleId,
+    clear() {
+      this._priceScale = null;
+    },
+  });
+
   const isPriceScaleReady = chartIsReady && (!isInsidePane || isPaneReady);
 
   useEffect(() => {
@@ -93,9 +95,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   useEffect(() => {
     if (!chart || !isPriceScaleReady) return;
 
-    if (options) {
-      priceScaleApiRef.current?.api()?.applyOptions(options);
-    }
+    priceScaleApiRef.current?.api()?.applyOptions(options);
   }, [chart, isPriceScaleReady, options]);
 
   return priceScaleApiRef;
