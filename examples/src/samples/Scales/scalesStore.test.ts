@@ -13,7 +13,6 @@ const formatter = (price: number) => `$${price.toFixed(2)}`;
 describe("scalesStore", () => {
   it("builds single-axis chart options for the selected default scale", () => {
     const options = getScalesChartOptions({
-      exampleMode: "default-scales",
       priceFormatter: formatter,
       priceScalePosition: "left",
       priceScalesNumber: 1,
@@ -26,7 +25,6 @@ describe("scalesStore", () => {
 
   it("keeps both default axes visible when the dual-scale demo is selected", () => {
     const options = getScalesChartOptions({
-      exampleMode: "default-scales",
       priceScalePosition: "right",
       priceScalesNumber: 2,
     });
@@ -35,14 +33,13 @@ describe("scalesStore", () => {
     expect(options.rightPriceScale).toEqual({ visible: true });
   });
 
-  it("pins the main price scale to one default axis in the single-pane volume demo", () => {
+  it("keeps the custom same-pane volume scale configuration stable", () => {
     const options = getScalesChartOptions({
-      exampleMode: "single-pane-volume",
       priceScalePosition: "right",
       priceScalesNumber: 2,
     });
 
-    expect(options.leftPriceScale).toEqual({ visible: false });
+    expect(options.leftPriceScale).toEqual({ visible: true });
     expect(options.rightPriceScale).toEqual({ visible: true });
     expect(samePaneVolumeScaleId).toBe("whatever");
     expect(samePaneVolumeScaleOptions.scaleMargins).toEqual({

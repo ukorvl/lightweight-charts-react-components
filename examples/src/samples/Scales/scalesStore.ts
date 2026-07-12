@@ -2,23 +2,19 @@ import { PriceScaleMode } from "lightweight-charts";
 import { create } from "zustand";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
-import {
-  generateHistogramData,
-  generateLineData,
-  generateOHLCData,
-} from "@/common/generateSeriesData";
+import { generateOHLCData } from "@/common/generateSeriesData";
 import type {
   CandlestickData,
   ChartOptions,
   DeepPartial,
   HistogramData,
+  LineData,
   PriceFormatterFn,
   PriceScaleOptions,
 } from "lightweight-charts";
 
 type PriceScaleType = "normal" | "logarithmic" | "percentage" | "inverted";
 type PriceScalePosition = "left" | "right";
-type ScaleExampleMode = "default-scales" | "single-pane-volume";
 const currencySelectOptions = [
   { value: "USD", label: "USD ($)" },
   { value: "EUR", label: "EUR (€)" },
@@ -61,11 +57,6 @@ const createPriceFormatter = (currency: PriceCurrency): PriceFormatterFn => {
   return (price: number) => formatter.format(price);
 };
 
-const mainSeriesData = generateLineData(50);
-const secondSeriesData = generateHistogramData(50, {
-  upColor: colors.green,
-  downColor: colors.red,
-});
 const samePaneCandlestickData = generateOHLCData(60);
 const samePaneVolumeScaleId = "whatever";
 
@@ -83,10 +74,6 @@ const priceScalesNumberSelectOptions = [
   { value: 1, label: "1" },
   { value: 2, label: "2" },
 ] as const;
-const scaleExampleModeSelectOptions = [
-  { value: "default-scales", label: "Default scales" },
-  { value: "single-pane-volume", label: "Single-pane volume" },
-] as const;
 
 const getPriceScaleOptions = (t: PriceScaleType): DeepPartial<PriceScaleOptions> => {
   switch (t) {
@@ -101,6 +88,15 @@ const getPriceScaleOptions = (t: PriceScaleType): DeepPartial<PriceScaleOptions>
   }
 };
 
+const buildSecondarySeriesDataFromCandles = (
+  candlestickData: CandlestickData<string>[]
+): LineData<string>[] =>
+  candlestickData.map((candle, index) => ({
+    time: candle.time,
+    value: Number((candle.close * 0.82 + index * 1.35 + 16).toFixed(2)),
+  }));
+
+/** @lintignore Used by unit tests to validate the example's derived volume data. */
 const buildVolumeDataFromCandles = (
   candlestickData: CandlestickData<string>[]
 ): HistogramData<string>[] =>
@@ -110,6 +106,7 @@ const buildVolumeDataFromCandles = (
     color: candle.close >= candle.open ? colors.blue : colors.orange100,
   }));
 
+const secondSeriesData = buildSecondarySeriesDataFromCandles(samePaneCandlestickData);
 const samePaneVolumeData = buildVolumeDataFromCandles(samePaneCandlestickData);
 
 const samePaneVolumeScaleOptions = {
@@ -120,14 +117,12 @@ const samePaneVolumeScaleOptions = {
 } satisfies DeepPartial<PriceScaleOptions>;
 
 type GetScalesChartOptionsParams = {
-  exampleMode: ScaleExampleMode;
   priceFormatter?: PriceFormatterFn;
   priceScalePosition: PriceScalePosition;
   priceScalesNumber: number;
 };
 
 const getScalesChartOptions = ({
-  exampleMode,
   priceFormatter,
   priceScalePosition,
   priceScalesNumber,
@@ -145,7 +140,7 @@ const getScalesChartOptions = ({
       ? { leftPriceScale: { visible: true }, rightPriceScale: { visible: false } }
       : { leftPriceScale: { visible: false }, rightPriceScale: { visible: true } };
 
-  if (exampleMode === "single-pane-volume" || priceScalesNumber === 1) {
+  if (priceScalesNumber === 1) {
     return withChartCommonOptions({
       ...localizationOptions,
       ...singleDefaultScaleOptions,
@@ -165,7 +160,7 @@ const usePriceScalePositionStore = create<PriceScalePositionStore>(set => ({
 }));
 
 const usePriceScalesNumberStore = create<PriceScalesNumberStore>(set => ({
-  priceScalesNumber: 1,
+  priceScalesNumber: 2,
   setPriceScalesNumber: v => set({ priceScalesNumber: v }),
 }));
 
@@ -196,12 +191,10 @@ usePriceScaleTypeStore.subscribe(state => {
 });
 
 export {
-  /** @lintignore */
   buildVolumeDataFromCandles,
   createPriceFormatter,
   currencySelectOptions,
   getScalesChartOptions,
-  mainSeriesData,
   priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
@@ -209,7 +202,6 @@ export {
   samePaneVolumeData,
   samePaneVolumeScaleId,
   samePaneVolumeScaleOptions,
-  scaleExampleModeSelectOptions,
   secondSeriesData,
   usePriceCurrencyStore,
   usePriceScaleOptionsStore,
@@ -217,5 +209,4 @@ export {
   usePriceScaleTypeStore,
   usePriceScalesNumberStore,
   type PriceScalePosition,
-  type ScaleExampleMode,
 };

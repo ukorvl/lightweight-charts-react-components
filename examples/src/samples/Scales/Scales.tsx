@@ -1,4 +1,6 @@
+import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -9,10 +11,10 @@ import { colors } from "@/common/colors";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
-  AreaSeries,
   CandlestickSeries,
   Chart,
   HistogramSeries,
+  LineSeries,
   Pane,
   PriceScale,
   TimeScale,
@@ -22,7 +24,6 @@ import {
   createPriceFormatter,
   currencySelectOptions,
   getScalesChartOptions,
-  mainSeriesData,
   priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
@@ -30,7 +31,6 @@ import {
   samePaneVolumeData,
   samePaneVolumeScaleId,
   samePaneVolumeScaleOptions,
-  scaleExampleModeSelectOptions,
   secondSeriesData,
   usePriceCurrencyStore,
   usePriceScaleOptionsStore,
@@ -38,7 +38,6 @@ import {
   usePriceScaleTypeStore,
   usePriceScalesNumberStore,
   type PriceScalePosition,
-  type ScaleExampleMode,
 } from "./scalesStore";
 import { ChartWidgetCard } from "../../ui/ChartWidgetCard";
 import type { DeepPartial, PriceScaleOptions } from "lightweight-charts";
@@ -79,109 +78,83 @@ const SelectFormField = <T extends string | number>({
   );
 };
 
-type DefaultScalesChartProps = {
+type ScalesChartProps = {
   chartOptions: ReturnType<typeof getScalesChartOptions>;
   priceScaleOptions: DeepPartial<PriceScaleOptions>;
   priceScalePosition: PriceScalePosition;
   priceScalesNumber: number;
+  showSamePaneVolume: boolean;
 };
 
-const DefaultScalesChart = ({
+const ScalesChart = ({
   chartOptions,
   priceScaleOptions,
   priceScalePosition,
   priceScalesNumber,
-}: DefaultScalesChartProps) => (
-  <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
-    <Pane>
-      <AreaSeries
-        data={mainSeriesData}
-        options={{
-          lineColor: colors.red,
-          topColor: colors.red,
-          bottomColor: `${colors.red}33`,
-          lineWidth: 2,
-          priceScaleId: priceScalePosition,
-        }}
-      >
-        <PriceScale id={priceScalePosition} options={priceScaleOptions} />
-      </AreaSeries>
-      {priceScalesNumber === 2 && (
-        <AreaSeries
-          data={secondSeriesData}
+  showSamePaneVolume,
+}: ScalesChartProps) => {
+  const secondaryPriceScalePosition = priceScalePosition === "left" ? "right" : "left";
+
+  return (
+    <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
+      <Pane>
+        <CandlestickSeries
+          data={samePaneCandlestickData}
           options={{
-            lineColor: colors.violet,
-            topColor: colors.violet,
-            bottomColor: `${colors.violet}33`,
-            lineWidth: 2,
-            priceScaleId: priceScalePosition === "left" ? "right" : "left",
+            upColor: "transparent",
+            downColor: colors.orange100,
+            borderUpColor: colors.blue,
+            borderDownColor: colors.orange100,
+            wickUpColor: colors.blue,
+            wickDownColor: colors.orange100,
+            priceLineVisible: false,
+            priceScaleId: priceScalePosition,
           }}
         >
-          <PriceScale
-            id={priceScalePosition === "left" ? "right" : "left"}
-            options={priceScaleOptions}
-          />
-        </AreaSeries>
-      )}
-    </Pane>
-    <TimeScale>
-      <TimeScaleFitContentTrigger deps={[]} />
-    </TimeScale>
-  </Chart>
-);
-
-type SinglePaneVolumeChartProps = {
-  chartOptions: ReturnType<typeof getScalesChartOptions>;
-  priceScaleOptions: DeepPartial<PriceScaleOptions>;
-  priceScalePosition: PriceScalePosition;
+          <PriceScale id={priceScalePosition} options={priceScaleOptions} />
+        </CandlestickSeries>
+        {priceScalesNumber === 2 && (
+          <LineSeries
+            data={secondSeriesData}
+            options={{
+              color: colors.violet,
+              lineWidth: 2,
+              lastValueVisible: false,
+              priceLineVisible: false,
+              priceScaleId: secondaryPriceScalePosition,
+            }}
+          >
+            <PriceScale id={secondaryPriceScalePosition} options={priceScaleOptions} />
+          </LineSeries>
+        )}
+        {showSamePaneVolume && (
+          <HistogramSeries
+            data={samePaneVolumeData}
+            options={{
+              priceScaleId: samePaneVolumeScaleId,
+              priceFormat: { type: "volume" },
+              priceLineVisible: false,
+              lastValueVisible: false,
+            }}
+          >
+            <PriceScale id={samePaneVolumeScaleId} options={samePaneVolumeScaleOptions} />
+          </HistogramSeries>
+        )}
+      </Pane>
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
+    </Chart>
+  );
 };
 
-const SinglePaneVolumeChart = ({
-  chartOptions,
-  priceScaleOptions,
-  priceScalePosition,
-}: SinglePaneVolumeChartProps) => (
-  <Chart options={chartOptions} containerProps={{ style: { flexGrow: "1" } }}>
-    <CandlestickSeries
-      data={samePaneCandlestickData}
-      options={{
-        upColor: "transparent",
-        downColor: colors.orange100,
-        borderUpColor: colors.blue,
-        borderDownColor: colors.orange100,
-        wickUpColor: colors.blue,
-        wickDownColor: colors.orange100,
-        priceLineVisible: false,
-        priceScaleId: priceScalePosition,
-      }}
-    >
-      <PriceScale id={priceScalePosition} options={priceScaleOptions} />
-    </CandlestickSeries>
-    <HistogramSeries
-      data={samePaneVolumeData}
-      options={{
-        priceScaleId: samePaneVolumeScaleId,
-        priceFormat: { type: "volume" },
-        priceLineVisible: false,
-        lastValueVisible: false,
-      }}
-    >
-      <PriceScale id={samePaneVolumeScaleId} options={samePaneVolumeScaleOptions} />
-    </HistogramSeries>
-    <TimeScale>
-      <TimeScaleFitContentTrigger deps={[]} />
-    </TimeScale>
-  </Chart>
-);
-
 const Scales = () => {
-  const [exampleMode, setExampleMode] = useState<ScaleExampleMode>("default-scales");
+  const [showSamePaneVolume, setShowSamePaneVolume] = useState(true);
   const { priceScaleType, setPriceScaleType } = usePriceScaleTypeStore();
   const { priceScalesNumber, setPriceScalesNumber } = usePriceScalesNumberStore();
   const { priceScalePosition, setPriceScalePosition } = usePriceScalePositionStore();
   const { priceScaleOptions } = usePriceScaleOptionsStore();
   const { currency, setCurrency } = usePriceCurrencyStore();
-  const isSinglePaneVolumeMode = exampleMode === "single-pane-volume";
   const priceFormatter = useMemo(() => {
     if (priceScaleType === "logarithmic" || priceScaleType === "percentage") {
       return undefined;
@@ -192,33 +165,25 @@ const Scales = () => {
 
   const chartOptions = useMemo(() => {
     return getScalesChartOptions({
-      exampleMode,
       priceFormatter,
       priceScalePosition,
       priceScalesNumber,
     });
-  }, [exampleMode, priceFormatter, priceScalePosition, priceScalesNumber]);
+  }, [priceFormatter, priceScalePosition, priceScalesNumber]);
 
   return (
     <ChartWidgetCard
       title="Scales"
-      subTitle="Default scales and custom same-pane scale behavior"
+      subTitle="Default scales with optional same-pane volume overlay"
       sampleConfig={samplesLinks.Scales}
     >
       <Stack height="100%" minHeight={0} spacing={2}>
         <ScrollableContainer sx={{ marginBottom: 1, flexShrink: 0 }}>
           <SelectFormField
-            label="Example"
-            value={exampleMode}
-            setValue={setExampleMode}
-            options={scaleExampleModeSelectOptions}
-          />
-          <SelectFormField
             label="Price scales"
             value={priceScalesNumber}
             setValue={v => setPriceScalesNumber(Number(v))}
             options={priceScalesNumberSelectOptions}
-            disabled={isSinglePaneVolumeMode}
           />
           <SelectFormField
             label="Price scale type"
@@ -231,7 +196,6 @@ const Scales = () => {
             value={priceScalePosition}
             setValue={setPriceScalePosition}
             options={priceScalePositionSelectOptions}
-            disabled={!isSinglePaneVolumeMode && priceScalesNumber === 2}
           />
           <SelectFormField
             label="Price formatter"
@@ -240,27 +204,35 @@ const Scales = () => {
             options={currencySelectOptions}
             disabled={priceScaleType === "logarithmic" || priceScaleType === "percentage"}
           />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showSamePaneVolume}
+                onChange={event => setShowSamePaneVolume(event.target.checked)}
+                slotProps={{
+                  input: { "aria-label": "Display volume on same pane" },
+                }}
+              />
+            }
+            label="Display volume on same pane"
+            sx={{ marginInlineStart: 0.5, whiteSpace: "nowrap" }}
+          />
         </ScrollableContainer>
         <Typography color="text.secondary" variant="body2">
-          {isSinglePaneVolumeMode
-            ? 'Candlesticks stay on the selected default scale while volume uses a separate custom overlay scale with id "whatever" in the same root pane.'
-            : "Compare one or two default left and right price scales while keeping the shared formatting controls the same."}
+          {showSamePaneVolume
+            ? priceScalesNumber === 2
+              ? 'Candlesticks stay on the selected default scale, the comparison line uses the opposite default scale, and volume uses a custom overlay scale with id "whatever" in the same pane.'
+              : 'Candlesticks stay on the selected default scale while volume uses a custom overlay scale with id "whatever" in the same pane.'
+            : "Compare one or two default left and right price scales, then enable the volume overlay to add a custom same-pane scale."}
         </Typography>
         <Stack flexGrow={1} minHeight={0}>
-          {isSinglePaneVolumeMode ? (
-            <SinglePaneVolumeChart
-              chartOptions={chartOptions}
-              priceScaleOptions={priceScaleOptions}
-              priceScalePosition={priceScalePosition}
-            />
-          ) : (
-            <DefaultScalesChart
-              chartOptions={chartOptions}
-              priceScaleOptions={priceScaleOptions}
-              priceScalePosition={priceScalePosition}
-              priceScalesNumber={priceScalesNumber}
-            />
-          )}
+          <ScalesChart
+            chartOptions={chartOptions}
+            priceScaleOptions={priceScaleOptions}
+            priceScalePosition={priceScalePosition}
+            priceScalesNumber={priceScalesNumber}
+            showSamePaneVolume={showSamePaneVolume}
+          />
         </Stack>
       </Stack>
     </ChartWidgetCard>
