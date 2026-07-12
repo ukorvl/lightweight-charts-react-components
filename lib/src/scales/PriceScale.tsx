@@ -17,6 +17,7 @@ const PriceScaleRenderFunction = (
  * PriceScale component that can be used to create/customize price scale in a chart.
  * It targets the root pane when rendered directly inside `Chart`, or the active pane when rendered inside `Pane`.
  * For custom scale IDs, use the same value in the target series `options.priceScaleId`.
+ * If no series in that pane uses the requested custom ID, the wrapper throws a descriptive runtime error with guidance.
  *
  * @param props - The properties for the price scale.
  * @param ref - The ref to access the price scale API.

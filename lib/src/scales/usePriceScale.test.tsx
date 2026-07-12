@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import type { PaneApiRef } from "@/pane";
 import { usePaneContext } from "@/pane/usePaneContext";
@@ -35,6 +36,8 @@ const mockPane = {
 describe("usePriceScale", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockApplyOptions.mockImplementation(() => undefined);
+    mockChartPriceScale.mockReturnValue(mockPriceScaleApi);
   });
 
   it("initializes priceScale", () => {
@@ -340,6 +343,131 @@ describe("usePriceScale", () => {
 
     expect(result.current.current.setId("volume")).toBeUndefined();
     expect(result.current.current.api()).toBeNull();
+  });
+
+  it("throws a descriptive error when a custom scale id is not used by a series", () => {
+    const upstreamError = new Error(
+      "Trying to apply price scale options with incorrect ID: whatever"
+    );
+
+    mockApplyOptions.mockImplementation(() => {
+      throw upstreamError;
+    });
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: false,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const { result } = renderHook(() =>
+      usePriceScale({
+        id: "whatever",
+      })
+    );
+
+    let thrownError: unknown;
+
+    try {
+      result.current.current.init();
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError).toBeInstanceOf(BaseInternalError);
+    expect((thrownError as BaseInternalError).message).toContain(
+      'PriceScale id "whatever" could not be configured because no series in the root pane is using that price scale.'
+    );
+    expect((thrownError as BaseInternalError).message).toContain(
+      'set a series options.priceScaleId to "whatever"'
+    );
+    expect((thrownError as BaseInternalError).message).toContain("Docs: see");
+    expect((thrownError as BaseInternalError).cause).toBe(upstreamError);
+  });
+
+  it("mentions the non-default pane when a custom scale id fails there", () => {
+    const upstreamError = new Error(
+      "Trying to apply price scale options with incorrect ID: whatever"
+    );
+    const nonDefaultPane = {
+      api: () => ({
+        paneIndex: () => 2,
+      }),
+    } as unknown as PaneApiRef<unknown>;
+
+    mockApplyOptions.mockImplementation(() => {
+      throw upstreamError;
+    });
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: false,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: nonDefaultPane,
+    });
+
+    const { result } = renderHook(() =>
+      usePriceScale({
+        id: "whatever",
+      })
+    );
+
+    let thrownError: unknown;
+
+    try {
+      result.current.current.init();
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError).toBeInstanceOf(BaseInternalError);
+    expect((thrownError as BaseInternalError).message).toContain(
+      "no series in pane 2 is using that price scale"
+    );
+  });
+
+  it("rethrows unrelated price scale errors without wrapping them", () => {
+    const upstreamError = new Error("unexpected failure");
+
+    mockApplyOptions.mockImplementation(() => {
+      throw upstreamError;
+    });
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: false,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const { result } = renderHook(() =>
+      usePriceScale({
+        id: "whatever",
+      })
+    );
+
+    let thrownError: unknown;
+
+    try {
+      result.current.current.init();
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError).toBe(upstreamError);
   });
 
   it("clears the cached price scale on unmount", () => {

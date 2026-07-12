@@ -1,8 +1,15 @@
 import { useEffect, useRef } from "react";
+import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { usePaneContext } from "@/pane/usePaneContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
+
+const incorrectPriceScaleIdErrorMessage =
+  "Trying to apply price scale options with incorrect ID:";
+
+const isIncorrectPriceScaleIdError = (error: unknown): error is Error =>
+  error instanceof Error && error.message.includes(incorrectPriceScaleIdErrorMessage);
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
@@ -17,6 +24,8 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   idRef.current = id;
   optionsRef.current = options;
 
+  const getCurrentPaneIndex = () => paneRef.current?.api()?.paneIndex() ?? 0;
+
   const resolvePriceScale = (idToResolve: string) => {
     const chartApi = chartRef.current?.api();
 
@@ -24,8 +33,34 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
       return null;
     }
 
-    const paneIndex = paneRef.current?.api()?.paneIndex() ?? 0;
+    const paneIndex = getCurrentPaneIndex();
     return chartApi.priceScale(idToResolve, paneIndex);
+  };
+
+  const applyPriceScaleOptions = (
+    priceScale: NonNullable<PriceScaleApiRef["_priceScale"]>,
+    idToApply: string,
+    optionsToApply: NonNullable<PriceScaleProps["options"]>
+  ) => {
+    try {
+      priceScale.applyOptions(optionsToApply);
+    } catch (error) {
+      if (isIncorrectPriceScaleIdError(error)) {
+        const paneIndex = getCurrentPaneIndex();
+        const paneLabel = paneIndex === 0 ? "the root pane" : `pane ${paneIndex}`;
+
+        throw new BaseInternalError(
+          `PriceScale id "${idToApply}" could not be configured because no series in ${paneLabel} is using that price scale. For custom scales, set a series options.priceScaleId to "${idToApply}" and render PriceScale with the same id in that pane. Use "left" or "right" for the default pane scales.`,
+          {
+            cause: error,
+            docsPath: "price-scale",
+            isOperational: true,
+          }
+        );
+      }
+
+      throw error;
+    }
   };
 
   const initPriceScale = function initPriceScale(this: PriceScaleApiRef) {
@@ -40,7 +75,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     }
 
     this._priceScale = priceScale;
-    this._priceScale.applyOptions(optionsRef.current);
+    applyPriceScaleOptions(this._priceScale, idRef.current, optionsRef.current);
 
     return this._priceScale;
   };
@@ -56,7 +91,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     }
 
     this._priceScale = priceScale;
-    this._priceScale.applyOptions(optionsRef.current);
+    applyPriceScaleOptions(this._priceScale, idToSet, optionsRef.current);
   };
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
@@ -95,7 +130,13 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   useEffect(() => {
     if (!chart || !isPriceScaleReady) return;
 
-    priceScaleApiRef.current?.api()?.applyOptions(options);
+    const priceScale = priceScaleApiRef.current?.api();
+
+    if (!priceScale) {
+      return;
+    }
+
+    applyPriceScaleOptions(priceScale, idRef.current, options);
   }, [chart, isPriceScaleReady, options]);
 
   return priceScaleApiRef;
