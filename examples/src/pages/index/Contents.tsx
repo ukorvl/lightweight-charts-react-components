@@ -8,6 +8,7 @@ import { WithLegend } from "../../samples/Legend/WithLegend";
 import { Markers } from "../../samples/Markers/Markers";
 import { PanePrimitives } from "../../samples/PanePrimitives/PanePrimitives";
 import { Panes } from "../../samples/Panes/Panes";
+import { PanesDoubleClick } from "../../samples/PanesDoubleClick/PanesDoubleClick";
 import { PriceLines } from "../../samples/PriceLines/PriceLines";
 import { Primitives } from "../../samples/Primitives/Primitives";
 import { RangeSwitcher } from "../../samples/RangeSwitcher/RangeSwitcher";
@@ -24,6 +25,7 @@ const Contents = () => {
       <CustomSeries />
       <RangeSwitcher />
       <Panes />
+      <PanesDoubleClick />
       <PanePrimitives />
       <Watermark />
       <WithLegend />
