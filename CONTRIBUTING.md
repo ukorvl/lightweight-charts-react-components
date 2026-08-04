@@ -11,7 +11,16 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    cd lightweight-charts-react-components
    ```
 
-2. **Install Dependencies**: Ensure you have Node.js and npm installed, then run:
+2. **Install Dependencies**: Align your local tooling with the repository requirements first:
+
+   ```sh
+   nvm use
+   npm -v
+   ```
+
+   The repository expects **Node.js 24+** and **npm 11.10.0 or newer**.
+
+   Then install dependencies:
 
    ```sh
    npm install

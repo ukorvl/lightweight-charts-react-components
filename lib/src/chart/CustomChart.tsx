@@ -6,8 +6,9 @@ import {
 } from "lightweight-charts";
 import { forwardRef, useCallback, useState } from "react";
 import React from "react";
+import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
-import type { CustomChartProps } from "./types";
+import type { ChartApiRef, CustomChartProps } from "./types";
 import type { ForwardedRef, JSX, RefAttributes } from "react";
 
 type CustomChartForwardRefComponent = (<
@@ -15,7 +16,7 @@ type CustomChartForwardRefComponent = (<
   THorzScaleBehavior extends IHorzScaleBehavior<HorzScaleItem>,
 >(
   props: CustomChartProps<HorzScaleItem, THorzScaleBehavior> &
-    RefAttributes<HTMLDivElement>
+    RefAttributes<ChartApiRef<HorzScaleItem, IChartApiBase<HorzScaleItem>>>
 ) => JSX.Element) & {
   displayName: string;
 };
@@ -27,25 +28,19 @@ const CustomChartRenderFunction = <
   {
     children,
     containerProps,
+    containerRef,
     horzScaleBehavior,
     ...rest
   }: CustomChartProps<HorzScaleItem, THorzScaleBehavior>,
-  ref: ForwardedRef<HTMLDivElement>
+  ref: ForwardedRef<ChartApiRef<HorzScaleItem, IChartApiBase<HorzScaleItem>>>
 ): JSX.Element => {
   const [container, setContainer] = useState<HTMLDivElement>();
-  const containerRef = useCallback(
+  const handleContainerRef = useCallback(
     (node: HTMLDivElement | null) => {
       setContainer(node ?? undefined);
-
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(node);
-        } else {
-          ref.current = node;
-        }
-      }
+      assignRef(containerRef, node);
     },
-    [ref]
+    [containerRef]
   );
 
   const createCustomChart = useCallback(
@@ -64,7 +59,7 @@ const CustomChartRenderFunction = <
 
   return (
     <div
-      ref={containerRef}
+      ref={handleContainerRef}
       aria-hidden={containerProps?.["aria-hidden"] ?? true}
       {...containerProps}
     >
@@ -74,6 +69,7 @@ const CustomChartRenderFunction = <
           IChartApiBase<HorzScaleItem>,
           ReturnType<THorzScaleBehavior["options"]>
         >
+          ref={ref}
           container={container}
           createChartApi={createCustomChart}
           chartKind="custom"
@@ -90,7 +86,8 @@ const CustomChartRenderFunction = <
  * CustomChart component that can be used to create a chart with a custom horizontal scale behavior.
  *
  * @param props - The properties for the custom chart.
- * @param ref - The ref to access the chart container.
+ * @param ref - The ref to access the chart API.
+ * Use `containerRef` to access the wrapper div element.
  * @returns A React component that renders the custom chart.
  * @see {@link https://ukorvl.github.io/lightweight-charts-react-components/docs/chart | Chart documentation}
  * @see {@link https://tradingview.github.io/lightweight-charts/docs/chart-types#custom-horizontal-scale-chart | TradingView documentation for custom horizontal scale charts}

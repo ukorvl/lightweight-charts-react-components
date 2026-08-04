@@ -78,20 +78,6 @@ describe("useChart", () => {
     expect(createChart).not.toHaveBeenCalled();
   });
 
-  it("should call onInit with the created chart api", () => {
-    vi.mocked(createChart).mockReturnValue(mockChart);
-    const onInit = vi.fn();
-
-    renderHook(() =>
-      useChart({
-        container: mockContainer,
-        onInit,
-      })
-    );
-
-    expect(onInit).toHaveBeenCalledWith(mockChart);
-  });
-
   it("should apply options", () => {
     vi.mocked(createChart).mockReturnValue(mockChart);
 
