@@ -21,7 +21,6 @@ export const useChart = <
   container,
   onClick,
   onCrosshairMove,
-  onInit,
   options = {},
   onDblClick,
   createChartApi = createChart as unknown as CreateChartApi<
@@ -44,10 +43,6 @@ export const useChart = <
           ...options,
         } as DeepPartial<TOptions>);
         this._chart = chart;
-
-        if (onInit) {
-          onInit(this._chart);
-        }
       }
 
       if (!isReady) {

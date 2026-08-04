@@ -1,42 +1,37 @@
-import { createChart } from "lightweight-charts";
+import { createChart, type IChartApi, type Time } from "lightweight-charts";
 import { forwardRef, useCallback, useState } from "react";
 import React from "react";
+import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
-import type { ChartProps } from "./types";
+import type { ChartApiRef, ChartProps } from "./types";
 import type {
   ForwardRefExoticComponent,
   ForwardRefRenderFunction,
   RefAttributes,
 } from "react";
 
-const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> = (
-  { children, containerProps, ...rest },
-  ref
-) => {
+const ChartRenderFunction: ForwardRefRenderFunction<
+  ChartApiRef<Time, IChartApi>,
+  ChartProps
+> = ({ children, containerProps, containerRef, ...rest }, ref) => {
   const [container, setContainer] = useState<HTMLDivElement>();
-  const containerRef = useCallback(
+  const handleContainerRef = useCallback(
     (node: HTMLDivElement | null) => {
       setContainer(node ?? undefined);
-
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(node);
-        } else {
-          ref.current = node;
-        }
-      }
+      assignRef(containerRef, node);
     },
-    [ref]
+    [containerRef]
   );
 
   return (
     <div
-      ref={containerRef}
+      ref={handleContainerRef}
       aria-hidden={containerProps?.["aria-hidden"] ?? true}
       {...containerProps}
     >
       {!!container && (
         <ChartComponent
+          ref={ref}
           container={container}
           createChartApi={createChart}
           chartKind="time"
@@ -54,6 +49,7 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
  *
  * @param props - The properties for the chart.
  * @param ref - The ref to access the chart API.
+ * Use `containerRef` to access the wrapper div element.
  * @returns A React component that renders the chart.
  * @see {@link https://ukorvl.github.io/lightweight-charts-react-components/docs/chart | Chart documentation}
  * @see {@link https://tradingview.github.io/lightweight-charts/docs/chart-types | TradingView documentation for charts}
@@ -67,6 +63,6 @@ const ChartRenderFunction: ForwardRefRenderFunction<HTMLDivElement, ChartProps> 
  * ```
  */
 export const ChartWrapper: ForwardRefExoticComponent<
-  ChartProps & RefAttributes<HTMLDivElement>
+  ChartProps & RefAttributes<ChartApiRef<Time, IChartApi>>
 > = forwardRef(ChartRenderFunction);
 ChartWrapper.displayName = "ChartWrapper";

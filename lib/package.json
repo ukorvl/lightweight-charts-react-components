@@ -63,6 +63,22 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24",
+      "onFail": "warn"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.10.0",
+      "onFail": "warn"
+    }
+  },
+  "engines": {
+    "node": ">=18.14.0",
+    "npm": ">=9.0.0"
+  },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.1",
     "@microsoft/api-extractor": "^7.58.9",

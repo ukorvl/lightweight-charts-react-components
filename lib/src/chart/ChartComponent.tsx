@@ -1,24 +1,40 @@
+import { forwardRef, useImperativeHandle } from "react";
 import React from "react";
 import { ChartContext } from "./ChartContext";
 import { useChart } from "./useChart";
-import type { ChartApiInstance, ChartComponentProps } from "./types";
+import type { ChartApiInstance, ChartApiRef, ChartComponentProps } from "./types";
 import type { ChartOptionsImpl } from "lightweight-charts";
+import type { ForwardedRef, JSX } from "react";
 
-const ChartComponent = <
+type GenericChartComponent = (<
   HorzScaleItem,
   TChartApi extends ChartApiInstance<HorzScaleItem> = ChartApiInstance<HorzScaleItem>,
   TOptions extends ChartOptionsImpl<HorzScaleItem> = ChartOptionsImpl<HorzScaleItem>,
->({
-  children,
-  container,
-  onClick,
-  onCrosshairMove,
-  onInit,
-  options,
-  onDblClick,
-  chartKind = "time",
-  createChartApi,
-}: ChartComponentProps<HorzScaleItem, TChartApi, TOptions>) => {
+>(
+  props: ChartComponentProps<HorzScaleItem, TChartApi, TOptions> & {
+    ref?: ForwardedRef<ChartApiRef<HorzScaleItem, TChartApi>>;
+  }
+) => JSX.Element) & {
+  displayName?: string;
+};
+
+const ChartComponentRenderFunction = <
+  HorzScaleItem,
+  TChartApi extends ChartApiInstance<HorzScaleItem> = ChartApiInstance<HorzScaleItem>,
+  TOptions extends ChartOptionsImpl<HorzScaleItem> = ChartOptionsImpl<HorzScaleItem>,
+>(
+  {
+    children,
+    container,
+    onClick,
+    onCrosshairMove,
+    options,
+    onDblClick,
+    chartKind = "time",
+    createChartApi,
+  }: ChartComponentProps<HorzScaleItem, TChartApi, TOptions>,
+  ref: ForwardedRef<ChartApiRef<HorzScaleItem, TChartApi>>
+) => {
   const {
     chartApiRef: { current: chartApiRef },
     isReady,
@@ -26,11 +42,11 @@ const ChartComponent = <
     container,
     onClick,
     onCrosshairMove,
-    onInit,
     options,
     onDblClick,
     createChartApi,
   });
+  useImperativeHandle(ref, () => chartApiRef, [chartApiRef]);
 
   return (
     <ChartContext.Provider
@@ -44,5 +60,8 @@ const ChartComponent = <
     </ChartContext.Provider>
   );
 };
+
+const ChartComponent = forwardRef(ChartComponentRenderFunction) as GenericChartComponent;
+ChartComponent.displayName = "ChartComponent";
 
 export { ChartComponent };

@@ -5,8 +5,9 @@ import {
 } from "lightweight-charts";
 import { forwardRef, useCallback, useState } from "react";
 import React from "react";
+import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
-import type { OptionsChartProps } from "./types";
+import type { ChartApiRef, OptionsChartProps } from "./types";
 import type {
   ForwardRefExoticComponent,
   ForwardRefRenderFunction,
@@ -14,33 +15,27 @@ import type {
 } from "react";
 
 const OptionsChartRenderFunction: ForwardRefRenderFunction<
-  HTMLDivElement,
+  ChartApiRef<number, IChartApiBase<number>>,
   OptionsChartProps
-> = ({ children, containerProps, ...rest }, ref) => {
+> = ({ children, containerProps, containerRef, ...rest }, ref) => {
   const [container, setContainer] = useState<HTMLDivElement>();
-  const containerRef = useCallback(
+  const handleContainerRef = useCallback(
     (node: HTMLDivElement | null) => {
       setContainer(node ?? undefined);
-
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(node);
-        } else {
-          ref.current = node;
-        }
-      }
+      assignRef(containerRef, node);
     },
-    [ref]
+    [containerRef]
   );
 
   return (
     <div
-      ref={containerRef}
+      ref={handleContainerRef}
       aria-hidden={containerProps?.["aria-hidden"] ?? true}
       {...containerProps}
     >
       {!!container && (
         <ChartComponent<number, IChartApiBase<number>, PriceChartOptions>
+          ref={ref}
           container={container}
           createChartApi={createOptionsChart}
           chartKind="options"
@@ -57,7 +52,8 @@ const OptionsChartRenderFunction: ForwardRefRenderFunction<
  * OptionsChart component that can be used to create a price-based horizontal scale chart.
  *
  * @param props - The properties for the options chart.
- * @param ref - The ref to access the chart container.
+ * @param ref - The ref to access the chart API.
+ * Use `containerRef` to access the wrapper div element.
  * @returns A React component that renders the options chart.
  * @see {@link https://ukorvl.github.io/lightweight-charts-react-components/docs/chart | Chart documentation}
  * @see {@link https://tradingview.github.io/lightweight-charts/docs/chart-types#options-chart-price-based | TradingView documentation for options charts}
@@ -69,6 +65,6 @@ const OptionsChartRenderFunction: ForwardRefRenderFunction<
  * ```
  */
 export const OptionsChart: ForwardRefExoticComponent<
-  OptionsChartProps & RefAttributes<HTMLDivElement>
+  OptionsChartProps & RefAttributes<ChartApiRef<number, IChartApiBase<number>>>
 > = forwardRef(OptionsChartRenderFunction);
 OptionsChart.displayName = "OptionsChart";

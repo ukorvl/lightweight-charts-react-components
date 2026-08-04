@@ -1,12 +1,22 @@
 import { render } from "@testing-library/react";
-import { createChartEx } from "lightweight-charts";
+import {
+  createChart,
+  createChartEx,
+  createOptionsChart,
+  createYieldCurveChart,
+  type IChartApi,
+  type IChartApiBase,
+  type IYieldCurveChartApi,
+  type Time,
+} from "lightweight-charts";
+import { createRef } from "react";
 import React from "react";
-import { beforeEach, describe, it, expect, vi } from "vitest";
-import { ChartComponent } from "./ChartComponent";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ChartWrapper } from "./ChartWrapper";
 import { CustomChart } from "./CustomChart";
 import { OptionsChart } from "./OptionsChart";
 import { YieldCurveChart } from "./YieldCurveChart";
+import type { ChartApiRef } from "./types";
 
 vi.mock("lightweight-charts", () => ({
   createChart: vi.fn(),
@@ -15,13 +25,27 @@ vi.mock("lightweight-charts", () => ({
   createYieldCurveChart: vi.fn(),
 }));
 
-vi.mock("./ChartComponent", () => ({
-  ChartComponent: vi.fn(({ children }) => <>{children}</>),
-}));
+const mockChart = {
+  remove: vi.fn(),
+  applyOptions: vi.fn(),
+  subscribeClick: vi.fn(),
+  unsubscribeClick: vi.fn(),
+  subscribeCrosshairMove: vi.fn(),
+  unsubscribeCrosshairMove: vi.fn(),
+  subscribeDblClick: vi.fn(),
+  unsubscribeDblClick: vi.fn(),
+} as unknown as IChartApi;
+const mockOptionsChart = mockChart as unknown as IChartApiBase<number>;
+const mockYieldCurveChart = mockChart as unknown as IYieldCurveChartApi;
+const mockCustomChart = mockChart as unknown as IChartApiBase<unknown>;
 
 describe("ChartWrapper", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(createChart).mockReturnValue(mockChart);
+    vi.mocked(createOptionsChart).mockReturnValue(mockOptionsChart);
+    vi.mocked(createYieldCurveChart).mockReturnValue(mockYieldCurveChart);
+    vi.mocked(createChartEx).mockReturnValue(mockCustomChart);
   });
 
   it("renders children when container is set", () => {
@@ -31,30 +55,59 @@ describe("ChartWrapper", () => {
       </ChartWrapper>
     );
 
-    const child = getByText("Chart Content");
-    expect(child).toBeInTheDocument();
+    expect(getByText("Chart Content")).toBeInTheDocument();
   });
 
-  it("forwards the ref correctly", () => {
-    const ref = { current: null };
+  it("forwards chart api object refs on ChartWrapper", () => {
+    const ref = createRef<ChartApiRef<Time, IChartApi>>();
+
     render(
       <ChartWrapper ref={ref}>
         <div>Child</div>
       </ChartWrapper>
     );
 
-    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current?.api()).toBe(mockChart);
   });
 
-  it("forwards function refs on ChartWrapper", () => {
+  it("forwards chart api function refs on ChartWrapper", () => {
     const ref = vi.fn();
+
     render(
       <ChartWrapper ref={ref}>
         <div>Child</div>
       </ChartWrapper>
     );
 
-    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    expect(ref).toHaveBeenCalledWith(
+      expect.objectContaining({
+        api: expect.any(Function),
+      })
+    );
+  });
+
+  it("forwards object container refs on ChartWrapper", () => {
+    const containerRef = createRef<HTMLDivElement>();
+
+    render(
+      <ChartWrapper containerRef={containerRef}>
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("forwards function container refs on ChartWrapper", () => {
+    const containerRef = vi.fn();
+
+    render(
+      <ChartWrapper containerRef={containerRef}>
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    expect(containerRef).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });
 
   it("handles containerProps correctly", () => {
@@ -64,8 +117,7 @@ describe("ChartWrapper", () => {
       </ChartWrapper>
     );
 
-    const containerDiv = getByRole("main", { hidden: true });
-    expect(containerDiv).toBeInTheDocument();
+    expect(getByRole("main", { hidden: true })).toBeInTheDocument();
   });
 
   it("hides chart containers from the accessibility tree by default", () => {
@@ -91,42 +143,40 @@ describe("ChartWrapper", () => {
     expect(container.firstChild).toHaveAttribute("aria-label", "Price chart");
   });
 
-  it("passes options chart constructor metadata to ChartComponent", () => {
+  it("creates options charts with createOptionsChart", () => {
     render(
       <OptionsChart>
         <div>Child</div>
       </OptionsChart>
     );
 
-    expect(vi.mocked(ChartComponent)).toHaveBeenCalledWith(
-      expect.objectContaining({
-        chartKind: "options",
-        createChartApi: expect.any(Function),
-      }),
-      undefined
-    );
+    expect(createOptionsChart).toHaveBeenCalledWith(expect.any(HTMLDivElement), {
+      addDefaultPane: false,
+    });
   });
 
-  it("forwards object refs on OptionsChart", () => {
-    const ref = { current: null };
+  it("forwards chart api object refs on OptionsChart", () => {
+    const ref = createRef<ChartApiRef<number, IChartApiBase<number>>>();
+
     render(
       <OptionsChart ref={ref}>
         <div>Child</div>
       </OptionsChart>
     );
 
-    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current?.api()).toBe(mockChart);
   });
 
-  it("forwards function refs on OptionsChart", () => {
-    const ref = vi.fn();
+  it("forwards container refs on OptionsChart", () => {
+    const containerRef = createRef<HTMLDivElement>();
+
     render(
-      <OptionsChart ref={ref}>
+      <OptionsChart containerRef={containerRef}>
         <div>Child</div>
       </OptionsChart>
     );
 
-    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
   });
 
   it("hides OptionsChart containers from the accessibility tree by default", () => {
@@ -152,42 +202,40 @@ describe("ChartWrapper", () => {
     expect(container.firstChild).toHaveAttribute("aria-label", "Options chart");
   });
 
-  it("passes yield curve chart constructor metadata to ChartComponent", () => {
+  it("creates yield curve charts with createYieldCurveChart", () => {
     render(
       <YieldCurveChart>
         <div>Child</div>
       </YieldCurveChart>
     );
 
-    expect(vi.mocked(ChartComponent)).toHaveBeenCalledWith(
-      expect.objectContaining({
-        chartKind: "yield-curve",
-        createChartApi: expect.any(Function),
-      }),
-      undefined
-    );
+    expect(createYieldCurveChart).toHaveBeenCalledWith(expect.any(HTMLDivElement), {
+      addDefaultPane: false,
+    });
   });
 
-  it("forwards object refs on YieldCurveChart", () => {
-    const ref = { current: null };
+  it("forwards chart api object refs on YieldCurveChart", () => {
+    const ref = createRef<ChartApiRef<number, IYieldCurveChartApi>>();
+
     render(
       <YieldCurveChart ref={ref}>
         <div>Child</div>
       </YieldCurveChart>
     );
 
-    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current?.api()).toBe(mockChart);
   });
 
-  it("forwards function refs on YieldCurveChart", () => {
-    const ref = vi.fn();
+  it("forwards container refs on YieldCurveChart", () => {
+    const containerRef = createRef<HTMLDivElement>();
+
     render(
-      <YieldCurveChart ref={ref}>
+      <YieldCurveChart containerRef={containerRef}>
         <div>Child</div>
       </YieldCurveChart>
     );
 
-    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
   });
 
   it("hides YieldCurveChart containers from the accessibility tree by default", () => {
@@ -213,42 +261,46 @@ describe("ChartWrapper", () => {
     expect(container.firstChild).toHaveAttribute("aria-label", "Yield curve chart");
   });
 
-  it("passes custom chart constructor metadata to ChartComponent", () => {
+  it("delegates custom chart creation to createChartEx", () => {
+    const horzScaleBehavior = { options: vi.fn() } as never;
+
     render(
-      <CustomChart horzScaleBehavior={{} as never}>
+      <CustomChart horzScaleBehavior={horzScaleBehavior}>
         <div>Child</div>
       </CustomChart>
     );
 
-    expect(vi.mocked(ChartComponent)).toHaveBeenCalledWith(
-      expect.objectContaining({
-        chartKind: "custom",
-        createChartApi: expect.any(Function),
-      }),
-      undefined
+    expect(createChartEx).toHaveBeenCalledWith(
+      expect.any(HTMLDivElement),
+      horzScaleBehavior,
+      {
+        addDefaultPane: false,
+      }
     );
   });
 
-  it("forwards object refs on CustomChart", () => {
-    const ref = { current: null };
+  it("forwards chart api object refs on CustomChart", () => {
+    const ref = createRef<ChartApiRef<Time, IChartApiBase<Time>>>();
+
     render(
       <CustomChart horzScaleBehavior={{} as never} ref={ref}>
         <div>Child</div>
       </CustomChart>
     );
 
-    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current?.api()).toBe(mockChart);
   });
 
-  it("forwards function refs on CustomChart", () => {
-    const ref = vi.fn();
+  it("forwards container refs on CustomChart", () => {
+    const containerRef = createRef<HTMLDivElement>();
+
     render(
-      <CustomChart horzScaleBehavior={{} as never} ref={ref}>
+      <CustomChart horzScaleBehavior={{} as never} containerRef={containerRef}>
         <div>Child</div>
       </CustomChart>
     );
 
-    expect(ref).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+    expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
   });
 
   it("hides CustomChart containers from the accessibility tree by default", () => {
@@ -273,23 +325,5 @@ describe("ChartWrapper", () => {
 
     expect(container.firstChild).toHaveAttribute("aria-hidden", "false");
     expect(container.firstChild).toHaveAttribute("aria-label", "Custom chart");
-  });
-
-  it("delegates custom chart creation to createChartEx", () => {
-    const horzScaleBehavior = { options: vi.fn() } as never;
-    render(
-      <CustomChart horzScaleBehavior={horzScaleBehavior}>
-        <div>Child</div>
-      </CustomChart>
-    );
-
-    const createChartApi = vi.mocked(ChartComponent).mock.calls.at(-1)?.[0]
-      .createChartApi as (container: HTMLElement, options?: object) => unknown;
-    const container = document.createElement("div");
-    const options = { layout: { backgroundColor: "red" } };
-
-    createChartApi(container, options);
-
-    expect(createChartEx).toHaveBeenCalledWith(container, horzScaleBehavior, options);
   });
 });
