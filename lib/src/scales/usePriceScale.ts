@@ -1,87 +1,143 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { usePaneContext } from "@/pane/usePaneContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
+const incorrectPriceScaleIdErrorMessage =
+  "Trying to apply price scale options with incorrect ID:";
+
+const isIncorrectPriceScaleIdError = (error: unknown): error is Error =>
+  error instanceof Error && error.message.includes(incorrectPriceScaleIdErrorMessage);
+
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isInsidePane, isPaneReady } = usePaneContext();
+  const { isInsidePane, isPaneReady, paneApiRef } = usePaneContext();
+  const chartRef = useRef(chart);
+  const paneRef = useRef(paneApiRef);
+  const idRef = useRef(id);
+  const optionsRef = useRef(options);
+
+  chartRef.current = chart;
+  paneRef.current = paneApiRef;
+  idRef.current = id;
+  optionsRef.current = options;
+
+  const getCurrentPaneIndex = () => paneRef.current?.api()?.paneIndex() ?? 0;
+
+  const resolvePriceScale = (idToResolve: string) => {
+    const chartApi = chartRef.current?.api();
+
+    if (!chartApi) {
+      return null;
+    }
+
+    const paneIndex = getCurrentPaneIndex();
+    return chartApi.priceScale(idToResolve, paneIndex);
+  };
+
+  const applyPriceScaleOptions = (
+    priceScale: NonNullable<PriceScaleApiRef["_priceScale"]>,
+    idToApply: string,
+    optionsToApply: NonNullable<PriceScaleProps["options"]>
+  ) => {
+    try {
+      priceScale.applyOptions(optionsToApply);
+    } catch (error) {
+      if (isIncorrectPriceScaleIdError(error)) {
+        const paneIndex = getCurrentPaneIndex();
+        const paneLabel = paneIndex === 0 ? "the root pane" : `pane ${paneIndex}`;
+
+        throw new BaseInternalError(
+          `PriceScale id "${idToApply}" could not be configured because no series in ${paneLabel} is using that price scale. For custom scales, set a series options.priceScaleId to "${idToApply}" and render PriceScale with the same id in that pane. Use "left" or "right" for the default pane scales.`,
+          {
+            cause: error,
+            docsPath: "price-scale",
+            isOperational: true,
+          }
+        );
+      }
+
+      throw error;
+    }
+  };
+
+  const initPriceScale = function initPriceScale(this: PriceScaleApiRef) {
+    if (this._priceScale) {
+      return this._priceScale;
+    }
+
+    const priceScale = resolvePriceScale(idRef.current);
+
+    if (!priceScale) {
+      return null;
+    }
+
+    this._priceScale = priceScale;
+    applyPriceScaleOptions(this._priceScale, idRef.current, optionsRef.current);
+
+    return this._priceScale;
+  };
+
+  const setPriceScaleId = function setPriceScaleId(
+    this: PriceScaleApiRef,
+    idToSet: string
+  ) {
+    const priceScale = resolvePriceScale(idToSet);
+
+    if (!priceScale) {
+      return;
+    }
+
+    this._priceScale = priceScale;
+    applyPriceScaleOptions(this._priceScale, idToSet, optionsRef.current);
+  };
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
     api() {
       return this._priceScale;
     },
-    init() {
-      if (!this._priceScale) {
-        const chartApi = chart?.api();
-
-        if (!chartApi) {
-          return null;
-        }
-
-        this._priceScale = chartApi.priceScale(id);
-
-        this._priceScale.applyOptions(options);
-      }
-
-      return this._priceScale;
-    },
-    setId(idToSet) {
-      if (this._priceScale === null || chart === null) {
-        return;
-      }
-
-      this._priceScale = chart.api()!.priceScale(idToSet);
-      this._priceScale.applyOptions(options);
-    },
+    init: initPriceScale,
+    setId: setPriceScaleId,
     clear() {
       this._priceScale = null;
     },
   });
 
-  useLayoutEffect(() => {
-    if (!chartIsReady) return;
+  const isPriceScaleReady = chartIsReady && (!isInsidePane || isPaneReady);
 
-    if (!isInsidePane) {
-      // TODO: Replace the empty docsPath with the published price scale docs route.
-      throw new BaseInternalError(
-        "PriceScale must be used inside a pane. Please ensure that the component is wrapped in a pane component.",
-        {
-          isOperational: true,
-          docsPath: "",
-        }
-      );
-    }
-
-    if (!isPaneReady) {
+  useEffect(() => {
+    if (!chart || !isPriceScaleReady) {
       return;
     }
 
-    priceScaleApiRef.current.init();
-  }, [chartIsReady, isInsidePane, isPaneReady]);
+    if (priceScaleApiRef.current.api() === null) {
+      priceScaleApiRef.current.init();
+      return;
+    }
 
-  useLayoutEffect(() => {
+    priceScaleApiRef.current.setId(id);
+  }, [chart, id, isPriceScaleReady]);
+
+  useEffect(() => {
     return () => {
       priceScaleApiRef.current.clear();
     };
   }, []);
 
-  useLayoutEffect(() => {
-    if (!chart) return;
+  useEffect(() => {
+    if (!chart || !isPriceScaleReady) return;
 
-    priceScaleApiRef.current?.setId(id);
-  }, [id]);
+    const priceScale = priceScaleApiRef.current?.api();
 
-  useLayoutEffect(() => {
-    if (!chart) return;
-
-    if (options) {
-      priceScaleApiRef.current?.api()?.applyOptions(options);
+    if (!priceScale) {
+      return;
     }
-  }, [options]);
+
+    applyPriceScaleOptions(priceScale, idRef.current, options);
+  }, [chart, isPriceScaleReady, options]);
 
   return priceScaleApiRef;
 };

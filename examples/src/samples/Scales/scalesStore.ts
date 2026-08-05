@@ -1,9 +1,14 @@
 import { PriceScaleMode } from "lightweight-charts";
 import { create } from "zustand";
+import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
-import { generateHistogramData, generateLineData } from "@/common/generateSeriesData";
+import { generateOHLCData } from "@/common/generateSeriesData";
 import type {
+  CandlestickData,
+  ChartOptions,
   DeepPartial,
+  HistogramData,
+  LineData,
   PriceFormatterFn,
   PriceScaleOptions,
 } from "lightweight-charts";
@@ -52,11 +57,8 @@ const createPriceFormatter = (currency: PriceCurrency): PriceFormatterFn => {
   return (price: number) => formatter.format(price);
 };
 
-const mainSeriesData = generateLineData(50);
-const secondSeriesData = generateHistogramData(50, {
-  upColor: colors.green,
-  downColor: colors.red,
-});
+const samePaneCandlestickData = generateOHLCData(60);
+const samePaneVolumeScaleId = "whatever";
 
 const priceScaleTypeSelectOptions = [
   { value: "normal", label: "Normal" },
@@ -86,13 +88,79 @@ const getPriceScaleOptions = (t: PriceScaleType): DeepPartial<PriceScaleOptions>
   }
 };
 
+const buildSecondarySeriesDataFromCandles = (
+  candlestickData: CandlestickData<string>[]
+): LineData<string>[] =>
+  candlestickData.map((candle, index) => ({
+    time: candle.time,
+    value: Number((candle.close * 0.82 + index * 1.35 + 16).toFixed(2)),
+  }));
+
+/** @lintignore Used by unit tests to validate the example's derived volume data. */
+const buildVolumeDataFromCandles = (
+  candlestickData: CandlestickData<string>[]
+): HistogramData<string>[] =>
+  candlestickData.map((candle, index) => ({
+    time: candle.time,
+    value: Math.round((candle.high - candle.low) * 1_500 + (index % 5) * 120 + 800),
+    color: candle.close >= candle.open ? colors.blue : colors.orange100,
+  }));
+
+const secondSeriesData = buildSecondarySeriesDataFromCandles(samePaneCandlestickData);
+const samePaneVolumeData = buildVolumeDataFromCandles(samePaneCandlestickData);
+
+const samePaneVolumeScaleOptions = {
+  scaleMargins: {
+    top: 0.72,
+    bottom: 0,
+  },
+} satisfies DeepPartial<PriceScaleOptions>;
+
+type GetScalesChartOptionsParams = {
+  priceFormatter?: PriceFormatterFn;
+  priceScalePosition: PriceScalePosition;
+  priceScalesNumber: number;
+};
+
+const getScalesChartOptions = ({
+  priceFormatter,
+  priceScalePosition,
+  priceScalesNumber,
+}: GetScalesChartOptionsParams): DeepPartial<ChartOptions> => {
+  const localizationOptions: DeepPartial<ChartOptions> = priceFormatter
+    ? {
+        localization: {
+          priceFormatter,
+        },
+      }
+    : {};
+
+  const singleDefaultScaleOptions: DeepPartial<ChartOptions> =
+    priceScalePosition === "left"
+      ? { leftPriceScale: { visible: true }, rightPriceScale: { visible: false } }
+      : { leftPriceScale: { visible: false }, rightPriceScale: { visible: true } };
+
+  if (priceScalesNumber === 1) {
+    return withChartCommonOptions({
+      ...localizationOptions,
+      ...singleDefaultScaleOptions,
+    });
+  }
+
+  return withChartCommonOptions({
+    ...localizationOptions,
+    leftPriceScale: { visible: true },
+    rightPriceScale: { visible: true },
+  });
+};
+
 const usePriceScalePositionStore = create<PriceScalePositionStore>(set => ({
   priceScalePosition: "right",
   setPriceScalePosition: v => set({ priceScalePosition: v }),
 }));
 
 const usePriceScalesNumberStore = create<PriceScalesNumberStore>(set => ({
-  priceScalesNumber: 1,
+  priceScalesNumber: 2,
   setPriceScalesNumber: v => set({ priceScalesNumber: v }),
 }));
 
@@ -123,16 +191,22 @@ usePriceScaleTypeStore.subscribe(state => {
 });
 
 export {
+  buildVolumeDataFromCandles,
   createPriceFormatter,
   currencySelectOptions,
-  mainSeriesData,
+  getScalesChartOptions,
   priceScalePositionSelectOptions,
   priceScaleTypeSelectOptions,
   priceScalesNumberSelectOptions,
+  samePaneCandlestickData,
+  samePaneVolumeData,
+  samePaneVolumeScaleId,
+  samePaneVolumeScaleOptions,
   secondSeriesData,
   usePriceCurrencyStore,
   usePriceScaleOptionsStore,
   usePriceScalePositionStore,
   usePriceScaleTypeStore,
   usePriceScalesNumberStore,
+  type PriceScalePosition,
 };
