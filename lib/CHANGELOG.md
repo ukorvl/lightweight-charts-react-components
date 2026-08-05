@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - remove chart `onInit` in favor of chart API refs on `Chart`, `OptionsChart`, `YieldCurveChart`, and `CustomChart`, and add `containerRef` for accessing the wrapper div element
+### Fixed
+- fall back to `setData()` when reactive series data changes beyond a last-bar replace or pure append
 
 ## [2.5.0] - 2026-06-24
 ### Fixed

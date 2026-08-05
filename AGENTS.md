@@ -19,7 +19,7 @@ The examples app is deployed and hosted on GitHub Pages as a static site.
 
 ## Main working principles
 
-- Make sure to update the documentation (`lib/README.md` and JSDoc comments) if you are adding new features or changing existing ones in the library. Ensure all documentation is synced with the code and up-to-date. Pay special attwention to JSDoc code snippets, as they can become outdated easily.
+- Make sure to update the documentation (`lib/README.md` and JSDoc comments) if you are adding new features or changing existing ones in the library. Ensure all documentation is synced with the code and up-to-date. Pay special attention to JSDoc code snippets, as they can become outdated easily.
 - If you encounter docs that are outdated or incorrect, explicitly report it to developer or mention in the PR description.
 - If applicable (when some public user-facing interface or behavior changes), update the changelog (`lib/CHANGELOG.md`) after making changes to `lib` files with a brief description of the changes made. Keep changelog entries concise and informative, following the format of previous entries. Always place new entries under the "Unreleased" section and update the version and date only when preparing for a release.
 - If you are adding new features or making significant changes, consider adding new examples to the `examples` app to demonstrate how to use the new functionality. Keep the examples clear and focused on showcasing the specific feature or change you have implemented. Follow the existing structure and style of the examples to maintain consistency across the project.

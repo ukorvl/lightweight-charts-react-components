@@ -5,7 +5,10 @@ import {
   AreaSeries,
   BaselineSeries,
   BarSeries,
+  isBusinessDay,
+  type BusinessDay,
   type IChartApiBase,
+  type SeriesDataItemTypeMap,
   type Time,
 } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -18,6 +21,10 @@ import type { CustomSeriesUniqueProps, SeriesApiRef, SeriesTemplateProps } from 
 import type { SeriesDefinition, ISeriesApi, SeriesType } from "lightweight-charts";
 
 type SeriesTypeWithoutCustom = Exclude<SeriesType, "Custom">;
+type SeriesDataPoint<
+  T extends SeriesType,
+  HorzScaleItem = Time,
+> = SeriesDataItemTypeMap<HorzScaleItem>[T];
 
 export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
   type,
@@ -127,14 +134,8 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
       }
 
       const currentData = seriesApi.data();
-      const dataLengthDifference = data.length - currentData.length;
-      const maxIncrementalUpdateThreshold = 1;
       const shouldReplaceData =
-        alwaysReplaceData ||
-        currentData.length === 0 ||
-        data.length === 0 ||
-        dataLengthDifference < 0 ||
-        dataLengthDifference > maxIncrementalUpdateThreshold;
+        alwaysReplaceData || !canUseIncrementalUpdate(currentData, data);
 
       if (shouldReplaceData) {
         seriesApi.setData(data);
@@ -176,3 +177,77 @@ const seriesMap: Record<
   Baseline: BaselineSeries,
   Bar: BarSeries,
 };
+
+const canUseIncrementalUpdate = <T extends SeriesType, HorzScaleItem = Time>(
+  currentData: readonly SeriesDataPoint<T, HorzScaleItem>[],
+  nextData: readonly SeriesDataPoint<T, HorzScaleItem>[]
+) => {
+  const dataLengthDifference = nextData.length - currentData.length;
+
+  if (
+    currentData.length === 0 ||
+    nextData.length === 0 ||
+    dataLengthDifference < 0 ||
+    dataLengthDifference > 1
+  ) {
+    return false;
+  }
+
+  if (dataLengthDifference === 0) {
+    return (
+      hasSameDataPointRefs(currentData, nextData, currentData.length - 1) &&
+      hasSameDataPointTime(
+        currentData[currentData.length - 1],
+        nextData[nextData.length - 1]
+      )
+    );
+  }
+
+  return (
+    hasSameDataPointRefs(currentData, nextData, currentData.length) &&
+    !hasSameDataPointTime(
+      currentData[currentData.length - 1],
+      nextData[nextData.length - 1]
+    )
+  );
+};
+
+const hasSameDataPointRefs = <TData>(
+  currentData: readonly TData[],
+  nextData: readonly TData[],
+  length: number
+) => {
+  for (let index = 0; index < length; index += 1) {
+    if (currentData[index] !== nextData[index]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const hasSameDataPointTime = <TData extends { time: unknown }>(
+  currentDataPoint: TData,
+  nextDataPoint: TData
+) => {
+  const currentTime = currentDataPoint.time;
+  const nextTime = nextDataPoint.time;
+
+  return (
+    currentTime === nextTime ||
+    (isBusinessDayTime(currentTime) &&
+      isBusinessDayTime(nextTime) &&
+      isSameBusinessDay(currentTime, nextTime))
+  );
+};
+
+const isBusinessDayTime = (time: unknown): time is BusinessDay =>
+  isBusinessDay(time as Time);
+
+const isSameBusinessDay = (
+  currentBusinessDay: BusinessDay,
+  nextBusinessDay: BusinessDay
+) =>
+  currentBusinessDay.year === nextBusinessDay.year &&
+  currentBusinessDay.month === nextBusinessDay.month &&
+  currentBusinessDay.day === nextBusinessDay.day;

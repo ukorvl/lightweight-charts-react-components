@@ -50,6 +50,10 @@ type AggregatedBenchmark = {
 };
 
 type RowStatus = "pass" | "regression" | "unstable" | "new" | "missing" | "incomplete";
+type BenchmarkRegressionThresholdOverride = {
+  relativeThreshold?: number;
+  minAbsoluteMs?: number;
+};
 
 type ComparisonRow = {
   name: string;
@@ -127,6 +131,20 @@ const parseArgs = (argv: string[]): ParsedArgs => {
     currentLabel: values.get("current-label") ?? "current",
   };
 };
+
+const benchmarkRegressionThresholdOverrides = new Map<
+  string,
+  BenchmarkRegressionThresholdOverride
+>([
+  [
+    "Chart Rendering Performance::bulk data replacement",
+    {
+      // Same-length historical replacements now correctly use setData(), so this benchmark needs
+      // a wider absolute slowdown allowance than tail-update scenarios.
+      minAbsoluteMs: 2,
+    },
+  ],
+]);
 
 const median = (values: number[]) => {
   const sorted = [...values].sort((left, right) => left - right);
@@ -448,8 +466,12 @@ const createRows = (
       continue;
     }
 
+    const thresholdOverride = benchmarkRegressionThresholdOverrides.get(key);
+    const effectiveRelativeThreshold = thresholdOverride?.relativeThreshold ?? threshold;
+    const effectiveMinAbsoluteMs = thresholdOverride?.minAbsoluteMs ?? minAbsoluteMs;
     const isRegression =
-      (relativeDelta ?? 0) > threshold && (absoluteDelta ?? 0) > minAbsoluteMs;
+      (relativeDelta ?? 0) > effectiveRelativeThreshold &&
+      (absoluteDelta ?? 0) > effectiveMinAbsoluteMs;
 
     rows.push({
       name,
@@ -524,6 +546,7 @@ const buildMarkdownReport = (
     "",
     "Notes:",
     "- CI fails only when a stable benchmark exceeds both the relative and absolute slowdown thresholds.",
+    "- Benchmark-specific threshold overrides may widen the gate for known correctness-driven slow paths.",
     "- Benchmarks above the CV threshold are marked UNSTABLE and excluded from the blocking gate.",
     "- When multiple JSON files are provided, medians and CVs are calculated from repeated benchmark runs.",
   ];
