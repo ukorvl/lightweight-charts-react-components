@@ -28,7 +28,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:lighthouse": "node scripts/prelhci.ts && lhci autorun",
-    "test": "run-s test:*"
+    "test": "run-s test:*",
+    "mutate": "stryker run stryker.config.json"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.4.1",

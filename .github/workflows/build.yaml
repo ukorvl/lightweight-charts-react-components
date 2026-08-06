@@ -192,3 +192,26 @@ jobs:
         run: |
           export CI=true
           npm run test:lighthouse
+
+  test-mutation:
+    name: Mutation tests (${{ matrix.workspace }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        workspace: [lib, examples]
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Run mutation tests
+        uses: ./.github/actions/test-mutation
+        with:
+          workspace: ${{ matrix.workspace }}
+          should-post-result: ${{ matrix.workspace == 'lib' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          dashboard-api-key: ${{ secrets.STRYKER_DASHBOARD_API_KEY }} # zizmor: ignore[secrets-outside-env] dashboard posting is limited to trusted lib runs on pushes to main

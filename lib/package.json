@@ -13,6 +13,7 @@
     "test:deno": "vitest -c tests/deno/vitest.config.ts",
     "test:unit:bench": "vitest bench -c tests/bench/vitest.config.ts",
     "test": "run-s \"test:* -- --run\"",
+    "mutate": "stryker run tests/mutation/stryker.config.json",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm"
   },
   "description": "React components for Lightweight Charts",

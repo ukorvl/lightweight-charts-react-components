@@ -1,0 +1,21 @@
+{
+  "$schema": "../node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "vitest",
+  "coverageAnalysis": "perTest",
+  "thresholds": {
+    "break": 1
+  },
+  "ignorePatterns": ["/coverage", "/dist"],
+  "ignoreStatic": true,
+  "mutate": ["src/**/*.{ts,tsx}", "!src/**/*.test.{ts,tsx}", "!src/**/sandbox/**"],
+  "vitest": {
+    "configFile": "vitest.config.ts",
+    "dir": ".",
+    "related": false
+  },
+  "htmlReporter": {
+    "fileName": "reports/mutation/examples.html"
+  }
+}

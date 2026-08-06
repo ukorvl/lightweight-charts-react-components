@@ -1,0 +1,42 @@
+name: "Test mutation"
+description: "Runs workspace mutation tests and optionally posts Stryker dashboard results"
+
+inputs:
+  workspace:
+    description: "Workspace to run mutation tests for"
+    required: true
+  should-post-result:
+    description: "Whether to post mutation results to the Stryker dashboard"
+    required: false
+    default: "false"
+  dashboard-api-key:
+    description: "Stryker dashboard API key"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Require dashboard API key when posting results
+      if: ${{ inputs.should-post-result == 'true' && inputs.dashboard-api-key == '' }}
+      run: |
+        echo "::error title=Missing Stryker dashboard API key::Set the dashboard-api-key input when should-post-result=true."
+        exit 1
+      shell: bash
+
+    - name: Run workspace mutation tests and post dashboard results
+      if: ${{ inputs.should-post-result == 'true' }}
+      run: npm run mutate -w "$WORKSPACE" -- --reporters html,clear-text,progress,dashboard
+      shell: bash
+      env:
+        CI: "true"
+        WORKSPACE: ${{ inputs.workspace }}
+        STRYKER_DASHBOARD_API_KEY: ${{ inputs.dashboard-api-key }}
+
+    - name: Run workspace mutation tests without posting dashboard results
+      if: ${{ inputs.should-post-result != 'true' }}
+      run: npm run mutate -w "$WORKSPACE"
+      shell: bash
+      env:
+        CI: "true"
+        WORKSPACE: ${{ inputs.workspace }}
