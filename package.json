@@ -103,8 +103,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx,mts}": [
-      "npm run lint",
-      "npm run format"
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,mjs,md}": [
+      "prettier --write"
     ]
   },
   "knip": {
