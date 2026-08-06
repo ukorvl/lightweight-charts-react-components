@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { useLocation } from "wouter";
 import { ProgressBox } from "@/ui/ProgressBox";
+import { CodeSnippetLazy } from "./CodeSnippetLazy";
 import {
   findReleasedLine,
   getDefaultDocsLineId,
@@ -20,6 +21,7 @@ import {
   useDocsLine,
   useDocsManifest,
 } from "./docsApi";
+import { DocsGuideContent } from "./DocsGuideContent";
 import { DocsLayout } from "./DocsLayout";
 
 type DocsTopicProps = {
@@ -147,7 +149,7 @@ const DocsTopic = ({ lineId, topicId }: DocsTopicProps) => {
       ) : (
         <Stack spacing={3} useFlexGap>
           <Paper variant="outlined" sx={{ padding: 3 }}>
-            <Box sx={richContentSx} dangerouslySetInnerHTML={{ __html: topic.html }} />
+            <DocsGuideContent html={topic.html} sx={richContentSx} />
           </Paper>
           <Stack spacing={2} useFlexGap>
             <Typography variant="h4" component="h2">
@@ -256,13 +258,7 @@ const DocsTopic = ({ lineId, topicId }: DocsTopicProps) => {
                     <Stack spacing={1} useFlexGap>
                       <Typography variant="subtitle1">Examples</Typography>
                       {item.examples.map(example => (
-                        <Box
-                          key={example}
-                          component="pre"
-                          sx={{ ...richContentSx["& pre"], margin: 0 }}
-                        >
-                          <code>{example}</code>
-                        </Box>
+                        <CodeSnippetLazy key={example} value={example} language="tsx" />
                       ))}
                     </Stack>
                   ) : null}

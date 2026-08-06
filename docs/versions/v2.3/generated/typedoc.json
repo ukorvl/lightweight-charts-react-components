@@ -1,13 +1,13 @@
 {
   "schemaVersion": "2.0",
-  "id": 254,
+  "id": 234,
   "name": "lightweight-charts-react-components",
   "variant": "project",
   "kind": 1,
   "flags": {},
   "children": [
     {
-      "id": 272,
+      "id": 252,
       "name": "IPaneContext",
       "variant": "declaration",
       "kind": 256,
@@ -22,7 +22,7 @@
       },
       "children": [
         {
-          "id": 275,
+          "id": 255,
           "name": "isReady",
           "variant": "declaration",
           "kind": 1024,
@@ -48,7 +48,7 @@
           }
         },
         {
-          "id": 274,
+          "id": 254,
           "name": "paneApiRef",
           "variant": "declaration",
           "kind": 1024,
@@ -72,11 +72,11 @@
           ],
           "type": {
             "type": "reference",
-            "target": 259,
+            "target": 239,
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 273,
+                "target": 253,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "qualifiedName": "IPaneContext.HorzScaleItem",
@@ -91,7 +91,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [275, 274]
+          "children": [255, 254]
         }
       ],
       "sources": [
@@ -103,7 +103,7 @@
       ],
       "typeParameters": [
         {
-          "id": 273,
+          "id": 253,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -122,7 +122,7 @@
       ]
     },
     {
-      "id": 280,
+      "id": 260,
       "name": "ChartApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -137,7 +137,7 @@
       },
       "children": [
         {
-          "id": 282,
+          "id": 262,
           "name": "_chart",
           "variant": "declaration",
           "kind": 1024,
@@ -162,7 +162,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 293,
+                "target": 273,
                 "name": "TChartApi",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -175,7 +175,7 @@
           }
         },
         {
-          "id": 283,
+          "id": 263,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -198,14 +198,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 284,
+              "id": 264,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 285,
+                  "id": 265,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -215,7 +215,7 @@
                     "types": [
                       {
                         "type": "reference",
-                        "target": 293,
+                        "target": 273,
                         "name": "TChartApi",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -232,7 +232,7 @@
           }
         },
         {
-          "id": 289,
+          "id": 269,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -255,14 +255,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 290,
+              "id": 270,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 291,
+                  "id": 271,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -277,7 +277,7 @@
           }
         },
         {
-          "id": 286,
+          "id": 266,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -300,14 +300,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 287,
+              "id": 267,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 288,
+                  "id": 268,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -317,7 +317,7 @@
                     "types": [
                       {
                         "type": "reference",
-                        "target": 293,
+                        "target": 273,
                         "name": "TChartApi",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -337,7 +337,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [282, 283, 289, 286]
+          "children": [262, 263, 269, 266]
         }
       ],
       "sources": [
@@ -349,7 +349,7 @@
       ],
       "typeParameters": [
         {
-          "id": 292,
+          "id": 272,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -366,7 +366,7 @@
           }
         },
         {
-          "id": 293,
+          "id": 273,
           "name": "TChartApi",
           "variant": "typeParam",
           "kind": 131072,
@@ -381,7 +381,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 292,
+                "target": 272,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -400,7 +400,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 292,
+                "target": 272,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -413,7 +413,7 @@
       ]
     },
     {
-      "id": 294,
+      "id": 274,
       "name": "ChartProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -435,7 +435,7 @@
       ],
       "type": {
         "type": "reference",
-        "target": 302,
+        "target": 282,
         "typeArguments": [
           {
             "type": "reference",
@@ -474,7 +474,7 @@
       }
     },
     {
-      "id": 297,
+      "id": 277,
       "name": "CustomChartProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -496,7 +496,7 @@
       ],
       "typeParameters": [
         {
-          "id": 300,
+          "id": 280,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -513,7 +513,7 @@
           }
         },
         {
-          "id": 301,
+          "id": 281,
           "name": "THorzScaleBehavior",
           "variant": "typeParam",
           "kind": 131072,
@@ -528,7 +528,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 300,
+                "target": 280,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -547,7 +547,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 300,
+                "target": 280,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -563,11 +563,11 @@
         "types": [
           {
             "type": "reference",
-            "target": 302,
+            "target": 282,
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 300,
+                "target": 280,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -582,7 +582,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 300,
+                    "target": 280,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -607,7 +607,7 @@
                     },
                     "objectType": {
                       "type": "reference",
-                      "target": 301,
+                      "target": 281,
                       "name": "THorzScaleBehavior",
                       "package": "lightweight-charts-react-components",
                       "refersToTypeParameter": true
@@ -624,14 +624,14 @@
           {
             "type": "reflection",
             "declaration": {
-              "id": 298,
+              "id": 278,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "children": [
                 {
-                  "id": 299,
+                  "id": 279,
                   "name": "horzScaleBehavior",
                   "variant": "declaration",
                   "kind": 1024,
@@ -661,7 +661,7 @@
                   ],
                   "type": {
                     "type": "reference",
-                    "target": 301,
+                    "target": 281,
                     "name": "THorzScaleBehavior",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -671,7 +671,7 @@
               "groups": [
                 {
                   "title": "Properties",
-                  "children": [299]
+                  "children": [279]
                 }
               ]
             }
@@ -680,7 +680,7 @@
       }
     },
     {
-      "id": 302,
+      "id": 282,
       "name": "GenericChartProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -695,7 +695,7 @@
       },
       "children": [
         {
-          "id": 304,
+          "id": 284,
           "name": "children",
           "variant": "declaration",
           "kind": 1024,
@@ -730,7 +730,7 @@
           }
         },
         {
-          "id": 305,
+          "id": 285,
           "name": "containerProps",
           "variant": "declaration",
           "kind": 1024,
@@ -788,7 +788,7 @@
           }
         },
         {
-          "id": 306,
+          "id": 286,
           "name": "onClick",
           "variant": "declaration",
           "kind": 1024,
@@ -820,7 +820,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -831,7 +831,7 @@
           }
         },
         {
-          "id": 307,
+          "id": 287,
           "name": "onCrosshairMove",
           "variant": "declaration",
           "kind": 1024,
@@ -863,7 +863,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -874,7 +874,7 @@
           }
         },
         {
-          "id": 313,
+          "id": 293,
           "name": "onDblClick",
           "variant": "declaration",
           "kind": 1024,
@@ -906,7 +906,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -917,7 +917,7 @@
           }
         },
         {
-          "id": 308,
+          "id": 288,
           "name": "onInit",
           "variant": "declaration",
           "kind": 1024,
@@ -942,28 +942,28 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 309,
+              "id": 289,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 310,
+                  "id": 290,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
                   "flags": {},
                   "parameters": [
                     {
-                      "id": 311,
+                      "id": 291,
                       "name": "chart",
                       "variant": "param",
                       "kind": 32768,
                       "flags": {},
                       "type": {
                         "type": "reference",
-                        "target": 315,
+                        "target": 295,
                         "name": "TChartApi",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -980,7 +980,7 @@
           }
         },
         {
-          "id": 312,
+          "id": 292,
           "name": "options",
           "variant": "declaration",
           "kind": 1024,
@@ -1012,7 +1012,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 316,
+                "target": 296,
                 "name": "TOptions",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -1026,7 +1026,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [304, 305, 306, 307, 313, 308, 312]
+          "children": [284, 285, 286, 287, 293, 288, 292]
         }
       ],
       "sources": [
@@ -1038,7 +1038,7 @@
       ],
       "typeParameters": [
         {
-          "id": 314,
+          "id": 294,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -1055,7 +1055,7 @@
           }
         },
         {
-          "id": 315,
+          "id": 295,
           "name": "TChartApi",
           "variant": "typeParam",
           "kind": 131072,
@@ -1070,7 +1070,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -1089,7 +1089,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -1100,7 +1100,7 @@
           }
         },
         {
-          "id": 316,
+          "id": 296,
           "name": "TOptions",
           "variant": "typeParam",
           "kind": 131072,
@@ -1115,7 +1115,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -1134,7 +1134,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 314,
+                "target": 294,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -1147,7 +1147,7 @@
       ]
     },
     {
-      "id": 460,
+      "id": 440,
       "name": "ImageWatermarkProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -1173,14 +1173,14 @@
           {
             "type": "reflection",
             "declaration": {
-              "id": 461,
+              "id": 441,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "children": [
                 {
-                  "id": 462,
+                  "id": 442,
                   "name": "src",
                   "variant": "declaration",
                   "kind": 1024,
@@ -1201,7 +1201,7 @@
               "groups": [
                 {
                   "title": "Properties",
-                  "children": [462]
+                  "children": [442]
                 }
               ]
             }
@@ -1232,7 +1232,7 @@
       }
     },
     {
-      "id": 418,
+      "id": 398,
       "name": "MarkersApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -1247,7 +1247,7 @@
       },
       "children": [
         {
-          "id": 420,
+          "id": 400,
           "name": "_markers",
           "variant": "declaration",
           "kind": 1024,
@@ -1280,7 +1280,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 430,
+                    "target": 410,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -1297,7 +1297,7 @@
           }
         },
         {
-          "id": 421,
+          "id": 401,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -1320,14 +1320,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 422,
+              "id": 402,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 423,
+                  "id": 403,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -1345,7 +1345,7 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 430,
+                            "target": 410,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -1366,7 +1366,7 @@
           }
         },
         {
-          "id": 427,
+          "id": 407,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -1389,14 +1389,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 428,
+              "id": 408,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 429,
+                  "id": 409,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -1411,7 +1411,7 @@
           }
         },
         {
-          "id": 424,
+          "id": 404,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -1434,14 +1434,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 425,
+              "id": 405,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 426,
+                  "id": 406,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -1459,7 +1459,7 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 430,
+                            "target": 410,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -1483,7 +1483,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [420, 421, 427, 424]
+          "children": [400, 401, 407, 404]
         }
       ],
       "sources": [
@@ -1495,7 +1495,7 @@
       ],
       "typeParameters": [
         {
-          "id": 430,
+          "id": 410,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -1514,7 +1514,7 @@
       ]
     },
     {
-      "id": 412,
+      "id": 392,
       "name": "MarkersProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -1529,7 +1529,7 @@
       },
       "children": [
         {
-          "id": 414,
+          "id": 394,
           "name": "markers",
           "variant": "declaration",
           "kind": 1024,
@@ -1561,7 +1561,7 @@
               "typeArguments": [
                 {
                   "type": "reference",
-                  "target": 417,
+                  "target": 397,
                   "name": "HorzScaleItem",
                   "package": "lightweight-charts-react-components",
                   "refersToTypeParameter": true
@@ -1573,7 +1573,7 @@
           }
         },
         {
-          "id": 415,
+          "id": 395,
           "name": "options",
           "variant": "declaration",
           "kind": 1024,
@@ -1619,7 +1619,7 @@
           }
         },
         {
-          "id": 416,
+          "id": 396,
           "name": "reactive",
           "variant": "declaration",
           "kind": 1024,
@@ -1650,7 +1650,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [414, 415, 416]
+          "children": [394, 395, 396]
         }
       ],
       "sources": [
@@ -1662,7 +1662,7 @@
       ],
       "typeParameters": [
         {
-          "id": 417,
+          "id": 397,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -1681,7 +1681,7 @@
       ]
     },
     {
-      "id": 295,
+      "id": 275,
       "name": "OptionsChartProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -1703,7 +1703,7 @@
       ],
       "type": {
         "type": "reference",
-        "target": 302,
+        "target": 282,
         "typeArguments": [
           {
             "type": "intrinsic",
@@ -1741,7 +1741,7 @@
       }
     },
     {
-      "id": 259,
+      "id": 239,
       "name": "PaneApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -1756,7 +1756,7 @@
       },
       "children": [
         {
-          "id": 261,
+          "id": 241,
           "name": "_pane",
           "variant": "declaration",
           "kind": 1024,
@@ -1789,7 +1789,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 271,
+                    "target": 251,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -1806,7 +1806,7 @@
           }
         },
         {
-          "id": 262,
+          "id": 242,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -1829,14 +1829,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 263,
+              "id": 243,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 264,
+                  "id": 244,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -1854,7 +1854,7 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 271,
+                            "target": 251,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -1875,7 +1875,7 @@
           }
         },
         {
-          "id": 268,
+          "id": 248,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -1898,14 +1898,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 269,
+              "id": 249,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 270,
+                  "id": 250,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -1920,7 +1920,7 @@
           }
         },
         {
-          "id": 265,
+          "id": 245,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -1943,14 +1943,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 266,
+              "id": 246,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 267,
+                  "id": 247,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -1968,7 +1968,7 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 271,
+                            "target": 251,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -1992,7 +1992,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [261, 262, 268, 265]
+          "children": [241, 242, 248, 245]
         }
       ],
       "sources": [
@@ -2004,7 +2004,7 @@
       ],
       "typeParameters": [
         {
-          "id": 271,
+          "id": 251,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -2023,7 +2023,7 @@
       ]
     },
     {
-      "id": 465,
+      "id": 445,
       "name": "PanePrimitiveApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -2038,7 +2038,7 @@
       },
       "children": [
         {
-          "id": 467,
+          "id": 447,
           "name": "_primitive",
           "variant": "declaration",
           "kind": 1024,
@@ -2071,7 +2071,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 474,
+                    "target": 454,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -2088,7 +2088,7 @@
           }
         },
         {
-          "id": 468,
+          "id": 448,
           "name": "api",
           "variant": "declaration",
           "kind": 2048,
@@ -2102,7 +2102,7 @@
           ],
           "signatures": [
             {
-              "id": 469,
+              "id": 449,
               "name": "api",
               "variant": "signature",
               "kind": 4096,
@@ -2135,7 +2135,7 @@
                     "typeArguments": [
                       {
                         "type": "reference",
-                        "target": 474,
+                        "target": 454,
                         "name": "HorzScaleItem",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -2154,7 +2154,7 @@
           ]
         },
         {
-          "id": 472,
+          "id": 452,
           "name": "clear",
           "variant": "declaration",
           "kind": 2048,
@@ -2168,7 +2168,7 @@
           ],
           "signatures": [
             {
-              "id": 473,
+              "id": 453,
               "name": "clear",
               "variant": "signature",
               "kind": 4096,
@@ -2196,7 +2196,7 @@
           ]
         },
         {
-          "id": 470,
+          "id": 450,
           "name": "init",
           "variant": "declaration",
           "kind": 2048,
@@ -2210,7 +2210,7 @@
           ],
           "signatures": [
             {
-              "id": 471,
+              "id": 451,
               "name": "init",
               "variant": "signature",
               "kind": 4096,
@@ -2243,7 +2243,7 @@
                     "typeArguments": [
                       {
                         "type": "reference",
-                        "target": 474,
+                        "target": 454,
                         "name": "HorzScaleItem",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -2265,11 +2265,11 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [467]
+          "children": [447]
         },
         {
           "title": "Methods",
-          "children": [468, 472, 470]
+          "children": [448, 452, 450]
         }
       ],
       "sources": [
@@ -2281,7 +2281,7 @@
       ],
       "typeParameters": [
         {
-          "id": 474,
+          "id": 454,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -2300,7 +2300,7 @@
       ]
     },
     {
-      "id": 475,
+      "id": 455,
       "name": "PanePrimitiveProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -2322,7 +2322,7 @@
       ],
       "typeParameters": [
         {
-          "id": 476,
+          "id": 456,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -2352,7 +2352,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 476,
+                "target": 456,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -2371,7 +2371,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 476,
+                "target": 456,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -2384,7 +2384,7 @@
       }
     },
     {
-      "id": 255,
+      "id": 235,
       "name": "PaneProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -2399,7 +2399,7 @@
       },
       "children": [
         {
-          "id": 257,
+          "id": 237,
           "name": "children",
           "variant": "declaration",
           "kind": 1024,
@@ -2434,7 +2434,7 @@
           }
         },
         {
-          "id": 258,
+          "id": 238,
           "name": "stretchFactor",
           "variant": "declaration",
           "kind": 1024,
@@ -2465,7 +2465,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [257, 258]
+          "children": [237, 238]
         }
       ],
       "sources": [
@@ -2477,7 +2477,7 @@
       ]
     },
     {
-      "id": 395,
+      "id": 375,
       "name": "PriceLineApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -2492,7 +2492,7 @@
       },
       "children": [
         {
-          "id": 397,
+          "id": 377,
           "name": "_priceLine",
           "variant": "declaration",
           "kind": 1024,
@@ -2533,7 +2533,7 @@
           }
         },
         {
-          "id": 398,
+          "id": 378,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -2556,14 +2556,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 399,
+              "id": 379,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 400,
+                  "id": 380,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -2593,7 +2593,7 @@
           }
         },
         {
-          "id": 404,
+          "id": 384,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -2616,14 +2616,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 405,
+              "id": 385,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 406,
+                  "id": 386,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -2638,7 +2638,7 @@
           }
         },
         {
-          "id": 401,
+          "id": 381,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -2661,14 +2661,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 402,
+              "id": 382,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 403,
+                  "id": 383,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -2701,7 +2701,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [397, 398, 404, 401]
+          "children": [377, 378, 384, 381]
         }
       ],
       "sources": [
@@ -2713,7 +2713,7 @@
       ]
     },
     {
-      "id": 407,
+      "id": 387,
       "name": "PriceLineProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -2728,7 +2728,7 @@
       },
       "children": [
         {
-          "id": 410,
+          "id": 390,
           "name": "options",
           "variant": "declaration",
           "kind": 1024,
@@ -2790,7 +2790,7 @@
           }
         },
         {
-          "id": 409,
+          "id": 389,
           "name": "price",
           "variant": "declaration",
           "kind": 1024,
@@ -2819,7 +2819,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [410, 409]
+          "children": [390, 389]
         }
       ],
       "sources": [
@@ -2831,7 +2831,7 @@
       ]
     },
     {
-      "id": 336,
+      "id": 316,
       "name": "PriceScaleApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -2846,7 +2846,7 @@
       },
       "children": [
         {
-          "id": 338,
+          "id": 318,
           "name": "_priceScale",
           "variant": "declaration",
           "kind": 1024,
@@ -2887,7 +2887,7 @@
           }
         },
         {
-          "id": 339,
+          "id": 319,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -2910,14 +2910,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 340,
+              "id": 320,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 341,
+                  "id": 321,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -2947,7 +2947,7 @@
           }
         },
         {
-          "id": 349,
+          "id": 329,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -2970,14 +2970,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 350,
+              "id": 330,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 351,
+                  "id": 331,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -2992,7 +2992,7 @@
           }
         },
         {
-          "id": 342,
+          "id": 322,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -3015,14 +3015,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 343,
+              "id": 323,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 344,
+                  "id": 324,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -3052,7 +3052,7 @@
           }
         },
         {
-          "id": 345,
+          "id": 325,
           "name": "setId",
           "variant": "declaration",
           "kind": 1024,
@@ -3075,21 +3075,21 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 346,
+              "id": 326,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 347,
+                  "id": 327,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
                   "flags": {},
                   "parameters": [
                     {
-                      "id": 348,
+                      "id": 328,
                       "name": "id",
                       "variant": "param",
                       "kind": 32768,
@@ -3113,7 +3113,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [338, 339, 349, 342, 345]
+          "children": [318, 319, 329, 322, 325]
         }
       ],
       "sources": [
@@ -3125,7 +3125,7 @@
       ]
     },
     {
-      "id": 322,
+      "id": 302,
       "name": "PriceScaleProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -3140,7 +3140,7 @@
       },
       "children": [
         {
-          "id": 325,
+          "id": 305,
           "name": "id",
           "variant": "declaration",
           "kind": 1024,
@@ -3166,7 +3166,7 @@
           }
         },
         {
-          "id": 324,
+          "id": 304,
           "name": "options",
           "variant": "declaration",
           "kind": 1024,
@@ -3203,7 +3203,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [325, 324]
+          "children": [305, 304]
         }
       ],
       "sources": [
@@ -3215,7 +3215,7 @@
       ]
     },
     {
-      "id": 477,
+      "id": 457,
       "name": "RenderPanePrimitive",
       "variant": "declaration",
       "kind": 2097152,
@@ -3237,7 +3237,7 @@
       ],
       "typeParameters": [
         {
-          "id": 484,
+          "id": 464,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -3257,21 +3257,21 @@
       "type": {
         "type": "reflection",
         "declaration": {
-          "id": 478,
+          "id": 458,
           "name": "__type",
           "variant": "declaration",
           "kind": 65536,
           "flags": {},
           "signatures": [
             {
-              "id": 479,
+              "id": 459,
               "name": "__type",
               "variant": "signature",
               "kind": 4096,
               "flags": {},
               "parameters": [
                 {
-                  "id": 480,
+                  "id": 460,
                   "name": "{\n  chart,\n  pane,\n}",
                   "variant": "param",
                   "kind": 32768,
@@ -3279,14 +3279,14 @@
                   "type": {
                     "type": "reflection",
                     "declaration": {
-                      "id": 481,
+                      "id": 461,
                       "name": "__type",
                       "variant": "declaration",
                       "kind": 65536,
                       "flags": {},
                       "children": [
                         {
-                          "id": 482,
+                          "id": 462,
                           "name": "chart",
                           "variant": "declaration",
                           "kind": 1024,
@@ -3308,7 +3308,7 @@
                             "typeArguments": [
                               {
                                 "type": "reference",
-                                "target": 484,
+                                "target": 464,
                                 "name": "HorzScaleItem",
                                 "package": "lightweight-charts-react-components",
                                 "refersToTypeParameter": true
@@ -3319,7 +3319,7 @@
                           }
                         },
                         {
-                          "id": 483,
+                          "id": 463,
                           "name": "pane",
                           "variant": "declaration",
                           "kind": 1024,
@@ -3341,7 +3341,7 @@
                             "typeArguments": [
                               {
                                 "type": "reference",
-                                "target": 484,
+                                "target": 464,
                                 "name": "HorzScaleItem",
                                 "package": "lightweight-charts-react-components",
                                 "refersToTypeParameter": true
@@ -3355,7 +3355,7 @@
                       "groups": [
                         {
                           "title": "Properties",
-                          "children": [482, 483]
+                          "children": [462, 463]
                         }
                       ]
                     }
@@ -3372,7 +3372,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 484,
+                    "target": 464,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -3387,7 +3387,7 @@
       }
     },
     {
-      "id": 485,
+      "id": 465,
       "name": "RenderPrimitive",
       "variant": "declaration",
       "kind": 2097152,
@@ -3409,7 +3409,7 @@
       ],
       "typeParameters": [
         {
-          "id": 492,
+          "id": 472,
           "name": "T",
           "variant": "typeParam",
           "kind": 131072,
@@ -3436,7 +3436,7 @@
           }
         },
         {
-          "id": 493,
+          "id": 473,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -3456,21 +3456,21 @@
       "type": {
         "type": "reflection",
         "declaration": {
-          "id": 486,
+          "id": 466,
           "name": "__type",
           "variant": "declaration",
           "kind": 65536,
           "flags": {},
           "signatures": [
             {
-              "id": 487,
+              "id": 467,
               "name": "__type",
               "variant": "signature",
               "kind": 4096,
               "flags": {},
               "parameters": [
                 {
-                  "id": 488,
+                  "id": 468,
                   "name": "{\n  chart,\n  series,\n}",
                   "variant": "param",
                   "kind": 32768,
@@ -3478,14 +3478,14 @@
                   "type": {
                     "type": "reflection",
                     "declaration": {
-                      "id": 489,
+                      "id": 469,
                       "name": "__type",
                       "variant": "declaration",
                       "kind": 65536,
                       "flags": {},
                       "children": [
                         {
-                          "id": 490,
+                          "id": 470,
                           "name": "chart",
                           "variant": "declaration",
                           "kind": 1024,
@@ -3507,7 +3507,7 @@
                             "typeArguments": [
                               {
                                 "type": "reference",
-                                "target": 493,
+                                "target": 473,
                                 "name": "HorzScaleItem",
                                 "package": "lightweight-charts-react-components",
                                 "refersToTypeParameter": true
@@ -3518,7 +3518,7 @@
                           }
                         },
                         {
-                          "id": 491,
+                          "id": 471,
                           "name": "series",
                           "variant": "declaration",
                           "kind": 1024,
@@ -3540,14 +3540,14 @@
                             "typeArguments": [
                               {
                                 "type": "reference",
-                                "target": 492,
+                                "target": 472,
                                 "name": "T",
                                 "package": "lightweight-charts-react-components",
                                 "refersToTypeParameter": true
                               },
                               {
                                 "type": "reference",
-                                "target": 493,
+                                "target": 473,
                                 "name": "HorzScaleItem",
                                 "package": "lightweight-charts-react-components",
                                 "refersToTypeParameter": true
@@ -3561,7 +3561,7 @@
                       "groups": [
                         {
                           "title": "Properties",
-                          "children": [490, 491]
+                          "children": [470, 471]
                         }
                       ]
                     }
@@ -3578,7 +3578,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 493,
+                    "target": 473,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -3593,7 +3593,7 @@
       }
     },
     {
-      "id": 375,
+      "id": 355,
       "name": "SeriesApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -3608,7 +3608,7 @@
       },
       "children": [
         {
-          "id": 377,
+          "id": 357,
           "name": "_series",
           "variant": "declaration",
           "kind": 1024,
@@ -3641,14 +3641,14 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 387,
+                    "target": 367,
                     "name": "T",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
                   },
                   {
                     "type": "reference",
-                    "target": 388,
+                    "target": 368,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -3665,7 +3665,7 @@
           }
         },
         {
-          "id": 378,
+          "id": 358,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -3688,14 +3688,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 379,
+              "id": 359,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 380,
+                  "id": 360,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -3713,14 +3713,14 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 387,
+                            "target": 367,
                             "name": "T",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
                           },
                           {
                             "type": "reference",
-                            "target": 388,
+                            "target": 368,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -3741,7 +3741,7 @@
           }
         },
         {
-          "id": 384,
+          "id": 364,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -3764,14 +3764,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 385,
+              "id": 365,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 386,
+                  "id": 366,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -3786,7 +3786,7 @@
           }
         },
         {
-          "id": 381,
+          "id": 361,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -3809,14 +3809,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 382,
+              "id": 362,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 383,
+                  "id": 363,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -3834,14 +3834,14 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 387,
+                            "target": 367,
                             "name": "T",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
                           },
                           {
                             "type": "reference",
-                            "target": 388,
+                            "target": 368,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -3865,7 +3865,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [377, 378, 384, 381]
+          "children": [357, 358, 364, 361]
         }
       ],
       "sources": [
@@ -3877,7 +3877,7 @@
       ],
       "typeParameters": [
         {
-          "id": 387,
+          "id": 367,
           "name": "T",
           "variant": "typeParam",
           "kind": 131072,
@@ -3894,7 +3894,7 @@
           }
         },
         {
-          "id": 388,
+          "id": 368,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -3913,7 +3913,7 @@
       ]
     },
     {
-      "id": 392,
+      "id": 372,
       "name": "SeriesOptions",
       "variant": "declaration",
       "kind": 2097152,
@@ -3935,7 +3935,7 @@
       ],
       "typeParameters": [
         {
-          "id": 393,
+          "id": 373,
           "name": "T",
           "variant": "typeParam",
           "kind": 131072,
@@ -3956,7 +3956,7 @@
         "type": "indexedAccess",
         "indexType": {
           "type": "reference",
-          "target": 393,
+          "target": 373,
           "name": "T",
           "package": "lightweight-charts-react-components",
           "refersToTypeParameter": true
@@ -3974,7 +3974,7 @@
       }
     },
     {
-      "id": 497,
+      "id": 477,
       "name": "SeriesPrimitiveApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -3989,7 +3989,7 @@
       },
       "children": [
         {
-          "id": 499,
+          "id": 479,
           "name": "_primitive",
           "variant": "declaration",
           "kind": 1024,
@@ -4022,7 +4022,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 506,
+                    "target": 486,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -4039,7 +4039,7 @@
           }
         },
         {
-          "id": 500,
+          "id": 480,
           "name": "api",
           "variant": "declaration",
           "kind": 2048,
@@ -4053,7 +4053,7 @@
           ],
           "signatures": [
             {
-              "id": 501,
+              "id": 481,
               "name": "api",
               "variant": "signature",
               "kind": 4096,
@@ -4086,7 +4086,7 @@
                     "typeArguments": [
                       {
                         "type": "reference",
-                        "target": 506,
+                        "target": 486,
                         "name": "HorzScaleItem",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -4105,7 +4105,7 @@
           ]
         },
         {
-          "id": 504,
+          "id": 484,
           "name": "clear",
           "variant": "declaration",
           "kind": 2048,
@@ -4119,7 +4119,7 @@
           ],
           "signatures": [
             {
-              "id": 505,
+              "id": 485,
               "name": "clear",
               "variant": "signature",
               "kind": 4096,
@@ -4147,7 +4147,7 @@
           ]
         },
         {
-          "id": 502,
+          "id": 482,
           "name": "init",
           "variant": "declaration",
           "kind": 2048,
@@ -4161,7 +4161,7 @@
           ],
           "signatures": [
             {
-              "id": 503,
+              "id": 483,
               "name": "init",
               "variant": "signature",
               "kind": 4096,
@@ -4194,7 +4194,7 @@
                     "typeArguments": [
                       {
                         "type": "reference",
-                        "target": 506,
+                        "target": 486,
                         "name": "HorzScaleItem",
                         "package": "lightweight-charts-react-components",
                         "refersToTypeParameter": true
@@ -4216,11 +4216,11 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [499]
+          "children": [479]
         },
         {
           "title": "Methods",
-          "children": [500, 504, 502]
+          "children": [480, 484, 482]
         }
       ],
       "sources": [
@@ -4232,7 +4232,7 @@
       ],
       "typeParameters": [
         {
-          "id": 506,
+          "id": 486,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -4251,7 +4251,7 @@
       ]
     },
     {
-      "id": 494,
+      "id": 474,
       "name": "SeriesPrimitiveProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -4273,7 +4273,7 @@
       ],
       "typeParameters": [
         {
-          "id": 495,
+          "id": 475,
           "name": "T",
           "variant": "typeParam",
           "kind": 131072,
@@ -4300,7 +4300,7 @@
           }
         },
         {
-          "id": 496,
+          "id": 476,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -4330,14 +4330,14 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 495,
+                "target": 475,
                 "name": "T",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
               },
               {
                 "type": "reference",
-                "target": 496,
+                "target": 476,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -4356,7 +4356,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 496,
+                "target": 476,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -4369,7 +4369,7 @@
       }
     },
     {
-      "id": 389,
+      "id": 369,
       "name": "SeriesProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -4391,7 +4391,7 @@
       ],
       "typeParameters": [
         {
-          "id": 390,
+          "id": 370,
           "name": "T",
           "variant": "typeParam",
           "kind": 131072,
@@ -4408,7 +4408,7 @@
           }
         },
         {
-          "id": 391,
+          "id": 371,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -4443,14 +4443,14 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 390,
+                "target": 370,
                 "name": "T",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
               },
               {
                 "type": "reference",
-                "target": 391,
+                "target": 371,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -4469,7 +4469,7 @@
       }
     },
     {
-      "id": 459,
+      "id": 439,
       "name": "TextWatermarkProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -4513,7 +4513,7 @@
       }
     },
     {
-      "id": 352,
+      "id": 332,
       "name": "TimeScaleApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -4528,7 +4528,7 @@
       },
       "children": [
         {
-          "id": 354,
+          "id": 334,
           "name": "_timeScale",
           "variant": "declaration",
           "kind": 1024,
@@ -4561,7 +4561,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 364,
+                    "target": 344,
                     "name": "HorzScaleItem",
                     "package": "lightweight-charts-react-components",
                     "refersToTypeParameter": true
@@ -4578,7 +4578,7 @@
           }
         },
         {
-          "id": 355,
+          "id": 335,
           "name": "api",
           "variant": "declaration",
           "kind": 1024,
@@ -4601,14 +4601,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 356,
+              "id": 336,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 357,
+                  "id": 337,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -4626,7 +4626,7 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 364,
+                            "target": 344,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -4647,7 +4647,7 @@
           }
         },
         {
-          "id": 361,
+          "id": 341,
           "name": "clear",
           "variant": "declaration",
           "kind": 1024,
@@ -4670,14 +4670,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 362,
+              "id": 342,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 363,
+                  "id": 343,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -4692,7 +4692,7 @@
           }
         },
         {
-          "id": 358,
+          "id": 338,
           "name": "init",
           "variant": "declaration",
           "kind": 1024,
@@ -4715,14 +4715,14 @@
           "type": {
             "type": "reflection",
             "declaration": {
-              "id": 359,
+              "id": 339,
               "name": "__type",
               "variant": "declaration",
               "kind": 65536,
               "flags": {},
               "signatures": [
                 {
-                  "id": 360,
+                  "id": 340,
                   "name": "__type",
                   "variant": "signature",
                   "kind": 4096,
@@ -4740,7 +4740,7 @@
                         "typeArguments": [
                           {
                             "type": "reference",
-                            "target": 364,
+                            "target": 344,
                             "name": "HorzScaleItem",
                             "package": "lightweight-charts-react-components",
                             "refersToTypeParameter": true
@@ -4764,7 +4764,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [354, 355, 361, 358]
+          "children": [334, 335, 341, 338]
         }
       ],
       "sources": [
@@ -4776,7 +4776,7 @@
       ],
       "typeParameters": [
         {
-          "id": 364,
+          "id": 344,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -4795,7 +4795,7 @@
       ]
     },
     {
-      "id": 365,
+      "id": 345,
       "name": "TimeScaleFitContentTriggerProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -4810,7 +4810,7 @@
       },
       "children": [
         {
-          "id": 367,
+          "id": 347,
           "name": "deps",
           "variant": "declaration",
           "kind": 1024,
@@ -4846,7 +4846,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [367]
+          "children": [347]
         }
       ],
       "sources": [
@@ -4858,7 +4858,7 @@
       ]
     },
     {
-      "id": 326,
+      "id": 306,
       "name": "TimeScaleProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -4873,7 +4873,7 @@
       },
       "children": [
         {
-          "id": 334,
+          "id": 314,
           "name": "children",
           "variant": "declaration",
           "kind": 1024,
@@ -4908,7 +4908,7 @@
           }
         },
         {
-          "id": 330,
+          "id": 310,
           "name": "onSizeChange",
           "variant": "declaration",
           "kind": 1024,
@@ -4942,7 +4942,7 @@
           }
         },
         {
-          "id": 329,
+          "id": 309,
           "name": "onVisibleLogicalRangeChange",
           "variant": "declaration",
           "kind": 1024,
@@ -4976,7 +4976,7 @@
           }
         },
         {
-          "id": 328,
+          "id": 308,
           "name": "onVisibleTimeRangeChange",
           "variant": "declaration",
           "kind": 1024,
@@ -5008,7 +5008,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 335,
+                "target": 315,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -5019,7 +5019,7 @@
           }
         },
         {
-          "id": 333,
+          "id": 313,
           "name": "options",
           "variant": "declaration",
           "kind": 1024,
@@ -5053,7 +5053,7 @@
           }
         },
         {
-          "id": 332,
+          "id": 312,
           "name": "visibleLogicalRange",
           "variant": "declaration",
           "kind": 1024,
@@ -5093,7 +5093,7 @@
           }
         },
         {
-          "id": 331,
+          "id": 311,
           "name": "visibleRange",
           "variant": "declaration",
           "kind": 1024,
@@ -5125,7 +5125,7 @@
             "typeArguments": [
               {
                 "type": "reference",
-                "target": 335,
+                "target": 315,
                 "name": "HorzScaleItem",
                 "package": "lightweight-charts-react-components",
                 "refersToTypeParameter": true
@@ -5139,7 +5139,7 @@
       "groups": [
         {
           "title": "Properties",
-          "children": [334, 330, 329, 328, 333, 332, 331]
+          "children": [314, 310, 309, 308, 313, 312, 311]
         }
       ],
       "sources": [
@@ -5151,7 +5151,7 @@
       ],
       "typeParameters": [
         {
-          "id": 335,
+          "id": 315,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -5170,7 +5170,7 @@
       ]
     },
     {
-      "id": 433,
+      "id": 413,
       "name": "WatermarkApiRef",
       "variant": "declaration",
       "kind": 2097152,
@@ -5192,20 +5192,20 @@
       ],
       "typeParameters": [
         {
-          "id": 456,
+          "id": 436,
           "name": "T",
           "variant": "typeParam",
           "kind": 131072,
           "flags": {},
           "type": {
             "type": "reference",
-            "target": 458,
+            "target": 438,
             "name": "WatermarkType",
             "package": "lightweight-charts-react-components"
           }
         },
         {
-          "id": 457,
+          "id": 437,
           "name": "HorzScaleItem",
           "variant": "typeParam",
           "kind": 131072,
@@ -5226,7 +5226,7 @@
         "type": "conditional",
         "checkType": {
           "type": "reference",
-          "target": 456,
+          "target": 436,
           "name": "T",
           "package": "lightweight-charts-react-components",
           "refersToTypeParameter": true
@@ -5238,14 +5238,14 @@
         "trueType": {
           "type": "reflection",
           "declaration": {
-            "id": 434,
+            "id": 414,
             "name": "__type",
             "variant": "declaration",
             "kind": 65536,
             "flags": {},
             "children": [
               {
-                "id": 435,
+                "id": 415,
                 "name": "_watermark",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5270,7 +5270,7 @@
                       "typeArguments": [
                         {
                           "type": "reference",
-                          "target": 457,
+                          "target": 437,
                           "name": "HorzScaleItem",
                           "package": "lightweight-charts-react-components",
                           "refersToTypeParameter": true
@@ -5287,7 +5287,7 @@
                 }
               },
               {
-                "id": 436,
+                "id": 416,
                 "name": "api",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5302,14 +5302,14 @@
                 "type": {
                   "type": "reflection",
                   "declaration": {
-                    "id": 437,
+                    "id": 417,
                     "name": "__type",
                     "variant": "declaration",
                     "kind": 65536,
                     "flags": {},
                     "signatures": [
                       {
-                        "id": 438,
+                        "id": 418,
                         "name": "__type",
                         "variant": "signature",
                         "kind": 4096,
@@ -5327,7 +5327,7 @@
                               "typeArguments": [
                                 {
                                   "type": "reference",
-                                  "target": 457,
+                                  "target": 437,
                                   "name": "HorzScaleItem",
                                   "package": "lightweight-charts-react-components",
                                   "refersToTypeParameter": true
@@ -5348,7 +5348,7 @@
                 }
               },
               {
-                "id": 442,
+                "id": 422,
                 "name": "clear",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5363,14 +5363,14 @@
                 "type": {
                   "type": "reflection",
                   "declaration": {
-                    "id": 443,
+                    "id": 423,
                     "name": "__type",
                     "variant": "declaration",
                     "kind": 65536,
                     "flags": {},
                     "signatures": [
                       {
-                        "id": 444,
+                        "id": 424,
                         "name": "__type",
                         "variant": "signature",
                         "kind": 4096,
@@ -5385,7 +5385,7 @@
                 }
               },
               {
-                "id": 439,
+                "id": 419,
                 "name": "init",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5400,14 +5400,14 @@
                 "type": {
                   "type": "reflection",
                   "declaration": {
-                    "id": 440,
+                    "id": 420,
                     "name": "__type",
                     "variant": "declaration",
                     "kind": 65536,
                     "flags": {},
                     "signatures": [
                       {
-                        "id": 441,
+                        "id": 421,
                         "name": "__type",
                         "variant": "signature",
                         "kind": 4096,
@@ -5425,7 +5425,7 @@
                               "typeArguments": [
                                 {
                                   "type": "reference",
-                                  "target": 457,
+                                  "target": 437,
                                   "name": "HorzScaleItem",
                                   "package": "lightweight-charts-react-components",
                                   "refersToTypeParameter": true
@@ -5449,7 +5449,7 @@
             "groups": [
               {
                 "title": "Properties",
-                "children": [435, 436, 442, 439]
+                "children": [415, 416, 422, 419]
               }
             ]
           }
@@ -5457,14 +5457,14 @@
         "falseType": {
           "type": "reflection",
           "declaration": {
-            "id": 445,
+            "id": 425,
             "name": "__type",
             "variant": "declaration",
             "kind": 65536,
             "flags": {},
             "children": [
               {
-                "id": 446,
+                "id": 426,
                 "name": "_watermark",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5489,7 +5489,7 @@
                       "typeArguments": [
                         {
                           "type": "reference",
-                          "target": 457,
+                          "target": 437,
                           "name": "HorzScaleItem",
                           "package": "lightweight-charts-react-components",
                           "refersToTypeParameter": true
@@ -5506,7 +5506,7 @@
                 }
               },
               {
-                "id": 447,
+                "id": 427,
                 "name": "api",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5521,14 +5521,14 @@
                 "type": {
                   "type": "reflection",
                   "declaration": {
-                    "id": 448,
+                    "id": 428,
                     "name": "__type",
                     "variant": "declaration",
                     "kind": 65536,
                     "flags": {},
                     "signatures": [
                       {
-                        "id": 449,
+                        "id": 429,
                         "name": "__type",
                         "variant": "signature",
                         "kind": 4096,
@@ -5546,7 +5546,7 @@
                               "typeArguments": [
                                 {
                                   "type": "reference",
-                                  "target": 457,
+                                  "target": 437,
                                   "name": "HorzScaleItem",
                                   "package": "lightweight-charts-react-components",
                                   "refersToTypeParameter": true
@@ -5567,7 +5567,7 @@
                 }
               },
               {
-                "id": 453,
+                "id": 433,
                 "name": "clear",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5582,14 +5582,14 @@
                 "type": {
                   "type": "reflection",
                   "declaration": {
-                    "id": 454,
+                    "id": 434,
                     "name": "__type",
                     "variant": "declaration",
                     "kind": 65536,
                     "flags": {},
                     "signatures": [
                       {
-                        "id": 455,
+                        "id": 435,
                         "name": "__type",
                         "variant": "signature",
                         "kind": 4096,
@@ -5604,7 +5604,7 @@
                 }
               },
               {
-                "id": 450,
+                "id": 430,
                 "name": "init",
                 "variant": "declaration",
                 "kind": 1024,
@@ -5619,14 +5619,14 @@
                 "type": {
                   "type": "reflection",
                   "declaration": {
-                    "id": 451,
+                    "id": 431,
                     "name": "__type",
                     "variant": "declaration",
                     "kind": 65536,
                     "flags": {},
                     "signatures": [
                       {
-                        "id": 452,
+                        "id": 432,
                         "name": "__type",
                         "variant": "signature",
                         "kind": 4096,
@@ -5644,7 +5644,7 @@
                               "typeArguments": [
                                 {
                                   "type": "reference",
-                                  "target": 457,
+                                  "target": 437,
                                   "name": "HorzScaleItem",
                                   "package": "lightweight-charts-react-components",
                                   "refersToTypeParameter": true
@@ -5668,7 +5668,7 @@
             "groups": [
               {
                 "title": "Properties",
-                "children": [446, 447, 453, 450]
+                "children": [426, 427, 433, 430]
               }
             ]
           }
@@ -5676,7 +5676,7 @@
       }
     },
     {
-      "id": 458,
+      "id": 438,
       "name": "WatermarkType",
       "variant": "declaration",
       "kind": 2097152,
@@ -5727,7 +5727,7 @@
       }
     },
     {
-      "id": 296,
+      "id": 276,
       "name": "YieldCurveChartProps",
       "variant": "declaration",
       "kind": 2097152,
@@ -5749,7 +5749,7 @@
       ],
       "type": {
         "type": "reference",
-        "target": 302,
+        "target": 282,
         "typeArguments": [
           {
             "type": "intrinsic",
@@ -5781,7 +5781,7 @@
       }
     },
     {
-      "id": 371,
+      "id": 351,
       "name": "AreaSeries",
       "variant": "declaration",
       "kind": 32,
@@ -5895,7 +5895,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 373,
+      "id": 353,
       "name": "BarSeries",
       "variant": "declaration",
       "kind": 32,
@@ -6009,7 +6009,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 372,
+      "id": 352,
       "name": "BaselineSeries",
       "variant": "declaration",
       "kind": 32,
@@ -6123,7 +6123,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 370,
+      "id": 350,
       "name": "CandlestickSeries",
       "variant": "declaration",
       "kind": 32,
@@ -6237,7 +6237,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 276,
+      "id": 256,
       "name": "Chart",
       "variant": "declaration",
       "kind": 32,
@@ -6345,7 +6345,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 294,
+                "target": 274,
                 "name": "ChartProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -6382,7 +6382,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 279,
+      "id": 259,
       "name": "CustomChart",
       "variant": "declaration",
       "kind": 32,
@@ -6490,7 +6490,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 374,
+      "id": 354,
       "name": "CustomSeries",
       "variant": "declaration",
       "kind": 32,
@@ -6604,7 +6604,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 369,
+      "id": 349,
       "name": "HistogramSeries",
       "variant": "declaration",
       "kind": 32,
@@ -6718,7 +6718,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 368,
+      "id": 348,
       "name": "LineSeries",
       "variant": "declaration",
       "kind": 32,
@@ -6832,7 +6832,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 411,
+      "id": 391,
       "name": "Markers",
       "variant": "declaration",
       "kind": 32,
@@ -6940,7 +6940,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 277,
+      "id": 257,
       "name": "OptionsChart",
       "variant": "declaration",
       "kind": 32,
@@ -7048,7 +7048,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 295,
+                "target": 275,
                 "name": "OptionsChartProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -7085,7 +7085,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 507,
+      "id": 487,
       "name": "Pane",
       "variant": "declaration",
       "kind": 32,
@@ -7193,7 +7193,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 463,
+      "id": 443,
       "name": "PanePrimitive",
       "variant": "declaration",
       "kind": 32,
@@ -7301,7 +7301,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 394,
+      "id": 374,
       "name": "PriceLine",
       "variant": "declaration",
       "kind": 32,
@@ -7409,7 +7409,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 407,
+                "target": 387,
                 "name": "PriceLineProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -7423,7 +7423,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 395,
+                    "target": 375,
                     "name": "PriceLineApiRef",
                     "package": "lightweight-charts-react-components"
                   }
@@ -7442,7 +7442,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 318,
+      "id": 298,
       "name": "PriceScale",
       "variant": "declaration",
       "kind": 32,
@@ -7550,7 +7550,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 322,
+                "target": 302,
                 "name": "PriceScaleProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -7564,7 +7564,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 336,
+                    "target": 316,
                     "name": "PriceScaleApiRef",
                     "package": "lightweight-charts-react-components"
                   }
@@ -7583,7 +7583,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 464,
+      "id": 444,
       "name": "SeriesPrimitive",
       "variant": "declaration",
       "kind": 32,
@@ -7691,7 +7691,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 317,
+      "id": 297,
       "name": "TimeScale",
       "variant": "declaration",
       "kind": 32,
@@ -7799,7 +7799,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 432,
+      "id": 412,
       "name": "WatermarkImage",
       "variant": "declaration",
       "kind": 32,
@@ -7907,7 +7907,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 460,
+                "target": 440,
                 "name": "ImageWatermarkProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -7921,7 +7921,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 433,
+                    "target": 413,
                     "typeArguments": [
                       {
                         "type": "literal",
@@ -7946,7 +7946,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 431,
+      "id": 411,
       "name": "WatermarkText",
       "variant": "declaration",
       "kind": 32,
@@ -8054,7 +8054,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 459,
+                "target": 439,
                 "name": "TextWatermarkProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -8068,7 +8068,7 @@
                 "typeArguments": [
                   {
                     "type": "reference",
-                    "target": 433,
+                    "target": 413,
                     "typeArguments": [
                       {
                         "type": "literal",
@@ -8093,7 +8093,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 278,
+      "id": 258,
       "name": "YieldCurveChart",
       "variant": "declaration",
       "kind": 32,
@@ -8201,7 +8201,7 @@
             "types": [
               {
                 "type": "reference",
-                "target": 296,
+                "target": 276,
                 "name": "YieldCurveChartProps",
                 "package": "lightweight-charts-react-components"
               },
@@ -8238,7 +8238,7 @@
       "defaultValue": "..."
     },
     {
-      "id": 319,
+      "id": 299,
       "name": "TimeScaleFitContentTrigger",
       "variant": "declaration",
       "kind": 64,
@@ -8252,7 +8252,7 @@
       ],
       "signatures": [
         {
-          "id": 320,
+          "id": 300,
           "name": "TimeScaleFitContentTrigger",
           "variant": "signature",
           "kind": 4096,
@@ -8305,7 +8305,7 @@
           ],
           "parameters": [
             {
-              "id": 321,
+              "id": 301,
               "name": "props",
               "variant": "param",
               "kind": 32768,
@@ -8320,7 +8320,7 @@
               },
               "type": {
                 "type": "reference",
-                "target": 365,
+                "target": 345,
                 "name": "TimeScaleFitContentTriggerProps",
                 "package": "lightweight-charts-react-components"
               }
@@ -8353,25 +8353,25 @@
   "groups": [
     {
       "title": "Interfaces",
-      "children": [272]
+      "children": [252]
     },
     {
       "title": "Type Aliases",
       "children": [
-        280, 294, 297, 302, 460, 418, 412, 295, 259, 465, 475, 255, 395, 407, 336, 322,
-        477, 485, 375, 392, 497, 494, 389, 459, 352, 365, 326, 433, 458, 296
+        260, 274, 277, 282, 440, 398, 392, 275, 239, 445, 455, 235, 375, 387, 316, 302,
+        457, 465, 355, 372, 477, 474, 369, 439, 332, 345, 306, 413, 438, 276
       ]
     },
     {
       "title": "Variables",
       "children": [
-        371, 373, 372, 370, 276, 279, 374, 369, 368, 411, 277, 507, 463, 394, 318, 464,
-        317, 432, 431, 278
+        351, 353, 352, 350, 256, 259, 354, 349, 348, 391, 257, 487, 443, 374, 298, 444,
+        297, 412, 411, 258
       ]
     },
     {
       "title": "Functions",
-      "children": [319]
+      "children": [299]
     }
   ],
   "packageName": "lightweight-charts-react-components",
@@ -8550,170 +8550,265 @@
     }
   ],
   "symbolIdMap": {
-    "254": {
+    "234": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/index.ts",
       "qualifiedName": ""
     },
-    "255": {
+    "235": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "PaneProps"
     },
-    "257": {
+    "237": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type.children"
     },
-    "258": {
+    "238": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type.stretchFactor"
     },
-    "259": {
+    "239": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "PaneApiRef"
     },
-    "261": {
+    "241": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type._pane"
     },
-    "262": {
+    "242": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type.api"
     },
-    "263": {
+    "243": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type"
     },
-    "264": {
+    "244": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type"
     },
-    "265": {
+    "245": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type.init"
     },
-    "266": {
+    "246": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type"
     },
-    "267": {
+    "247": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type"
     },
-    "268": {
+    "248": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type.clear"
     },
-    "269": {
+    "249": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type"
     },
-    "270": {
+    "250": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "__type"
     },
-    "271": {
+    "251": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "272": {
+    "252": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "IPaneContext"
     },
-    "273": {
+    "253": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "IPaneContext.HorzScaleItem"
     },
-    "274": {
+    "254": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "IPaneContext.paneApiRef"
     },
-    "275": {
+    "255": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/types.ts",
       "qualifiedName": "IPaneContext.isReady"
     },
-    "276": {
+    "256": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/ChartWrapper.tsx",
       "qualifiedName": "ChartWrapper"
     },
-    "277": {
+    "257": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/OptionsChart.tsx",
       "qualifiedName": "OptionsChart"
     },
-    "278": {
+    "258": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/YieldCurveChart.tsx",
       "qualifiedName": "YieldCurveChart"
     },
-    "279": {
+    "259": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/CustomChart.tsx",
       "qualifiedName": "CustomChart"
     },
-    "280": {
+    "260": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "ChartApiRef"
     },
-    "282": {
+    "262": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "__type._chart"
     },
-    "283": {
+    "263": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "__type.api"
     },
-    "284": {
+    "264": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "__type"
     },
-    "285": {
+    "265": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "__type"
     },
-    "286": {
+    "266": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "__type.init"
     },
-    "287": {
+    "267": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
       "qualifiedName": "__type"
+    },
+    "268": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type"
+    },
+    "269": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type.clear"
+    },
+    "270": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type"
+    },
+    "271": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type"
+    },
+    "272": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "HorzScaleItem"
+    },
+    "273": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "TChartApi"
+    },
+    "274": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "ChartProps"
+    },
+    "275": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "OptionsChartProps"
+    },
+    "276": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "YieldCurveChartProps"
+    },
+    "277": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "CustomChartProps"
+    },
+    "278": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type"
+    },
+    "279": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type.horzScaleBehavior"
+    },
+    "280": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "HorzScaleItem"
+    },
+    "281": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "THorzScaleBehavior"
+    },
+    "282": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "GenericChartProps"
+    },
+    "284": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type.children"
+    },
+    "285": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type.containerProps"
+    },
+    "286": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type.onClick"
+    },
+    "287": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/chart/types.ts",
+      "qualifiedName": "__type.onCrosshairMove"
     },
     "288": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "__type.onInit"
     },
     "289": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.clear"
+      "qualifiedName": "__type"
     },
     "290": {
       "packageName": "lightweight-charts-react-components",
@@ -8723,227 +8818,227 @@
     "291": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "chart"
     },
     "292": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "HorzScaleItem"
+      "qualifiedName": "__type.options"
     },
     "293": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "TChartApi"
+      "qualifiedName": "__type.onDblClick"
     },
     "294": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "ChartProps"
+      "qualifiedName": "HorzScaleItem"
     },
     "295": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "OptionsChartProps"
+      "qualifiedName": "TChartApi"
     },
     "296": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/chart/types.ts",
-      "qualifiedName": "YieldCurveChartProps"
-    },
-    "297": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "CustomChartProps"
-    },
-    "298": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type"
-    },
-    "299": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.horzScaleBehavior"
-    },
-    "300": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "301": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "THorzScaleBehavior"
-    },
-    "302": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "GenericChartProps"
-    },
-    "304": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.children"
-    },
-    "305": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.containerProps"
-    },
-    "306": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.onClick"
-    },
-    "307": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.onCrosshairMove"
-    },
-    "308": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.onInit"
-    },
-    "309": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type"
-    },
-    "310": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type"
-    },
-    "311": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "chart"
-    },
-    "312": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.options"
-    },
-    "313": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "__type.onDblClick"
-    },
-    "314": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "315": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
-      "qualifiedName": "TChartApi"
-    },
-    "316": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/chart/types.ts",
       "qualifiedName": "TOptions"
     },
-    "317": {
+    "297": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/TimeScale.tsx",
       "qualifiedName": "TimeScale"
     },
-    "318": {
+    "298": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/PriceScale.tsx",
       "qualifiedName": "PriceScale"
     },
-    "319": {
+    "299": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/TimeScaleFitContentTrigger.tsx",
       "qualifiedName": "TimeScaleFitContentTrigger"
     },
-    "320": {
+    "300": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/TimeScaleFitContentTrigger.tsx",
       "qualifiedName": "TimeScaleFitContentTrigger"
     },
-    "321": {
+    "301": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/TimeScaleFitContentTrigger.tsx",
       "qualifiedName": "__0"
     },
-    "322": {
+    "302": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "PriceScaleProps"
     },
-    "324": {
+    "304": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.options"
     },
-    "325": {
+    "305": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.id"
     },
-    "326": {
+    "306": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "TimeScaleProps"
     },
-    "328": {
+    "308": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.onVisibleTimeRangeChange"
     },
-    "329": {
+    "309": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.onVisibleLogicalRangeChange"
     },
-    "330": {
+    "310": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.onSizeChange"
     },
-    "331": {
+    "311": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.visibleRange"
     },
-    "332": {
+    "312": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.visibleLogicalRange"
     },
-    "333": {
+    "313": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.options"
     },
-    "334": {
+    "314": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.children"
     },
-    "335": {
+    "315": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "336": {
+    "316": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "PriceScaleApiRef"
     },
-    "338": {
+    "318": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type._priceScale"
     },
-    "339": {
+    "319": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.api"
+    },
+    "320": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "321": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "322": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type.init"
+    },
+    "323": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "324": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "325": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type.setId"
+    },
+    "326": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "327": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "328": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "id"
+    },
+    "329": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type.clear"
+    },
+    "330": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "331": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "332": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "TimeScaleApiRef"
+    },
+    "334": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type._timeScale"
+    },
+    "335": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type.api"
+    },
+    "336": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "337": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
+    },
+    "338": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type.init"
+    },
+    "339": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/scales/types.ts",
+      "qualifiedName": "__type"
     },
     "340": {
       "packageName": "lightweight-charts-react-components",
@@ -8953,12 +9048,12 @@
     "341": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "__type.clear"
     },
     "342": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type.init"
+      "qualifiedName": "__type"
     },
     "343": {
       "packageName": "lightweight-charts-react-components",
@@ -8968,417 +9063,422 @@
     "344": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "HorzScaleItem"
     },
     "345": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type.setId"
-    },
-    "346": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "TimeScaleFitContentTriggerProps"
     },
     "347": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "348": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "id"
-    },
-    "349": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type.clear"
-    },
-    "350": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "351": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "352": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "TimeScaleApiRef"
-    },
-    "354": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type._timeScale"
-    },
-    "355": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type.api"
-    },
-    "356": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "357": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "358": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type.init"
-    },
-    "359": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "360": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "361": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type.clear"
-    },
-    "362": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "363": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "__type"
-    },
-    "364": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "365": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
-      "qualifiedName": "TimeScaleFitContentTriggerProps"
-    },
-    "367": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/scales/types.ts",
       "qualifiedName": "__type.deps"
     },
-    "368": {
+    "348": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/LineSeries.tsx",
       "qualifiedName": "LineSeries"
     },
-    "369": {
+    "349": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/HistogramSeries.tsx",
       "qualifiedName": "HistogramSeries"
     },
-    "370": {
+    "350": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/CandlestickSeries.tsx",
       "qualifiedName": "CandlestickSeries"
     },
-    "371": {
+    "351": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/AreaSeries.tsx",
       "qualifiedName": "AreaSeries"
     },
-    "372": {
+    "352": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/BaselineSeries.tsx",
       "qualifiedName": "BaselineSeries"
     },
-    "373": {
+    "353": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/BarSeries.tsx",
       "qualifiedName": "BarSeries"
     },
-    "374": {
+    "354": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/CustomSeries.tsx",
       "qualifiedName": "CustomSeries"
     },
-    "375": {
+    "355": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "SeriesApiRef"
     },
-    "377": {
+    "357": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type._series"
     },
-    "378": {
+    "358": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type.api"
     },
-    "379": {
+    "359": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type"
     },
-    "380": {
+    "360": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type"
     },
-    "381": {
+    "361": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type.init"
     },
-    "382": {
+    "362": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type"
     },
-    "383": {
+    "363": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type"
     },
-    "384": {
+    "364": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type.clear"
     },
-    "385": {
+    "365": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type"
     },
-    "386": {
+    "366": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "__type"
     },
-    "387": {
+    "367": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "T"
     },
-    "388": {
+    "368": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "389": {
+    "369": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "SeriesProps"
     },
-    "390": {
+    "370": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "T"
     },
-    "391": {
+    "371": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "392": {
+    "372": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "SeriesOptions"
     },
-    "393": {
+    "373": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/series/types.ts",
       "qualifiedName": "T"
     },
-    "394": {
+    "374": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/PriceLine.tsx",
       "qualifiedName": "PriceLine"
     },
-    "395": {
+    "375": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "PriceLineApiRef"
     },
-    "397": {
+    "377": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type._priceLine"
     },
-    "398": {
+    "378": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type.api"
     },
-    "399": {
+    "379": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type"
     },
-    "400": {
+    "380": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type"
     },
-    "401": {
+    "381": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type.init"
     },
-    "402": {
+    "382": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type"
     },
-    "403": {
+    "383": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type"
     },
-    "404": {
+    "384": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type.clear"
     },
-    "405": {
+    "385": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type"
     },
-    "406": {
+    "386": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type"
     },
-    "407": {
+    "387": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "PriceLineProps"
     },
-    "409": {
+    "389": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type.price"
     },
-    "410": {
+    "390": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/priceLine/types.ts",
       "qualifiedName": "__type.options"
     },
-    "411": {
+    "391": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/Markers.tsx",
       "qualifiedName": "Markers"
     },
-    "412": {
+    "392": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "MarkersProps"
     },
-    "414": {
+    "394": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type.markers"
     },
-    "415": {
+    "395": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type.options"
     },
-    "416": {
+    "396": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type.reactive"
     },
-    "417": {
+    "397": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "418": {
+    "398": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "MarkersApiRef"
     },
-    "420": {
+    "400": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type._markers"
     },
-    "421": {
+    "401": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type.api"
     },
-    "422": {
+    "402": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type"
     },
-    "423": {
+    "403": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type"
     },
-    "424": {
+    "404": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type.init"
     },
-    "425": {
+    "405": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type"
     },
-    "426": {
+    "406": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type"
     },
-    "427": {
+    "407": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type.clear"
     },
-    "428": {
+    "408": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type"
     },
-    "429": {
+    "409": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "__type"
     },
-    "430": {
+    "410": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/markers/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "431": {
+    "411": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/Watermark.tsx",
       "qualifiedName": "WatermarkText"
     },
-    "432": {
+    "412": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/Watermark.tsx",
       "qualifiedName": "WatermarkImage"
     },
-    "433": {
+    "413": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
       "qualifiedName": "WatermarkApiRef"
+    },
+    "414": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "415": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type._watermark"
+    },
+    "416": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type.api"
+    },
+    "417": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "418": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "419": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type.init"
+    },
+    "420": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "421": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "422": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type.clear"
+    },
+    "423": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "424": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "425": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "426": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type._watermark"
+    },
+    "427": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type.api"
+    },
+    "428": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "429": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "430": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type.init"
+    },
+    "431": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "432": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type"
+    },
+    "433": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/watermark/types.ts",
+      "qualifiedName": "__type.clear"
     },
     "434": {
       "packageName": "lightweight-charts-react-components",
@@ -9388,32 +9488,32 @@
     "435": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type._watermark"
+      "qualifiedName": "__type"
     },
     "436": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type.api"
+      "qualifiedName": "T"
     },
     "437": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "HorzScaleItem"
     },
     "438": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "WatermarkType"
     },
     "439": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type.init"
+      "qualifiedName": "TextWatermarkProps"
     },
     "440": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "ImageWatermarkProps"
     },
     "441": {
       "packageName": "lightweight-charts-react-components",
@@ -9423,167 +9523,157 @@
     "442": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type.clear"
-    },
-    "443": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "444": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "445": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "446": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type._watermark"
-    },
-    "447": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type.api"
-    },
-    "448": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "449": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "450": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type.init"
-    },
-    "451": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "452": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "453": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type.clear"
-    },
-    "454": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "455": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "456": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "T"
-    },
-    "457": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "458": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "WatermarkType"
-    },
-    "459": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "TextWatermarkProps"
-    },
-    "460": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "ImageWatermarkProps"
-    },
-    "461": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
-      "qualifiedName": "__type"
-    },
-    "462": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/watermark/types.ts",
       "qualifiedName": "__type.src"
     },
-    "463": {
+    "443": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/PanePrimitive.tsx",
       "qualifiedName": "PanePrimitive"
     },
-    "464": {
+    "444": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/SeriesPrimitive.tsx",
       "qualifiedName": "SeriesPrimitive"
     },
-    "465": {
+    "445": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "PanePrimitiveApiRef"
     },
-    "467": {
+    "447": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type._primitive"
     },
-    "468": {
+    "448": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type.api"
     },
-    "469": {
+    "449": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type.api"
     },
-    "470": {
+    "450": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type.init"
     },
-    "471": {
+    "451": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type.init"
     },
-    "472": {
+    "452": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type.clear"
     },
-    "473": {
+    "453": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "__type.clear"
     },
-    "474": {
+    "454": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "HorzScaleItem"
     },
-    "475": {
+    "455": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
       "qualifiedName": "PanePrimitiveProps"
+    },
+    "456": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "HorzScaleItem"
+    },
+    "457": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "RenderPanePrimitive"
+    },
+    "458": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type"
+    },
+    "459": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type"
+    },
+    "461": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type"
+    },
+    "462": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type.chart"
+    },
+    "463": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type.pane"
+    },
+    "464": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "HorzScaleItem"
+    },
+    "465": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "RenderPrimitive"
+    },
+    "466": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type"
+    },
+    "467": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type"
+    },
+    "469": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type"
+    },
+    "470": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type.chart"
+    },
+    "471": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type.series"
+    },
+    "472": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "T"
+    },
+    "473": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "HorzScaleItem"
+    },
+    "474": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "SeriesPrimitiveProps"
+    },
+    "475": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "T"
     },
     "476": {
       "packageName": "lightweight-charts-react-components",
@@ -9593,139 +9683,49 @@
     "477": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "RenderPanePrimitive"
-    },
-    "478": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "SeriesPrimitiveApiRef"
     },
     "479": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "__type._primitive"
+    },
+    "480": {
+      "packageName": "lightweight-charts-react-components",
+      "packagePath": "src/primitives/types.ts",
+      "qualifiedName": "__type.api"
     },
     "481": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "__type.api"
     },
     "482": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.chart"
+      "qualifiedName": "__type.init"
     },
     "483": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.pane"
+      "qualifiedName": "__type.init"
     },
     "484": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "HorzScaleItem"
+      "qualifiedName": "__type.clear"
     },
     "485": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "RenderPrimitive"
+      "qualifiedName": "__type.clear"
     },
     "486": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type"
+      "qualifiedName": "HorzScaleItem"
     },
     "487": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type"
-    },
-    "489": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type"
-    },
-    "490": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.chart"
-    },
-    "491": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.series"
-    },
-    "492": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "T"
-    },
-    "493": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "494": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "SeriesPrimitiveProps"
-    },
-    "495": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "T"
-    },
-    "496": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "497": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "SeriesPrimitiveApiRef"
-    },
-    "499": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type._primitive"
-    },
-    "500": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.api"
-    },
-    "501": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.api"
-    },
-    "502": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.init"
-    },
-    "503": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.init"
-    },
-    "504": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.clear"
-    },
-    "505": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "__type.clear"
-    },
-    "506": {
-      "packageName": "lightweight-charts-react-components",
-      "packagePath": "src/primitives/types.ts",
-      "qualifiedName": "HorzScaleItem"
-    },
-    "507": {
       "packageName": "lightweight-charts-react-components",
       "packagePath": "src/pane/Pane.tsx",
       "qualifiedName": "Pane"
@@ -9738,9 +9738,9 @@
       "3": "lib"
     },
     "reflections": {
-      "1": 254,
-      "2": 254,
-      "3": 254
+      "1": 234,
+      "2": 234,
+      "3": 234
     }
   }
 }

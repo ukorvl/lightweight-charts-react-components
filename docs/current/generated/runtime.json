@@ -3,7 +3,7 @@
   "title": "Current",
   "status": "unreleased",
   "description": "Editable working docs source for the next docs line.",
-  "generatedAt": "2026-06-07T13:49:18.111Z",
+  "generatedAt": "2026-08-05T20:38:24.343Z",
   "topics": [
     {
       "id": "chart",
@@ -28,7 +28,7 @@
           "name": "Chart",
           "kind": "Variable",
           "summary": "Chart component that can be used to create a chart.",
-          "type": "ForwardRefExoticComponent<ChartProps & RefAttributes<HTMLDivElement>>",
+          "type": "ForwardRefExoticComponent<ChartProps & RefAttributes<ChartApiRef<Time, IChartApi>>>",
           "properties": [],
           "signatures": [],
           "see": [
@@ -48,7 +48,7 @@
         {
           "name": "ChartApiRef",
           "kind": "TypeAlias",
-          "summary": "Chart API reference type that can be used to access the chart plugin API.",
+          "summary": "Chart API reference type that can be used to access the chart API.",
           "properties": [
             {
               "name": "_chart",
@@ -87,7 +87,7 @@
           "name": "ChartProps",
           "kind": "TypeAlias",
           "summary": "Chart component props.",
-          "type": "GenericChartProps<Time, IChartApi, TimeChartOptions>",
+          "type": "GenericChartProps<Time, TimeChartOptions>",
           "properties": [
             {
               "name": "children",
@@ -101,6 +101,13 @@
               "kind": "Property",
               "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
               "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "containerRef",
+              "kind": "Property",
+              "summary": "Ref for the container element rendered by the chart wrapper component.",
+              "type": "Ref<HTMLDivElement>",
               "optional": true
             },
             {
@@ -122,13 +129,6 @@
               "kind": "Property",
               "summary": "Callback function that is called when the chart is double-clicked.",
               "type": "MouseEventHandler<HorzScaleItem>",
-              "optional": true
-            },
-            {
-              "name": "onInit",
-              "kind": "Property",
-              "summary": "Callback function that is called when the chart is initialized.",
-              "type": "(chart: TChartApi) => void",
               "optional": true
             },
             {
@@ -169,7 +169,7 @@
           "name": "CustomChartProps",
           "kind": "TypeAlias",
           "summary": "CustomChart component props.",
-          "type": "GenericChartProps<HorzScaleItem, IChartApiBase<HorzScaleItem>, ReturnType<THorzScaleBehavior[\"options\"]>> & { horzScaleBehavior: THorzScaleBehavior }",
+          "type": "GenericChartProps<HorzScaleItem, ReturnType<THorzScaleBehavior[\"options\"]>> & { horzScaleBehavior: THorzScaleBehavior }",
           "properties": [],
           "signatures": [],
           "see": [],
@@ -195,6 +195,13 @@
               "optional": true
             },
             {
+              "name": "containerRef",
+              "kind": "Property",
+              "summary": "Ref for the container element rendered by the chart wrapper component.",
+              "type": "Ref<HTMLDivElement>",
+              "optional": true
+            },
+            {
               "name": "onClick",
               "kind": "Property",
               "summary": "Callback function that is called when the chart is clicked.",
@@ -216,13 +223,6 @@
               "optional": true
             },
             {
-              "name": "onInit",
-              "kind": "Property",
-              "summary": "Callback function that is called when the chart is initialized.",
-              "type": "(chart: TChartApi) => void",
-              "optional": true
-            },
-            {
               "name": "options",
               "kind": "Property",
               "summary": "Options for the chart.",
@@ -238,7 +238,7 @@
           "name": "OptionsChart",
           "kind": "Variable",
           "summary": "OptionsChart component that can be used to create a price-based horizontal scale chart.",
-          "type": "ForwardRefExoticComponent<OptionsChartProps & RefAttributes<HTMLDivElement>>",
+          "type": "ForwardRefExoticComponent<OptionsChartProps & RefAttributes<ChartApiRef<number, IChartApiBase<number>>>>",
           "properties": [],
           "signatures": [],
           "see": [
@@ -259,7 +259,7 @@
           "name": "OptionsChartProps",
           "kind": "TypeAlias",
           "summary": "OptionsChart component props.",
-          "type": "GenericChartProps<number, IChartApiBase<number>, PriceChartOptions>",
+          "type": "GenericChartProps<number, PriceChartOptions>",
           "properties": [
             {
               "name": "children",
@@ -273,6 +273,13 @@
               "kind": "Property",
               "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
               "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "containerRef",
+              "kind": "Property",
+              "summary": "Ref for the container element rendered by the chart wrapper component.",
+              "type": "Ref<HTMLDivElement>",
               "optional": true
             },
             {
@@ -297,13 +304,6 @@
               "optional": true
             },
             {
-              "name": "onInit",
-              "kind": "Property",
-              "summary": "Callback function that is called when the chart is initialized.",
-              "type": "(chart: TChartApi) => void",
-              "optional": true
-            },
-            {
               "name": "options",
               "kind": "Property",
               "summary": "Options for the chart.",
@@ -320,7 +320,7 @@
           "name": "YieldCurveChart",
           "kind": "Variable",
           "summary": "YieldCurveChart component that can be used to create a yield curve chart.",
-          "type": "ForwardRefExoticComponent<YieldCurveChartProps & RefAttributes<HTMLDivElement>>",
+          "type": "ForwardRefExoticComponent<YieldCurveChartProps & RefAttributes<ChartApiRef<number, IYieldCurveChartApi>>>",
           "properties": [],
           "signatures": [],
           "see": [
@@ -341,7 +341,7 @@
           "name": "YieldCurveChartProps",
           "kind": "TypeAlias",
           "summary": "YieldCurveChart component props.",
-          "type": "GenericChartProps<number, IYieldCurveChartApi, YieldCurveChartOptions>",
+          "type": "GenericChartProps<number, YieldCurveChartOptions>",
           "properties": [
             {
               "name": "children",
@@ -355,6 +355,13 @@
               "kind": "Property",
               "summary": "The props for the container element on which the chart will be rendered.\nThe wrapper sets `aria-hidden` to `true` by default because Lightweight Charts\nrenders layout tables internally; override it explicitly if you provide your own\naccessible labelling strategy.",
               "type": "JSX.IntrinsicElements[\"div\"]",
+              "optional": true
+            },
+            {
+              "name": "containerRef",
+              "kind": "Property",
+              "summary": "Ref for the container element rendered by the chart wrapper component.",
+              "type": "Ref<HTMLDivElement>",
               "optional": true
             },
             {
@@ -376,13 +383,6 @@
               "kind": "Property",
               "summary": "Callback function that is called when the chart is double-clicked.",
               "type": "MouseEventHandler<HorzScaleItem>",
-              "optional": true
-            },
-            {
-              "name": "onInit",
-              "kind": "Property",
-              "summary": "Callback function that is called when the chart is initialized.",
-              "type": "(chart: TChartApi) => void",
               "optional": true
             },
             {
@@ -1287,7 +1287,7 @@
       "title": "Series Primitives",
       "summary": "Series-scoped Lightweight Charts plugins rendered declaratively.",
       "description": "Attach Lightweight Charts series plugins through a React component boundary.",
-      "html": "<p>Use <code>SeriesPrimitive</code> when you need custom drawing that belongs to exactly one series. The\ncomponent accepts either an already-created upstream plugin instance or a <code>render</code>\nfunction that receives the current chart and series APIs.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"series-primitive.tsx\"><figcaption class=\"docs-code-example__title\">Attach a custom series primitive</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  SeriesPrimitive,\n} from &quot;lightweight-charts-react-components&quot;;\nimport type { ISeriesPrimitive, Time } from &quot;lightweight-charts&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nclass NoopSeriesPrimitive implements ISeriesPrimitive&lt;Time&gt; {\n  paneViews() {\n    return [];\n  }\n}\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data}&gt;\n        &lt;SeriesPrimitive render={() =&gt; new NoopSeriesPrimitive()} /&gt;\n      &lt;/LineSeries&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>For a complete visual primitive example, see the\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Primitives\">Primitives sample</a>.</p>",
+      "html": "<p>Use <code>SeriesPrimitive</code> when you need custom drawing that belongs to exactly one series. The\ncomponent accepts either an already-created upstream plugin instance or a <code>render</code>\nfunction that receives the current chart and series APIs.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"series-primitive.tsx\"><figcaption class=\"docs-code-example__title\">Attach a custom series primitive</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport { Chart, LineSeries, SeriesPrimitive } from &quot;lightweight-charts-react-components&quot;;\nimport type { ISeriesPrimitive, Time } from &quot;lightweight-charts&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nclass NoopSeriesPrimitive implements ISeriesPrimitive&lt;Time&gt; {\n  paneViews() {\n    return [];\n  }\n}\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;LineSeries data={data}&gt;\n        &lt;SeriesPrimitive render={() =&gt; new NoopSeriesPrimitive()} /&gt;\n      &lt;/LineSeries&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>For a complete visual primitive example, see the\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/Primitives\">Primitives sample</a>.</p>",
       "exports": [
         "RenderPrimitive",
         "SeriesPrimitive",
@@ -1330,33 +1330,8 @@
           "name": "SeriesPrimitiveApiRef",
           "kind": "TypeAlias",
           "summary": "Series primitive API reference type that can be used to access the series primitive plugin API.",
-          "properties": [
-            {
-              "name": "_primitive",
-              "kind": "Property",
-              "summary": "Internal reference to the series primitive API instance.",
-              "type": "ISeriesPrimitive<HorzScaleItem> | null",
-              "optional": false
-            },
-            {
-              "name": "api",
-              "kind": "Method",
-              "summary": "",
-              "optional": false
-            },
-            {
-              "name": "clear",
-              "kind": "Method",
-              "summary": "",
-              "optional": false
-            },
-            {
-              "name": "init",
-              "kind": "Method",
-              "summary": "",
-              "optional": false
-            }
-          ],
+          "type": "ReactivePrimitiveApiRef<ISeriesPrimitive<HorzScaleItem>>",
+          "properties": [],
           "signatures": [],
           "see": [],
           "examples": []
@@ -1365,7 +1340,7 @@
           "name": "SeriesPrimitiveProps",
           "kind": "TypeAlias",
           "summary": "Series primitive properties that can be used to create a series primitive.",
-          "type": "SeriesPrimitivePropsWithRender<T, HorzScaleItem> | SeriesPrimitivePropsWithPlugin<HorzScaleItem>",
+          "type": "ReactivePrimitiveProps<ISeriesPrimitive<HorzScaleItem>, RenderPrimitive<T, HorzScaleItem>>",
           "properties": [],
           "signatures": [],
           "see": [],
@@ -1378,7 +1353,7 @@
       "title": "Pane Primitives",
       "summary": "Pane-wide Lightweight Charts plugins rendered declaratively.",
       "description": "Attach pane-wide Lightweight Charts plugins through React.",
-      "html": "<p><code>PanePrimitive</code> is the pane-scoped sibling of <code>SeriesPrimitive</code>. Reach for it when the\nplugin belongs to the whole pane rather than to a specific series, such as session bands,\nbackground highlights, or pane-level overlays.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"pane-primitive.tsx\"><figcaption class=\"docs-code-example__title\">Attach a pane-wide primitive</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport { Chart, LineSeries, Pane, PanePrimitive } from &quot;lightweight-charts-react-components&quot;;\nimport type { IPanePrimitive, Time } from &quot;lightweight-charts&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nclass NoopPanePrimitive implements IPanePrimitive&lt;Time&gt; {\n  paneViews() {\n    return [];\n  }\n}\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;Pane&gt;\n        &lt;LineSeries data={data} /&gt;\n        &lt;PanePrimitive render={() =&gt; new NoopPanePrimitive()} /&gt;\n      &lt;/Pane&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>This topic is new in the <code>v2.3</code> docs line and is intentionally separate from series\nprimitives because the attachment target and the upstream plugin interfaces are different.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/PanePrimitives\">Pane primitives sample</a>\nfor a richer example with pane-wide highlights.</p>",
+      "html": "<p><code>PanePrimitive</code> is the pane-scoped sibling of <code>SeriesPrimitive</code>. Reach for it when the\nplugin belongs to the whole pane rather than to a specific series, such as session bands,\nbackground highlights, or pane-level overlays.</p>\n<figure class=\"docs-code-example\" data-snippet-path=\"pane-primitive.tsx\"><figcaption class=\"docs-code-example__title\">Attach a pane-wide primitive</figcaption><pre class=\"docs-code-example__body\"><code class=\"language-tsx\">import React from &quot;react&quot;;\nimport {\n  Chart,\n  LineSeries,\n  Pane,\n  PanePrimitive,\n} from &quot;lightweight-charts-react-components&quot;;\nimport type { IPanePrimitive, Time } from &quot;lightweight-charts&quot;;\n\nconst data = [\n  { time: &quot;2026-06-02&quot;, value: 101 },\n  { time: &quot;2026-06-03&quot;, value: 104 },\n  { time: &quot;2026-06-04&quot;, value: 103 },\n  { time: &quot;2026-06-05&quot;, value: 108 },\n];\n\nclass NoopPanePrimitive implements IPanePrimitive&lt;Time&gt; {\n  paneViews() {\n    return [];\n  }\n}\n\nconst App = () =&gt; {\n  return (\n    &lt;Chart options={{ width: 640, height: 320 }}&gt;\n      &lt;Pane&gt;\n        &lt;LineSeries data={data} /&gt;\n        &lt;PanePrimitive render={() =&gt; new NoopPanePrimitive()} /&gt;\n      &lt;/Pane&gt;\n    &lt;/Chart&gt;\n  );\n};\n\nexport { App };</code></pre></figure>\n<p>This topic is new in the <code>v2.3</code> docs line and is intentionally separate from series\nprimitives because the attachment target and the upstream plugin interfaces are different.</p>\n<p>See the full\n<a href=\"https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/PanePrimitives\">Pane primitives sample</a>\nfor a richer example with pane-wide highlights.</p>",
       "exports": [
         "PanePrimitive",
         "PanePrimitiveApiRef",
@@ -1411,33 +1386,8 @@
           "name": "PanePrimitiveApiRef",
           "kind": "TypeAlias",
           "summary": "Pane primitive API reference type that can be used to access the pane primitive plugin API.",
-          "properties": [
-            {
-              "name": "_primitive",
-              "kind": "Property",
-              "summary": "Internal reference to the pane primitive API instance.",
-              "type": "IPanePrimitive<HorzScaleItem> | null",
-              "optional": false
-            },
-            {
-              "name": "api",
-              "kind": "Method",
-              "summary": "",
-              "optional": false
-            },
-            {
-              "name": "clear",
-              "kind": "Method",
-              "summary": "",
-              "optional": false
-            },
-            {
-              "name": "init",
-              "kind": "Method",
-              "summary": "",
-              "optional": false
-            }
-          ],
+          "type": "ReactivePrimitiveApiRef<IPanePrimitive<HorzScaleItem>>",
+          "properties": [],
           "signatures": [],
           "see": [],
           "examples": []
@@ -1446,7 +1396,7 @@
           "name": "PanePrimitiveProps",
           "kind": "TypeAlias",
           "summary": "Pane primitive properties that can be used to create a pane primitive.",
-          "type": "PanePrimitivePropsWithRender<HorzScaleItem> | PanePrimitivePropsWithPlugin<HorzScaleItem>",
+          "type": "ReactivePrimitiveProps<IPanePrimitive<HorzScaleItem>, RenderPanePrimitive<HorzScaleItem>>",
           "properties": [],
           "signatures": [],
           "see": [],

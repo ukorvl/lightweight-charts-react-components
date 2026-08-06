@@ -139,7 +139,7 @@ const versionsRoot = path.join(docsRoot, "versions");
 const examplesDocsDataRoot = path.join(repoRoot, "examples", "public", "docs-data");
 const lineOutputRoot = path.join(examplesDocsDataRoot, "lines");
 
-const readJson = async <T>(filePath: string): Promise<T> =>
+const readJson = async <T,>(filePath: string): Promise<T> =>
   JSON.parse(await readFile(filePath, "utf8")) as T;
 
 const writeJson = async (filePath: string, value: unknown) => {
@@ -148,7 +148,10 @@ const writeJson = async (filePath: string, value: unknown) => {
 };
 
 const commentToText = (comment?: Comment) =>
-  comment?.summary?.map(fragment => fragment.text).join("").trim() ?? "";
+  comment?.summary
+    ?.map(fragment => fragment.text)
+    .join("")
+    .trim() ?? "";
 
 const tagContentToText = (comment?: Comment, tagName?: string) =>
   (comment?.blockTags ?? [])
@@ -226,7 +229,8 @@ const resolveProperties = (
 };
 
 const normalizeSignature = (signature: SignatureReflection): NormalizedApiSignature => ({
-  summary: commentToText(signature.comment) || tagContentToText(signature.comment, "@returns"),
+  summary:
+    commentToText(signature.comment) || tagContentToText(signature.comment, "@returns"),
   parameters: (signature.parameters ?? []).map(parameter => ({
     name: parameter.name,
     type: parameter.type?.toString(),
@@ -259,9 +263,9 @@ const findExportReflection = (
   project: ProjectReflection,
   exportName: string
 ): DeclarationReflection | undefined =>
-  (project.children ?? []).find(
-    child => child.name === exportName
-  ) as DeclarationReflection | undefined;
+  (project.children ?? []).find(child => child.name === exportName) as
+    | DeclarationReflection
+    | undefined;
 
 const renderGuideHtml = async (
   sourceDir: string,
@@ -283,13 +287,7 @@ const renderGuideHtml = async (
   const html = renderToStaticMarkup(
     createElement(Content, {
       components: {
-        CodeExample: ({
-          path: snippetPath,
-          title,
-        }: {
-          path: string;
-          title?: string;
-        }) => {
+        CodeExample: ({ path: snippetPath, title }: { path: string; title?: string }) => {
           const source = snippets.get(snippetPath);
 
           if (!source) {
@@ -305,7 +303,11 @@ const renderGuideHtml = async (
               "data-snippet-path": snippetPath,
             },
             title
-              ? createElement("figcaption", { className: "docs-code-example__title" }, title)
+              ? createElement(
+                  "figcaption",
+                  { className: "docs-code-example__title" },
+                  title
+                )
               : null,
             createElement(
               "pre",
@@ -332,10 +334,10 @@ const loadSnippets = async (sourceDir: string) => {
   const entries = await Promise.all(
     snippetFiles
       .filter(fileName => fileName.endsWith(".tsx"))
-      .map(async fileName => [
-        fileName,
-        await readFile(path.join(snippetDir, fileName), "utf8"),
-      ] as const)
+      .map(
+        async fileName =>
+          [fileName, await readFile(path.join(snippetDir, fileName), "utf8")] as const
+      )
   );
 
   return new Map(entries);
@@ -468,7 +470,10 @@ const writeLineOutputs = async (
   typedocProjectObject: unknown
 ) => {
   await writeJson(path.join(line.sourceDir, "generated", "runtime.json"), runtimePayload);
-  await writeJson(path.join(line.sourceDir, "generated", "typedoc.json"), typedocProjectObject);
+  await writeJson(
+    path.join(line.sourceDir, "generated", "typedoc.json"),
+    typedocProjectObject
+  );
   await writeJson(path.join(lineOutputRoot, `${line.manifest.id}.json`), runtimePayload);
 };
 
@@ -510,7 +515,10 @@ const main = async () => {
     try {
       const { app, project } = await buildTypedocProject(apiSource.rootDir);
       const runtimePayload = await buildRuntimePayload(line, topicRegistry, project);
-      const typedocProjectObject = app.serializer.projectToObject(project, apiSource.rootDir);
+      const typedocProjectObject = app.serializer.projectToObject(
+        project,
+        apiSource.rootDir
+      );
 
       await writeLineOutputs(line, runtimePayload, typedocProjectObject);
     } finally {

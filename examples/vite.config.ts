@@ -293,6 +293,26 @@ const getUserConfig: UserConfigFn = ({ command }) => ({
     outDir: "dist",
     rollupOptions: {
       input: "./index.html",
+      output: {
+        manualChunks(id) {
+          if (id.includes("/node_modules/@lezer/")) {
+            return "codemirror-parser";
+          }
+
+          if (
+            id.includes("/node_modules/@codemirror/") ||
+            id.includes("/node_modules/@uiw/") ||
+            id.includes("/node_modules/@marijn/") ||
+            id.includes("/node_modules/style-mod/") ||
+            id.includes("/node_modules/w3c-keyname/") ||
+            id.includes("/node_modules/crelt/")
+          ) {
+            return "codemirror-core";
+          }
+
+          return undefined;
+        },
+      },
     },
     copyPublicDir: true,
     assetsInlineLimit: 8192,

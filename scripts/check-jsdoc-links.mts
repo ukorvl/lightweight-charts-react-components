@@ -22,9 +22,9 @@ const fileName = "index.d.ts";
 const potentiallyDTSBundleFile = path.join(libOutputDir, fileName);
 const localDocsHost = "ukorvl.github.io";
 const localDocsBasePath = "/lightweight-charts-react-components/docs";
-const topicRegistry = JSON.parse(
-  await readFile(docsTopicRegistryPath, "utf8")
-) as Array<{ id: string }>;
+const topicRegistry = JSON.parse(await readFile(docsTopicRegistryPath, "utf8")) as Array<{
+  id: string;
+}>;
 const localDocsPaths = new Set([
   `${localDocsBasePath}`,
   `${localDocsBasePath}/`,
