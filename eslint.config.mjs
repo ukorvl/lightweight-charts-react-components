@@ -16,6 +16,7 @@ export default [
       "**/dist",
       "**/coverage/",
       "**/.rslib",
+      "**/.stryker-tmp",
       "lib/tests/readme/extracted-snippets",
       "lib/tests/bench/output",
       "examples/tests/e2e/output",

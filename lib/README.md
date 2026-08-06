@@ -31,6 +31,10 @@
     </picture>
   </a>
 
+  <a href="https://dashboard.stryker-mutator.io/reports/github.com/ukorvl/lightweight-charts-react-components/main">
+    <img src="https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fukorvl%2Flightweight-charts-react-components%2Fmain" alt="Mutation testing badge">
+  </a>
+
   <a href="https://pkg.pr.new/~/ukorvl/lightweight-charts-react-components">
     <img src="https://pkg.pr.new/badge/ukorvl/lightweight-charts-react-components" alt="pkg.pr.new">
   </a>

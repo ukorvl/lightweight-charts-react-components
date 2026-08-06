@@ -107,6 +107,7 @@ npm run test:unit:watch -w examples
 npm run test:e2e -w examples
 npm run test:e2e:ui -w examples
 npm run test:lighthouse -w examples
+npm run mutate -w examples
 ```
 
 `npm run test -w examples` runs the unit, E2E, and Lighthouse checks together. Use

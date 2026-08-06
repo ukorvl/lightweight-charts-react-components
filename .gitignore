@@ -25,6 +25,7 @@ bundlemeta.json
 
 # Testing
 coverage/
+reports/
 .nyc_output/
 jest-html-reporters-*/ 
 
@@ -64,3 +65,6 @@ skills-lock.json
 # repo-native skills that should not be ignored
 !.agents/skills/release-manager/
 !.agents/skills/release-manager/**
+
+# stryker temp files
+.stryker-tmp
