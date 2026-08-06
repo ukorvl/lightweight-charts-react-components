@@ -1,0 +1,27 @@
+---
+title: Chart
+description: Create chart containers and choose the Lightweight Charts constructor that
+  matches your horizontal scale.
+---
+
+The chart family is the top-level entry point for the wrapper. Start with `Chart` for
+time-based charts, then reach for `OptionsChart`, `YieldCurveChart`, or `CustomChart`
+when you need a different horizontal scale model.
+
+`Chart` renders the container `<div>` for you and passes the chart API down through React
+context so nested panes, series, scales, watermarks, and primitives can attach
+declaratively.
+
+<CodeExample path="chart-basic.tsx" title="Minimal chart" />
+
+Use chart variants when your data model is not the default time scale. The chart topic
+also owns `containerProps`, click handlers, crosshair handlers, and the generic
+`ChartApiRef` / `GenericChartProps` types exposed by the package.
+
+<CodeExample path="chart-panes.tsx" title="Multi-pane chart" />
+
+See the full
+[Basic series sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/BasicSeries)
+and
+[Chart types sample](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/ChartTypes)
+for larger integrations.

@@ -1,0 +1,20 @@
+{
+  "id": "current",
+  "title": "Current",
+  "status": "unreleased",
+  "description": "Editable working docs source for the next docs line.",
+  "apiSource": "workspace",
+  "topics": [
+    "chart",
+    "series",
+    "price-lines",
+    "markers",
+    "watermarks",
+    "time-scale",
+    "time-scale-fit-content-trigger",
+    "price-scale",
+    "panes",
+    "series-primitives",
+    "pane-primitives"
+  ]
+}

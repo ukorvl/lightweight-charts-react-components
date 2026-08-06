@@ -18,8 +18,8 @@
     }
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "npm --prefix .. run generate:docs && vite",
+    "build": "npm --prefix .. run generate:docs && vite build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:node": "tsc -p tsconfig.node.json --noEmit",
     "preview": "vite preview",
@@ -43,11 +43,13 @@
     "vite-plugin-static-copy": "^3.2.0"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.5",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.5.0",
     "@mui/material": "^6.4.7",
     "@react-hook/resize-observer": "^2.0.2",
+    "@uiw/react-codemirror": "^4.25.11",
     "@uiw/react-color-wheel": "^2.10.1",
     "@ukorvl/react-on-screen": "^1.0.7",
     "copy-to-clipboard": "^3.3.3",
