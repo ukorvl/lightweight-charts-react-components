@@ -5,11 +5,17 @@
   "testRunner": "vitest",
   "coverageAnalysis": "perTest",
   "thresholds": {
-    "break": 1
+    "break": 90
   },
   "ignorePatterns": ["/coverage", "/dist"],
   "ignoreStatic": true,
-  "mutate": ["src/**/*.{ts,tsx}", "!src/**/*.test.{ts,tsx}", "!src/**/sandbox/**"],
+  "mutate": [
+    "src/common/tooltips.ts",
+    "src/common/utils.ts",
+    "src/samples/PriceLines/priceLinesStore.ts",
+    "src/samples/RangeSwitcher/rangeSwitcherStore.tsx",
+    "src/samples/RealTime/realTimeDataStore.ts"
+  ],
   "vitest": {
     "configFile": "vitest.config.ts",
     "dir": ".",

@@ -2,12 +2,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useRealTimeSampleStore } from "@/samples/RealTime/realTimeDataStore";
 import type { CandlestickData } from "lightweight-charts";
 
-const createCandle = (day: number): CandlestickData<string> => ({
+const createCandle = (
+  day: number,
+  overrides: Partial<CandlestickData<string>> = {}
+): CandlestickData<string> => ({
   time: `2024-01-${String(day).padStart(2, "0")}`,
   open: 10,
   high: 11,
   low: 9,
   close: 10,
+  ...overrides,
 });
 
 describe("realTimeDataStore", () => {
@@ -46,6 +50,38 @@ describe("realTimeDataStore", () => {
     });
   });
 
+  it("updates the reactive flags and data through the exposed setters", () => {
+    const replacementData = [createCandle(3, { close: 12 })];
+
+    useRealTimeSampleStore.getState().setReactive(false);
+    useRealTimeSampleStore.getState().setResizeOnUpdate(true);
+    useRealTimeSampleStore.getState().setData(replacementData);
+
+    expect(useRealTimeSampleStore.getState()).toMatchObject({
+      reactive: false,
+      resizeOnUpdate: true,
+      data: replacementData,
+    });
+  });
+
+  it("creates a downward candle and clamps the low when it would fall below the minimum threshold", async () => {
+    vi.spyOn(Math, "random").mockReturnValueOnce(0.4).mockReturnValueOnce(0.1);
+    useRealTimeSampleStore.setState({
+      data: [createCandle(1, { open: 5, high: 5.5, low: 5, close: 5 })],
+    });
+
+    useRealTimeSampleStore.getState().startSimulation();
+    await vi.advanceTimersByTimeAsync(1000);
+
+    expect(useRealTimeSampleStore.getState().data[1]).toEqual({
+      time: "2024-01-02",
+      open: 5,
+      high: 5.6,
+      low: 5,
+      close: 3.8,
+    });
+  });
+
   it("caps simulated data at 300 points and stops updating after stopSimulation", async () => {
     vi.spyOn(Math, "random").mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
 
@@ -67,5 +103,14 @@ describe("realTimeDataStore", () => {
     await vi.advanceTimersByTimeAsync(2000);
 
     expect(useRealTimeSampleStore.getState().data).toEqual(afterFirstTick);
+  });
+
+  it("does not clear timers when stopSimulation is called without an active interval", () => {
+    const clearIntervalSpy = vi.spyOn(globalThis, "clearInterval");
+
+    useRealTimeSampleStore.getState().stopSimulation();
+
+    expect(clearIntervalSpy).not.toHaveBeenCalled();
+    expect(useRealTimeSampleStore.getState().data).toEqual([createCandle(1)]);
   });
 });

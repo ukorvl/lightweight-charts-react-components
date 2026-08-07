@@ -33,6 +33,33 @@ describe("TimeScale component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when useTimeScale returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<TimeScaleApiRef>();
+    const mockedUseTimeScale = vi.mocked(useTimeScale);
+    mockedUseTimeScale
+      .mockReturnValueOnce({
+        timeScaleApiRef: {
+          current: mockApiRef,
+        },
+        isReady: false,
+      })
+      .mockReturnValue({
+        timeScaleApiRef: {
+          current: nextApiRef,
+        },
+        isReady: true,
+      });
+
+    const { rerender } = render(<TimeScale ref={ref} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<TimeScale ref={ref} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(<TimeScale ref={createRef<TimeScaleApiRef>()} />);
     expect(container.firstChild).toBeNull();

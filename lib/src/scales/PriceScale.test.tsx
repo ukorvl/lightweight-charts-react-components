@@ -31,6 +31,27 @@ describe("PriceScale component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when usePriceScale returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<PriceScaleApiRef>();
+    const mockedUsePriceScale = vi.mocked(usePriceScale);
+    mockedUsePriceScale
+      .mockReturnValueOnce({
+        current: mockApiRef,
+      })
+      .mockReturnValue({
+        current: nextApiRef,
+      });
+
+    const { rerender } = render(<PriceScale ref={ref} id="left" />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<PriceScale ref={ref} id="right" />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(
       <PriceScale ref={createRef<PriceScaleApiRef>()} id="left" />

@@ -110,6 +110,29 @@ describe("ChartWrapper", () => {
     expect(containerRef).toHaveBeenCalledWith(expect.any(HTMLDivElement));
   });
 
+  it("updates function container refs when the ChartWrapper ref prop changes", () => {
+    const firstContainerRef = vi.fn();
+    const secondContainerRef = vi.fn();
+
+    const { rerender } = render(
+      <ChartWrapper containerRef={firstContainerRef}>
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    const node = firstContainerRef.mock.calls[0]?.[0];
+    expect(node).toBeInstanceOf(HTMLDivElement);
+
+    rerender(
+      <ChartWrapper containerRef={secondContainerRef}>
+        <div>Child</div>
+      </ChartWrapper>
+    );
+
+    expect(firstContainerRef).toHaveBeenLastCalledWith(null);
+    expect(secondContainerRef).toHaveBeenCalledWith(node);
+  });
+
   it("handles containerProps correctly", () => {
     const { getByRole } = render(
       <ChartWrapper containerProps={{ role: "main" }}>
@@ -179,6 +202,29 @@ describe("ChartWrapper", () => {
     expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
   });
 
+  it("updates function container refs on OptionsChart when the prop changes", () => {
+    const firstContainerRef = vi.fn();
+    const secondContainerRef = vi.fn();
+
+    const { rerender } = render(
+      <OptionsChart containerRef={firstContainerRef}>
+        <div>Child</div>
+      </OptionsChart>
+    );
+
+    const node = firstContainerRef.mock.calls[0]?.[0];
+    expect(node).toBeInstanceOf(HTMLDivElement);
+
+    rerender(
+      <OptionsChart containerRef={secondContainerRef}>
+        <div>Child</div>
+      </OptionsChart>
+    );
+
+    expect(firstContainerRef).toHaveBeenLastCalledWith(null);
+    expect(secondContainerRef).toHaveBeenCalledWith(node);
+  });
+
   it("hides OptionsChart containers from the accessibility tree by default", () => {
     const { container } = render(
       <OptionsChart>
@@ -236,6 +282,29 @@ describe("ChartWrapper", () => {
     );
 
     expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("updates function container refs on YieldCurveChart when the prop changes", () => {
+    const firstContainerRef = vi.fn();
+    const secondContainerRef = vi.fn();
+
+    const { rerender } = render(
+      <YieldCurveChart containerRef={firstContainerRef}>
+        <div>Child</div>
+      </YieldCurveChart>
+    );
+
+    const node = firstContainerRef.mock.calls[0]?.[0];
+    expect(node).toBeInstanceOf(HTMLDivElement);
+
+    rerender(
+      <YieldCurveChart containerRef={secondContainerRef}>
+        <div>Child</div>
+      </YieldCurveChart>
+    );
+
+    expect(firstContainerRef).toHaveBeenLastCalledWith(null);
+    expect(secondContainerRef).toHaveBeenCalledWith(node);
   });
 
   it("hides YieldCurveChart containers from the accessibility tree by default", () => {
@@ -301,6 +370,29 @@ describe("ChartWrapper", () => {
     );
 
     expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it("updates function container refs on CustomChart when the prop changes", () => {
+    const firstContainerRef = vi.fn();
+    const secondContainerRef = vi.fn();
+
+    const { rerender } = render(
+      <CustomChart horzScaleBehavior={{} as never} containerRef={firstContainerRef}>
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    const node = firstContainerRef.mock.calls[0]?.[0];
+    expect(node).toBeInstanceOf(HTMLDivElement);
+
+    rerender(
+      <CustomChart horzScaleBehavior={{} as never} containerRef={secondContainerRef}>
+        <div>Child</div>
+      </CustomChart>
+    );
+
+    expect(firstContainerRef).toHaveBeenLastCalledWith(null);
+    expect(secondContainerRef).toHaveBeenCalledWith(node);
   });
 
   it("hides CustomChart containers from the accessibility tree by default", () => {

@@ -30,6 +30,27 @@ describe("SeriesPrimitive component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when useSeriesPrimitive returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<SeriesPrimitiveApiRef>();
+    const mockedUseSeriesPrimitive = vi.mocked(useSeriesPrimitive);
+    mockedUseSeriesPrimitive
+      .mockReturnValueOnce({
+        current: mockApiRef,
+      })
+      .mockReturnValue({
+        current: nextApiRef,
+      });
+
+    const { rerender } = render(<SeriesPrimitive ref={ref} plugin={{}} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<SeriesPrimitive ref={ref} plugin={{} as never} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(
       <SeriesPrimitive ref={createRef<SeriesPrimitiveApiRef>()} plugin={{}} />

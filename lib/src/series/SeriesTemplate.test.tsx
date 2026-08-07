@@ -33,6 +33,33 @@ describe("SeriesTemplate component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when useSeries returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<SeriesApiRef<"Line">>();
+    const mockUseSeries = vi.mocked(useSeriesModule.useSeries);
+    mockUseSeries
+      .mockReturnValueOnce({
+        seriesApiRef: {
+          current: mockApiRef,
+        },
+        isReady: false,
+      })
+      .mockReturnValue({
+        seriesApiRef: {
+          current: nextApiRef,
+        },
+        isReady: true,
+      });
+
+    const { rerender } = render(<SeriesTemplate ref={ref} type="Line" data={[]} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<SeriesTemplate ref={ref} type="Line" data={[]} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(<SeriesTemplate type="Line" data={[]} />);
     expect(container.firstChild).toBeNull();

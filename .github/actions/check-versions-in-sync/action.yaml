@@ -1,5 +1,5 @@
 name: "Check versions in sync"
-description: "Checks that the version in package.json matches the version in other files like jsr.json"
+description: "Checks that the library release version stays aligned across metadata, package-lock, and configured version-pinned references in the original library README"
 
 inputs:
   PACKAGE_JSON:
@@ -14,36 +14,37 @@ inputs:
     description: "Path to the version.ts file"
     required: false
     default: "lib/src/version.ts"
+  PACKAGE_LOCK:
+    description: "Path to the package-lock.json file"
+    required: false
+    default: "package-lock.json"
+  LOCK_PACKAGE_KEY:
+    description: "Key of the library package inside package-lock.json packages"
+    required: false
+    default: "lib"
+  README_FILES:
+    description: "Comma-separated original README files that contain version-pinned references"
+    required: false
+    default: "lib/README.md"
 
 runs:
   using: "composite"
   steps:
-    - name: Get package.json version
+    - name: Check versions in sync
       shell: bash
-      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
-        PKG_VERSION=$(jq -r .version ${{ inputs.PACKAGE_JSON }})
-        echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
-
-    - name: Check jsr.json version
-      shell: bash
-      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
-        JS_VERSION=$(jq -r .version ${{ inputs.JSR_JSON }})
-        if [[ "$JS_VERSION" != "$PKG_VERSION" ]]; then
-          echo "Error: jsr.json version ($JS_VERSION) does not match package.json version ($PKG_VERSION)"
-          exit 1
-        fi
-        echo "jsr.json version ($JS_VERSION) matches package.json version ($PKG_VERSION)."
-
-    - name: Check version.ts version
-      shell: bash
-      run: | # zizmor: ignore[template-injection] file paths are fixed by trusted workflow configuration
-        if [[ -f ${{ inputs.VERSION_FILE }} ]]; then
-          TS_VERSION=$(grep -oP '(?<=export const version = ")[^"]+' ${{ inputs.VERSION_FILE }})
-          if [[ "$TS_VERSION" != "$PKG_VERSION" ]]; then
-            echo "Error: version.ts version ($TS_VERSION) does not match package.json version ($PKG_VERSION)"
-            exit 1
-          fi
-          echo "version.ts version ($TS_VERSION) matches package.json version ($PKG_VERSION)."
-        else
-          echo "Warning: ${{ inputs.VERSION_FILE }} does not exist, skipping version check."
-        fi
+      env:
+        PACKAGE_JSON: ${{ inputs.PACKAGE_JSON }}
+        JSR_JSON: ${{ inputs.JSR_JSON }}
+        VERSION_FILE: ${{ inputs.VERSION_FILE }}
+        PACKAGE_LOCK: ${{ inputs.PACKAGE_LOCK }}
+        LOCK_PACKAGE_KEY: ${{ inputs.LOCK_PACKAGE_KEY }}
+        README_FILES: ${{ inputs.README_FILES }}
+      run: >
+        node ./scripts/check-versions-in-sync.mts
+        --repo .
+        --package-json "$PACKAGE_JSON"
+        --jsr-json "$JSR_JSON"
+        --version-file "$VERSION_FILE"
+        --package-lock "$PACKAGE_LOCK"
+        --lock-package-key "$LOCK_PACKAGE_KEY"
+        --readme-files "$README_FILES"

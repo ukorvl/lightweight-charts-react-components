@@ -5,7 +5,7 @@
   "testRunner": "vitest",
   "coverageAnalysis": "perTest",
   "thresholds": {
-    "break": 1
+    "break": 90
   },
   "ignorePatterns": ["/.rslib", "/coverage", "/dist"],
   "ignoreStatic": true,

@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { createImageWatermark, createTextWatermark } from "lightweight-charts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import type { PaneApiRef } from "@/pane";
 import { usePaneContext } from "@/pane/usePaneContext";
@@ -143,7 +144,8 @@ describe("useWatermark", () => {
       paneApiRef: mockPane,
     });
 
-    expect(() =>
+    let thrownError: unknown;
+    try {
       renderHook(() =>
         useWatermark({
           type: "text",
@@ -154,10 +156,17 @@ describe("useWatermark", () => {
             },
           ],
         })
-      )
-    ).toThrowError(
+      );
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError).toBeInstanceOf(BaseInternalError);
+    expect((thrownError as BaseInternalError).isOperational).toBe(true);
+    expect((thrownError as BaseInternalError).message).toContain(
       "Watermark must be used inside a pane. Please ensure that the component is wrapped in a pane component."
     );
+    expect((thrownError as BaseInternalError).message).not.toContain("Docs:");
   });
 
   it("does not initialize if pane is not ready", () => {
@@ -185,6 +194,52 @@ describe("useWatermark", () => {
     );
 
     expect(result.current.current.api()).toBeNull();
+  });
+
+  it("does not initialize if chart is not ready", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: false,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const { result } = renderHook(() =>
+      useWatermark({
+        type: "text",
+        lines: [{ text: "Test Watermark", fontSize: 20 }],
+      })
+    );
+
+    expect(result.current.current.api()).toBeNull();
+    expect(createTextWatermark).not.toHaveBeenCalled();
+  });
+
+  it("does not initialize if chart api ref is unavailable", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: null,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const { result } = renderHook(() =>
+      useWatermark({
+        type: "image",
+        src: "src",
+      })
+    );
+
+    expect(result.current.current.api()).toBeNull();
+    expect(createImageWatermark).not.toHaveBeenCalled();
   });
 
   it("recreates image watermark when src changes", () => {
@@ -278,5 +333,43 @@ describe("useWatermark", () => {
 
     expect(createImageWatermark).toHaveBeenCalledTimes(1);
     expect(imageWatermark.applyOptions).toHaveBeenLastCalledWith({ alpha: 0.8 });
+  });
+
+  it("applies text options without passing the type discriminator", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const textWatermark = {
+      detach: vi.fn(),
+      applyOptions: vi.fn(),
+      getPane: mockGetPane,
+    };
+
+    vi.mocked(createTextWatermark).mockReturnValue(textWatermark);
+
+    const { rerender } = renderHook(props => useWatermark(props), {
+      initialProps: {
+        type: "text",
+        lines: [{ text: "Initial", fontSize: 20 }],
+      } as WatermarkProps<"text">,
+    });
+
+    rerender({
+      type: "text",
+      lines: [{ text: "Updated", fontSize: 24 }],
+    });
+
+    expect(createTextWatermark).toHaveBeenCalledTimes(1);
+    expect(textWatermark.applyOptions).toHaveBeenLastCalledWith({
+      lines: [{ text: "Updated", fontSize: 24 }],
+    });
   });
 });

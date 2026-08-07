@@ -47,6 +47,33 @@ describe("Chart component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when useChart returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<ChartApiRef>();
+    const mockUseChart = vi.mocked(useChartModule.useChart);
+    mockUseChart
+      .mockReturnValueOnce({
+        chartApiRef: {
+          current: mockApiRef,
+        },
+        isReady: false,
+      })
+      .mockReturnValue({
+        chartApiRef: {
+          current: nextApiRef,
+        },
+        isReady: true,
+      });
+
+    const { rerender } = render(<ChartComponent ref={ref} container={mockContainer} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<ChartComponent ref={ref} container={mockContainer} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("provides chartApiRef and isReady via context", () => {
     let contextValue: ContextType<typeof ChartContext> = null;
 

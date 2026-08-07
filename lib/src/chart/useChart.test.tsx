@@ -49,6 +49,35 @@ describe("useChart", () => {
     expect(mockRemoveChart).not.toHaveBeenCalled();
   });
 
+  it("tracks readiness transitions while creating and clearing the chart", () => {
+    const readinessStates: boolean[] = [];
+
+    vi.mocked(createChart).mockReturnValue(mockChart);
+
+    const { result } = renderHook(() => {
+      const chart = useChart({
+        container: mockContainer,
+      });
+
+      readinessStates.push(chart.isReady);
+
+      return chart;
+    });
+
+    expect(result.current.isReady).toBe(true);
+    expect(readinessStates[0]).toBe(false);
+    expect(readinessStates).toContain(true);
+
+    act(() => {
+      result.current.chartApiRef.current.clear();
+    });
+
+    expect(result.current.chartApiRef.current.api()).toBeNull();
+    expect(result.current.isReady).toBe(false);
+    expect(readinessStates.at(-1)).toBe(false);
+    expect(mockRemoveChart).toHaveBeenCalledTimes(1);
+  });
+
   it("should clear chart on unmount", () => {
     vi.mocked(createChart).mockReturnValue(mockChart);
 
@@ -76,6 +105,32 @@ describe("useChart", () => {
 
     expect(createChartApi).toHaveBeenCalledWith(mockContainer, defaultChartOptions);
     expect(createChart).not.toHaveBeenCalled();
+  });
+
+  it("does not subscribe or apply options when the container is missing", () => {
+    vi.mocked(createChart).mockReturnValue(mockChart);
+
+    renderHook(() =>
+      useChart({
+        // we need type assertion here because we are simulating a missing container for testing purposes
+        container: undefined as unknown as HTMLDivElement,
+        onClick: vi.fn(),
+        onCrosshairMove: vi.fn(),
+        onDblClick: vi.fn(),
+        options: {
+          layout: {
+            background: {
+              color: "red",
+            },
+          },
+        },
+      })
+    );
+
+    expect(mockSubscribeClick).not.toHaveBeenCalled();
+    expect(mockSubscribeCrosshairMove).not.toHaveBeenCalled();
+    expect(mockSubscribeDblClick).not.toHaveBeenCalled();
+    expect(mockApplyOptions).not.toHaveBeenCalled();
   });
 
   it("should apply options", () => {
@@ -128,6 +183,45 @@ describe("useChart", () => {
 
     expect(mockSubscribeClick).toHaveBeenCalledWith(onClick);
     expect(mockUnsubscribeClick).not.toHaveBeenCalled();
+  });
+
+  it("does not subscribe until handlers are provided", () => {
+    vi.mocked(createChart).mockReturnValue(mockChart);
+
+    const onClick = vi.fn();
+    const onCrosshairMove = vi.fn();
+    const onDblClick = vi.fn();
+
+    const { rerender } = renderHook(
+      props =>
+        useChart({
+          container: mockContainer,
+          onClick: props.onClick,
+          onCrosshairMove: props.onCrosshairMove,
+          onDblClick: props.onDblClick,
+        }),
+      {
+        initialProps: {
+          onClick: undefined,
+          onCrosshairMove: undefined,
+          onDblClick: undefined,
+        } as Partial<UseChartOptions>,
+      }
+    );
+
+    expect(mockSubscribeClick).not.toHaveBeenCalled();
+    expect(mockSubscribeCrosshairMove).not.toHaveBeenCalled();
+    expect(mockSubscribeDblClick).not.toHaveBeenCalled();
+
+    rerender({
+      onClick,
+      onCrosshairMove,
+      onDblClick,
+    });
+
+    expect(mockSubscribeClick).toHaveBeenCalledWith(onClick);
+    expect(mockSubscribeCrosshairMove).toHaveBeenCalledWith(onCrosshairMove);
+    expect(mockSubscribeDblClick).toHaveBeenCalledWith(onDblClick);
   });
 
   it("should unsubscribe from click event", () => {
@@ -273,5 +367,56 @@ describe("useChart", () => {
 
     expect(chart).toBe(mockChart);
     expect(createChart).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not subscribe or apply options after the chart has been cleared", () => {
+    vi.mocked(createChart).mockReturnValue(mockChart);
+
+    const { result, rerender } = renderHook(
+      props =>
+        useChart({
+          container: mockContainer,
+          onClick: props.onClick,
+          onCrosshairMove: props.onCrosshairMove,
+          onDblClick: props.onDblClick,
+          options: props.options,
+        }),
+      {
+        initialProps: {
+          onClick: undefined,
+          onCrosshairMove: undefined,
+          onDblClick: undefined,
+          options: {},
+        } as Partial<UseChartOptions>,
+      }
+    );
+
+    act(() => {
+      result.current.chartApiRef.current.clear();
+    });
+
+    mockSubscribeClick.mockClear();
+    mockSubscribeCrosshairMove.mockClear();
+    mockSubscribeDblClick.mockClear();
+    mockApplyOptions.mockClear();
+
+    rerender({
+      onClick: vi.fn(),
+      onCrosshairMove: vi.fn(),
+      onDblClick: vi.fn(),
+      options: {
+        layout: {
+          background: {
+            color: "blue",
+          },
+        },
+      },
+    });
+
+    expect(result.current.chartApiRef.current.api()).toBeNull();
+    expect(mockSubscribeClick).not.toHaveBeenCalled();
+    expect(mockSubscribeCrosshairMove).not.toHaveBeenCalled();
+    expect(mockSubscribeDblClick).not.toHaveBeenCalled();
+    expect(mockApplyOptions).not.toHaveBeenCalled();
   });
 });

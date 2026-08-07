@@ -12,6 +12,7 @@ check_command jq
 check_command prettier
 check_command npm
 check_command perl
+check_command node
 
 if [ "$#" -ne 1 ]; then
   echo "Usage: $0 [patch|minor|major]"
@@ -19,6 +20,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 JSR_JSON="$REPO_ROOT/$LIB_PATH/jsr.json"
+README_FILE="$REPO_ROOT/$LIB_PATH/README.md"
 TS_VERSION_FILE="$REPO_ROOT/$LIB_PATH/src/version.ts"
 
 version_type=$1
@@ -47,3 +49,8 @@ prettier --write "$JSR_JSON"
 # Update the version in version.ts
 perl -pi -e "s|^export const version = .*|export const version = '$new_version';|" "$TS_VERSION_FILE"
 prettier --write "$TS_VERSION_FILE"
+
+# Update all version-pinned README references declared above.
+node "$SCRIPT_DIR/update-readme-version-references.mts" \
+  --readme-file "$README_FILE" \
+  --version "$new_version"
