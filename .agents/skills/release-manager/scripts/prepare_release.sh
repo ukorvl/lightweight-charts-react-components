@@ -225,7 +225,7 @@ else
   exit 1
 fi
 
-"$SCRIPT_DIR/check_versions_in_sync.sh" --repo "$REPO_PATH"
+node "$REPO_PATH/scripts/check-versions-in-sync.mts" --repo "$REPO_PATH"
 
 echo "RELEASE_BRANCH=$RELEASE_BRANCH"
 echo "RELEASE_VERSION=$TARGET_VERSION"

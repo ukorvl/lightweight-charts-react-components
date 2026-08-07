@@ -27,6 +27,33 @@ describe("Watermark components", () => {
     render(<WatermarkText ref={ref} lines={[{ text: "Test", fontSize: 20 }]} />);
 
     expect(ref.current).toBe(mockApiRef);
+    expect(useWatermarkModule.useWatermark).toHaveBeenCalledWith({
+      lines: [{ text: "Test", fontSize: 20 }],
+      type: "text",
+    });
+  });
+
+  it("updates the forwarded ref when useWatermark returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<WatermarkApiRef<"text">>();
+    const mockUseWatermark = vi.mocked(useWatermarkModule.useWatermark);
+    mockUseWatermark
+      .mockReturnValueOnce({
+        current: mockApiRef,
+      })
+      .mockReturnValue({
+        current: nextApiRef,
+      });
+
+    const { rerender } = render(
+      <WatermarkText ref={ref} lines={[{ text: "Test", fontSize: 20 }]} />
+    );
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<WatermarkText ref={ref} lines={[{ text: "Updated", fontSize: 18 }]} />);
+
+    expect(ref.current).toBe(nextApiRef);
   });
 
   it("forwards ref in WatermarkImage", () => {
@@ -34,6 +61,10 @@ describe("Watermark components", () => {
     render(<WatermarkImage ref={ref} src="src" />);
 
     expect(ref.current).toBe(mockApiRef);
+    expect(useWatermarkModule.useWatermark).toHaveBeenCalledWith({
+      src: "src",
+      type: "image",
+    });
   });
 
   it("does not render anything to the DOM", () => {
@@ -44,5 +75,10 @@ describe("Watermark components", () => {
       />
     );
     expect(container.firstChild).toBeNull();
+  });
+
+  it("sets explicit display names for both watermark components", () => {
+    expect(WatermarkText.displayName).toBe("WatermarkText");
+    expect(WatermarkImage.displayName).toBe("WatermarkImage");
   });
 });

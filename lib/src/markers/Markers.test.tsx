@@ -29,6 +29,27 @@ describe("Markers component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when useMarkers returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<MarkersApiRef>();
+    const mockedUseMarkers = vi.mocked(useMarkers);
+    mockedUseMarkers
+      .mockReturnValueOnce({
+        current: mockApiRef,
+      })
+      .mockReturnValue({
+        current: nextApiRef,
+      });
+
+    const { rerender } = render(<Markers ref={ref} markers={[]} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<Markers ref={ref} markers={[]} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("should call useMarkers with the correct props", () => {
     const markers = [
       {

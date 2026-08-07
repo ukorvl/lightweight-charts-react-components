@@ -30,6 +30,27 @@ describe("PanePrimitive component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when usePanePrimitive returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<PanePrimitiveApiRef>();
+    const mockedUsePanePrimitive = vi.mocked(usePanePrimitive);
+    mockedUsePanePrimitive
+      .mockReturnValueOnce({
+        current: mockApiRef,
+      })
+      .mockReturnValue({
+        current: nextApiRef,
+      });
+
+    const { rerender } = render(<PanePrimitive ref={ref} plugin={{}} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<PanePrimitive ref={ref} plugin={{} as never} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(
       <PanePrimitive ref={createRef<PanePrimitiveApiRef>()} plugin={{}} />

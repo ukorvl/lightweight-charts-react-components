@@ -5,11 +5,13 @@
 - Runtime: Node 24 from `.nvmrc`
 - Package manager: `npm` only
 - Version bump entrypoint: `npm run version -- <major|minor|patch>`
+  - It updates `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, `package-lock.json`, and the configured version-pinned references in the original `lib/README.md`
 - Version-related files normally changed by a release:
   - `lib/package.json`
   - `lib/jsr.json`
   - `lib/src/version.ts`
   - `package-lock.json`
+  - `lib/README.md` for the automatic version-pinned reference bump and any manual release-doc updates
   - `examples/src/samples/*/sandbox/package.json` when the library major changes; keep the `lightweight-charts-react-components` dependency on the current major line
 - Release workflows to mirror locally:
   - `.github/actions/check-versions-in-sync/action.yaml`
@@ -22,14 +24,14 @@
 - `lib/CHANGELOG.md`: always add `## [X.Y.Z] - YYYY-MM-DD` and move user-facing notes out of `Unreleased`
 - `MIGRATION.md`: update when consumers need upgrade steps, especially for breaking changes
 - `SECURITY.md`: update the supported versions table when the newest supported major line changes
-- `README.md` and `lib/README.md`: update when install guidance, usage examples, or public API docs changed
+- `lib/README.md`: review even after the automatic version reference bump when install guidance, usage examples, public API docs, or other release-facing docs need manual updates
 - `examples/README.md`: update only if example authoring or running instructions changed
 - `CONTRIBUTING.md`: update only if the release workflow itself changed
 
 ## Validation matrix
 
 - Always:
-  - `bash .agents/skills/release-manager/scripts/check_versions_in_sync.sh --repo <repo_path>`
+  - `node ./scripts/check-versions-in-sync.mts --repo <repo_path>`
   - `npm run build -w lib`
   - `npm run test:unit -w lib -- --run`
 - Public API or package export changes:

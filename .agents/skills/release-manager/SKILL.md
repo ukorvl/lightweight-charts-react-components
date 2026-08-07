@@ -1,6 +1,6 @@
 ---
 name: release-manager
-description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, the library entry in `package-lock.json`, and the standalone sandbox dependency references in `examples/src/samples/*/sandbox/package.json` stay in sync, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
+description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, the library entry in `package-lock.json`, the version references in `lib/README.md`, and the standalone sandbox dependency references in `examples/src/samples/*/sandbox/package.json` stay in sync, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
 ---
 
 # Release Manager
@@ -38,14 +38,15 @@ Choose the mode first and keep the semantics explicit.
    - It updates `main` from `origin/main` unless `--skip-fetch` is needed.
    - It creates or resumes `release-vX.Y.Z`.
    - It runs the repository version bump entrypoint only if the release branch still has the base version.
-   - It verifies all version touchpoints match after the branch switch and bump, including the library entry in `package-lock.json` and the standalone sandbox dependency major references.
+   - The version bump entrypoint also updates the version-pinned README references configured for `lib/README.md` before the sync checker runs.
+   - It verifies all version touchpoints match after the branch switch and bump, including the library entry in `package-lock.json`, the package version references in the original library README, and the standalone sandbox dependency major references.
 4. If `mode` is `prepare-release-branch`, update release documentation.
    - Always update `lib/CHANGELOG.md`.
    - Update `MIGRATION.md` for breaking changes or new upgrade steps.
    - Update `SECURITY.md` when supported major lines change.
-   - Inspect other markdown files such as `README.md`, `lib/README.md`, `examples/README.md`, and `CONTRIBUTING.md` when the release changes public API, install guidance, or release workflow notes.
+   - Inspect other markdown files such as `lib/README.md` (the repository root `README.md` is a symlink), `examples/README.md`, and `CONTRIBUTING.md` when the release changes public API, install guidance, or release workflow notes. `lib/README.md` still needs a manual pass for prose/docs changes even though the configured version-pinned references are bumped automatically.
 5. If `mode` is `prepare-release-branch`, validate the release branch.
-   - Always run `scripts/check_versions_in_sync.sh --repo <repo_path>`.
+   - Always run `node ./scripts/check-versions-in-sync.mts --repo <repo_path>`.
    - Choose the rest of the checks from `references/release-checklist.md` based on what changed.
    - Before handing off a ready release branch, prefer the repo-level quality gates if feasible: `npm run build`, `npm run lint`, `npm run format`, and `npm run knip`.
 6. If `mode` is `prepare-release-branch`, create the release commit.
@@ -65,7 +66,7 @@ Choose the mode first and keep the semantics explicit.
 
 - `references/release-checklist.md` for repo-specific release touchpoints, docs rules, and validation commands
 - `scripts/prepare_release.sh` for branch setup and version bump orchestration
-- `scripts/check_versions_in_sync.sh` for the local equivalent of `.github/actions/check-versions-in-sync`
+- `scripts/check-versions-in-sync.mts` for the shared local/CI release-version sync check used by `.github/actions/check-versions-in-sync`
 
 ## Guardrails
 
@@ -78,3 +79,4 @@ Choose the mode first and keep the semantics explicit.
 - If documentation updates are unclear, inspect the source changes and existing changelog style before writing notes.
 - If a new major release changes supported lines, make sure `SECURITY.md` reflects the new support policy.
 - If the release crosses a major version boundary, update every `examples/src/samples/*/sandbox/package.json` reference to `lightweight-charts-react-components` so the standalone sandboxes track the new library major.
+- Keep the package version references in README files across the repo aligned with `lib/package.json` on every library release.

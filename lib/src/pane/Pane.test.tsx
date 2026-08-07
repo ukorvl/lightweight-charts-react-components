@@ -33,6 +33,33 @@ describe("Pane component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when usePane returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<PaneApiRef>();
+    const mockUsePane = vi.mocked(usePaneModule.usePane);
+    mockUsePane
+      .mockReturnValueOnce({
+        paneApiRef: {
+          current: mockApiRef,
+        },
+        isReady: false,
+      })
+      .mockReturnValue({
+        paneApiRef: {
+          current: nextApiRef,
+        },
+        isReady: true,
+      });
+
+    const { rerender } = render(<Pane ref={ref} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<Pane ref={ref} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(<Pane ref={createRef<PaneApiRef>()} />);
     expect(container.firstChild).toBeNull();

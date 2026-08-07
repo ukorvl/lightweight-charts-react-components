@@ -46,10 +46,10 @@
     </picture>
   </a>
 
-  <a href="https://bundlephobia.com/package/lightweight-charts-react-components">
+  <a href="https://bundlephobia.com/package/lightweight-charts-react-components@2.6.0">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat">
-      <img src="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat" alt="Minified size">
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components/2.6.0?cacheSeconds=31536000&colorA=1e2029&colorB=1e2029&style=flat">
+      <img src="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components/2.6.0?cacheSeconds=31536000&colorA=ffcc00&colorB=ffcc00&style=flat" alt="Minified size">
     </picture>
   </a>
 

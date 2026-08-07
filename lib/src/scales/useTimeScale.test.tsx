@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { usePaneContext } from "@/pane/usePaneContext";
@@ -58,6 +58,35 @@ describe("useTimeScale", () => {
     expect(api).toBeDefined();
   });
 
+  it("tracks readiness transitions while initializing and clearing the timeScale", () => {
+    const readinessStates: boolean[] = [];
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    const { result } = renderHook(() => {
+      const timeScale = useTimeScale({});
+
+      readinessStates.push(timeScale.isReady);
+
+      return timeScale;
+    });
+
+    expect(result.current.isReady).toBe(true);
+    expect(readinessStates[0]).toBe(false);
+    expect(readinessStates).toContain(true);
+
+    act(() => {
+      result.current.timeScaleApiRef.current.clear();
+    });
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeNull();
+    expect(result.current.isReady).toBe(false);
+    expect(readinessStates.at(-1)).toBe(false);
+  });
+
   it("initializes ranges and subscriptions from initial props", () => {
     const onVisibleTimeRangeChange = vi.fn();
     const onVisibleLogicalRangeChange = vi.fn();
@@ -89,7 +118,14 @@ describe("useTimeScale", () => {
       from: "2025-05-19",
       to: "2025-05-20",
     });
+    expect(mockSetVisibleRange).toHaveBeenLastCalledWith({
+      from: "2025-05-19",
+      to: "2025-05-20",
+    });
+    expect(mockSetVisibleRange.mock.calls.length).toBeGreaterThan(1);
     expect(mockSetVisibleLogicalRange).toHaveBeenCalledWith({ from: 1, to: 2 });
+    expect(mockSetVisibleLogicalRange).toHaveBeenLastCalledWith({ from: 1, to: 2 });
+    expect(mockSetVisibleLogicalRange.mock.calls.length).toBeGreaterThan(1);
     expect(mockSubscribeVisibleTimeRangeChange).toHaveBeenCalledWith(
       onVisibleTimeRangeChange
     );
@@ -100,6 +136,21 @@ describe("useTimeScale", () => {
     expect(mockSubscribeVisibleLogicalRangeChange).toHaveBeenCalledTimes(1);
     expect(mockSubscribeSizeChange).toHaveBeenCalledWith(onSizeChange);
     expect(mockSubscribeSizeChange).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not initialize ranges or subscriptions when related props are omitted", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    renderHook(() => useTimeScale({}));
+
+    expect(mockSetVisibleRange).not.toHaveBeenCalled();
+    expect(mockSetVisibleLogicalRange).not.toHaveBeenCalled();
+    expect(mockSubscribeVisibleTimeRangeChange).not.toHaveBeenCalled();
+    expect(mockSubscribeVisibleLogicalRangeChange).not.toHaveBeenCalled();
+    expect(mockSubscribeSizeChange).not.toHaveBeenCalled();
   });
 
   it("applies options to timeScale", () => {
@@ -267,6 +318,19 @@ describe("useTimeScale", () => {
     expect(mockSubscribeSizeChange).toHaveBeenCalledWith(callback);
   });
 
+  it("does not subscribe when handlers are not provided", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    renderHook(() => useTimeScale({}));
+
+    expect(mockSubscribeVisibleTimeRangeChange).not.toHaveBeenCalled();
+    expect(mockSubscribeVisibleLogicalRangeChange).not.toHaveBeenCalled();
+    expect(mockSubscribeSizeChange).not.toHaveBeenCalled();
+  });
+
   it("unsubscribes from callbacks when handlers are removed", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       isReady: true,
@@ -371,6 +435,31 @@ describe("useTimeScale", () => {
     expect(result.current.timeScaleApiRef.current.api()).toBeNull();
   });
 
+  it("does not apply options or ranges when the chart api is unavailable", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: null,
+    });
+
+    renderHook(() =>
+      useTimeScale({
+        options: { rightOffset: 1 },
+        visibleRange: {
+          from: "2025-05-19",
+          to: "2025-05-20",
+        },
+        visibleLogicalRange: {
+          from: 1,
+          to: 2,
+        },
+      })
+    );
+
+    expect(mockApplyOptions).not.toHaveBeenCalled();
+    expect(mockSetVisibleRange).not.toHaveBeenCalled();
+    expect(mockSetVisibleLogicalRange).not.toHaveBeenCalled();
+  });
+
   it("does not initialize timeScale when pane is not ready", () => {
     vi.mocked(usePaneContext).mockReturnValue({
       isInsidePane: true,
@@ -386,6 +475,51 @@ describe("useTimeScale", () => {
 
     expect(result.current.timeScaleApiRef.current.api()).toBeNull();
     expect(mockTimeScaleFactory).not.toHaveBeenCalled();
+  });
+
+  it("initializes once the chart becomes ready", () => {
+    const chartContext = {
+      isReady: false,
+      chartApiRef: mockChart,
+    };
+
+    vi.mocked(useSafeContext).mockImplementation(() => chartContext);
+
+    const { result, rerender } = renderHook(() => useTimeScale({}));
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeNull();
+    expect(mockTimeScaleFactory).not.toHaveBeenCalled();
+
+    chartContext.isReady = true;
+    rerender();
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeDefined();
+    expect(mockTimeScaleFactory).toHaveBeenCalledTimes(1);
+  });
+
+  it("initializes once the pane becomes ready", () => {
+    const paneContext = {
+      isInsidePane: true,
+      isPaneReady: false,
+      paneApiRef: undefined,
+    };
+
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+    vi.mocked(usePaneContext).mockImplementation(() => paneContext);
+
+    const { result, rerender } = renderHook(() => useTimeScale({}));
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeNull();
+    expect(mockTimeScaleFactory).not.toHaveBeenCalled();
+
+    paneContext.isPaneReady = true;
+    rerender();
+
+    expect(result.current.timeScaleApiRef.current.api()).toBeDefined();
+    expect(mockTimeScaleFactory).toHaveBeenCalledTimes(1);
   });
 
   it("clears the time scale on unmount", () => {

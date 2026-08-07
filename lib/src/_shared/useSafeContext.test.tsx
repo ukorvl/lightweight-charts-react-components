@@ -6,6 +6,16 @@ import { BaseInternalError } from "./InternalError";
 import { useSafeContext } from "./useSafeContext";
 import type { PropsWithChildren } from "react";
 
+const captureHookError = (callback: () => void) => {
+  try {
+    callback();
+  } catch (error) {
+    return error as BaseInternalError;
+  }
+
+  throw new Error("Expected renderHook to throw");
+};
+
 describe("useSafeContext", () => {
   it("returns the context value when context is available", () => {
     const TestContext = createContext<string | undefined>(undefined);
@@ -23,23 +33,35 @@ describe("useSafeContext", () => {
     const TestContext = createContext<string | undefined>(undefined);
     TestContext.displayName = "TestContext";
 
-    try {
+    const error = captureHookError(() => {
       renderHook(() => useSafeContext(TestContext));
-    } catch (error) {
-      expect(error).toBeInstanceOf(BaseInternalError);
-      expect((error as BaseInternalError).message).toContain("not found");
-      expect((error as BaseInternalError).message).toContain("TestContext");
-    }
+    });
+
+    expect(error).toBeInstanceOf(BaseInternalError);
+    expect(error.isOperational).toBe(true);
+    expect(error.message).toContain("not found");
+    expect(error.message).toContain("TestContext");
   });
 
   it("throws BaseInternalError with custom error message", () => {
     const TestContext = createContext<string | undefined>(undefined);
 
-    try {
+    const error = captureHookError(() => {
       renderHook(() => useSafeContext(TestContext, "Custom error message"));
-    } catch (error) {
-      expect(error).toBeInstanceOf(BaseInternalError);
-      expect((error as BaseInternalError).message).toContain("Custom error message");
-    }
+    });
+
+    expect(error).toBeInstanceOf(BaseInternalError);
+    expect(error.isOperational).toBe(true);
+    expect(error.message).toContain("Custom error message");
+  });
+
+  it("falls back to a generic context name when displayName is missing", () => {
+    const TestContext = createContext<string | undefined>(undefined);
+
+    const error = captureHookError(() => {
+      renderHook(() => useSafeContext(TestContext));
+    });
+
+    expect(error.message).toContain("Context not found.");
   });
 });

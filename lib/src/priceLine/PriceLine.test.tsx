@@ -28,6 +28,27 @@ describe("PriceLine component", () => {
     expect(ref.current).toBe(mockApiRef);
   });
 
+  it("updates the forwarded ref when usePriceLine returns a new api ref", () => {
+    const nextApiRef = { ...mockApiRef };
+    const ref = createRef<PriceLineApiRef>();
+    const mockUsePriceLine = vi.mocked(usePriceLineModule.usePriceLine);
+    mockUsePriceLine
+      .mockReturnValueOnce({
+        current: mockApiRef,
+      })
+      .mockReturnValue({
+        current: nextApiRef,
+      });
+
+    const { rerender } = render(<PriceLine ref={ref} price={100} />);
+
+    expect(ref.current).toBe(mockApiRef);
+
+    rerender(<PriceLine ref={ref} price={200} />);
+
+    expect(ref.current).toBe(nextApiRef);
+  });
+
   it("does not render anything to the DOM", () => {
     const { container } = render(
       <PriceLine ref={createRef<PriceLineApiRef>()} price={100} />
