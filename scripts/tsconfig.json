@@ -11,5 +11,5 @@
     "allowImportingTsExtensions": true,
     "types": ["node"]
   },
-  "include": ["./**/*.mts"]
+  "include": ["./**/*.mts", "tests/vitest.config.ts"]
 }

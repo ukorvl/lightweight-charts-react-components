@@ -5,9 +5,10 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { getErrorMessage, isMainModule } from "./common.mts";
 import { assertReadmeVersionReferences } from "./readme-version-references.mts";
 
-type CheckerOptions = {
+export type CheckerOptions = {
   repo: string;
   packageJson: string;
   jsrJson: string;
@@ -17,7 +18,7 @@ type CheckerOptions = {
   readmeFiles: string[];
 };
 
-const options: CheckerOptions = {
+const defaultOptions: CheckerOptions = {
   repo: ".",
   packageJson: "lib/package.json",
   jsrJson: "lib/jsr.json",
@@ -48,134 +49,163 @@ Options:
   --readme-files <comma-separated paths>`);
 }
 
-for (let index = 2; index < process.argv.length; index += 1) {
-  const argument = process.argv[index];
-  const value = process.argv[index + 1];
+const parseCliOptions = (argv: string[]): CheckerOptions => {
+  const options: CheckerOptions = {
+    ...defaultOptions,
+    readmeFiles: [...defaultOptions.readmeFiles],
+  };
 
-  if (argument === "--repo" && value) {
-    options.repo = value;
-    index += 1;
-    continue;
-  }
-  if (argument === "--package-json" && value) {
-    options.packageJson = value;
-    index += 1;
-    continue;
-  }
-  if (argument === "--jsr-json" && value) {
-    options.jsrJson = value;
-    index += 1;
-    continue;
-  }
-  if (argument === "--version-file" && value) {
-    options.versionFile = value;
-    index += 1;
-    continue;
-  }
-  if (argument === "--package-lock" && value) {
-    options.packageLock = value;
-    index += 1;
-    continue;
-  }
-  if (argument === "--lock-package-key" && value) {
-    options.lockPackageKey = value;
-    index += 1;
-    continue;
-  }
-  if (argument === "--readme-files" && value) {
-    options.readmeFiles = value
-      .split(",")
-      .map((file: string) => file.trim())
-      .filter(Boolean);
-    index += 1;
-    continue;
-  }
-  if (argument === "-h" || argument === "--help") {
+  for (let index = 2; index < argv.length; index += 1) {
+    const argument = argv[index];
+    const value = argv[index + 1];
+
+    if (argument === "--repo" && value) {
+      options.repo = value;
+      index += 1;
+      continue;
+    }
+    if (argument === "--package-json" && value) {
+      options.packageJson = value;
+      index += 1;
+      continue;
+    }
+    if (argument === "--jsr-json" && value) {
+      options.jsrJson = value;
+      index += 1;
+      continue;
+    }
+    if (argument === "--version-file" && value) {
+      options.versionFile = value;
+      index += 1;
+      continue;
+    }
+    if (argument === "--package-lock" && value) {
+      options.packageLock = value;
+      index += 1;
+      continue;
+    }
+    if (argument === "--lock-package-key" && value) {
+      options.lockPackageKey = value;
+      index += 1;
+      continue;
+    }
+    if (argument === "--readme-files" && value) {
+      options.readmeFiles = value
+        .split(",")
+        .map((file: string) => file.trim())
+        .filter(Boolean);
+      index += 1;
+      continue;
+    }
+    if (argument === "-h" || argument === "--help") {
+      usage();
+      process.exit(0);
+    }
+
     usage();
-    process.exit(0);
+    throw new Error(`Unknown or incomplete argument: ${argument}`);
   }
 
-  usage();
-  throw new Error(`Unknown or incomplete argument: ${argument}`);
-}
+  return options;
+};
 
-const repoRoot = path.resolve(options.repo);
-const resolveFromRepo = (relativePath: string) => path.join(repoRoot, relativePath);
+export const run = (options: CheckerOptions = defaultOptions) => {
+  const repoRoot = path.resolve(options.repo);
+  const resolveFromRepo = (relativePath: string) => path.join(repoRoot, relativePath);
 
-function readRequiredFile(relativePath: string) {
-  const filePath = resolveFromRepo(relativePath);
+  function readRequiredFile(relativePath: string) {
+    const filePath = resolveFromRepo(relativePath);
 
-  if (!existsSync(filePath)) {
-    throw new Error(`Missing required file: ${relativePath}`);
+    if (!existsSync(filePath)) {
+      throw new Error(`Missing required file: ${relativePath}`);
+    }
+
+    return readFileSync(filePath, "utf8");
   }
 
-  return readFileSync(filePath, "utf8");
-}
+  function readJsonVersion(relativePath: string) {
+    const parsed = JSON.parse(readRequiredFile(relativePath));
 
-function readJsonVersion(relativePath: string) {
-  const parsed = JSON.parse(readRequiredFile(relativePath));
+    if (!parsed.version) {
+      throw new Error(`Missing version field in ${relativePath}`);
+    }
 
-  if (!parsed.version) {
-    throw new Error(`Missing version field in ${relativePath}`);
+    return String(parsed.version);
   }
 
-  return String(parsed.version);
-}
+  function readTypescriptVersion(relativePath: string) {
+    const match = readRequiredFile(relativePath).match(
+      /export const version = ['"]([^'"]+)['"]/
+    );
 
-function readTypescriptVersion(relativePath: string) {
-  const match = readRequiredFile(relativePath).match(
-    /export const version = ['"]([^'"]+)['"]/
+    if (!match) {
+      throw new Error(`Could not read exported version from ${relativePath}`);
+    }
+
+    return match[1];
+  }
+
+  function readLockfileVersion(relativePath: string, packageKey: string) {
+    const parsed = JSON.parse(readRequiredFile(relativePath));
+    const version = parsed.packages?.[packageKey]?.version;
+
+    if (!version) {
+      throw new Error(
+        `Could not read package-lock version for ${packageKey} from ${relativePath}`
+      );
+    }
+
+    return String(version);
+  }
+
+  const messages: string[] = [];
+
+  function assertEqual(label: string, actual: string, expected: string) {
+    if (actual !== expected) {
+      throw new Error(
+        `${label} (${actual}) does not match package.json version (${expected})`
+      );
+    }
+
+    messages.push(`${label} (${actual}) matches package.json version (${expected}).`);
+  }
+
+  const packageVersion = readJsonVersion(options.packageJson);
+
+  assertEqual(options.jsrJson, readJsonVersion(options.jsrJson), packageVersion);
+  assertEqual(
+    options.packageLock,
+    readLockfileVersion(options.packageLock, options.lockPackageKey),
+    packageVersion
+  );
+  assertEqual(
+    options.versionFile,
+    readTypescriptVersion(options.versionFile),
+    packageVersion
   );
 
-  if (!match) {
-    throw new Error(`Could not read exported version from ${relativePath}`);
-  }
-
-  return match[1];
-}
-
-function readLockfileVersion(relativePath: string, packageKey: string) {
-  const parsed = JSON.parse(readRequiredFile(relativePath));
-  const version = parsed.packages?.[packageKey]?.version;
-
-  if (!version) {
-    throw new Error(
-      `Could not read package-lock version for ${packageKey} from ${relativePath}`
+  for (const readmeFile of options.readmeFiles) {
+    assertReadmeVersionReferences(
+      readRequiredFile(readmeFile),
+      readmeFile,
+      packageVersion
+    );
+    messages.push(
+      `Version-pinned README references in ${readmeFile} match ${packageVersion}.`
     );
   }
 
-  return String(version);
-}
+  messages.push(`All release version files are in sync at v${packageVersion}.`);
+  return messages;
+};
 
-function assertEqual(label: string, actual: string, expected: string) {
-  if (actual !== expected) {
-    throw new Error(
-      `${label} (${actual}) does not match package.json version (${expected})`
-    );
+if (isMainModule(import.meta.url)) {
+  try {
+    run(parseCliOptions(process.argv)).forEach(message => {
+      writeStdout(message);
+    });
+  } catch (error) {
+    writeStderr(getErrorMessage(error));
+    process.exit(1);
   }
-
-  writeStdout(`${label} (${actual}) matches package.json version (${expected}).`);
 }
-
-const packageVersion = readJsonVersion(options.packageJson);
-
-assertEqual(options.jsrJson, readJsonVersion(options.jsrJson), packageVersion);
-assertEqual(
-  options.packageLock,
-  readLockfileVersion(options.packageLock, options.lockPackageKey),
-  packageVersion
-);
-assertEqual(
-  options.versionFile,
-  readTypescriptVersion(options.versionFile),
-  packageVersion
-);
-
-for (const readmeFile of options.readmeFiles) {
-  assertReadmeVersionReferences(readRequiredFile(readmeFile), readmeFile, packageVersion);
-  writeStdout(
-    `Version-pinned README references in ${readmeFile} match ${packageVersion}.`
-  );
-}
-
-writeStdout(`All release version files are in sync at v${packageVersion}.`);
