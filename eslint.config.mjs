@@ -198,6 +198,7 @@ export default [
       "lib/tests/**/*.test.tsx",
       "lib/tests/**/*.bench.ts",
       "lib/tests/**/*.bench.tsx",
+      "scripts/tests/**/*.test.mts",
     ],
     plugins: {
       vitest,

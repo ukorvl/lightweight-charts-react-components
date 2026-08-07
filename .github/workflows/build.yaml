@@ -76,6 +76,21 @@ jobs:
         working-directory: examples
         run: npm run test:unit
 
+  test-scripts:
+    name: Unit test scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Run scripts unit tests
+        run: npm run test:unit:scripts
+
   test-bench:
     name: Benchmark tests
     if: github.event_name == 'pull_request'
