@@ -48,6 +48,7 @@ The examples app is deployed and hosted on GitHub Pages as a static site.
 - Choose file extensions to match the language that best fits the file contents. If a change is substantially easier to express in another language, prefer renaming or adding a file with the appropriate extension instead of embedding a large block of another language inside the original file just to preserve its extension.
 - Always enforce `set -euo pipefail` in bash scripts to ensure that errors are properly handled and do not lead to unexpected behavior.
 - Do not commit absolute local paths into repository content. Use repository-relative paths in source files, docs, comments, examples, workflow messages, and generated fixtures checked into the repo.
+- When adding new scripts ensure you've added unit test for them. When editing existing scripts, ensure that you have updated unit tests to cover the changes. If you are unsure about how to write unit tests for a script, refer to existing tests or report it explicitly.
 
 ## Validation policy
 
