@@ -74,15 +74,15 @@
     </picture>
   </a>
 
-  <a href="https://coveralls.io/github/ukorvl/lightweight-charts-react-components">
+  <a href="https://coveralls.io/github/ukorvl/lightweight-charts-react-components?branch=main">
     <picture>
       <source
         media="(prefers-color-scheme: dark)"
-        srcset="https://img.shields.io/coveralls/github/ukorvl/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat"
+        srcset="https://coveralls.io/repos/github/ukorvl/lightweight-charts-react-components/badge.svg?branch=main"
       >
       <img
-        src="https://img.shields.io/coveralls/github/ukorvl/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat"
-        alt="Coverage"
+        src="https://coveralls.io/repos/github/ukorvl/lightweight-charts-react-components/badge.svg?branch=main"
+        alt="Coverage Status"
       >
     </picture>
   </a>
@@ -287,7 +287,6 @@ Thank you for helping improve this project!
 ## Related Projects
 
 - [lightweight-charts](https://github.com/tradingview/lightweight-charts) - The original Lightweight Charts library by TradingView.
-- [lightweight-charts-vue](https://github.com/ukorvl/lightweight-charts-vue) - Vue.js wrapper for Lightweight Charts.
 
 ## License
 
