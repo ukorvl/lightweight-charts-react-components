@@ -87,6 +87,19 @@
     </picture>
   </a>
 
+  <a href="https://snyk.io/test/github/ukorvl/lightweight-charts-react-components">
+    <picture>
+      <source
+        media="(prefers-color-scheme: dark)"
+        srcset="https://snyk.io/test/github/ukorvl/lightweight-charts-react-components/badge.svg"
+      >
+      <img
+        src="https://snyk.io/test/github/ukorvl/lightweight-charts-react-components/badge.svg"
+        alt="Snyk Security"
+      >
+    </picture>
+  </a>
+
   <a href="https://jsr.io/@ukorvl/lightweight-charts-react-components">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/jsr/v/%40ukorvl/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat">
