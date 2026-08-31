@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
 // This script checks that release-version touchpoints stay aligned with lib/package.json.
-// It verifies package metadata, the lockfile entry, and the versions in readme files.
+// It verifies package metadata and the lockfile entry.
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { getErrorMessage, isMainModule } from "./common.mts";
-import { assertReadmeVersionReferences } from "./readme-version-references.mts";
 
 export type CheckerOptions = {
   repo: string;
@@ -15,7 +14,6 @@ export type CheckerOptions = {
   versionFile: string;
   packageLock: string;
   lockPackageKey: string;
-  readmeFiles: string[];
 };
 
 const defaultOptions: CheckerOptions = {
@@ -25,7 +23,6 @@ const defaultOptions: CheckerOptions = {
   versionFile: "lib/src/version.ts",
   packageLock: "package-lock.json",
   lockPackageKey: "lib",
-  readmeFiles: ["lib/README.md"],
 };
 
 function writeStdout(message: string) {
@@ -45,15 +42,11 @@ Options:
   --jsr-json <path>
   --version-file <path>
   --package-lock <path>
-  --lock-package-key <key>
-  --readme-files <comma-separated paths>`);
+  --lock-package-key <key>`);
 }
 
 const parseCliOptions = (argv: string[]): CheckerOptions => {
-  const options: CheckerOptions = {
-    ...defaultOptions,
-    readmeFiles: [...defaultOptions.readmeFiles],
-  };
+  const options: CheckerOptions = { ...defaultOptions };
 
   for (let index = 2; index < argv.length; index += 1) {
     const argument = argv[index];
@@ -86,14 +79,6 @@ const parseCliOptions = (argv: string[]): CheckerOptions => {
     }
     if (argument === "--lock-package-key" && value) {
       options.lockPackageKey = value;
-      index += 1;
-      continue;
-    }
-    if (argument === "--readme-files" && value) {
-      options.readmeFiles = value
-        .split(",")
-        .map((file: string) => file.trim())
-        .filter(Boolean);
       index += 1;
       continue;
     }
@@ -183,17 +168,6 @@ export const run = (options: CheckerOptions = defaultOptions) => {
     readTypescriptVersion(options.versionFile),
     packageVersion
   );
-
-  for (const readmeFile of options.readmeFiles) {
-    assertReadmeVersionReferences(
-      readRequiredFile(readmeFile),
-      readmeFile,
-      packageVersion
-    );
-    messages.push(
-      `Version-pinned README references in ${readmeFile} match ${packageVersion}.`
-    );
-  }
 
   messages.push(`All release version files are in sync at v${packageVersion}.`);
   return messages;

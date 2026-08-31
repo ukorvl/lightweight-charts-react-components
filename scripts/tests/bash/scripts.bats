@@ -81,7 +81,6 @@ function version_script_requires_a_version_argument { #@test
   write_noop_stub "$stub_dir" "prettier"
   write_noop_stub "$stub_dir" "npm"
   write_noop_stub "$stub_dir" "perl"
-  write_noop_stub "$stub_dir" "node"
 
   run env PATH="$stub_dir:$PATH" bash "$repo_dir/scripts/version.sh"
 
@@ -102,7 +101,6 @@ function version_script_rejects_unknown_version_types { #@test
   write_noop_stub "$stub_dir" "prettier"
   write_noop_stub "$stub_dir" "npm"
   write_noop_stub "$stub_dir" "perl"
-  write_noop_stub "$stub_dir" "node"
 
   run env PATH="$stub_dir:$PATH" bash "$repo_dir/scripts/version.sh" banana
 

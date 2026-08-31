@@ -128,8 +128,6 @@
       "scripts/tests/test-helpers.mts",
       "scripts/compare-benchmarks.mts",
       "scripts/check-versions-in-sync.mts",
-      "scripts/readme-version-references.mts",
-      "scripts/update-readme-version-references.mts",
       "scripts/check-md-links.mts",
       "examples/scripts/prelhci.ts",
       "scripts/check-jsdoc-links.mts",
