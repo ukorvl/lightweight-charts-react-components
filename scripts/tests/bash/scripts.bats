@@ -37,7 +37,7 @@ function prepare_env_exports_versions_from_repo_metadata { #@test
   # shellcheck disable=SC2154
   [ "$status" -eq 0 ]
   assert_output_contains "lightweight-charts-components-version: 2.6.0"
-  assert_output_contains "lightweight-charts-version: 5.2.0"
+  assert_output_contains "lightweight-charts-version: 5.2.1"
   assert_output_contains "github-url: git+https://example.test/lightweight-charts-react-components.git"
 }
 

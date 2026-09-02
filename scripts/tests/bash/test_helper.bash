@@ -37,7 +37,7 @@ populate_minimal_repo_metadata() {
   write_file "$repo_dir/package.json" "$(cat <<'EOF'
 {
   "dependencies": {
-    "lightweight-charts": "^5.2.0"
+    "lightweight-charts": "^5.2.1"
   }
 }
 EOF
@@ -99,7 +99,7 @@ case "$query" in
     printf '%s\n' '2.6.0'
     ;;
   '.dependencies["lightweight-charts"]')
-    printf '%s\n' '^5.2.0'
+    printf '%s\n' '^5.2.1'
     ;;
   .repository.url)
     printf '%s\n' 'git+https://example.test/lightweight-charts-react-components.git'
