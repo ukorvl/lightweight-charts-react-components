@@ -22,6 +22,6 @@ export default defineConfig({
         },
       },
     },
-    setupFiles: ["@testing-library/jest-dom"],
+    setupFiles: ["@testing-library/jest-dom/vitest"],
   },
 });
