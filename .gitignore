@@ -59,6 +59,7 @@ Thumbs.db
 playwright-report/
 
 # skills
+skills/lightweight-charts-react-components-workspace/
 .agents/skills/*
 skills-lock.json
 

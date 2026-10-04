@@ -2,6 +2,7 @@
   "name": "lightweight-charts-react-components-monorepo",
   "private": true,
   "scripts": {
+    "skill-evals": "node scripts/skill-evals/cli.mts",
     "lint": "eslint . --ext .ts,.tsx,.mts",
     "lint:fix": "eslint . --ext .ts,.tsx,.mts --fix",
     "lint:commits": "bash ./scripts/lint-commits.sh",
@@ -120,6 +121,8 @@
   },
   "knip": {
     "ignore": [
+      "scripts/skill-evals/**",
+      "skills/lightweight-charts-react-components/evals/files/**",
       "examples/src/samples/**/sandbox/**",
       "lib/src/pane/**",
       "lib/rslib.config.ts",

@@ -13,6 +13,8 @@ export default [
   {
     ignores: [
       "**/node_modules",
+      "skills/lightweight-charts-react-components-workspace/",
+      ".cache/skill-evals/",
       "**/dist",
       "**/coverage/",
       "**/.rslib",
