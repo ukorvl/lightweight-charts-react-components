@@ -9,9 +9,19 @@ metadata:
 
 # lightweight-charts-react-components guide
 
-## Overview
-
 ## Quick Start
+
+Let the components manage chart and series creation and cleanup. Import components
+and ref types from `lightweight-charts-react-components`; import native data, option,
+and event types from `lightweight-charts`.
+
+1. Check the app's installed versions against the compatibility table below.
+   Ensure chart rendering runs in the browser, within the app's client boundary.
+2. Read the reference matching the requested behavior. Adapt its feed and UI;
+   preserve its data contract, component nesting, and API readiness handling.
+3. Choose one data owner: pass the complete dataset through `data` for React-owned
+   updates, or use `reactive={false}` and the series API for frequent ticks.
+4. Run the app's typecheck and the reference's acceptance checks in a browser.
 
 ## Examples and snippets (reference files)
 
