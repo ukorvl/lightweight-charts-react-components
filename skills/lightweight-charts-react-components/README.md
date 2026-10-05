@@ -14,7 +14,7 @@ From your project's root, install with the [Skills CLI](https://github.com/verce
 npx skills add ukorvl/lightweight-charts-react-components --skill lightweight-charts-react-components
 ```
 
-Select your coding agent and project installation. Add `--global` to make the skill available across your projects.
+Add `--global` to make the skill available across your projects.
 Install the chart library and its peer dependencies following the
 [library installation guide](../../lib/README.md#installation).
 
