@@ -52,3 +52,17 @@ releases. Reference version is version used in examples in the recipes.
 | Module system                         | ESM                         | Package exports provide an ESM `import` entry, with no CommonJS `require` entry.                                                                                              |
 
 ## Common edge cases
+
+- **Chart sizing:** Put DOM styles on `containerProps` and give the chart a
+  nonzero height.
+- **Required ancestors:** Headless chart children need a chart wrapper ancestor.
+  `Markers`, `PriceLine`, and `SeriesPrimitive` belong inside their series;
+  `PriceScale`, `Watermark`, and `PanePrimitive` require a `Pane`;
+  `TimeScaleFitContentTrigger` requires a `TimeScale`.
+- **API refs and readiness:** Use `ref.current?.api()` for the native API and
+  `containerRef` for the div. For `Chart`, use `ChartApiRef<Time, IChartApi>`.
+  `.api()` can initially return null; follow the recipe's readiness step before
+  imperative setup.
+- **Viewport resets:** To preserve scroll/zoom, keep the chart's key stable and
+  live/history updates out of fit-trigger dependencies. Fit on initial load or a
+  deliberate reset. See [range handling](references/history-and-range-selection.md).
