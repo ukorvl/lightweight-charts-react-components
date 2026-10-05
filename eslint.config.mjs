@@ -11,15 +11,7 @@ import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  gitignore(),
-  {
-    ignores: [
-      "**/.rslib",
-      "lib/tests/readme/extracted-snippets",
-      "lib/tests/bench/output",
-      "examples/tests/e2e/output",
-    ],
-  },
+  gitignore({ recursive: true }),
   {
     languageOptions: {
       globals: globals.browser,
