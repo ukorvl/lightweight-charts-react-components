@@ -1,11 +1,11 @@
 import pluginJs from "@eslint/js";
+import gitignore from "eslint-config-flat-gitignore";
 import pluginImport from "eslint-plugin-import";
 import pluginJsdoc from "eslint-plugin-jsdoc";
 import playwright from "eslint-plugin-playwright";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import vitest from "eslint-plugin-vitest";
-import gitignore from "eslint-config-flat-gitignore";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
