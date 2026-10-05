@@ -5,23 +5,19 @@ import playwright from "eslint-plugin-playwright";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import vitest from "eslint-plugin-vitest";
+import gitignore from "eslint-config-flat-gitignore";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  gitignore(),
   {
     ignores: [
-      "**/node_modules",
-      "**/dist",
-      "**/coverage/",
       "**/.rslib",
-      "**/.stryker-tmp",
       "lib/tests/readme/extracted-snippets",
       "lib/tests/bench/output",
       "examples/tests/e2e/output",
-      "lib/tests/readme/extracted-snippets",
-      ".lighthouseci",
     ],
   },
   {
