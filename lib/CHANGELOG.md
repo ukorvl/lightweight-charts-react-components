@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - require Lightweight Charts `>=5.0.8 <6` to match the native pane APIs used by the wrapper
 
+### Fixed
+- remove charts after child layout cleanup to prevent disposed-canvas errors when unmounting markers, watermarks, and pane primitives
+
 ## [2.6.0] - 2026-08-05
 ### Changed
 - remove chart `onInit` in favor of chart API refs on `Chart`, `OptionsChart`, `YieldCurveChart`, and `CustomChart`, and add `containerRef` for accessing the wrapper div element

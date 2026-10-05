@@ -4,7 +4,7 @@ import {
   type DeepPartial,
   type Time,
 } from "lightweight-charts";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { defaultChartOptions } from "./defaultChartOptions";
 import type {
   ChartApiInstance,
@@ -62,7 +62,11 @@ export const useChart = <
 
   useLayoutEffect(() => {
     chartApiRef.current.init();
+  }, []);
 
+  // Children detach plugins in layout cleanup. Destroy the chart afterwards so
+  // their invalidations cannot schedule drawing against disposed canvases.
+  useEffect(() => {
     return () => {
       chartApiRef.current.clear();
     };
