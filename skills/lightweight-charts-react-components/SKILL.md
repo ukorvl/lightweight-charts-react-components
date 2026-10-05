@@ -21,7 +21,6 @@ and event types from `lightweight-charts`.
    preserve its data contract, component nesting, and API readiness handling.
 3. Choose one data owner: pass the complete dataset through `data` for React-owned
    updates, or use `reactive={false}` and the series API for frequent ticks.
-4. Run the app's typecheck and the reference's acceptance checks in a browser.
 
 ## Examples and snippets (reference files)
 
