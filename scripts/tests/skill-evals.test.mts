@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { createTempDir } from "./test-helpers.mts";
 import { CommandBackend, parseCommand } from "../skill-evals/backend.mts";
 import { breakCalibration, calibrate } from "../skill-evals/calibrate.mts";
+import { runCalibration } from "../skill-evals/ci.mts";
 import { main, parseArguments } from "../skill-evals/cli.mts";
 import {
   digest,
@@ -324,6 +325,26 @@ describe("grading and aggregation", () => {
 });
 
 describe("calibration mutations", () => {
+  it("runs setup, preparation, and calibration in order with one fresh iteration", async () => {
+    const calls: string[][] = [];
+    await runCalibration(async args => {
+      calls.push(args);
+    });
+    expect(calls[0]).toEqual(["setup"]);
+    expect(calls[1][0]).toBe("prepare");
+    expect(calls[1][2]).toMatch(/^calibration-ci-\d+$/);
+    expect(calls[2]).toEqual(["calibrate", "--iteration", calls[1][2]]);
+  });
+  it("stops calibration when dependency setup fails", async () => {
+    const calls: string[][] = [];
+    await expect(
+      runCalibration(async args => {
+        calls.push(args);
+        throw new Error("setup failed");
+      })
+    ).rejects.toThrow("setup failed");
+    expect(calls).toEqual([["setup"]]);
+  });
   it("refuses to overwrite a real execution even inside a calibration iteration", async () => {
     const root = createTempDir();
     await writeFile(

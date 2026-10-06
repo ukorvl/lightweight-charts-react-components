@@ -5,6 +5,39 @@ browser checks. It has separate task data, execution backends, scenario checkers
 and reporting. It does not claim the skill is effective until actual independent
 agent runs have been compared under verified conditions.
 
+## CI checks
+
+```sh
+npm run build -w lib
+npm run test:skill-snippets
+npm run test:skill-evals
+```
+
+Install Chromium first with `npx --no-install playwright install chromium`.
+The snippet check extracts every `ts`/`tsx` fence from the skill body and references,
+typechecks against the public package with strict settings, builds a consumer app,
+and mounts/unmounts every component recipe in Chromium. Missing snippet registrations,
+missing browser fixtures, compiler errors, and browser errors fail the check.
+Evidence is written under `.cache/skill-evals/snippets/`.
+
+Register module filenames in
+[snippets.json](../../skills/lightweight-charts-react-components/evals/snippets.json)
+in fence order, and provide sample props in
+[snippet-fixtures.tsx](../../skills/lightweight-charts-react-components/evals/snippet-fixtures.tsx).
+Local imports in the recipes are preserved. New TypeScript fences cannot silently
+escape validation. Fixtures only provide inputs; they do not rewrite recipe code.
+
+The **Skill code snippets** workflow runs for skill changes, including Markdown.
+The **Skill evaluator calibration** workflow runs for non-Markdown skill/evaluator
+changes. Both also run for library, dependency, and GitHub configuration changes,
+and support manual dispatch. Both upload evidence, including failures.
+
+`test:skill-evals` creates a fresh `calibration-ci-*` iteration and checks three
+working integrations plus three deliberate defects. It uses no model credentials
+and measures checker correctness. Agent effectiveness remains a separate paired
+experiment using the backend protocol below; calibration results are excluded
+from agent success rates.
+
 ## Start here
 
 Use Node 24 and npm. The setup step downloads locked consumer dependencies into

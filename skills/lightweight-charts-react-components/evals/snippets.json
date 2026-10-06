@@ -1,0 +1,28 @@
+{
+  "references/market-data-and-live-updates.md": [
+    "market-data.ts",
+    "LiveCandles.tsx",
+    "ImperativeCandles.tsx"
+  ],
+  "references/history-and-range-selection.md": [
+    "PaginatedHistory.tsx",
+    "InstrumentHistory.tsx"
+  ],
+  "references/price-volume-and-indicators.md": [
+    "AnalysisChart.tsx",
+    "PriceWithVolumeOverlay.tsx"
+  ],
+  "references/hover-legends-and-tooltips.md": ["CandleDetails.tsx"],
+  "references/trade-markers-and-price-levels.md": ["TradeAnnotations.tsx"],
+  "references/performance-comparison.md": ["ReturnComparison.tsx"],
+  "references/synchronized-charts.md": ["SynchronizedCharts.tsx"],
+  "references/session-overlays-and-primitives.md": [
+    "SessionBands.ts",
+    "SessionChart.tsx"
+  ],
+  "references/numeric-axes-and-chart-types.md": [
+    "VolatilitySmile.tsx",
+    "YieldComparison.tsx",
+    "QuarterlyChart.tsx"
+  ]
+}
