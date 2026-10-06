@@ -274,12 +274,3 @@ For native chart methods, type the wrapper ref with the corresponding upstream
   behavior instances remain stable during unrelated application renders.
 - Hover every chart type and verify the correct horizontal item type reaches
   the tooltip. Test quarterly labels around year and timezone boundaries.
-
-## Implementation evidence
-
-- [ChartTypes sample](../../../examples/src/samples/ChartTypes/ChartTypes.tsx)
-- [Numeric options, data, and default-behavior extension](../../../examples/src/samples/ChartTypes/chartTypesShared.ts)
-- [OptionsChart constructor and API typing](../../../lib/src/chart/OptionsChart.tsx)
-- [YieldCurveChart constructor](../../../lib/src/chart/YieldCurveChart.tsx)
-- [CustomChart behavior ownership](../../../lib/src/chart/CustomChart.tsx)
-- [Yield-curve series guard](../../../lib/src/series/useSeries.ts)

@@ -6,6 +6,9 @@ For price, volume, and indicators in a vertically stacked view, first use
 [one chart with panes](price-volume-and-indicators.md); the shared horizontal scale
 already provides that coordination.
 
+The library has no dedicated synchronization component; the recipe below combines
+the public chart and time-scale APIs.
+
 ## Choose the synchronization coordinate
 
 | Relationship                        | Range to synchronize          | Constraint                                   |
@@ -214,13 +217,3 @@ range in the application and broadcast only when endpoints change.
   updates never become a new crosshair leader.
 - Remount under a new dataset key and verify old callbacks/frames do not retain
   the removed chart. Test any calendar policy added during adaptation.
-
-## Implementation evidence
-
-- [Chart public API ref types](../../../lib/src/chart/types.ts)
-- [Time-scale event and range contracts](../../../lib/src/scales/types.ts)
-- [Time-scale subscription cleanup](../../../lib/src/scales/useTimeScale.ts)
-- [Chart crosshair subscription cleanup](../../../lib/src/chart/useChart.ts)
-
-This recipe combines the public APIs; there is no dedicated synchronization
-component or synchronization sample in the repository.

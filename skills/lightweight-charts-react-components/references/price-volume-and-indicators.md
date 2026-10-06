@@ -274,12 +274,3 @@ the input data. If moving a series to another pane imperatively, reacquire its
   verify existing series remain on their original panes and zoom stays intact.
 - Render the overlay in a later pane while adapting the recipe: its scale must
   come from the volume series, with no incorrect-ID error on pane zero.
-
-## Implementation evidence
-
-- [Pane composition sample](../../../examples/src/samples/Panes/Panes.tsx)
-- [Series pane assignment](../../../lib/src/series/useSeries.ts)
-- [Pane creation and stretch factors](../../../lib/src/pane/usePane.ts)
-- [Current PriceScale lookup limitation](../../../lib/src/scales/usePriceScale.ts)
-- [User's volume-overlay problem](https://github.com/ukorvl/lightweight-charts-react-components/issues/402)
-- [Earlier question about grouping series](https://github.com/ukorvl/lightweight-charts-react-components/discussions/143)

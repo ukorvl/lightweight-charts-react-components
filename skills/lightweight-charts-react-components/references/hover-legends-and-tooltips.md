@@ -185,15 +185,7 @@ tooltip inside the appropriate pane container.
   Its OHLC changes in the legend and tooltip.
 - Hover near all four edges at a narrow width. The box remains inside the chart
   and does not prevent dragging, scrolling, or crosshair movement.
+- Do not suppress legend updates when only the hovered timestamp matches: a live
+  same-bar revision keeps the time but changes the values. Guard against a
+  missing lookup entry before reading candle fields.
 - For multi-series adaptation, test different calendars and missing points.
-
-## Implementation evidence
-
-- [Legend sample and map lookup](../../../examples/src/samples/Legend/useLegend.ts)
-- [Tooltip composition sample](../../../examples/src/samples/Tooltips/Tooltips.tsx)
-- [Chart event subscription lifecycle](../../../lib/src/chart/useChart.ts)
-- [Series API ref shape](../../../lib/src/series/types.ts)
-
-The existing legend sample suppresses updates when only the timestamp matches
-and assumes a map entry exists before its candle guard. Those assumptions do
-not cover live same-bar revisions or missing entries; the recipe handles both.

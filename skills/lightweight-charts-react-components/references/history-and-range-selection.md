@@ -308,11 +308,3 @@ hourly bars. The data adapter must return the chosen granularity.
   while fetching: no response updates a removed chart.
 - Select A, B, and a new interval rapidly. Return A's response last and verify
   that only the final selection renders. Cover empty snapshots and retry.
-
-## Implementation evidence
-
-- [Infinite-data sample](../../../examples/src/samples/InfiniteData/InfiniteData.tsx)
-- [Range-switcher sample](../../../examples/src/samples/RangeSwitcher/RangeSwitcher.tsx)
-- [Reactive snapshot behavior](../../../lib/src/series/useSeries.ts)
-- [TimeScale range and event handling](../../../lib/src/scales/useTimeScale.ts)
-- [Deferred fit trigger](../../../lib/src/scales/useTimeScaleFitContentTrigger.ts)

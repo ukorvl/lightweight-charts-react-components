@@ -16,7 +16,7 @@ npx skills add ukorvl/lightweight-charts-react-components --skill lightweight-ch
 
 Add `--global` to make the skill available across your projects.
 Install the chart library and its peer dependencies following the
-[library installation guide](../../lib/README.md#installation).
+[library installation guide](https://github.com/ukorvl/lightweight-charts-react-components#installation).
 
 The installed skill is discovered automatically by the agent. Though it can be invoked directly:
 

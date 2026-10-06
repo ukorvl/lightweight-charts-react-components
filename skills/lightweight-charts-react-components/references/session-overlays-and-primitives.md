@@ -196,22 +196,25 @@ Compute coordinates in `updateAllViews()`, then draw the cached views. Upstream
 invokes this during relevant chart updates, so scrolling/zooming refreshes the
 geometry. Do not calculate x once in a React effect and retain it through zoom.
 If the plugin subscribes to external events, unsubscribe in `detached()` using
-the same handler identity. This sample has no custom event subscriptions.
+the same handler identity. This recipe has no custom event subscriptions.
 
 ## Series-specific drawings and custom-series boundaries
 
 For a vertical event line with a time-axis label, use a `SeriesPrimitive` under
-the target series and the [VerticalLine implementation](../../../examples/src/samples/Primitives/primitives/VerticalLine.ts)
-as the renderer/view starting point. Adapt its label formatter to UTC timestamps
+the target series. Implement `ISeriesPrimitive` with one `IPrimitivePaneView`
+whose `update()` caches `chart.timeScale().timeToCoordinate(time)` and whose
+renderer fills a full-height rectangle in the bitmap coordinate space (scale x
+and width by `horizontalPixelRatio`), plus one `ISeriesPrimitiveAxisView` from
+`timeAxisViews()` for the label. Format the label explicitly for UTC timestamps
 or business dates; `.toString()` on a `BusinessDay` object does not give a useful
-date. Its render factory receives `{ chart, series }`; use the series API for
-price conversion when drawing price-dependent shapes.
+date. The `SeriesPrimitive` render factory receives `{ chart, series }`; use the
+series API for price conversion when drawing price-dependent shapes.
 
-For grouped volume bars or a genuinely new plot type, use the
-[CustomSeries sample](../../../examples/src/samples/CustomSeries/CustomSeries.tsx).
-Its plugin supplies `renderer`, `update`, `priceValueBuilder`, `isWhitespace`,
-and `defaultOptions`. The price-value builder must include all values that should
-participate in autoscaling. Keep custom payloads in `customValues` and preserve
+For grouped volume bars or a genuinely new plot type, use `CustomSeries` with a
+plugin implementing upstream `ICustomSeriesPaneView`. The plugin supplies
+`renderer`, `update`, `priceValueBuilder`, `isWhitespace`, and `defaultOptions`.
+The price-value builder must include all values that should participate in
+autoscaling. Keep custom payloads in `customValues` and preserve
 the custom data shape when updating. `CustomSeries` requires a plugin instance;
 `CustomChart` instead changes the horizontal scale and is a different extension.
 
@@ -225,11 +228,3 @@ the custom data shape when updating. `CustomSeries` requires a plugin instance;
   clipping policy. Verify daylight-saving changes in the calendar adapter.
 - For an external plugin update, call `setBands()` and verify it repaints without
   requiring the user to move the chart. Confirm each pane has its own instance.
-
-## Implementation evidence
-
-- [Pane-wide session sample](../../../examples/src/samples/PanePrimitives/PanePrimitives.tsx)
-- [SessionHighlight renderer and views](../../../examples/src/samples/PanePrimitives/primitives/SessionHighlight.ts)
-- [Pane attachment and context guard](../../../lib/src/primitives/usePanePrimitive.ts)
-- [Series attachment factory](../../../lib/src/primitives/useSeriesPrimitive.ts)
-- [Primitive replacement on identity change](../../../lib/src/primitives/useReactivePrimitive.ts)

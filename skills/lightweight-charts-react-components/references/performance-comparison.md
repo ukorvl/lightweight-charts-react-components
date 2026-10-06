@@ -167,9 +167,3 @@ percentage baseline. Use separate axes or panes for metrics with different units
   and the baseline retain their intended meaning.
 - Test no common time, missing observations, and an invalid baseline. Do not
   substitute zero or forward-fill a missing price without a product requirement.
-
-## Implementation evidence
-
-- [Comparison sample](../../../examples/src/samples/CompareSeries/CompareSeries.tsx)
-- [Upstream options accepted by series](../../../lib/src/series/types.ts)
-- [Series options applied reactively](../../../lib/src/series/useSeries.ts)

@@ -251,22 +251,12 @@ off and scroll after accepted updates only when follow mode is enabled.
   `reactive` does not stop the socket or give an imperative chart a replay buffer.
 - A trim or a batch append may call `setData()`; do not mutate earlier objects in
   place and expect the wrapper to detect that mutation.
+- Cloning the complete dataset on every render (for example `data.map(...)` in
+  JSX) changes every earlier reference and forces the `setData()` path. Copy at
+  the boundary once and preserve earlier objects during tail updates.
 - Confirm initial data is sorted and unique; a same-time update replaces exactly
   one bar; a later-time update adds one; an older-time update follows the chosen
   correction policy. Pan left, update, and verify the user's viewport remains.
 - Change symbol/interval and verify the old subscription is disposed and no old
   bars enter the new chart. Check a narrow card and a client-rendered route for a
   nonzero canvas size.
-
-## Implementation evidence
-
-- [Data ownership and update rules](../../../lib/src/series/types.ts)
-- [Reactive update decision](../../../lib/src/series/useSeries.ts)
-- [Chart defaults](../../../lib/src/chart/defaultChartOptions.ts)
-- [Wrapper DOM and API refs](../../../lib/src/chart/ChartWrapper.tsx)
-- [Realtime sample](../../../examples/src/samples/RealTime/RealTime.tsx)
-- [User request for fit triggers](https://github.com/ukorvl/lightweight-charts-react-components/discussions/127)
-
-The realtime sample clones its complete dataset on render, which can force the
-replacement path. The recipes above copy the initial boundary data and preserve
-earlier objects during tail updates to allow the wrapper's incremental path.

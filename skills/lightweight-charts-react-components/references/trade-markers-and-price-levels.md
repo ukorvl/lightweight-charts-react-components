@@ -225,11 +225,3 @@ an alert on a server. Add the application's explicit save/submit flow if request
   Add another pane and verify clicks there do not create levels on the price series.
 - Change marker options and verify the chosen remount/API path actually applies
   them; simply changing the options prop is insufficient in the current hook.
-
-## Implementation evidence
-
-- [Marker sample](../../../examples/src/samples/Markers/Markers.tsx)
-- [Price-line sample](../../../examples/src/samples/PriceLines/PriceLines.tsx)
-- [Marker list updates and options lifecycle](../../../lib/src/markers/useMarkers.ts)
-- [Price-line updates and cleanup](../../../lib/src/priceLine/usePriceLine.ts)
-- [PriceLine prop contract](../../../lib/src/priceLine/types.ts)
