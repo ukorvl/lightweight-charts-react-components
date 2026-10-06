@@ -15,8 +15,13 @@ Let the components manage chart and series creation and cleanup. Import componen
 and ref types from `lightweight-charts-react-components`; import native data, option,
 and event types from `lightweight-charts`.
 
-1. Check the app's installed versions against the compatibility table below.
-   Ensure chart rendering runs in the browser, within the app's client boundary.
+1. Check versions against the compatibility table below. Read declared ranges
+   from the app's `package.json`, then the installed versions from the `version`
+   field of `node_modules/<package>/package.json` for
+   `lightweight-charts-react-components`, `lightweight-charts`, `react`, and
+   `react-dom`. If the library is not installed, follow
+   [Installation](#installation). Ensure chart rendering runs in the browser,
+   within the app's client boundary.
 2. For a basic static chart, start from the minimal chart below. Otherwise, read the
    reference matching the requested behavior. Adapt its feed and UI; preserve its
    data contract, component nesting, and API readiness handling.
@@ -90,13 +95,14 @@ All inconsistencies should be reported and checked before proceeding with a solu
 Current versions below are the reference baseline, not the latest available
 releases. Reference version is version used in examples in the recipes.
 
-| Dependency or environment             | Reference version           | Compatibility range and checks                                                                                                                                                |
-| ------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `lightweight-charts-react-components` | `2.6.0`                     | Recipe target: `>=2.6.0 <3`. Other versions require checking installed exports, chart API refs, and reactive data behavior before adapting a recipe.                          |
-| `lightweight-charts`                  | `5.2.1`                     | Declared peer: `>=5.0.8 <6`.                                                                                                                                                  |
-| React and React DOM                   | `19.2.6`                    | Declared peers: `>=18.2 <20`. Keep `react` and `react-dom` on matching versions and use the application's existing React instance.                                            |
-| Node.js                               | `24.x` repository toolchain | Published npm package: `>=18.14.0`; repository and evaluation scripts: `>=24`. Consumer build tools can impose a higher minimum. Chart rendering needs a browser environment. |
-| Module system                         | ESM                         | Package exports provide an ESM `import` entry, with no CommonJS `require` entry.                                                                                              |
+| Dependency or environment             | Reference version | Compatibility range and checks                                                                                                                       |
+| ------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lightweight-charts-react-components` | `2.6.0`           | Recipe target: `>=2.6.0 <3`. Other versions require checking installed exports, chart API refs, and reactive data behavior before adapting a recipe. |
+| `lightweight-charts`                  | `5.2.1`           | Declared peer: `>=5.0.8 <6`.                                                                                                                         |
+| React and React DOM                   | `19.2.6`          | Declared peers: `>=18.2 <20`. Keep `react` and `react-dom` on matching versions and use the application's existing React instance.                   |
+| Node.js                               | —                 | Package engines: `>=18.14.0`. The app's build tools can require a newer version.                                                                     |
+| Module system                         | ESM               | ESM `import` entry only; there is no CommonJS `require` entry.                                                                                       |
+| Rendering                             | Browser           | Charts need the DOM and canvas. Render them on the client, never during server rendering.                                                            |
 
 ## Common edge cases
 
