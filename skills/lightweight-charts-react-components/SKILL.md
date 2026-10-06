@@ -75,5 +75,11 @@ releases. Reference version is version used in examples in the recipes.
 - **Viewport resets:** To preserve scroll/zoom, keep the chart's key stable and
   live/history updates out of fit-trigger dependencies. Fit on initial load or a
   deliberate reset. See [range handling](references/history-and-range-selection.md).
-- Data updates. Use `data` for React-owned updates, or `reactive={false}` and the
-  series API for extremely frequent ticks (faster than 3 ticks a second). Avoid mixing both. Also note, that React-owned updates have two modes - full replacement and incremental updates. Incremental updates mode is more efficient, but it applies automatically only if the last data point in the provided dataset changes.
+- **Data updates:** Use `data` for React-owned updates, or `reactive={false}` and the
+  series API for extremely frequent ticks (faster than 3 ticks a second). Avoid mixing both.
+  Reactive `data` is always the complete dataset. The wrapper calls `update()` only
+  when every earlier item keeps the same object reference and the new array either
+  replaces the last item with one of the same time or appends exactly one item
+  with a new time. Anything else (including `alwaysReplaceData`) calls `setData()`.
+  To keep the incremental path, copy data once at the boundary and never clone or
+  mutate earlier items. See [live updates](references/market-data-and-live-updates.md).
