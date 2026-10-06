@@ -1,6 +1,6 @@
 ---
 name: lightweight-charts-react-components
-description: Helps to integrate lightweight-charts-react-components library (which uses lightweight-charts by TradingView under the hood) into React applications for creating interactive financial charts, use correct code snippets and examples, and provide guidance on React TradingView chart customization and data handling. Use when the user mentions lightweight-charts by TradingView in React, chart integration, or financial data visualization in React applications.
+description: lightweight-charts-react-components recipes for TradingView lightweight-charts in React. Candlestick, line, and area series; volume and indicator panes; realtime WebSocket updates; infinite history on scroll; crosshair OHLC legends and tooltips; trade markers and price lines; synchronized charts; numeric options and yield-curve axes. Use when adding or fixing a financial or trading chart in a React app, or when the user mentions lightweight-charts, TradingView charts in React, or this package.
 license: MIT
 metadata:
   author: ukorvl
