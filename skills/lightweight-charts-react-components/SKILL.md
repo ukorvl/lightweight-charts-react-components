@@ -17,10 +17,48 @@ and event types from `lightweight-charts`.
 
 1. Check the app's installed versions against the compatibility table below.
    Ensure chart rendering runs in the browser, within the app's client boundary.
-2. Read the reference matching the requested behavior. Adapt its feed and UI;
-   preserve its data contract, component nesting, and API readiness handling.
+2. For a basic static chart, start from the minimal chart below. Otherwise, read the
+   reference matching the requested behavior. Adapt its feed and UI; preserve its
+   data contract, component nesting, and API readiness handling.
 3. Choose one data owner: pass the complete dataset through `data` for React-owned
    updates, or use `reactive={false}` and the series API for frequent ticks.
+
+### Installation
+
+Install the wrapper together with its `lightweight-charts` peer dependency, using
+the project's package manager. React and React DOM must already be installed.
+
+```sh
+npm install lightweight-charts-react-components lightweight-charts
+```
+
+### Minimal chart
+
+```tsx
+import type { LineData, UTCTimestamp } from "lightweight-charts";
+import {
+  Chart,
+  LineSeries,
+  TimeScale,
+  TimeScaleFitContentTrigger,
+} from "lightweight-charts-react-components";
+
+// Data must be sorted ascending by time with unique times (UTC seconds here).
+export function SimpleLineChart({ data }: { data: LineData<UTCTimestamp>[] }) {
+  return (
+    // autoSize follows the container, which needs a nonzero height.
+    <Chart
+      options={{ autoSize: true }}
+      containerProps={{ style: { height: 300, width: "100%" } }}
+    >
+      <LineSeries data={data} />
+      <TimeScale>
+        <TimeScaleFitContentTrigger deps={[]} />
+      </TimeScale>
+    </Chart>
+  );
+}
+```
 
 ## Examples and snippets (reference files)
 

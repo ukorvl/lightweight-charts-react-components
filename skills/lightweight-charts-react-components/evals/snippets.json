@@ -1,4 +1,5 @@
 {
+  "SKILL.md": ["SimpleLineChart.tsx"],
   "references/market-data-and-live-updates.md": [
     "market-data.ts",
     "LiveCandles.tsx",

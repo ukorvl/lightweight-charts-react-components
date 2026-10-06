@@ -11,6 +11,7 @@ import { PriceWithVolumeOverlay } from "./generated/PriceWithVolumeOverlay";
 import { QuarterlyChart } from "./generated/QuarterlyChart";
 import { ReturnComparison } from "./generated/ReturnComparison";
 import { SessionChart } from "./generated/SessionChart";
+import { SimpleLineChart } from "./generated/SimpleLineChart";
 import { SynchronizedCharts } from "./generated/SynchronizedCharts";
 import { TradeAnnotations } from "./generated/TradeAnnotations";
 import { VolatilitySmile, exampleSmile } from "./generated/VolatilitySmile";
@@ -31,6 +32,7 @@ const volume = candles.map(({ time, volume: value }) => ({ time, value }));
 const subscribe = () => () => {};
 
 export const fixtures: Record<string, ReactNode> = {
+  SimpleLineChart: <SimpleLineChart data={points} />,
   LiveCandles: <LiveCandles initialData={candles} subscribe={subscribe} />,
   ImperativeCandles: <ImperativeCandles initialData={candles} subscribe={subscribe} />,
   PaginatedHistory: (
