@@ -76,7 +76,7 @@ releases. Reference version is version used in examples in the recipes.
   live/history updates out of fit-trigger dependencies. Fit on initial load or a
   deliberate reset. See [range handling](references/history-and-range-selection.md).
 - **Data updates:** Use `data` for React-owned updates, or `reactive={false}` and the
-  series API for extremely frequent ticks (faster than 3 ticks a second). Avoid mixing both.
+  series API when per-tick React renders are measurably costly. Avoid mixing both.
   Reactive `data` is always the complete dataset. The wrapper calls `update()` only
   when every earlier item keeps the same object reference and the new array either
   replaces the last item with one of the same time or appends exactly one item
