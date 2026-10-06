@@ -1,4 +1,4 @@
-import { colors } from "@/common/colors";
+import { colors } from "./colors";
 
 const typedObjectKeys = <T extends object>(obj: T): Array<keyof T> => {
   return Object.keys(obj) as Array<keyof T>;
