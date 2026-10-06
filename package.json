@@ -61,6 +61,7 @@
     "deno": "^2.7.10",
     "dotenv": "^17.4.2",
     "eslint": "^9.39.4",
+    "eslint-config-flat-gitignore": "^2.4.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^50.8.0",
@@ -149,7 +150,7 @@
     ]
   },
   "optionalDependencies": {
-    "@ast-grep/napi-linux-x64-gnu": "0.42.1",
+    "@ast-grep/napi-linux-x64-gnu": "0.45.3",
     "@esbuild/linux-x64": "0.28.1",
     "@rollup/rollup-linux-x64-gnu": "4.62.2",
     "@rspack/binding-darwin-arm64": "1.7.11",

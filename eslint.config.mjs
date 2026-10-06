@@ -1,4 +1,5 @@
 import pluginJs from "@eslint/js";
+import gitignore from "eslint-config-flat-gitignore";
 import pluginImport from "eslint-plugin-import";
 import pluginJsdoc from "eslint-plugin-jsdoc";
 import playwright from "eslint-plugin-playwright";
@@ -10,22 +11,7 @@ import tseslint from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  {
-    ignores: [
-      "**/node_modules",
-      "skills/lightweight-charts-react-components-workspace/",
-      ".cache/skill-evals/",
-      "**/dist",
-      "**/coverage/",
-      "**/.rslib",
-      "**/.stryker-tmp",
-      "lib/tests/readme/extracted-snippets",
-      "lib/tests/bench/output",
-      "examples/tests/e2e/output",
-      "lib/tests/readme/extracted-snippets",
-      ".lighthouseci",
-    ],
-  },
+  gitignore({ recursive: true }),
   {
     languageOptions: {
       globals: globals.browser,
