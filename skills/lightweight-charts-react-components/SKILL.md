@@ -84,16 +84,20 @@ not load every reference for a simple chart.
 | Trading-session shading, pane backgrounds, custom drawing that follows zoom          | [Session overlays and primitives](references/session-overlays-and-primitives.md) |
 | Options strikes, yield maturities, choosing a numeric or custom horizontal axis      | [Numeric axes and chart types](references/numeric-axes-and-chart-types.md)       |
 
-The recipes are verified against that exact pinned versions of the library and other dependencies.
-If some dependency on the target project does not match, use the compatibility table below.
-If you can not find a matching reference, report this directly to the user.
-This is not a blocker, but breaking API changes may influence the outcome.
-All inconsistencies should be reported and checked before proceeding with a solution.
+If no reference matches the request, tell the user that the skill has no recipe
+for it. Then build the solution from the public components and the upstream
+`lightweight-charts` API, applying the Quick Start rules and the edge cases below.
 
 ### Skill compatibility
 
-Current versions below are the reference baseline, not the latest available
-releases. Reference version is version used in examples in the recipes.
+The recipes are verified against the reference versions below. These are the
+tested baseline, not the latest available releases.
+
+If an installed version differs from the reference version, compare it with the
+compatibility range. Inside the range, recipes apply as written. Outside it,
+tell the user about the mismatch before writing code, because breaking API
+changes can affect the recipes, and verify every API the recipe uses against
+the installed package.
 
 | Dependency or environment             | Reference version | Compatibility range and checks                                                                                                                       |
 | ------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
