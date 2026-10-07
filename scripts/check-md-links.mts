@@ -144,6 +144,7 @@ export class LinkChecker {
       href.startsWith("mailto:") ||
       href.startsWith("tel:") ||
       href.startsWith("javascript:") ||
+      href.startsWith("vbscript:") ||
       href.startsWith("data:")
     );
   }
