@@ -126,7 +126,6 @@
     "ignore": [
       "scripts/skill-evals/**",
       "scripts/skill-snippets.mts",
-      "skills/lightweight-charts-react-components/evals/**",
       "examples/src/samples/**/sandbox/**",
       "lib/src/pane/**",
       "lib/rslib.config.ts",

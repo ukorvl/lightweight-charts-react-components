@@ -21,9 +21,9 @@ missing browser fixtures, compiler errors, and browser errors fail the check.
 Evidence is written under `.cache/skill-evals/snippets/`.
 
 Register module filenames in
-[snippets.json](../../skills/lightweight-charts-react-components/evals/snippets.json)
+[snippets.json](fixtures/snippets.json)
 in fence order, and provide sample props in
-[snippet-fixtures.tsx](../../skills/lightweight-charts-react-components/evals/snippet-fixtures.tsx).
+[snippet-fixtures.tsx](fixtures/snippet-fixtures.tsx).
 Local imports in the recipes are preserved. New TypeScript fences cannot silently
 escape validation. Fixtures only provide inputs; they do not rewrite recipe code.
 
@@ -191,7 +191,7 @@ Extension points:
 
 - Add realistic prompts and expected outcomes to
   [evals.json](../../skills/lightweight-charts-react-components/evals/evals.json),
-  and inputs under its `files/` directory.
+  and inputs under [fixtures/files](fixtures/files).
 - Add a checker conforming to `ScenarioChecker` in [browser.mts](browser.mts) and
   register it in [checks/index.mts](checks/index.mts). Assert outcomes, allowing
   supported alternative implementations. Calibrate it against working and broken

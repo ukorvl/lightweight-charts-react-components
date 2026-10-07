@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Extracts every TypeScript fence in the chart skill, checks the public package
 // types, and mounts each component recipe in Chromium. Inputs: skill Markdown,
-// evals/snippets.json, and browser fixtures. Outputs: ignored sources and evidence
+// scripts/skill-evals/fixtures/snippets.json, and browser fixtures. Outputs: ignored sources and evidence
 // under .cache/skill-evals/snippets; exits nonzero on extraction/type/browser errors.
 import { spawnSync } from "node:child_process";
 import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -63,7 +63,7 @@ export function extractSnippets(
     const files = manifest[source] ?? [];
     if (blocks.length !== files.length)
       throw new Error(
-        `${source}: ${blocks.length} TypeScript blocks, ${files.length} registered files. Update evals/snippets.json.`
+        `${source}: ${blocks.length} TypeScript blocks, ${files.length} registered files. Update scripts/skill-evals/fixtures/snippets.json.`
       );
     blocks.forEach((block, index) => {
       if (!files[index].endsWith("." + block.info.trim().split(/\s+/)[0]))
@@ -117,8 +117,9 @@ export function checkTypes(directory: string): string {
 
 export async function testSnippets(repo: string) {
   const skill = path.join(repo, "skills/lightweight-charts-react-components");
+  const evals = path.join(repo, "scripts/skill-evals/fixtures");
   const manifest = parseManifest(
-    JSON.parse(await readFile(path.join(skill, "evals/snippets.json"), "utf8"))
+    JSON.parse(await readFile(path.join(evals, "snippets.json"), "utf8"))
   );
   const snippets = extractSnippets(await readMarkdown(skill), manifest);
   const directory = path.join(repo, ".cache/skill-evals/snippets");
@@ -128,7 +129,7 @@ export async function testSnippets(repo: string) {
     await writeFile(path.join(directory, "src/generated", snippet.file), snippet.code);
   }
   await cp(
-    path.join(skill, "evals/snippet-fixtures.tsx"),
+    path.join(evals, "snippet-fixtures.tsx"),
     path.join(directory, "src/fixtures.tsx")
   );
   await writeFile(

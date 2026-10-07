@@ -53,8 +53,11 @@ export async function prepare(
   await mkdir(path.dirname(iteration), { recursive: true });
   await mkdir(iteration); // Refuse to overwrite previous results.
   const skill = path.join(repo, "skills/lightweight-charts-react-components");
-  const evalDirectory = path.join(skill, "evals");
-  const suite = parseSuite(await readJson(path.join(evalDirectory, "evals.json")));
+  // The skill keeps only evals.json; scenario inputs live with the harness so
+  // installed skills never ship fixture apps.
+  const suitePath = path.join(skill, "evals/evals.json");
+  const evalDirectory = path.join(repo, "scripts/skill-evals/fixtures");
+  const suite = parseSuite(await readJson(suitePath));
   const base = path.join(iteration, ".prepared", "app");
   await copyTree(path.join(evalDirectory, "files/shared"), base);
   const vendor = path.join(base, "vendor/library");

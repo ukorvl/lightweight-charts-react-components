@@ -70,11 +70,9 @@ export async function main(
   if (command === "setup") {
     const fixture = path.join(repo, ".cache/skill-evals/consumer");
     await mkdir(fixture, { recursive: true });
-    await cp(
-      path.join(repo, "skills/lightweight-charts-react-components/evals/files/shared"),
-      fixture,
-      { recursive: true }
-    );
+    await cp(path.join(repo, "scripts/skill-evals/fixtures/files/shared"), fixture, {
+      recursive: true,
+    });
     await mkdir(path.join(fixture, "vendor/library"), { recursive: true });
     await cp(path.join(repo, "lib/dist"), path.join(fixture, "vendor/library/dist"), {
       recursive: true,
