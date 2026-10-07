@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { glob } from "glob";
 import { describe, expect, it } from "vitest";
-import { markdownIgnorePatterns } from "../check-md-links.mts";
+import { LinkChecker, markdownIgnorePatterns } from "../check-md-links.mts";
 import { createTempDir } from "./test-helpers.mts";
 
 describe("markdown source discovery", () => {
@@ -22,6 +22,13 @@ describe("markdown source discovery", () => {
       cwd: root,
       ignore: markdownIgnorePatterns,
     });
+
     expect(discovered.sort()).toEqual(files.slice(0, 2).sort());
+  });
+
+  it("skips vbscript URLs", () => {
+    const checker = new LinkChecker();
+
+    expect(checker.isSkippableLink("vbscript:alert(1)")).toBe(true);
   });
 });
