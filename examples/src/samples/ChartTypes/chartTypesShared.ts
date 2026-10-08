@@ -13,36 +13,16 @@ import {
   type Time,
   type YieldCurveChartOptions,
 } from "lightweight-charts";
+import { chartCommonOptions } from "../../common/chartCommonOptions";
 import { colors } from "../../common/colors";
-import { fontFamily } from "../../common/fontFamily";
 
 const baseChartOptions = {
-  autoSize: true,
-  layout: {
-    attributionLogo: false,
-    fontFamily,
-    background: {
-      color: "transparent",
-    },
-    textColor: colors.blue,
+  ...chartCommonOptions,
+  rightPriceScale: {
+    borderVisible: false,
   },
-  grid: {
-    vertLines: {
-      visible: false,
-    },
-    horzLines: {
-      visible: false,
-    },
-  },
-  crosshair: {
-    vertLine: {
-      style: 3,
-      color: colors.gray,
-    },
-    horzLine: {
-      style: 3,
-      color: colors.gray,
-    },
+  timeScale: {
+    borderVisible: false,
   },
 } as const;
 
@@ -143,24 +123,12 @@ const optionsChartOptions = {
   localization: {
     priceFormatter: (value: number) => `$${value.toFixed(0)}`,
   },
-  rightPriceScale: {
-    borderVisible: false,
-  },
-  timeScale: {
-    borderVisible: false,
-  },
 } satisfies DeepPartial<PriceChartOptions>;
 
 const yieldCurveChartOptions = {
   ...baseChartOptions,
   localization: {
     priceFormatter: (value: number) => `${value.toFixed(2)}%`,
-  },
-  rightPriceScale: {
-    borderVisible: false,
-  },
-  timeScale: {
-    borderVisible: false,
   },
   yieldCurve: {
     minimumTimeRange: 360,
@@ -171,12 +139,6 @@ const yieldCurveChartOptions = {
 
 const customChartOptions = {
   ...baseChartOptions,
-  rightPriceScale: {
-    borderVisible: false,
-  },
-  timeScale: {
-    borderVisible: false,
-  },
 } satisfies DeepPartial<ChartOptions>;
 
 const optionsSeriesOptions = {

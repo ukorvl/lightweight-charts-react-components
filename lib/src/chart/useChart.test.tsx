@@ -1,5 +1,6 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, render, renderHook } from "@testing-library/react";
 import { createChart, type IChartApi } from "lightweight-charts";
+import React, { useLayoutEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultChartOptions } from "./defaultChartOptions";
 import { useChart } from "./useChart";
@@ -92,6 +93,38 @@ describe("useChart", () => {
 
     expect(mockRemoveChart).toHaveBeenCalled();
   });
+
+  it.each([false, true])(
+    "keeps the chart alive during child layout cleanup (StrictMode: %s)",
+    strict => {
+      vi.mocked(createChart).mockReturnValue(mockChart);
+      const cleanup = vi.fn();
+      function Child({ getChart }: { getChart: () => unknown }) {
+        useLayoutEffect(() => () => cleanup(getChart()), []);
+        return null;
+      }
+      function Parent() {
+        const { chartApiRef } = useChart({ container: mockContainer });
+        return <Child getChart={() => chartApiRef.current.api()} />;
+      }
+      const { unmount } = render(
+        strict ? (
+          <React.StrictMode>
+            <Parent />
+          </React.StrictMode>
+        ) : (
+          <Parent />
+        )
+      );
+      unmount();
+      expect(cleanup).toHaveBeenCalled();
+      for (const [api] of cleanup.mock.calls) expect(api).toBe(mockChart);
+      expect(mockRemoveChart).toHaveBeenCalledTimes(strict ? 2 : 1);
+      expect(cleanup.mock.invocationCallOrder[0]).toBeLessThan(
+        mockRemoveChart.mock.invocationCallOrder[0]
+      );
+    }
+  );
 
   it("should use a custom chart constructor when provided", () => {
     const createChartApi = vi.fn().mockReturnValue(mockChart);

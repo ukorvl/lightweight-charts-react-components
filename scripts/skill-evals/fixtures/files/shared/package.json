@@ -1,0 +1,18 @@
+{
+  "name": "lcrc-eval-consumer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "lightweight-charts": "5.2.1",
+    "lightweight-charts-react-components": "file:vendor/library",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.16",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3",
+    "vite": "6.4.2"
+  }
+}

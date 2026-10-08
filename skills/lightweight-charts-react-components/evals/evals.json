@@ -1,0 +1,28 @@
+{
+  "skill_name": "lightweight-charts-react-components",
+  "version": 1,
+  "stage": "pilot",
+  "evals": [
+    {
+      "id": 1,
+      "name": "live-candles",
+      "prompt": "The app has a candle snapshot and fake live feed. Implement src/Task.tsx using the public lightweight-charts-react-components package. Build a live candlestick chart and wire it to the existing OHLC panel through onDetails. Timestamps are milliseconds. Snapshot rows may be shuffled or repeated; the last row wins for a repeated time. Live messages replace the current candle or add the next one; ignore older messages. Hover should show that candle, and leaving should show the latest one. Update a stationary hovered candle when its values change. Keep my selected historical window when messages arrive, and release the feed subscription on removal. Add comments explaining the chart-specific decisions. Read CONTRACT.md for the supplied interfaces. You may add files under src/, but keep the supplied host, scenario, contracts, dependency declarations and build settings unchanged.",
+      "expected_output": "A working live chart with ordered, unique UTC candle data, current-candle replacement, one-bar append, ignored stale messages, current or hovered OHLC details that update without pointer movement, stable historical zoom, and subscription cleanup.",
+      "files": ["files/shared", "files/live-candles"]
+    },
+    {
+      "id": 2,
+      "name": "history",
+      "prompt": "Implement older-history loading in src/Task.tsx using lightweight-charts-react-components. When I scroll near the left edge, fetch the preceding page through loadBefore. Pages overlap, so do not duplicate candles. I may keep scrolling during the request: preserve the bars I am viewing when the response arrives. Prevent concurrent duplicate requests, stop after an empty page, show a button named Retry after failure, and ignore an old symbol's late response after I switch symbols. Explain the viewport and request-lifecycle decisions in comments. Read CONTRACT.md for the supplied interfaces. You may add files under src/, but keep the supplied host, scenario, contracts, dependency declarations and build settings unchanged.",
+      "expected_output": "A paginated candle chart with unique ordered history, response-time viewport preservation, one pending request, retry and exhaustion behavior, and protection against obsolete instrument responses.",
+      "files": ["files/shared", "files/history"]
+    },
+    {
+      "id": 3,
+      "name": "volume",
+      "prompt": "Implement src/Task.tsx using lightweight-charts-react-components. Keep a benchmark in the first pane. In the second pane, place candles and volume together, with volume in the bottom fifth on an independent scale. The supplied volume toggle and multiplier must update the chart. Large volume must not compress price. Keep the benchmark and selected time window through repeated toggles. Comment on the scale ownership and layout decisions. Read CONTRACT.md for the supplied interfaces. You may add files under src/, but keep the supplied host, scenario, contracts, dependency declarations and build settings unchanged.",
+      "expected_output": "One chart with a benchmark in pane zero and candles plus independently scaled, unmodified volume in pane one. Volume uses the bottom fifth, and toggles and updates preserve the other series and viewport without scale errors.",
+      "files": ["files/shared", "files/volume"]
+    }
+  ]
+}

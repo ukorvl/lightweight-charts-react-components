@@ -34,6 +34,15 @@ const MAX_SUCCESS_STATUS_CODE = 399;
 const FILE_CONCURRENCY_LIMIT = 5;
 const LINK_CONCURRENCY_LIMIT = 10;
 
+// Evaluation outputs duplicate runtime docs and must not enter source link checks.
+export const markdownIgnorePatterns = [
+  "**/node_modules/**",
+  "**/dist/**",
+  "**/coverage/**",
+  "skills/lightweight-charts-react-components-workspace/**",
+  ".cache/skill-evals/**",
+];
+
 export class LinkChecker {
   errors: Array<LinkError>;
   fileAnchors: Map<string, Set<string>>;
@@ -354,7 +363,7 @@ async function main() {
   const markdownFiles = await glob("**/*.md", {
     cwd: rootDir,
     absolute: true,
-    ignore: ["**/node_modules/**", "**/dist/**", "**/coverage/**"],
+    ignore: markdownIgnorePatterns,
   });
 
   console.log(`Found ${markdownFiles.length} markdown files to check\n`);
