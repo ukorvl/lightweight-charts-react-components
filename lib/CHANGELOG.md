@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.1] - 2026-10-31
 ### Changed
 - require Lightweight Charts `>=5.0.8 <6` to match the native pane APIs used by the wrapper
 
