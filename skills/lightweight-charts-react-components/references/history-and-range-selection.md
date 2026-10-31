@@ -209,7 +209,10 @@ export function InstrumentHistory({ loadSnapshot }: { loadSnapshot: LoadSnapshot
     symbol: "ASSET_A",
     interval: "1d",
   });
-  const id = `${selection.symbol}:${selection.interval}`;
+  // The effect depends on these values: re-clicking the current interval creates a
+  // new selection object but must not refetch or reset the view.
+  const { symbol, interval } = selection;
+  const id = `${symbol}:${interval}`;
   const [result, setResult] = useState<{ id: string; data: Snapshot } | null>(null);
   const [error, setError] = useState<{ id: string; message: string } | null>(null);
   const [retry, setRetry] = useState(0);
@@ -219,7 +222,7 @@ export function InstrumentHistory({ loadSnapshot }: { loadSnapshot: LoadSnapshot
     let active = true;
     setResult(null);
     setError(null);
-    void loadSnapshot(selection, controller.signal).then(
+    void loadSnapshot({ symbol, interval }, controller.signal).then(
       data => {
         if (active) setResult({ id, data });
       },
@@ -236,7 +239,7 @@ export function InstrumentHistory({ loadSnapshot }: { loadSnapshot: LoadSnapshot
       active = false;
       controller.abort();
     };
-  }, [id, selection, loadSnapshot, retry]);
+  }, [id, symbol, interval, loadSnapshot, retry]);
 
   const current = result?.id === id ? result : null;
   return (
@@ -308,3 +311,5 @@ hourly bars. The data adapter must return the chosen granularity.
   while fetching: no response updates a removed chart.
 - Select A, B, and a new interval rapidly. Return A's response last and verify
   that only the final selection renders. Cover empty snapshots and retry.
+- Click the interval that is already selected: no request starts and the chart
+  keeps its zoom and scroll position.
