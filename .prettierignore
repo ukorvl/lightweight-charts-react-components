@@ -6,5 +6,3 @@ examples/tests/e2e/output
 .lighthouseci
 .stryker-tmp
 reports/
-skills/lightweight-charts-react-components-workspace/
-.cache/skill-evals/
