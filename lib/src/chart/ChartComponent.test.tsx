@@ -18,6 +18,7 @@ describe("Chart component", () => {
     init: vi.fn(),
     clear: vi.fn(),
     _chart: null,
+    _isDisposing: false,
   };
 
   beforeEach(() => {

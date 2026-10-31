@@ -33,10 +33,13 @@ export const useChart = <
 
   const chartApiRef = useRef<ChartApiRef<HorzScaleItem, TChartApi>>({
     _chart: null,
+    _isDisposing: false,
     api() {
       return this._chart;
     },
     init() {
+      this._isDisposing = false;
+
       if (this._chart === null) {
         const chart = createChartApi(container, {
           ...defaultChartOptions,
@@ -62,6 +65,12 @@ export const useChart = <
 
   useLayoutEffect(() => {
     chartApiRef.current.init();
+
+    // On deletion this runs before child cleanups, so series can skip native
+    // removal: it would rebuild the timeline and fire user range handlers.
+    return () => {
+      chartApiRef.current._isDisposing = true;
+    };
   }, []);
 
   // Children detach plugins in layout cleanup. Destroy the chart afterwards so
