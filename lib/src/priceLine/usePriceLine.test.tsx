@@ -377,4 +377,32 @@ describe("usePriceLine", () => {
     expect(() => unmount()).not.toThrow();
     expect(mockRemovePriceLine).not.toHaveBeenCalled();
   });
+
+  it("does not touch the series when no price line was created", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      seriesApiRef: mockSeries,
+      isReady: false,
+    });
+
+    const { unmount } = renderHook(() => usePriceLine({ price: 100 }));
+
+    unmount();
+
+    expect(mockRemovePriceLine).not.toHaveBeenCalled();
+  });
+
+  it("drops the price line reference when there is no series in context", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      seriesApiRef: null,
+      isReady: false,
+    });
+
+    const { result } = renderHook(() => usePriceLine({ price: 100 }));
+    const { current: priceLine } = result.current;
+
+    priceLine._priceLine = mockPriceLineApi as never;
+    priceLine.clear();
+
+    expect(priceLine.api()).toBeNull();
+  });
 });

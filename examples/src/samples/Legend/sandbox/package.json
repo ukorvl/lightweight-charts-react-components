@@ -11,7 +11,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "lightweight-charts-react-components": "^2",
-    "lightweight-charts": ">=5 < 6"
+    "lightweight-charts": ">=5.0.8 <6"
   },
   "devDependencies": {
     "vite": "^8.0.11",

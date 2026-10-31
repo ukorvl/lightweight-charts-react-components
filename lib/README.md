@@ -123,6 +123,7 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
   - [Standalone browser build](#standalone-browser-build)
 - [Usage](#usage)
   - [Chart Container Sizing](#chart-container-sizing)
+- [Agent skill](#agent-skill)
 - [Examples](#examples)
 - [Contributing](#contributing)
   - [How to Contribute](#how-to-contribute)
@@ -273,10 +274,17 @@ Pane-wide overlays that belong to a whole pane rather than a single series can b
 
 ### Chart Container Sizing
 
-The `Chart` component requires explicit width and height to render correctly. You can set these dimensions directly via the `options` prop or make the chart container scale to its parent size using the `containerProps` prop.
-Note that the chart will automatically resize to fit its container.
+The `Chart` component needs a nonzero container size. Set fixed dimensions through
+`options`, or enable `options={{ autoSize: true }}` and size the container through
+`containerProps`. Automatic resizing requires `autoSize: true`.
 
 There may be cases where the chart's parent HTML element has no size defined (for example, when the parent is a flex container with no defined height). In such cases, you need to ensure that the parent element has a defined size (width and height) for the chart to render properly.
+
+## Agent skill
+
+The project comes with an [agent skill](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/skills/lightweight-charts-react-components) that provides recipes for common charting scenarios and guides on how to integrate the library into React applications. The skill is designed to help coding agents understand the library's design choices and common edge cases, making it produce higher-quality code when using the library.
+
+For more information on how to use the skill, please refer to the [skill readme](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/skills/lightweight-charts-react-components/README.md).
 
 ## Examples
 

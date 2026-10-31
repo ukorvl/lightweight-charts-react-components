@@ -1,6 +1,9 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, render, renderHook } from "@testing-library/react";
 import { createChart, type IChartApi } from "lightweight-charts";
+import React, { useLayoutEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { LineSeries } from "@/series";
+import { ChartWrapper } from "./ChartWrapper";
 import { defaultChartOptions } from "./defaultChartOptions";
 import { useChart } from "./useChart";
 import type { UseChartOptions } from "./types";
@@ -91,6 +94,77 @@ describe("useChart", () => {
     unmount();
 
     expect(mockRemoveChart).toHaveBeenCalled();
+  });
+
+  it.each([false, true])(
+    "keeps the chart alive during child layout cleanup (StrictMode: %s)",
+    strict => {
+      vi.mocked(createChart).mockReturnValue(mockChart);
+      const cleanup = vi.fn();
+      function Child({ getChart }: { getChart: () => unknown }) {
+        useLayoutEffect(() => () => cleanup(getChart()), []);
+        return null;
+      }
+      function Parent() {
+        const { chartApiRef } = useChart({ container: mockContainer });
+        return <Child getChart={() => chartApiRef.current.api()} />;
+      }
+      const { unmount } = render(
+        strict ? (
+          <React.StrictMode>
+            <Parent />
+          </React.StrictMode>
+        ) : (
+          <Parent />
+        )
+      );
+      unmount();
+      expect(cleanup).toHaveBeenCalled();
+      for (const [api] of cleanup.mock.calls) expect(api).toBe(mockChart);
+      expect(mockRemoveChart).toHaveBeenCalledTimes(strict ? 2 : 1);
+      expect(cleanup.mock.invocationCallOrder[0]).toBeLessThan(
+        mockRemoveChart.mock.invocationCallOrder[0]
+      );
+    }
+  );
+
+  describe("series removal", () => {
+    const mockRemoveSeries = vi.fn();
+    const chartWithSeries = {
+      ...mockChart,
+      addSeries: () => ({ setData: vi.fn(), applyOptions: vi.fn() }),
+      removeSeries: mockRemoveSeries,
+    } as unknown as IChartApi;
+
+    function Scene({ showSeries = true }: { showSeries?: boolean }) {
+      return <ChartWrapper>{showSeries && <LineSeries data={[]} />}</ChartWrapper>;
+    }
+
+    beforeEach(() => {
+      vi.mocked(createChart).mockReturnValue(chartWithSeries);
+    });
+
+    it("skips native series removal when the whole chart unmounts", () => {
+      const { unmount } = render(<Scene />);
+
+      unmount();
+
+      expect(mockRemoveChart).toHaveBeenCalledTimes(1);
+      expect(mockRemoveSeries).not.toHaveBeenCalled();
+    });
+
+    it.each([false, true])(
+      "removes a series that unmounts from a live chart (StrictMode: %s)",
+      strict => {
+        const wrap = (node: React.ReactNode) =>
+          strict ? <React.StrictMode>{node}</React.StrictMode> : node;
+        const { rerender } = render(wrap(<Scene />));
+
+        rerender(wrap(<Scene showSeries={false} />));
+
+        expect(mockRemoveSeries).toHaveBeenCalledTimes(1);
+      }
+    );
   });
 
   it("should use a custom chart constructor when provided", () => {

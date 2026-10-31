@@ -197,4 +197,24 @@ describe("usePane", () => {
     expect(() => unmount()).not.toThrow();
     expect(mockRemovePane).not.toHaveBeenCalled();
   });
+
+  it("leaves the stretch factor alone when it is not provided", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const { rerender } = renderHook(
+      (props: PaneProps) => usePane({ stretchFactor: props.stretchFactor }),
+      { initialProps: {} as PaneProps }
+    );
+
+    expect(mockPaneApi.setStretchFactor).not.toHaveBeenCalled();
+
+    rerender({ stretchFactor: 2 });
+    mockPaneApi.setStretchFactor.mockClear();
+    rerender({});
+
+    expect(mockPaneApi.setStretchFactor).not.toHaveBeenCalled();
+  });
 });
