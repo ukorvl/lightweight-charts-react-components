@@ -54,6 +54,45 @@ type Execution = {
 };
 type Level = { id: string; price: number; title: string; color: string };
 
+const quantize = (rawPrice: number, tickSize: number, precision: number) =>
+  Number((Math.round(rawPrice / tickSize) * tickSize).toFixed(precision));
+
+function PriceInput({
+  price,
+  tickSize,
+  precision,
+  onCommit,
+}: {
+  price: number;
+  tickSize: number;
+  precision: number;
+  onCommit: (price: number) => void;
+}) {
+  // Hold the typed text and round on commit. Rounding each keystroke would rewrite
+  // the field mid-entry: with a tick of 5, typing "105" would turn "1" into 0.
+  const [draft, setDraft] = useState<string | null>(null);
+  const commit = () => {
+    if (draft === null) return;
+    setDraft(null);
+    const rawPrice = Number(draft);
+    if (draft !== "" && Number.isFinite(rawPrice)) {
+      onCommit(quantize(rawPrice, tickSize, precision));
+    }
+  };
+  return (
+    <input
+      type="number"
+      step={tickSize}
+      value={draft ?? price}
+      onChange={event => setDraft(event.target.value)}
+      onBlur={commit}
+      onKeyDown={event => {
+        if (event.key === "Enter") commit();
+      }}
+    />
+  );
+}
+
 export function TradeAnnotations({
   candles,
   executions,
@@ -99,9 +138,7 @@ export function TradeAnnotations({
       // point.y is not a price and may refer to an unrelated pane.
       const rawPrice = series.coordinateToPrice(param.point.y);
       if (rawPrice === null || !Number.isFinite(rawPrice)) return;
-      const price = Number(
-        (Math.round(rawPrice / tickSize) * tickSize).toFixed(precision)
-      );
+      const price = quantize(rawPrice, tickSize, precision);
       const id = crypto.randomUUID();
       setLevels(previous => [
         ...previous,
@@ -156,20 +193,15 @@ export function TradeAnnotations({
       {levels.map(level => (
         <label key={level.id} style={{ display: "block" }}>
           {level.title}
-          <input
-            type="number"
-            step={tickSize}
-            value={level.price}
-            onChange={event => {
-              const rawPrice = event.target.valueAsNumber;
-              if (!Number.isFinite(rawPrice)) return;
-              const price = Number(
-                (Math.round(rawPrice / tickSize) * tickSize).toFixed(precision)
-              );
+          <PriceInput
+            price={level.price}
+            tickSize={tickSize}
+            precision={precision}
+            onCommit={price =>
               setLevels(previous =>
                 previous.map(item => (item.id === level.id ? { ...item, price } : item))
-              );
-            }}
+              )
+            }
           />
           <button
             onClick={() =>
@@ -219,6 +251,8 @@ an alert on a server. Add the application's explicit save/submit flow if request
 
 - Add two executions to the same candle, reorder input, and verify sorted markers
   remain. Hide them and verify the complete list is cleared; show them again.
+- With a tick of 5, type 105 into a level's price: the field keeps each digit, and
+  the line moves on blur or Enter. Clear the field and blur: the price is restored.
 - Edit a level's price and title without changing its ID. Remove it and verify the
   line disappears. Change instrument and verify annotations do not leak across it.
 - In placement mode, click the price pane at a known price. Verify tick rounding.
