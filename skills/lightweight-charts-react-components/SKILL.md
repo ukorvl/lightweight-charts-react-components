@@ -101,7 +101,7 @@ the installed package.
 
 | Dependency or environment             | Reference version | Compatibility range and checks                                                                                                                       |
 | ------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `lightweight-charts-react-components` | `2.6.0`           | Recipe target: `>=2.6.0 <3`. Other versions require checking installed exports, chart API refs, and reactive data behavior before adapting a recipe. |
+| `lightweight-charts-react-components` | `2.6.1`           | Recipe target: `>=2.6.1 <3`. Other versions require checking installed exports, chart API refs, and reactive data behavior before adapting a recipe. |
 | `lightweight-charts`                  | `5.2.1`           | Declared peer: `>=5.0.8 <6`.                                                                                                                         |
 | React and React DOM                   | `19.2.6`          | Declared peers: `>=18.2 <20`. Keep `react` and `react-dom` on matching versions and use the application's existing React instance.                   |
 | Node.js                               | —                 | Package engines: `>=18.14.0`. The app's build tools can require a newer version.                                                                     |
