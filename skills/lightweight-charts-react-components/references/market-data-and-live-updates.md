@@ -173,7 +173,7 @@ A non-null wrapper ref can still contain a null API until initialization finishe
 
 ```tsx
 import { useEffect, useRef, useState } from "react";
-import type { IChartApi, Time } from "lightweight-charts";
+import type { IChartApi, Time, UTCTimestamp } from "lightweight-charts";
 import {
   CandlestickSeries,
   Chart,
@@ -195,11 +195,12 @@ export function ImperativeCandles({
   // The seed stays stable; mount with a new key for another dataset identity.
   const [seed] = useState(() => initialData.map(bar => ({ ...bar })));
 
+  const fitted = useRef(false);
+
   useEffect(() => {
     let active = true;
     let frame = 0;
     let unsubscribe: (() => void) | undefined;
-    let lastTime = seed[seed.length - 1]?.time;
 
     const startWhenReady = () => {
       if (!active) return;
@@ -210,7 +211,14 @@ export function ImperativeCandles({
         return;
       }
       // Fit after initialization, then leave the viewport to the user.
-      chart.timeScale().fitContent();
+      if (!fitted.current) {
+        fitted.current = true;
+        chart.timeScale().fitContent();
+      }
+      // After a resubscribe the series can hold newer bars than the seed, and
+      // update() throws on a bar older than the series tail.
+      const current = series.data();
+      let lastTime = current[current.length - 1]?.time as UTCTimestamp | undefined;
       unsubscribe = subscribe(bar => {
         if (!active || (lastTime !== undefined && bar.time < lastTime)) return;
         series.update({ ...bar });
@@ -223,7 +231,7 @@ export function ImperativeCandles({
       cancelAnimationFrame(frame);
       unsubscribe?.();
     };
-  }, [seed, subscribe]);
+  }, [subscribe]);
 
   return (
     <Chart
@@ -236,6 +244,8 @@ export function ImperativeCandles({
   );
 }
 ```
+
+Keep `subscribe` stable: each new function closes and reopens the feed.
 
 For explicit “Live” controls, call `chartRef.current?.api()?.timeScale().scrollToRealTime()`
 from the control handler. `fitContent()` shows the entire dataset; it does not mean
@@ -257,6 +267,8 @@ off and scroll after accepted updates only when follow mode is enabled.
 - Confirm initial data is sorted and unique; a same-time update replaces exactly
   one bar; a later-time update adds one; an older-time update follows the chosen
   correction policy. Pan left, update, and verify the user's viewport remains.
+- In the chart-owned recipe, change `subscribe` after live bars arrive and replay
+  an older bar: nothing throws, the bar is ignored, and the viewport does not move.
 - Change symbol/interval and verify the old subscription is disposed and no old
   bars enter the new chart. Check a narrow card and a client-rendered route for a
   nonzero canvas size.
