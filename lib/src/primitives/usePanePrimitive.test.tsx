@@ -175,7 +175,7 @@ describe("usePanePrimitive", () => {
           plugin: {},
         })
       )
-    ).toThrowError(/PanePrimitive must be used inside a pane/);
+    ).toThrowError(/PanePrimitive must be used inside a pane[\s\S]*pane-primitives/);
   });
 
   it("does not initialize panePrimitive if pane is not ready", () => {

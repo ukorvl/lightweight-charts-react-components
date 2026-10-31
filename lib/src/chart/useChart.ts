@@ -38,8 +38,6 @@ export const useChart = <
       return this._chart;
     },
     init() {
-      this._isDisposing = false;
-
       if (this._chart === null) {
         const chart = createChartApi(container, {
           ...defaultChartOptions,
@@ -55,6 +53,8 @@ export const useChart = <
       return this._chart;
     },
     clear() {
+      this._isDisposing = false;
+
       if (this._chart !== null) {
         setIsReady(false);
         this._chart.remove();
