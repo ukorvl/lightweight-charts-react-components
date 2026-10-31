@@ -45,10 +45,11 @@ export type WireCandle = {
 export function normalizeCandle(row: WireCandle): Candle {
   const seconds = row.timestampMs / 1000;
   const prices = [row.open, row.high, row.low, row.close].map(value => {
-    if (typeof value === "string" && value.trim() === "") {
-      throw new Error("Empty OHLC price");
-    }
-    return Number(value);
+    // The wire type is not a runtime guarantee, and Number() turns null and blank
+    // strings into 0, which would pass the range checks below.
+    if (typeof value === "number") return value;
+    if (typeof value === "string" && value.trim() !== "") return Number(value);
+    throw new Error("Missing OHLC price");
   });
   const [open, high, low, close] = prices;
   if (
