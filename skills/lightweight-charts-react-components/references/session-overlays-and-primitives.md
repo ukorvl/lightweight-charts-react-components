@@ -36,7 +36,7 @@ renderer interface avoids introducing a direct runtime dependency on
 ratios through the target; bitmap coordinate space would require explicit x/y
 pixel-ratio conversion.
 
-```ts
+```ts file=SessionBands.ts
 import type {
   IChartApiBase,
   IPanePrimitive,

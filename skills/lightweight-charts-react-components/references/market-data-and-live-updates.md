@@ -30,7 +30,7 @@ OHLC aggregation upstream if the feed contains trade prices. `timestampMs` is th
 bar-open instant in UTC milliseconds. A payload that revises the same bar appears
 later in the response and wins. Invalid data is rejected rather than plotted.
 
-```ts
+```ts file=market-data.ts
 import type { CandlestickData, UTCTimestamp } from "lightweight-charts";
 
 export type Candle = CandlestickData<UTCTimestamp>;
@@ -98,7 +98,7 @@ gap using the provider's cursor/replay protocol. It must also reject stale same-
 revisions using the provider's sequence number when one exists; timestamp order
 alone cannot order revisions of one candle.
 
-```tsx
+```tsx file=LiveCandles.tsx
 import { useEffect, useState } from "react";
 import {
   CandlestickSeries,
