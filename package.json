@@ -15,6 +15,7 @@
     "check:coverage-regression": "node ./scripts/check-coverage-regression.mts",
     "check:md-links": "node ./scripts/check-md-links.mts",
     "check:jsdoc-links": "node ./scripts/check-jsdoc-links.mts",
+    "check:skill-recipes": "node ./scripts/check-skill-recipes.mts",
     "format": "prettier --check './**/*.{ts,tsx,mts,json,mjs,md}'",
     "format:fix": "prettier --write './**/*.{ts,tsx,mts,json,mjs,md}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
@@ -134,6 +135,7 @@
       "scripts/check-md-links.mts",
       "examples/scripts/prelhci.ts",
       "scripts/check-jsdoc-links.mts",
+      "scripts/check-skill-recipes.mts",
       "scripts/check-coverage-regression.mts",
       "examples/stryker.config.json"
     ],

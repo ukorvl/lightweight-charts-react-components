@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 // This script checks that release-version touchpoints stay aligned with lib/package.json.
-// It verifies package metadata, the lockfile entry, and the versions in readme files.
+// It verifies package metadata, the lockfile entry, the versions in readme files, and the
+// compatibility table of the agent skill. The skill's reference versions are a tested baseline,
+// so they only have to stay inside the declared ranges instead of matching the latest release.
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -16,6 +18,7 @@ export type CheckerOptions = {
   packageLock: string;
   lockPackageKey: string;
   readmeFiles: string[];
+  skillFile: string;
 };
 
 const defaultOptions: CheckerOptions = {
@@ -26,6 +29,99 @@ const defaultOptions: CheckerOptions = {
   packageLock: "package-lock.json",
   lockPackageKey: "lib",
   readmeFiles: ["lib/README.md"],
+  skillFile: "skills/lightweight-charts-react-components/SKILL.md",
+};
+
+const parseVersion = (version: string) => {
+  const parts = version.split(".").map(Number);
+
+  return [parts[0], parts[1] ?? 0, parts[2] ?? 0];
+};
+
+const compareVersions = (left: string, right: string) => {
+  const [leftParts, rightParts] = [parseVersion(left), parseVersion(right)];
+  const index = leftParts.findIndex((part, position) => part !== rightParts[position]);
+
+  return index === -1 ? 0 : leftParts[index] - rightParts[index];
+};
+
+/** Supports the `>=min <max` shape used by the skill compatibility table. */
+const satisfiesRange = (version: string, range: string) => {
+  const match = range.match(/^>=(\S+) <(\S+)$/);
+
+  if (!match) {
+    throw new Error(`Unsupported version range: ${range}`);
+  }
+
+  return (
+    compareVersions(version, match[1]) >= 0 && compareVersions(version, match[2]) < 0
+  );
+};
+
+const getInlineCode = (text: string) => text.match(/`([^`]+)`/)?.[1];
+
+const readSkillTableRow = (skill: string, skillFile: string, dependency: string) => {
+  const row = skill
+    .split("\n")
+    .map(line => line.split("|").map(cell => cell.trim()))
+    .find(cells => cells[1] === dependency);
+  const reference = row && getInlineCode(row[2]);
+  const range = row && getInlineCode(row[3]);
+
+  if (!range) {
+    throw new Error(`Could not read ${dependency} compatibility row from ${skillFile}`);
+  }
+
+  return { reference, range };
+};
+
+const assertSkillCompatibility = (
+  skill: string,
+  skillFile: string,
+  packageJson: {
+    version: string;
+    peerDependencies?: Record<string, string>;
+    engines?: Record<string, string>;
+  }
+) => {
+  const assertRange = (label: string, actual: string, expected?: string) => {
+    if (actual !== expected) {
+      throw new Error(
+        `${skillFile} ${label} range (${actual}) does not match package.json (${expected})`
+      );
+    }
+  };
+  const assertReference = (label: string, reference?: string, range?: string) => {
+    if (!reference || !range || !satisfiesRange(reference, range)) {
+      throw new Error(
+        `${skillFile} ${label} reference version (${reference}) is outside ${range}`
+      );
+    }
+  };
+
+  const library = readSkillTableRow(
+    skill,
+    skillFile,
+    "`lightweight-charts-react-components`"
+  );
+  const charts = readSkillTableRow(skill, skillFile, "`lightweight-charts`");
+  const react = readSkillTableRow(skill, skillFile, "React and React DOM");
+  const node = readSkillTableRow(skill, skillFile, "Node.js");
+  const peers = packageJson.peerDependencies;
+
+  assertRange("lightweight-charts", charts.range, peers?.["lightweight-charts"]);
+  assertRange("react", react.range, peers?.react);
+  assertRange("react-dom", react.range, peers?.["react-dom"]);
+  assertRange("node", node.range, packageJson.engines?.node);
+  assertReference("library", library.reference, library.range);
+  assertReference("lightweight-charts", charts.reference, charts.range);
+  assertReference("react", react.reference, react.range);
+
+  if (!satisfiesRange(packageJson.version, library.range)) {
+    throw new Error(
+      `package.json version (${packageJson.version}) is outside the ${skillFile} recipe target (${library.range}). Verify the recipes and update the compatibility table.`
+    );
+  }
 };
 
 function writeStdout(message: string) {
@@ -46,7 +142,8 @@ Options:
   --version-file <path>
   --package-lock <path>
   --lock-package-key <key>
-  --readme-files <comma-separated paths>`);
+  --readme-files <comma-separated paths>
+  --skill-file <path>`);
 }
 
 const parseCliOptions = (argv: string[]): CheckerOptions => {
@@ -94,6 +191,11 @@ const parseCliOptions = (argv: string[]): CheckerOptions => {
         .split(",")
         .map((file: string) => file.trim())
         .filter(Boolean);
+      index += 1;
+      continue;
+    }
+    if (argument === "--skill-file" && value) {
+      options.skillFile = value;
       index += 1;
       continue;
     }
@@ -194,6 +296,13 @@ export const run = (options: CheckerOptions = defaultOptions) => {
       `Version-pinned README references in ${readmeFile} match ${packageVersion}.`
     );
   }
+
+  assertSkillCompatibility(
+    readRequiredFile(options.skillFile),
+    options.skillFile,
+    JSON.parse(readRequiredFile(options.packageJson))
+  );
+  messages.push(`Compatibility table in ${options.skillFile} matches package.json.`);
 
   messages.push(`All release version files are in sync at v${packageVersion}.`);
   return messages;
