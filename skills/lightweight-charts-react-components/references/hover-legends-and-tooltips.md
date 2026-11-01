@@ -23,7 +23,7 @@ in a positioned application container.
 - `param.point` is local to the chart pane, not the viewport. This recipe is for
   one pane; add each pane's DOM offset for tooltips over a multi-pane chart.
 
-## Recipe: live OHLC legend and clamped tooltip
+## Recipe: live OHLC legend and edge-aware tooltip
 
 `data` is normalized, ascending, unique UTC-second candles; the initial snapshot
 is ready before mounting. The application owns live updates through the complete
@@ -45,6 +45,13 @@ type Hover = { time: UTCTimestamp; x: number; y: number };
 const tooltipWidth = 190;
 const tooltipHeight = 96;
 const chartOptions = { autoSize: true, timeScale: { timeVisible: true } };
+
+// Clamping alone covers the hovered point near an edge. Flip across the cursor first.
+const place = (cursor: number, size: number, limit: number) => {
+  const after = cursor + 12;
+  const spot = after + size <= limit ? after : cursor - 12 - size;
+  return Math.max(0, Math.min(spot, limit - size));
+};
 
 export function CandleDetails({
   symbol,
@@ -83,11 +90,11 @@ export function CandleDetails({
       setHover(null);
       return;
     }
-    // Clamp in the same coordinate system as the positioned chart container.
+    // Place in the same coordinate system as the positioned chart container.
     // If the card is narrower than the tooltip, CSS also shrinks its width.
     const width = Math.min(tooltipWidth, container.clientWidth);
-    const x = Math.max(0, Math.min(point.x + 12, container.clientWidth - width));
-    const y = Math.max(0, Math.min(point.y + 12, container.clientHeight - tooltipHeight));
+    const x = place(point.x, width, container.clientWidth);
+    const y = place(point.y, tooltipHeight, container.clientHeight);
     const next = { time: param.time as UTCTimestamp, x, y };
     // Native updates can emit the same crosshair event without pointer movement.
     // Preserve state identity in that case; current data still refreshes OHLC.
@@ -159,11 +166,34 @@ formatter changes labels, never the underlying bar timestamps.
 
 ## Adaptation: several series or a fixed legend
 
-For several lines, keep refs indexed by a stable application series ID. For each
-series, retrieve its native API, then read `param.seriesData.get(api)`. Display
-`—` when the map has no point; do not show another asset's value at the same
-logical index. Derive labels/colors from the application's ID mapping, not the
-order in which map entries happen to appear.
+For several lines, keep refs indexed by a stable application series ID and pass
+`refs.get(id)` to each series. Show `—` when the map has no point; do not show
+another asset's value at the same logical index. Derive labels/colors from the
+application's ID mapping, not the order in which map entries happen to appear.
+The refs are created once, so remount with a new `key` when the ID set changes.
+
+```tsx
+import { createRef, useState } from "react";
+import type { MouseEventParams } from "lightweight-charts";
+import type { SeriesApiRef } from "lightweight-charts-react-components";
+
+export function useLineReadout(ids: string[]) {
+  const [refs] = useState(
+    () => new Map(ids.map(id => [id, createRef<SeriesApiRef<"Line">>()]))
+  );
+  const read = (param: MouseEventParams) =>
+    ids.map(id => {
+      const api = refs.get(id)?.current?.api();
+      const point = api && param.seriesData.get(api);
+      return { id, text: point && "value" in point ? point.value.toFixed(2) : "—" };
+    });
+  return { refs, read };
+}
+```
+
+To show a value the plot does not hold, such as the source price of a plotted return,
+set it in the point's `customValues`. The field returns in `param.seriesData`, so
+no separate lookup table is needed.
 
 For a fixed legend, omit the floating box and position updates. Keep the selected
 time and derive the displayed values from the latest data, as above. For very
@@ -183,8 +213,9 @@ tooltip inside the appropriate pane container.
   map entries never throw, the floating box disappears, and the legend falls back.
 - Update a hovered candle at the same timestamp without moving the pointer.
   Its OHLC changes in the legend and tooltip.
-- Hover near all four edges at a narrow width. The box remains inside the chart
-  and does not prevent dragging, scrolling, or crosshair movement.
+- Hover near all four edges at a narrow width. The box remains inside the chart,
+  leaves the hovered point visible, and does not prevent dragging, scrolling, or
+  crosshair movement.
 - Do not suppress legend updates when only the hovered timestamp matches: a live
   same-bar revision keeps the time but changes the values. Guard against a
   missing lookup entry before reading candle fields.

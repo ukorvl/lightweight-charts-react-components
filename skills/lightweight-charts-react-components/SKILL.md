@@ -1,6 +1,6 @@
 ---
 name: lightweight-charts-react-components
-description: lightweight-charts-react-components recipes for TradingView lightweight-charts in React. Candlestick, line, and area series; volume and indicator panes; realtime WebSocket updates; infinite history on scroll; crosshair OHLC legends and tooltips; trade markers and price lines; synchronized charts; numeric options and yield-curve axes. Use when adding or fixing a financial or trading chart in a React app, or when the user mentions lightweight-charts, TradingView charts in React, or this package.
+description: lightweight-charts-react-components recipes for TradingView lightweight-charts in React. Candlestick, line, and area series; volume and indicator panes; realtime WebSocket updates; infinite history on scroll; crosshair OHLC legends and tooltips; trade markers and price lines; compare multiple instruments by percentage return; synchronized charts; numeric options and yield-curve axes. Use when adding or fixing a financial or trading chart in a React app, or when the user mentions lightweight-charts, TradingView charts in React, or this package.
 license: MIT
 metadata:
   author: ukorvl
@@ -75,7 +75,9 @@ not load every reference for a simple chart.
 | User request                                                                         | Reference                                                                        |
 | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
 | WebSocket candles, updating the current bar, stale history, excessive chart renders  | [Market data and live updates](references/market-data-and-live-updates.md)       |
-| Older history on scroll, viewport jumps, symbol/interval changes, late API responses | [History and range selection](references/history-and-range-selection.md)         |
+| Older history on scroll on one series, viewport jumps when prepending                | [History and range selection](references/history-and-range-selection.md)         |
+| Several instruments with older history on scroll and a tooltip (read only this file) | [Multi-series history](references/multi-series-history.md)                       |
+| Symbol/interval changes, late API responses, preset viewing windows                  | [Instrument switching](references/instrument-switching.md)                       |
 | Candles plus volume, moving averages, oscillator panes, independent price scales     | [Price, volume, and indicators](references/price-volume-and-indicators.md)       |
 | OHLC legend, hover details, missing data, tooltip positioning                        | [Hover legends and tooltips](references/hover-legends-and-tooltips.md)           |
 | Executions and signals, stop/target levels, click-to-place price lines               | [Trade markers and price levels](references/trade-markers-and-price-levels.md)   |
@@ -99,14 +101,15 @@ tell the user about the mismatch before writing code, because breaking API
 changes can affect the recipes, and verify every API the recipe uses against
 the installed package.
 
-| Dependency or environment             | Reference version | Compatibility range and checks                                                                                                                       |
-| ------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `lightweight-charts-react-components` | `2.6.1`           | Recipe target: `>=2.6.1 <3`. Other versions require checking installed exports, chart API refs, and reactive data behavior before adapting a recipe. |
-| `lightweight-charts`                  | `5.2.1`           | Declared peer: `>=5.0.8 <6`.                                                                                                                         |
-| React and React DOM                   | `19.2.6`          | Declared peers: `>=18.2 <20`. Keep `react` and `react-dom` on matching versions and use the application's existing React instance.                   |
-| Node.js                               | —                 | Package engines: `>=18.14.0`. The app's build tools can require a newer version.                                                                     |
-| Module system                         | ESM               | ESM `import` entry only; there is no CommonJS `require` entry.                                                                                       |
-| Rendering                             | Browser           | Charts need the DOM and canvas. Render them on the client, never during server rendering.                                                            |
+| Dependency or environment             | Reference version | Compatibility range and checks                                                                                                                        |
+| ------------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lightweight-charts-react-components` | `2.6.1`           | Recipe target: `>=2.6.1 <3`. Other versions require checking installed exports, chart API refs, and reactive data behavior before adapting a recipe.  |
+| `lightweight-charts`                  | `5.2.1`           | Declared peer: `>=5.0.8 <6`.                                                                                                                          |
+| React and React DOM                   | `19.2.6`          | Declared peers: `>=18.2 <20`. Keep `react` and `react-dom` on matching versions and use the application's existing React instance.                    |
+| TypeScript                            | `5.9.3`           | Recipes typecheck in strict mode on this version. Other versions, including `7.x`, are unverified: run the app's own typecheck on the adapted recipe. |
+| Node.js                               | —                 | Package engines: `>=18.14.0`. The app's build tools can require a newer version.                                                                      |
+| Module system                         | ESM               | ESM `import` entry only; there is no CommonJS `require` entry.                                                                                        |
+| Rendering                             | Browser           | Charts need the DOM and canvas. Render them on the client, never during server rendering.                                                             |
 
 ## Common edge cases
 

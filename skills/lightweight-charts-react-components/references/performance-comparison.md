@@ -64,6 +64,7 @@ export function buildComparison(assets: Asset[]) {
       throw new Error(`Invalid baseline for ${asset.id}`);
     }
     const data = asset.data
+      // Drops older points. To load older history, use multi-series-history.md instead.
       .filter(point => point.time >= baselineTime)
       .map(point => ({ time: point.time, value: (point.value / baseline - 1) * 100 }));
     return { ...asset, data };
@@ -74,6 +75,43 @@ export function buildComparison(assets: Asset[]) {
 export function ReturnComparison({ assets }: { assets: Asset[] }) {
   const comparison = useMemo(() => buildComparison(assets), [assets]);
   const [hidden, setHidden] = useState<Set<string>>(() => new Set());
+  // Options are re-applied whenever their object identity changes. Memoizing the
+  // element keeps hover state added to this component from doing so on every move.
+  const chart = useMemo(
+    () =>
+      comparison && (
+        <Chart
+          options={{ autoSize: true, rightPriceScale: { mode: PriceScaleMode.Normal } }}
+          containerProps={{ style: { height: 360 } }}
+        >
+          <Pane>
+            {comparison.series.map(asset => (
+              <LineSeries
+                key={asset.id}
+                data={asset.data}
+                options={{
+                  color: asset.color,
+                  visible: !hidden.has(asset.id),
+                  priceScaleId: "right",
+                  priceLineVisible: false,
+                  priceFormat: {
+                    type: "custom",
+                    minMove: 0.01,
+                    formatter: (value: number) =>
+                      `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`,
+                  },
+                }}
+              />
+            ))}
+          </Pane>
+          <TimeScale>
+            {/* Toggling a comparison changes visibility, not its baseline or view. */}
+            <TimeScaleFitContentTrigger deps={[comparison.baselineTime]} />
+          </TimeScale>
+        </Chart>
+      ),
+    [comparison, hidden]
+  );
   if (!comparison) return <p>No common baseline observation</p>;
   const baselineLabel = new Date(comparison.baselineTime * 1000)
     .toISOString()
@@ -98,35 +136,7 @@ export function ReturnComparison({ assets }: { assets: Asset[] }) {
           {asset.label}
         </button>
       ))}
-      <Chart
-        options={{ autoSize: true, rightPriceScale: { mode: PriceScaleMode.Normal } }}
-        containerProps={{ style: { height: 360 } }}
-      >
-        <Pane>
-          {comparison.series.map(asset => (
-            <LineSeries
-              key={asset.id}
-              data={asset.data}
-              options={{
-                color: asset.color,
-                visible: !hidden.has(asset.id),
-                priceScaleId: "right",
-                priceLineVisible: false,
-                priceFormat: {
-                  type: "custom",
-                  minMove: 0.01,
-                  formatter: (value: number) =>
-                    `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`,
-                },
-              }}
-            />
-          ))}
-        </Pane>
-        <TimeScale>
-          {/* Toggling a comparison changes visibility, not its baseline or view. */}
-          <TimeScaleFitContentTrigger deps={[comparison.baselineTime]} />
-        </TimeScale>
-      </Chart>
+      {chart}
     </section>
   );
 }
@@ -141,10 +151,8 @@ Keeping a hidden series can retain its time positions in that timeline.
 ## Adaptation boundaries
 
 The earliest-common baseline is suitable for a complete, fixed initial snapshot.
-Prepending older history can change it. If the product promises a fixed baseline,
-store the chosen baseline time/prices in the application's comparison state and
-reuse them for subsequent snapshots; loading history must not redefine “return.”
-Likewise, toggling visibility must not recalculate the baseline from only the
+Prepending older history can change it; loading history must not redefine “return.”
+For that case, see [multi-series history](multi-series-history.md). Likewise, toggling visibility must not recalculate the baseline from only the
 visible subset. The recipe always calculates across the full asset list.
 
 If calendars differ, choose the intersection baseline explicitly and leave later
