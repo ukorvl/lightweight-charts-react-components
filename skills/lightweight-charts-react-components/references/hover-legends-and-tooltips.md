@@ -170,6 +170,7 @@ For several lines, keep refs indexed by a stable application series ID and pass
 `refs.get(id)` to each series. Show `—` when the map has no point; do not show
 another asset's value at the same logical index. Derive labels/colors from the
 application's ID mapping, not the order in which map entries happen to appear.
+The refs are created once, so remount with a new `key` when the ID set changes.
 
 ```tsx
 import { createRef, useState } from "react";

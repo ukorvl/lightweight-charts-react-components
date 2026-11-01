@@ -22,26 +22,19 @@ import type { ChartApiRef, SeriesApiRef } from "lightweight-charts-react-compone
 type Sec = UTCTimestamp;
 type Quote = { time: Sec; price: number };
 type Page = { data: Quote[]; hasMore: boolean };
-export type LoadWindow = (
-  id: string,
-  from: Sec,
-  to: Sec,
-  s: AbortSignal
-) => Promise<Page>;
-export type Instrument = { id: string; label: string; color: string };
+export type LoadPage = (id: string, from: Sec, to: Sec, s: AbortSignal) => Promise<Page>;
+export type Asset = { id: string; label: string; color: string };
 type Span = { end: Sec; windowSeconds: number };
-type Props = Span & {
-  instruments: Instrument[];
-  hidden: Set<string>;
-  loadWindow: LoadWindow;
-};
-type Hover = { time: number; x: number; y: number; param: MouseEventParams };
+type Props = Span & { instruments: Asset[]; hidden: Set<string>; loadWindow: LoadPage };
+type Frame = { left: number; top: number; width: number; height: number };
+type Hover = { time: number; frame: Frame; param: MouseEventParams };
 
+const rowHeight = 20;
 const box = {
-  width: 200,
-  height: 110,
   position: "absolute",
   pointerEvents: "none",
+  lineHeight: `${rowHeight}px`,
+  overflow: "hidden",
 } as const;
 const percent = (value: number) => `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
 const priceFormat = { type: "custom" as const, minMove: 0.01, formatter: percent };
@@ -90,8 +83,9 @@ export function MultiSeriesHistory(props: Props) {
         });
         state.cursor = from;
         const lists = [...state.quotes.values()];
+        const times = lists.map(list => new Set(list.map(quote => quote.time)));
         state.baseTime ??= lists[0].find(({ time }) =>
-          lists.every(list => list.some(quote => quote.time === time))
+          times.every(set => set.has(time))
         )?.time;
         if (state.baseTime === undefined) continue;
         // The scale offsets count from the last bar, so prepending keeps the view.
@@ -126,16 +120,22 @@ export function MultiSeriesHistory(props: Props) {
       lock.current = null;
     };
   }, [loadToEdge]);
-  const onCrosshairMove = useCallback((param: MouseEventParams) => {
-    const { point, time } = param;
-    const container = containerRef.current;
-    if (!container || !point || typeof time !== "number") return setHover(null);
-    const x = place(point.x, box.width, container.clientWidth);
-    const y = place(point.y, box.height, container.clientHeight);
-    setHover(old =>
-      old?.time === time && old.x === x && old.y === y ? old : { time, x, y, param }
-    );
-  }, []);
+  const onCrosshairMove = useCallback(
+    (param: MouseEventParams) => {
+      const { point, time } = param;
+      const chartBox = containerRef.current;
+      if (!chartBox || !point || typeof time !== "number") return setHover(null);
+      const { clientWidth, clientHeight } = chartBox;
+      const width = Math.min(200, clientWidth);
+      const height = Math.min(rowHeight * (instruments.length + 1), clientHeight);
+      const left = place(point.x, width, clientWidth);
+      const top = place(point.y, height, clientHeight);
+      // Always keep the latest event: setData fires one per series, so an earlier
+      // event at the same time and position can hold only some of the series.
+      setHover({ time, frame: { left, top, width, height }, param });
+    },
+    [instruments]
+  );
   // Hover renders reuse this element, so no new options reach applyOptions.
   const chart = useMemo(
     () => (
@@ -174,12 +174,9 @@ export function MultiSeriesHistory(props: Props) {
   };
   return (
     <section style={{ position: "relative" }}>
-      {error && <button onClick={retry}>Retry: {error}</button>}
       {chart}
       {hover && (
-        <div
-          style={{ ...box, left: hover.x, top: hover.y, zIndex: 2, background: "white" }}
-        >
+        <div style={{ ...box, ...hover.frame, zIndex: 2, background: "white" }}>
           <div>{new Date(hover.time * 1000).toISOString().slice(0, 10)}</div>
           {instruments
             .filter(({ id }) => !hidden.has(id))
@@ -188,6 +185,7 @@ export function MultiSeriesHistory(props: Props) {
             ))}
         </div>
       )}
+      {error && <button onClick={retry}>Retry: {error}</button>}
     </section>
   );
 }
@@ -197,4 +195,6 @@ export function MultiSeriesHistory(props: Props) {
 
 - Three calendars with different start dates: no duplicate or missing dates; requests stop.
 - With an instrument hidden, history loads the same and the view holds.
-- At all four chart edges, the tooltip stays inside and leaves the point visible.
+- At all four chart edges, the tooltip stays inside and leaves the point visible, also
+  on a chart narrower than the tooltip and with many instruments.
+- Hover during a load and after a failure: rows fill in and the tooltip stays by the cursor.
