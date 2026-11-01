@@ -26,16 +26,10 @@ export type LoadPage = (id: string, from: Sec, to: Sec, s: AbortSignal) => Promi
 export type Asset = { id: string; label: string; color: string };
 type Span = { end: Sec; windowSeconds: number };
 type Props = Span & { instruments: Asset[]; hidden: Set<string>; loadWindow: LoadPage };
-type Frame = { left: number; top: number; width: number; height: number };
-type Hover = { time: number; frame: Frame; param: MouseEventParams };
+type Hover = { time: number; frame: Record<string, number>; param: MouseEventParams };
 
-const rowHeight = 20;
-const box = {
-  position: "absolute",
-  pointerEvents: "none",
-  lineHeight: `${rowHeight}px`,
-  overflow: "hidden",
-} as const;
+const box = { position: "absolute", pointerEvents: "none", overflow: "hidden" } as const;
+const skin = { lineHeight: "20px", zIndex: 2, background: "white" };
 const percent = (value: number) => `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
 const priceFormat = { type: "custom" as const, minMove: 0.01, formatter: percent };
 
@@ -68,7 +62,8 @@ export function MultiSeriesHistory(props: Props) {
     const { signal } = lock.current;
     try {
       while (state.active.size > 0) {
-        const range = chartRef.current?.api()?.timeScale().getVisibleLogicalRange();
+        const scale = chartRef.current?.api()?.timeScale();
+        const range = scale?.getVisibleLogicalRange();
         if (state.baseTime !== undefined && (!range || range.from >= 20)) break;
         const to = state.cursor;
         const from = (to - windowSeconds) as Sec;
@@ -83,12 +78,15 @@ export function MultiSeriesHistory(props: Props) {
         });
         state.cursor = from;
         const lists = [...state.quotes.values()];
-        const times = lists.map(list => new Set(list.map(quote => quote.time)));
-        state.baseTime ??= lists[0].find(({ time }) =>
-          times.every(set => set.has(time))
-        )?.time;
-        if (state.baseTime === undefined) continue;
-        // The scale offsets count from the last bar, so prepending keeps the view.
+        const sets = lists.map(list => new Set(list.map(quote => quote.time)));
+        state.baseTime ??= lists[0].find(q => sets.every(set => set.has(q.time)))?.time;
+        if (state.baseTime === undefined) {
+          // A finished instrument has nothing older, so no common time can still appear.
+          if (state.active.size < instruments.length) state.active.clear();
+          continue;
+        }
+        // A later series that only fills in times makes the scale shift, so restore it.
+        const offset = scale?.scrollPosition() ?? 0;
         for (const [id, list] of state.quotes) {
           const base = list.find(quote => quote.time === state.baseTime)?.price ?? NaN;
           const rows = list.map(({ time, price }) => ({
@@ -98,6 +96,10 @@ export function MultiSeriesHistory(props: Props) {
           }));
           lines.get(id)?.current?.api()?.setData(rows);
         }
+        scale?.scrollToPosition(offset, false);
+        // That applies on the next frame, and scrollPosition is stale until then.
+        await new Promise(requestAnimationFrame);
+        if (signal.aborted) return;
       }
       if (state.baseTime === undefined) setError("No common observation");
       lock.current = null;
@@ -105,7 +107,7 @@ export function MultiSeriesHistory(props: Props) {
       // The lock stays on: retry is explicit, so a drag cannot loop failed requests.
       if (!signal.aborted) setError(String(cause));
     }
-  }, [lines, loadWindow, state, windowSeconds]);
+  }, [instruments, lines, loadWindow, state, windowSeconds]);
 
   useEffect(() => {
     let frame = 0;
@@ -127,11 +129,10 @@ export function MultiSeriesHistory(props: Props) {
       if (!chartBox || !point || typeof time !== "number") return setHover(null);
       const { clientWidth, clientHeight } = chartBox;
       const width = Math.min(200, clientWidth);
-      const height = Math.min(rowHeight * (instruments.length + 1), clientHeight);
+      const height = Math.min(20 * (instruments.length + 1), clientHeight);
       const left = place(point.x, width, clientWidth);
       const top = place(point.y, height, clientHeight);
-      // Always keep the latest event: setData fires one per series, so an earlier
-      // event at the same time and position can hold only some of the series.
+      // Keep the latest event: setData fires per series, so earlier ones can be partial.
       setHover({ time, frame: { left, top, width, height }, param });
     },
     [instruments]
@@ -176,7 +177,7 @@ export function MultiSeriesHistory(props: Props) {
     <section style={{ position: "relative" }}>
       {chart}
       {hover && (
-        <div style={{ ...box, ...hover.frame, zIndex: 2, background: "white" }}>
+        <div style={{ ...box, ...skin, ...hover.frame }}>
           <div>{new Date(hover.time * 1000).toISOString().slice(0, 10)}</div>
           {instruments
             .filter(({ id }) => !hidden.has(id))
@@ -194,7 +195,6 @@ export function MultiSeriesHistory(props: Props) {
 ## Acceptance checks
 
 - Three calendars with different start dates: no duplicate or missing dates; requests stop.
-- With an instrument hidden, history loads the same and the view holds.
-- At all four chart edges, the tooltip stays inside and leaves the point visible, also
-  on a chart narrower than the tooltip and with many instruments.
+- With a 5-day series first or any hidden, the view holds. No common date: loading stops.
+- At every edge, on a narrow chart, and with many instruments, the tooltip fits.
 - Hover during a load and after a failure: rows fill in and the tooltip stays by the cursor.
