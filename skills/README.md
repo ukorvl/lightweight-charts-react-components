@@ -10,5 +10,5 @@ The skills list:
 
 ## Validation
 
-- `npm run check:skill-recipes` typechecks every `ts` and `tsx` code block against the library source. Name a block with `file=<name>` in its fence (for example, ` ```tsx file=LiveCandles.tsx `) when another block in the same markdown file imports it by a relative path.
+- `npm run check:skill-recipes` typechecks every `ts` and `tsx` code block against the library source. Name a block with `file=<name>` in its fence (for example, ` ```tsx file=LiveCandles.tsx `) when another block in the same markdown file imports it by a relative path. Use the `ts` or `tsx` language tag and plain, unique file names: anything else fails the check rather than leaving a block unchecked.
 - `npm run check:versions-in-sync` keeps the skill compatibility table aligned with `lib/package.json`. Reference versions are a tested baseline, so they only need to stay inside the declared ranges. A library release outside the recipe target, such as a new major, fails until the recipes are verified and the table is updated.

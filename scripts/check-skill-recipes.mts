@@ -6,6 +6,9 @@
 // Output: a summary on stdout, or errors with their markdown file and line on stderr (exit code 1).
 // Every `ts`/`tsx` fence is compiled. A fence can be named with `file=<name>` so that other blocks
 // of the same markdown file can import it by a relative path (for example, `tsx file=Chart.tsx`).
+// Fences are read with a markdown parser, and any TypeScript fence that cannot be compiled as
+// written fails the check: other language tags, unknown attributes, unsafe or duplicate file names.
+// A skipped block would otherwise look like a passing one.
 // Blocks are written under `node_modules/.cache` because that is where bare imports such as
 // `react` resolve from, and it needs neither a library build nor changes to the working tree.
 
@@ -18,6 +21,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
+import MarkdownIt from "markdown-it";
 import ts from "typescript";
 import { getErrorMessage, getRepoRoot, isMainModule } from "./common.mts";
 
@@ -30,18 +34,73 @@ export type RecipeBlock = {
 
 type WrittenBlock = RecipeBlock & { markdownFile: string; filePath: string };
 
-const FENCE_PATTERN = /^```(tsx?)(?:[ \t]+file=(\S+))?[ \t]*\n([\s\S]*?)^```/gm;
+const md = new MarkdownIt();
 
-export const extractRecipeBlocks = (markdown: string): RecipeBlock[] =>
-  Array.from(markdown.matchAll(FENCE_PATTERN), (match, index) => {
-    const [, language, fileName, code] = match;
+/** Matches `ts` and `tsx`, plus the tags people use for TypeScript that this check rejects. */
+const TYPESCRIPT_TAG_PATTERN = /^(?:[cm]?tsx?|typescript(?:react)?)\b/i;
+const SUPPORTED_TAG_PATTERN = /^tsx?$/;
+/** A plain name without path separators, so a block cannot be written outside its directory. */
+const FILE_NAME_PATTERN = /^\w[\w.-]*\.tsx?$/;
 
-    return {
-      fileName: fileName ?? `block-${index + 1}.${language}`,
-      startLine: markdown.slice(0, match.index).split("\n").length + 1,
-      code,
-    };
-  });
+const parseFileName = (attributes: string[]) => {
+  if (attributes.length === 0) {
+    return undefined;
+  }
+
+  const [attribute] = attributes;
+
+  if (attributes.length > 1 || !attribute.startsWith("file=")) {
+    throw new Error("only a single file=<name> attribute is supported");
+  }
+
+  const fileName = attribute.slice("file=".length);
+
+  if (!FILE_NAME_PATTERN.test(fileName)) {
+    throw new Error(`file name must be a plain .ts or .tsx name, got "${fileName}"`);
+  }
+
+  return fileName;
+};
+
+/**
+ * Returns the TypeScript blocks of a markdown document. `source` is only used in error messages.
+ */
+export const extractRecipeBlocks = (markdown: string, source = "markdown") => {
+  const blocks: RecipeBlock[] = [];
+  const fileNames = new Set<string>();
+
+  for (const token of md.parse(markdown, {})) {
+    const [language = "", ...attributes] = token.info.trim().split(/\s+/);
+
+    if (token.type !== "fence" || !TYPESCRIPT_TAG_PATTERN.test(language)) {
+      continue;
+    }
+
+    const fenceLine = (token.map?.[0] ?? 0) + 1;
+
+    try {
+      if (!SUPPORTED_TAG_PATTERN.test(language)) {
+        throw new Error(`language tag must be ts or tsx, got "${language}"`);
+      }
+
+      const fileName =
+        parseFileName(attributes) ?? `block-${blocks.length + 1}.${language}`;
+      // Compared case-insensitively because names collide on case-insensitive file systems.
+      const fileNameKey = fileName.toLowerCase();
+
+      if (fileNames.has(fileNameKey)) {
+        throw new Error(`duplicate file name "${fileName}"`);
+      }
+
+      fileNames.add(fileNameKey);
+      blocks.push({ fileName, startLine: fenceLine + 1, code: token.content });
+    } catch (error) {
+      throw new Error(`${source}:${fenceLine}: ${getErrorMessage(error)}`);
+    }
+  }
+
+  return blocks;
+};
 
 const compilerOptionsFor = (repoRoot: string): ts.CompilerOptions => ({
   target: ts.ScriptTarget.ES2022,
@@ -68,7 +127,8 @@ const writeBlocks = (skillsDir: string, compileDir: string): WrittenBlock[] => {
   return markdownFiles.flatMap(markdownFile => {
     const blocksDir = path.join(compileDir, markdownFile.replace(/\.md$/, ""));
     const blocks = extractRecipeBlocks(
-      readFileSync(path.join(skillsDir, markdownFile), "utf8")
+      readFileSync(path.join(skillsDir, markdownFile), "utf8"),
+      markdownFile
     );
 
     mkdirSync(blocksDir, { recursive: true });
