@@ -30,6 +30,8 @@ export const useChart = <
   >,
 }: UseChartOptions<HorzScaleItem, TChartApi, TOptions>) => {
   const [isReady, setIsReady] = useState(false);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
 
   const chartApiRef = useRef<ChartApiRef<HorzScaleItem, TChartApi>>({
     _chart: null,
@@ -65,10 +67,24 @@ export const useChart = <
 
   useLayoutEffect(() => {
     chartApiRef.current.init();
+    let isActive = true;
+
+    const fontSet = "fonts" in document ? document.fonts : undefined;
+    if (container && fontSet?.status === "loading") {
+      void fontSet.ready.then(() => {
+        if (!isActive) return;
+
+        chartApiRef.current.api()?.applyOptions({
+          ...defaultChartOptions,
+          ...optionsRef.current,
+        } as DeepPartial<TOptions>);
+      });
+    }
 
     // On deletion this runs before child cleanups, so series can skip native
     // removal: it would rebuild the timeline and fire user range handlers.
     return () => {
+      isActive = false;
       chartApiRef.current._isDisposing = true;
     };
   }, []);

@@ -233,6 +233,50 @@ describe("useChart", () => {
     });
   });
 
+  it("reapplies the latest options after pending fonts load", async () => {
+    let resolveFontsReady: () => void = () => {};
+    const fontsReady = new Promise<void>(resolve => {
+      resolveFontsReady = () => resolve();
+    });
+    const fontsDescriptor = Object.getOwnPropertyDescriptor(document, "fonts");
+    Object.defineProperty(document, "fonts", {
+      configurable: true,
+      value: { status: "loading", ready: fontsReady },
+    });
+
+    try {
+      vi.mocked(createChart).mockReturnValue(mockChart);
+
+      const { rerender } = renderHook(
+        ({ fontFamily }: { fontFamily: string }) =>
+          useChart({
+            container: mockContainer,
+            options: { layout: { fontFamily } },
+          }),
+        { initialProps: { fontFamily: "initial" } }
+      );
+
+      rerender({ fontFamily: "Roboto" });
+      mockApplyOptions.mockClear();
+
+      await act(async () => {
+        resolveFontsReady();
+        await fontsReady;
+      });
+
+      expect(mockApplyOptions).toHaveBeenCalledWith({
+        ...defaultChartOptions,
+        layout: { fontFamily: "Roboto" },
+      });
+    } finally {
+      if (fontsDescriptor) {
+        Object.defineProperty(document, "fonts", fontsDescriptor);
+      } else {
+        Reflect.deleteProperty(document, "fonts");
+      }
+    }
+  });
+
   it("should subscribe to click event", () => {
     vi.mocked(createChart).mockReturnValue(mockChart);
 
