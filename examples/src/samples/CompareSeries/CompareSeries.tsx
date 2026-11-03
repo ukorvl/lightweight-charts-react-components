@@ -2,12 +2,12 @@ import Chip from "@mui/material/Chip";
 import { CrosshairMode } from "lightweight-charts";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { typedObjectEntries } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
   AreaSeries,
-  Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";

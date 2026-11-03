@@ -7,11 +7,11 @@ import Typography from "@mui/material/Typography";
 import { CrosshairMode } from "lightweight-charts";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   CandlestickSeries,
-  Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";

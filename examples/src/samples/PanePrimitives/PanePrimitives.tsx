@@ -6,11 +6,11 @@ import Switch from "@mui/material/Switch";
 import { useCallback, useState } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   CandlestickSeries,
-  Chart,
   HistogramSeries,
   Pane,
   PanePrimitive,

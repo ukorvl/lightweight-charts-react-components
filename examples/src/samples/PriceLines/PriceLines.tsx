@@ -3,11 +3,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
   CandlestickSeries,
-  Chart,
   PriceLine,
   TimeScale,
   TimeScaleFitContentTrigger,

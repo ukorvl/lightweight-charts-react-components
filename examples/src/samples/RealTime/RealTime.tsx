@@ -4,11 +4,11 @@ import FormGroup from "@mui/material/FormGroup";
 import { useOnScreen } from "@ukorvl/react-on-screen";
 import { useEffect, useRef } from "react";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   CandlestickSeries,
-  Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";

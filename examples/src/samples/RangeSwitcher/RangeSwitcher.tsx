@@ -2,12 +2,12 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   AreaSeries,
-  Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";

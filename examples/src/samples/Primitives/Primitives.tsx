@@ -15,12 +15,12 @@ import { CrosshairMode, type Time } from "lightweight-charts";
 import { memo, useCallback, useRef, useState } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { getContrastingTextColor } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
-  Chart,
   LineSeries,
   SeriesPrimitive,
   TimeScale,

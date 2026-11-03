@@ -1,8 +1,8 @@
 import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
-  Chart,
   CustomSeries as CustomSeriesComponent,
   TimeScale,
   TimeScaleFitContentTrigger,

@@ -1,11 +1,11 @@
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
+import { Chart } from "@/common/fontAwareCharts";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
-  Chart,
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";

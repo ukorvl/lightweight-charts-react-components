@@ -3,9 +3,9 @@ import debounce from "@mui/material/utils/debounce";
 import { useCallback, useMemo } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import {
-  Chart,
   LineSeries,
   Pane,
   TimeScale,

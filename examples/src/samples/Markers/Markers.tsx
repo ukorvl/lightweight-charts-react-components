@@ -3,11 +3,11 @@ import FormGroup from "@mui/material/FormGroup";
 import Switch from "@mui/material/Switch";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import {
   CandlestickSeries,
-  Chart,
   Markers,
   TimeScale,
   TimeScaleFitContentTrigger,

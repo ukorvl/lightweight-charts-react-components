@@ -5,11 +5,11 @@ import Select from "@mui/material/Select";
 import { useMemo } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ScrollableContainer } from "@/ui/ScrollableContainer";
 import {
   AreaSeries,
-  Chart,
   Pane,
   PriceScale,
   TimeScale,

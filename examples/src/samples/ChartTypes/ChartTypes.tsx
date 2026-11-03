@@ -1,16 +1,14 @@
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { useState, type ReactElement } from "react";
+import { CustomChart, OptionsChart, YieldCurveChart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
   AreaSeries,
-  CustomChart,
   LineSeries,
-  OptionsChart,
   TimeScale,
   TimeScaleFitContentTrigger,
-  YieldCurveChart,
 } from "lightweight-charts-react-components";
 import {
   chartTypeTabs,

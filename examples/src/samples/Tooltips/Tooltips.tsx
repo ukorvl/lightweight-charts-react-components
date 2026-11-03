@@ -8,11 +8,11 @@ import Typography from "@mui/material/Typography";
 import { useMemo, useRef } from "react";
 import { withChartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { typedObjectKeys } from "@/common/utils";
 import { samplesLinks } from "@/samples";
 import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
-  Chart,
   LineSeries,
   TimeScale,
   TimeScaleFitContentTrigger,

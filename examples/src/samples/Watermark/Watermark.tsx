@@ -2,12 +2,12 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { chartCommonOptions } from "@/common/chartCommonOptions";
 import { colors } from "@/common/colors";
+import { Chart } from "@/common/fontAwareCharts";
 import { samplesLinks } from "@/samples";
 import { ChartWidgetCard } from "@/ui/ChartWidgetCard";
 import { getTabA11yProps, TabPanel } from "@/ui/TabPanel";
 import {
   AreaSeries,
-  Chart,
   Pane,
   TimeScale,
   TimeScaleFitContentTrigger,
