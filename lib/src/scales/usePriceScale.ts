@@ -49,7 +49,8 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     },
   });
 
-  useLayoutEffect(() => {
+  // Passive, so a series that switches to this custom priceScaleId while mounting it applies the switch first
+  useEffect(() => {
     if (!chartIsReady) return;
 
     if (!isInsidePane) {

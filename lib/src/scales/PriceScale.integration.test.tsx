@@ -146,4 +146,29 @@ describe("PriceScale with a real chart", () => {
       overlayOptions.scaleMargins
     );
   });
+
+  it("binds a nested PriceScale mounted while its series switches to that scale", () => {
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+    const Volume = ({ overlay }: { overlay: boolean }) => (
+      <Chart ref={chartRef} options={chartOptions}>
+        <Pane>
+          <LineSeries data={data} />
+          <HistogramSeries
+            data={data}
+            options={{ priceScaleId: overlay ? "volume" : "right" }}
+          >
+            {overlay && <PriceScale id="volume" options={overlayOptions} />}
+          </HistogramSeries>
+        </Pane>
+      </Chart>
+    );
+
+    const { rerender } = render(<Volume overlay={false} />);
+    rerender(<Volume overlay />);
+
+    const chart = chartRef.current!.api()!;
+    expect(chart.priceScale("volume", 0).options().scaleMargins).toEqual(
+      overlayOptions.scaleMargins
+    );
+  });
 });
