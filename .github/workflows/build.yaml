@@ -38,8 +38,10 @@ jobs:
           check-commits: ${{ github.event_name == 'pull_request' }}
           commit_base_sha: ${{ github.event.pull_request.base.sha || '' }}
 
+  # pull request runs need write access to post the coverage report comment
   test-lib:
     name: Build and test lib
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,9 +61,31 @@ jobs:
       - name: Test
         uses: ./.github/actions/test-lib
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          coverage-report: true
+
+  # push and manual runs keep a read-only token, which is also passed to the Coveralls upload
+  test-lib-read-only:
+    name: Build and test lib (read-only)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          setup-node: true
+
+      - name: Build
+        uses: ./.github/actions/build
+
+      - name: Test
+        uses: ./.github/actions/test-lib
+        with:
           upload-coverage: ${{ github.event_name == 'push' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-report: ${{ github.event_name == 'pull_request' }}
 
   test-examples:
     name: Unit test examples
