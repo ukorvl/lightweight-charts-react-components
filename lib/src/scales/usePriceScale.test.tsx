@@ -310,7 +310,7 @@ describe("usePriceScale", () => {
     rerender();
 
     expect(result.current.current.api()).toBeDefined();
-    expect(mockPriceScaleFactory).toHaveBeenCalledTimes(1);
+    expect(mockPriceScaleFactory).toHaveBeenCalledWith("right", 0);
   });
 
   it("initializes once the pane becomes ready", () => {
@@ -339,7 +339,7 @@ describe("usePriceScale", () => {
     rerender();
 
     expect(result.current.current.api()).toBeDefined();
-    expect(mockPriceScaleFactory).toHaveBeenCalledTimes(1);
+    expect(mockPriceScaleFactory).toHaveBeenCalledWith("right", 0);
   });
 
   it("resolves the priceScale in the pane it is rendered in", () => {
@@ -398,6 +398,61 @@ describe("usePriceScale", () => {
     expect(result.current.current.api()).toBe(mockPriceScaleApi);
     expect(mockPriceScaleFactory).toHaveBeenCalledWith("overlay", 0);
     expect(mockApplyOptions).toHaveBeenCalledWith({ autoScale: true });
+  });
+
+  it("applies the latest options when the id changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const initialOptions = { autoScale: true };
+    const nextOptions = { autoScale: false };
+    const { rerender } = renderHook(props => usePriceScale(props), {
+      initialProps: { id: "right", options: initialOptions },
+    });
+
+    rerender({ id: "right", options: nextOptions });
+    rerender({ id: "left", options: nextOptions });
+
+    expect(mockPriceScaleFactory).toHaveBeenLastCalledWith("left", 0);
+    expect(mockApplyOptions).toHaveBeenLastCalledWith(nextOptions);
+  });
+
+  it("uses the current pane index when options change", () => {
+    let paneIndex = 1;
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: {
+        api: () => ({ paneIndex: () => paneIndex }),
+      } as unknown as PaneApiRef<unknown>,
+    });
+
+    const { rerender } = renderHook(
+      props => usePriceScale({ id: "right", options: props }),
+      {
+        initialProps: { autoScale: true },
+      }
+    );
+
+    // A pane above was removed
+    paneIndex = 0;
+    rerender({ autoScale: false });
+
+    expect(mockPriceScaleFactory).toHaveBeenLastCalledWith("right", 0);
+    expect(mockApplyOptions).toHaveBeenLastCalledWith({ autoScale: false });
   });
 
   it("clears the priceScale ref on unmount", () => {

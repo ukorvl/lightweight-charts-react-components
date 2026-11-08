@@ -274,8 +274,7 @@ An overlay scale named `volume` has no visible price axis of its own. Use a
 separate pane or visible left axis when users need volume axis labels. Margins
 reserve vertical regions on independent scales; they do not rescale or normalize
 the input data. If moving a series to another pane imperatively, reacquire its
-`priceScale()` after the move rather than keeping a prior scale handle; a
-mounted `PriceScale` keeps the pane index it resolved on mount.
+`priceScale()` after the move rather than keeping a prior scale handle.
 
 ## Acceptance checks
 

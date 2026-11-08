@@ -90,4 +90,60 @@ describe("PriceScale with a real chart", () => {
     expect(chart.priceScale("right", 0).options().invertScale).toBe(false);
     expect(chart.priceScale("right", 1).options().invertScale).toBe(true);
   });
+
+  it("keeps applying options after a pane above is removed", () => {
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+    const nextOptions = { scaleMargins: { top: 0.3, bottom: 0.1 } };
+    const TwoPanes = ({
+      showFirst,
+      options,
+    }: {
+      showFirst: boolean;
+      options: object;
+    }) => (
+      <Chart ref={chartRef} options={chartOptions}>
+        {showFirst && (
+          <Pane key="first">
+            <LineSeries data={data} />
+          </Pane>
+        )}
+        <Pane key="second">
+          <LineSeries data={data} />
+          <PriceScale id="right" options={options} />
+        </Pane>
+      </Chart>
+    );
+
+    const { rerender } = render(<TwoPanes showFirst options={overlayOptions} />);
+    rerender(<TwoPanes showFirst={false} options={overlayOptions} />);
+    rerender(<TwoPanes showFirst={false} options={nextOptions} />);
+
+    const chart = chartRef.current!.api()!;
+    expect(chart.panes()).toHaveLength(1);
+    expect(chart.priceScale("right", 0).options().scaleMargins).toEqual(
+      nextOptions.scaleMargins
+    );
+  });
+
+  it("follows a nested overlay price scale when its id changes", () => {
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+    const Overlay = ({ scaleId }: { scaleId: string }) => (
+      <Chart ref={chartRef} options={chartOptions}>
+        <Pane>
+          <LineSeries data={data} />
+          <HistogramSeries data={data} options={{ priceScaleId: scaleId }}>
+            <PriceScale id={scaleId} options={overlayOptions} />
+          </HistogramSeries>
+        </Pane>
+      </Chart>
+    );
+
+    const { rerender } = render(<Overlay scaleId="volume" />);
+    rerender(<Overlay scaleId="other" />);
+
+    const chart = chartRef.current!.api()!;
+    expect(chart.priceScale("other", 0).options().scaleMargins).toEqual(
+      overlayOptions.scaleMargins
+    );
+  });
 });

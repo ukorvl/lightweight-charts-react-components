@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - apply `PriceScale` options to the pane it is rendered in instead of always the first pane
 - support custom overlay price scale ids in `PriceScale` by waiting for the parent series before applying options
+- keep `PriceScale` options in sync when a pane above is removed, when a nested overlay `id` changes, and when `id` changes after `options`
 
 ## [2.6.1] - 2026-10-31
 ### Changed
