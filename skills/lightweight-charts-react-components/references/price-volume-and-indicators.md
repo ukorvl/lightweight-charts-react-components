@@ -141,8 +141,8 @@ export function AnalysisChart({
               options={{
                 color: "#a855f7",
                 priceLineVisible: false,
-                // Supply bounds through the series, so the correct pane scale
-                // is constrained without a chart-level scale lookup.
+                // Fixed bounds come from the series autoscale info, so RSI
+                // stays on 0–100 while the user zooms and pans.
                 autoscaleInfoProvider: () => ({
                   priceRange: { minValue: 0, maxValue: 100 },
                 }),
@@ -179,29 +179,27 @@ is expensive, move it into the data owner rather than mutating chart input objec
 
 ## Recipe: compact volume overlay with the correct scale owner
 
-The current `PriceScale` component requires a `Pane`, but its implementation
-calls `chart.priceScale(id)` without a pane index. In later panes this can target
-pane zero, and a named overlay scale may not exist there. Do not use
-`<PriceScale id="volume" />` as the mechanism for creating the overlay scale.
-Creating the volume series with `priceScaleId: "volume"` creates/uses that scale;
-then `volumeSeries.api().priceScale()` targets its actual pane.
-
-Copy this alternative as its own module. The ready loop handles the wrapper ref
-being assigned before the native series exists. The cleanup cancels only that
-loop; the wrapper owns removal of the series and chart.
+Give the volume series a custom `priceScaleId` and render `PriceScale` with the
+same `id` inside that series. The overlay scale exists only after a series that
+uses it is added: a nested `PriceScale` waits for its parent series and targets
+the pane it is rendered in. A sibling `PriceScale` placed before the series runs
+too early and throws an incorrect-ID error in development builds. Keep scale
+options in stable objects so they are not reapplied on every render.
 
 ```tsx
-import { useEffect, useRef } from "react";
 import type { CandlestickData, HistogramData, UTCTimestamp } from "lightweight-charts";
 import {
   CandlestickSeries,
   Chart,
   HistogramSeries,
   Pane,
+  PriceScale,
   TimeScale,
   TimeScaleFitContentTrigger,
-  type SeriesApiRef,
 } from "lightweight-charts-react-components";
+
+const priceScaleOptions = { scaleMargins: { top: 0.05, bottom: 0.25 } };
+const volumeScaleOptions = { scaleMargins: { top: 0.8, bottom: 0 } };
 
 export function PriceWithVolumeOverlay({
   price,
@@ -210,37 +208,13 @@ export function PriceWithVolumeOverlay({
   price: CandlestickData<UTCTimestamp>[];
   volume: HistogramData<UTCTimestamp>[];
 }) {
-  const priceRef = useRef<SeriesApiRef<"Candlestick">>(null);
-  const volumeRef = useRef<SeriesApiRef<"Histogram">>(null);
-
-  useEffect(() => {
-    let frame = 0;
-    const configureScales = () => {
-      const priceSeries = priceRef.current?.api();
-      const volumeSeries = volumeRef.current?.api();
-      if (!priceSeries || !volumeSeries) {
-        frame = requestAnimationFrame(configureScales);
-        return;
-      }
-      priceSeries
-        .priceScale()
-        .applyOptions({ scaleMargins: { top: 0.05, bottom: 0.25 } });
-      volumeSeries.priceScale().applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
-    };
-    configureScales();
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
   return (
     <Chart options={{ autoSize: true }} containerProps={{ style: { height: 360 } }}>
       <Pane>
-        <CandlestickSeries
-          ref={priceRef}
-          data={price}
-          options={{ priceScaleId: "right" }}
-        />
+        <CandlestickSeries data={price} options={{ priceScaleId: "right" }}>
+          <PriceScale id="right" options={priceScaleOptions} />
+        </CandlestickSeries>
         <HistogramSeries
-          ref={volumeRef}
           data={volume}
           options={{
             priceScaleId: "volume",
@@ -248,7 +222,9 @@ export function PriceWithVolumeOverlay({
             priceLineVisible: false,
             lastValueVisible: false,
           }}
-        />
+        >
+          <PriceScale id="volume" options={volumeScaleOptions} />
+        </HistogramSeries>
       </Pane>
       <TimeScale>
         <TimeScaleFitContentTrigger deps={[]} />
@@ -258,11 +234,48 @@ export function PriceWithVolumeOverlay({
 }
 ```
 
+**Version note:** in `lightweight-charts-react-components` `2.6.1`, `PriceScale`
+always targets pane zero and does not wait for its parent series, so the nested
+`<PriceScale id="volume" />` above throws an incorrect-ID error. The default
+`"right"` scale in the first pane works as written. On `2.6.1`, pass
+`ref={volumeRef}` (a `useRef<SeriesApiRef<"Histogram">>(null)`) to the volume
+series instead of nesting `PriceScale`, and call
+`useSeriesScaleMargins(volumeRef, 0.8, 0)`. The series API scale always targets
+the series' actual pane; the ready loop handles the ref being assigned before
+the native series exists.
+
+```tsx
+import { useEffect, type RefObject } from "react";
+import type { SeriesType } from "lightweight-charts";
+import type { SeriesApiRef } from "lightweight-charts-react-components";
+
+export function useSeriesScaleMargins<T extends SeriesType>(
+  seriesRef: RefObject<SeriesApiRef<T> | null>,
+  top: number,
+  bottom: number
+) {
+  useEffect(() => {
+    let frame = 0;
+    const applyMargins = () => {
+      const series = seriesRef.current?.api();
+      if (!series) {
+        frame = requestAnimationFrame(applyMargins);
+        return;
+      }
+      series.priceScale().applyOptions({ scaleMargins: { top, bottom } });
+    };
+    applyMargins();
+    return () => cancelAnimationFrame(frame);
+  }, [seriesRef, top, bottom]);
+}
+```
+
 An overlay scale named `volume` has no visible price axis of its own. Use a
 separate pane or visible left axis when users need volume axis labels. Margins
 reserve vertical regions on independent scales; they do not rescale or normalize
 the input data. If moving a series to another pane imperatively, reacquire its
-`priceScale()` after the move rather than keeping a prior scale handle.
+`priceScale()` after the move rather than keeping a prior scale handle; a
+mounted `PriceScale` keeps the pane index it resolved on mount.
 
 ## Acceptance checks
 
@@ -272,5 +285,6 @@ the input data. If moving a series to another pane imperatively, reacquire its
   the mean of the first 20 closes. Replacing the last candle recomputes its SMA.
 - RSI stays on a 0–100 axis; 30/70 lines belong only to RSI. Toggle its pane and
   verify existing series remain on their original panes and zoom stays intact.
-- Render the overlay in a later pane while adapting the recipe: its scale must
-  come from the volume series, with no incorrect-ID error on pane zero.
+- Render the overlay in a later pane while adapting the recipe: the volume
+  margins apply to that pane, with no incorrect-ID error and no change to the
+  first pane's scales.
