@@ -127,6 +127,10 @@ export type ChartApiRef<
    */
   _chart: TChartApi | null;
   /**
+   * Internal flag set while the chart is being removed along with its children.
+   */
+  _isDisposing: boolean;
+  /**
    * Function to get the chart API instance.
    */
   api: () => TChartApi | null;

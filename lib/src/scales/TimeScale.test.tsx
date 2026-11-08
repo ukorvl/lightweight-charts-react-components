@@ -1,8 +1,9 @@
 import { render } from "@testing-library/react";
-import { createRef } from "react";
+import { createRef, useContext } from "react";
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TimeScale } from "./TimeScale";
+import { TimeScaleContext } from "./TimeScaleContext";
 import { useTimeScale } from "./useTimeScale";
 import type { TimeScaleApiRef } from "./types";
 
@@ -25,6 +26,22 @@ vi.mocked(useTimeScale).mockReturnValue({
 describe("TimeScale component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("provides the time scale api ref and readiness to children", () => {
+    let contextValue: unknown;
+    const Child = () => {
+      contextValue = useContext(TimeScaleContext);
+      return null;
+    };
+
+    render(
+      <TimeScale>
+        <Child />
+      </TimeScale>
+    );
+
+    expect(contextValue).toEqual({ timeScaleApiRef: mockApiRef, isReady: true });
   });
 
   it("forwards ref in TimeScale", () => {

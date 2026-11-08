@@ -26,6 +26,10 @@ inputs:
     description: "Comma-separated original README files that contain version-pinned references"
     required: false
     default: "lib/README.md"
+  SKILL_FILE:
+    description: "Path to the agent skill file that contains the compatibility table"
+    required: false
+    default: "skills/lightweight-charts-react-components/SKILL.md"
 
 runs:
   using: "composite"
@@ -39,6 +43,7 @@ runs:
         PACKAGE_LOCK: ${{ inputs.PACKAGE_LOCK }}
         LOCK_PACKAGE_KEY: ${{ inputs.LOCK_PACKAGE_KEY }}
         README_FILES: ${{ inputs.README_FILES }}
+        SKILL_FILE: ${{ inputs.SKILL_FILE }}
       run: >
         node ./scripts/check-versions-in-sync.mts
         --repo .
@@ -48,3 +53,4 @@ runs:
         --package-lock "$PACKAGE_LOCK"
         --lock-package-key "$LOCK_PACKAGE_KEY"
         --readme-files "$README_FILES"
+        --skill-file "$SKILL_FILE"

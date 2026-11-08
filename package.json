@@ -15,6 +15,7 @@
     "check:coverage-regression": "node ./scripts/check-coverage-regression.mts",
     "check:md-links": "node ./scripts/check-md-links.mts",
     "check:jsdoc-links": "node ./scripts/check-jsdoc-links.mts",
+    "check:skill-recipes": "node ./scripts/check-skill-recipes.mts",
     "format": "prettier --check './**/*.{ts,tsx,mts,json,mjs,md}'",
     "format:fix": "prettier --write './**/*.{ts,tsx,mts,json,mjs,md}'",
     "dev": "concurrently \"npm run dev -w lib\" \"npm run dev -w examples\" --kill-others --success last",
@@ -58,6 +59,7 @@
     "deno": "^2.7.10",
     "dotenv": "^17.4.2",
     "eslint": "^9.39.4",
+    "eslint-config-flat-gitignore": "^2.4.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^50.8.0",
@@ -81,10 +83,10 @@
     "typescript-eslint": "^8.36.0",
     "vite": "^6.4.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.4"
+    "vitest": "4.1.3"
   },
   "dependencies": {
-    "lightweight-charts": "5.2.0"
+    "lightweight-charts": "5.2.1"
   },
   "simple-git-hooks": {
     "pre-commit": "npx --no-install lint-staged",
@@ -133,6 +135,7 @@
       "scripts/check-md-links.mts",
       "examples/scripts/prelhci.ts",
       "scripts/check-jsdoc-links.mts",
+      "scripts/check-skill-recipes.mts",
       "scripts/check-coverage-regression.mts",
       "examples/stryker.config.json"
     ],
@@ -143,7 +146,7 @@
     ]
   },
   "optionalDependencies": {
-    "@ast-grep/napi-linux-x64-gnu": "0.42.1",
+    "@ast-grep/napi-linux-x64-gnu": "0.45.3",
     "@esbuild/linux-x64": "0.28.1",
     "@rollup/rollup-linux-x64-gnu": "4.62.2",
     "@rspack/binding-darwin-arm64": "1.7.11",

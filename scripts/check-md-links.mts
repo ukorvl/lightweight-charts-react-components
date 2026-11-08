@@ -9,7 +9,7 @@ import * as path from "node:path";
 import { glob } from "glob";
 import MarkdownIt from "markdown-it";
 import markdownAnchors from "markdown-it-anchor";
-import { getErrorMessage, getRepoRoot, isMainModule } from "./common.mts";
+import { getErrorMessage, getRepoRoot, isMainModule, readJsonFile } from "./common.mts";
 
 const rootDir = getRepoRoot(import.meta.url);
 const md = MarkdownIt().use(markdownAnchors);
@@ -33,6 +33,10 @@ const MIN_SUCCESS_STATUS_CODE = 200;
 const MAX_SUCCESS_STATUS_CODE = 399;
 const FILE_CONCURRENCY_LIMIT = 5;
 const LINK_CONCURRENCY_LIMIT = 10;
+const REPO_URL = readJsonFile<{ repository: { url: string } }>(
+  path.join(rootDir, "lib/package.json")
+).repository.url.replace(/^git\+|\.git$/g, "");
+const REPO_MAIN_URL_PREFIXES = [`${REPO_URL}/blob/main/`, `${REPO_URL}/tree/main/`];
 
 export class LinkChecker {
   errors: Array<LinkError>;
@@ -144,6 +148,7 @@ export class LinkChecker {
       href.startsWith("mailto:") ||
       href.startsWith("tel:") ||
       href.startsWith("javascript:") ||
+      href.startsWith("vbscript:") ||
       href.startsWith("data:")
     );
   }
@@ -183,7 +188,7 @@ export class LinkChecker {
       return indexCandidate;
     }
 
-    return null;
+    return this.isDirectory(resolvedPath) ? resolvedPath : null;
   }
 
   isDirectory(filePath: string) {
@@ -222,7 +227,13 @@ export class LinkChecker {
     return true;
   }
 
-  async checkLink({ href, file, line }: Link) {
+  async checkLink({ href, file, line }: Link): Promise<boolean> {
+    // Check links to this repo's main against the checkout, so a PR can link to files it adds.
+    const repoPrefix = REPO_MAIN_URL_PREFIXES.find(prefix => href.startsWith(prefix));
+    if (repoPrefix) {
+      return this.checkLink({ href: `/${href.slice(repoPrefix.length)}`, file, line });
+    }
+
     if (href.startsWith("http://") || href.startsWith("https://")) {
       return this.checkExternalLink({ href, file, line });
     }

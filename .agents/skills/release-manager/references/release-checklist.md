@@ -13,6 +13,7 @@
   - `package-lock.json`
   - `lib/README.md` for the automatic version-pinned reference bump and any manual release-doc updates
   - `examples/src/samples/*/sandbox/package.json` when the library major changes; keep the `lightweight-charts-react-components` dependency on the current major line
+  - `skills/lightweight-charts-react-components/SKILL.md` when the library major or a declared peer or engine range changes; the sync check fails until recipes are verified and the compatibility table is updated, then rerun the prepare script to resume the release branch
 - Release workflows to mirror locally:
   - `.github/actions/check-versions-in-sync/action.yaml`
   - `.github/workflows/check-changelog.yaml`

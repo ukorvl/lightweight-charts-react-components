@@ -46,10 +46,10 @@
     </picture>
   </a>
 
-  <a href="https://bundlephobia.com/package/lightweight-charts-react-components@2.6.0">
+  <a href="https://bundlephobia.com/package/lightweight-charts-react-components@2.6.1">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components/2.6.0?cacheSeconds=31536000&colorA=1e2029&colorB=1e2029&style=flat">
-      <img src="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components/2.6.0?cacheSeconds=31536000&colorA=ffcc00&colorB=ffcc00&style=flat" alt="Minified size">
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components/2.6.1?cacheSeconds=31536000&colorA=1e2029&colorB=1e2029&style=flat">
+      <img src="https://img.shields.io/bundlephobia/minzip/lightweight-charts-react-components/2.6.1?cacheSeconds=31536000&colorA=ffcc00&colorB=ffcc00&style=flat" alt="Minified size">
     </picture>
   </a>
 
@@ -74,15 +74,28 @@
     </picture>
   </a>
 
-  <a href="https://coveralls.io/github/ukorvl/lightweight-charts-react-components">
+  <a href="https://coveralls.io/github/ukorvl/lightweight-charts-react-components?branch=main">
     <picture>
       <source
         media="(prefers-color-scheme: dark)"
-        srcset="https://img.shields.io/coveralls/github/ukorvl/lightweight-charts-react-components?colorA=1e2029&colorB=1e2029&style=flat"
+        srcset="https://coveralls.io/repos/github/ukorvl/lightweight-charts-react-components/badge.svg?branch=main"
       >
       <img
-        src="https://img.shields.io/coveralls/github/ukorvl/lightweight-charts-react-components?colorA=ffcc00&colorB=ffcc00&style=flat"
-        alt="Coverage"
+        src="https://coveralls.io/repos/github/ukorvl/lightweight-charts-react-components/badge.svg?branch=main"
+        alt="Coverage Status"
+      >
+    </picture>
+  </a>
+
+  <a href="https://snyk.io/test/github/ukorvl/lightweight-charts-react-components">
+    <picture>
+      <source
+        media="(prefers-color-scheme: dark)"
+        srcset="https://snyk.io/test/github/ukorvl/lightweight-charts-react-components/badge.svg"
+      >
+      <img
+        src="https://snyk.io/test/github/ukorvl/lightweight-charts-react-components/badge.svg"
+        alt="Snyk Security"
       >
     </picture>
   </a>
@@ -110,6 +123,7 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
   - [Standalone browser build](#standalone-browser-build)
 - [Usage](#usage)
   - [Chart Container Sizing](#chart-container-sizing)
+- [Agent skill](#agent-skill)
 - [Examples](#examples)
 - [Contributing](#contributing)
   - [How to Contribute](#how-to-contribute)
@@ -260,10 +274,17 @@ Pane-wide overlays that belong to a whole pane rather than a single series can b
 
 ### Chart Container Sizing
 
-The `Chart` component requires explicit width and height to render correctly. You can set these dimensions directly via the `options` prop or make the chart container scale to its parent size using the `containerProps` prop.
-Note that the chart will automatically resize to fit its container.
+The `Chart` component needs a nonzero container size. Set fixed dimensions through
+`options`, or enable `options={{ autoSize: true }}` and size the container through
+`containerProps`. Automatic resizing requires `autoSize: true`.
 
 There may be cases where the chart's parent HTML element has no size defined (for example, when the parent is a flex container with no defined height). In such cases, you need to ensure that the parent element has a defined size (width and height) for the chart to render properly.
+
+## Agent skill
+
+The project comes with an [agent skill](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/skills/lightweight-charts-react-components) that provides recipes for common charting scenarios and guides on how to integrate the library into React applications. The skill is designed to help coding agents understand the library's design choices and common edge cases, making it produce higher-quality code when using the library.
+
+For more information on how to use the skill, please refer to the [skill readme](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/skills/lightweight-charts-react-components/README.md).
 
 ## Examples
 
@@ -287,7 +308,6 @@ Thank you for helping improve this project!
 ## Related Projects
 
 - [lightweight-charts](https://github.com/tradingview/lightweight-charts) - The original Lightweight Charts library by TradingView.
-- [lightweight-charts-vue](https://github.com/ukorvl/lightweight-charts-vue) - Vue.js wrapper for Lightweight Charts.
 
 ## License
 

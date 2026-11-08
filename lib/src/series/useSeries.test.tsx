@@ -933,4 +933,77 @@ describe("useSeries", () => {
       expect(mockUpdate).not.toHaveBeenCalled();
     }
   );
+
+  it("does not touch the chart when no series was created", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: false,
+    });
+
+    const { unmount } = renderHook(() => useSeries({ type: "Line", data: [] }));
+
+    unmount();
+
+    expect(mockRemoveSeries).not.toHaveBeenCalled();
+  });
+
+  it("skips native removal while the chart is disposing", () => {
+    const disposingChart = { ...mockChart, _isDisposing: false };
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: disposingChart,
+      isReady: true,
+    });
+
+    const { result, unmount } = renderHook(() => useSeries({ type: "Line", data: [] }));
+    const { seriesApiRef } = result.current;
+
+    disposingChart._isDisposing = true;
+    unmount();
+
+    expect(mockRemoveSeries).not.toHaveBeenCalled();
+    expect(seriesApiRef.current.api()).toBeNull();
+  });
+
+  it("drops the series reference when the chart api is already gone", () => {
+    const api = vi.fn(mockChart.api);
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: { api },
+      isReady: true,
+    });
+
+    const { result } = renderHook(() => useSeries({ type: "Line", data: [] }));
+
+    api.mockReturnValue(null as never);
+    act(() => result.current.seriesApiRef.current.clear());
+
+    expect(mockRemoveSeries).not.toHaveBeenCalled();
+    expect(result.current.seriesApiRef.current.api()).toBeNull();
+  });
+
+  it("drops the series reference when there is no chart in context", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: null,
+      isReady: false,
+    });
+
+    const { result } = renderHook(() => useSeries({ type: "Line", data: [] }));
+    const { current: seriesApi } = result.current.seriesApiRef;
+
+    seriesApi._series = {} as never;
+    act(() => seriesApi.clear());
+
+    expect(seriesApi.api()).toBeNull();
+  });
+
+  it("does not apply series order before the series exists", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: { api: () => null },
+      isReady: true,
+    });
+
+    expect(() =>
+      renderHook(() => useSeries({ type: "Line", data: [], seriesOrder: 1 }))
+    ).not.toThrow();
+    expect(mockSetSeriesOrder).not.toHaveBeenCalled();
+  });
 });

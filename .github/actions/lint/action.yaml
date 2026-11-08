@@ -39,6 +39,10 @@ runs:
       run: npm run check:md-links
       shell: bash
 
+    - name: Check agent skill recipes
+      run: npm run check:skill-recipes
+      shell: bash
+
     - name: Validate JSON and YAML files
       uses: GrantBirki/json-yaml-validate@9bbaa8474e3af4e91f25eda8ac194fdc30564d96 # v4.0.0
 

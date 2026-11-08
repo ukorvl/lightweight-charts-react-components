@@ -65,6 +65,8 @@ describe("useWatermark", () => {
 
     const api = result.current.current.api();
     expect(api).toBeDefined();
+    expect(result.current.current.init()).toBe(api);
+    expect(createTextWatermark).toHaveBeenCalledTimes(1);
     expect(createTextWatermark).toHaveBeenCalled();
   });
 

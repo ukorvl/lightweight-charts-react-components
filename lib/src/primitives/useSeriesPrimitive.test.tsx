@@ -43,6 +43,8 @@ describe("useSeriesPrimitive", () => {
 
     const api = result.current.current.api();
     expect(api).toBeDefined();
+    expect(result.current.current.init()).toBe(api);
+    expect(mockAttachPrimitive).toHaveBeenCalledTimes(1);
   });
 
   it("does not initialize seriesPrimitive if not ready", () => {

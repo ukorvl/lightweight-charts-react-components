@@ -100,7 +100,9 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
     },
     clear() {
       if (this._series !== null) {
-        chart?.api()?.removeSeries(this._series);
+        if (!chart?._isDisposing) {
+          chart?.api()?.removeSeries(this._series);
+        }
         this._series = null;
         setIsReady(false);
       }

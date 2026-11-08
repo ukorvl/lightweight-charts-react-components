@@ -20,6 +20,7 @@ The examples app is deployed and hosted on GitHub Pages as a static site.
 ## Main working principles
 
 - Make sure to update the documentation (`lib/README.md` and JSDoc comments) if you are adding new features or changing existing ones in the library. Ensure all documentation is synced with the code and up-to-date. Pay special attention to JSDoc code snippets, as they can become outdated easily.
+- Be aware of repository symlinks when editing docs or agent config. Update the canonical target once instead of editing through multiple aliases: `README.md -> ./lib/README.md`, `LICENSE -> ./lib/LICENSE`, and `.claude/skills` plus `.cursor/skills` both point to `../.agents/skills`.
 - If you encounter docs that are outdated or incorrect, explicitly report it to developer or mention in the PR description.
 - If applicable (when some public user-facing interface or behavior changes), update the changelog (`lib/CHANGELOG.md`) after making changes to `lib` files with a brief description of the changes made. Keep changelog entries concise and informative, following the format of previous entries. Always place new entries under the "Unreleased" section and update the version and date only when preparing for a release.
 - If you are adding new features or making significant changes, consider adding new examples to the `examples` app to demonstrate how to use the new functionality. Keep the examples clear and focused on showcasing the specific feature or change you have implemented. Follow the existing structure and style of the examples to maintain consistency across the project.
@@ -60,16 +61,17 @@ The examples app is deployed and hosted on GitHub Pages as a static site.
 
 ## Validation matrix
 
-| Change type                                                                 | Required while iterating                                      | Required before review                                                     |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Any `.ts`, `.tsx`, or `.mts` file edit                                      | `npm run lint`<br>`npm run typecheck`                         | `npm run lint`<br>`npm run typecheck`                                      |
-| Library source change (`lib/src/**`)                                        | `npm run test:unit -w lib -- --run`<br>`npm run build -w lib` | `npm run test:unit -w lib -- --run`<br>`npm run build -w lib`              |
-| Public API or package export change                                         | `npm run build -w lib`                                        | `npm run build -w lib`<br>`npm run check-exports -w lib`                   |
-| README or JSDoc change                                                      | `npm run build`                                               | `npm run build`<br>`npm run check:jsdoc-links`<br>`npm run check:md-links` |
-| Examples UI or runtime behavior change                                      | `npm run build -w examples`                                   | `npm run build -w examples`<br>`npm run test:e2e -w examples`              |
-| Examples business-logic or testable state change                            | `npm run test:unit -w examples`                               | `npm run test:unit -w examples`                                            |
-| Dependency, workspace wiring, package metadata, or script entrypoint change | `npm run build`                                               | `npm run build`<br>`npm run knip`<br>`npm run format`                      |
-| Full release confidence                                                     | n/a                                                           | `npm run build`<br>`npm run test:all`                                      |
+| Change type                                                                 | Required while iterating                                      | Required before review                                                                                            |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Any `.ts`, `.tsx`, or `.mts` file edit                                      | `npm run lint`<br>`npm run typecheck`                         | `npm run lint`<br>`npm run typecheck`                                                                             |
+| Library source change (`lib/src/**`)                                        | `npm run test:unit -w lib -- --run`<br>`npm run build -w lib` | `npm run test:unit -w lib -- --run`<br>`npm run build -w lib`                                                     |
+| Public API or package export change                                         | `npm run build -w lib`                                        | `npm run build -w lib`<br>`npm run check-exports -w lib`                                                          |
+| README or JSDoc change                                                      | `npm run build`                                               | `npm run build`<br>`npm run check:jsdoc-links`<br>`npm run check:md-links`                                        |
+| Examples UI or runtime behavior change                                      | `npm run build -w examples`                                   | `npm run build -w examples`<br>`npm run test:e2e -w examples`                                                     |
+| Examples business-logic or testable state change                            | `npm run test:unit -w examples`                               | `npm run test:unit -w examples`                                                                                   |
+| Agent skill change (`skills/**`)                                            | `npm run check:skill-recipes`                                 | `npm run check:skill-recipes`<br>`npm run check:versions-in-sync`<br>`npm run check:md-links`<br>`npm run format` |
+| Dependency, workspace wiring, package metadata, or script entrypoint change | `npm run build`                                               | `npm run build`<br>`npm run knip`<br>`npm run format`                                                             |
+| Full release confidence                                                     | n/a                                                           | `npm run build`<br>`npm run test:all`                                                                             |
 
 ## Other references
 
