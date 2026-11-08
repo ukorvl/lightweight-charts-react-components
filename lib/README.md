@@ -270,6 +270,43 @@ const App = () => {
 export { App };
 ```
 
+`PriceScale` customizes a price scale of the pane it is rendered in. To give a series its own scale in the same pane (for example, volume under candlesticks), set a custom `priceScaleId` on the series and render `PriceScale` with the same `id` inside that series. A custom price scale exists only after a series that uses it is added, so nest `PriceScale` in that series or place it after the series:
+
+```tsx
+import React from "react";
+import {
+  Chart,
+  CandlestickSeries,
+  HistogramSeries,
+  Pane,
+  PriceScale,
+} from "lightweight-charts-react-components";
+
+const candles = [
+  { time: "2023-01-01", open: 100, high: 105, low: 98, close: 103 },
+  { time: "2023-01-02", open: 103, high: 107, low: 101, close: 102 },
+];
+const volume = [
+  { time: "2023-01-01", value: 1000 },
+  { time: "2023-01-02", value: 1100 },
+];
+
+const App = () => {
+  return (
+    <Chart options={{ width: 600, height: 400 }}>
+      <Pane>
+        <CandlestickSeries data={candles} />
+        <HistogramSeries data={volume} options={{ priceScaleId: "volume" }}>
+          <PriceScale id="volume" options={{ scaleMargins: { top: 0.8, bottom: 0 } }} />
+        </HistogramSeries>
+      </Pane>
+    </Chart>
+  );
+};
+
+export { App };
+```
+
 Pane-wide overlays that belong to a whole pane rather than a single series can be mounted declaratively with `PanePrimitive` inside `Pane`. This works well for session bands, pane-scoped annotations, and background highlights that need access to both the chart and the target pane. See the `PanePrimitives` sample in the examples app for a full working example, and the upstream [pane primitives documentation](https://tradingview.github.io/lightweight-charts/docs/plugins/pane-primitives) for the underlying Lightweight Charts plugin contract.
 
 ### Chart Container Sizing

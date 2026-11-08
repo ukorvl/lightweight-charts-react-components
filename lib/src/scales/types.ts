@@ -109,7 +109,10 @@ export type PriceScaleProps = {
    */
   options?: PriceScaleOptions;
   /**
-   * The ID of the price scale.
+   * The ID of the price scale: `"left"`, `"right"`, or a custom `priceScaleId` of a series in the same pane.
+   *
+   * A custom (overlay) price scale exists only after a series that uses it is added,
+   * so render `PriceScale` inside that series or after it.
    */
   id: string;
 };

@@ -1,13 +1,18 @@
-import { useLayoutEffect, useRef } from "react";
+import { useContext, useLayoutEffect, useRef } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { usePaneContext } from "@/pane/usePaneContext";
+import { SeriesContext } from "@/series/SeriesContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isInsidePane, isPaneReady } = usePaneContext();
+  const { isInsidePane, isPaneReady, paneApiRef } = usePaneContext();
+  // Custom (overlay) price scales exist only after a series that uses them is added,
+  // so a PriceScale nested inside a series waits for that series.
+  const { seriesApiRef: series, isReady: seriesIsReady } = useContext(SeriesContext);
+  const isParentSeriesReady = series === null || seriesIsReady;
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
@@ -22,7 +27,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
           return null;
         }
 
-        this._priceScale = chartApi.priceScale(id);
+        this._priceScale = chartApi.priceScale(id, paneApiRef?.api()?.paneIndex());
 
         this._priceScale.applyOptions(options);
       }
@@ -34,7 +39,7 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
         return;
       }
 
-      this._priceScale = chart.api()!.priceScale(idToSet);
+      this._priceScale = chart.api()!.priceScale(idToSet, paneApiRef?.api()?.paneIndex());
       this._priceScale.applyOptions(options);
     },
     clear() {
@@ -56,12 +61,12 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
       );
     }
 
-    if (!isPaneReady) {
+    if (!isPaneReady || !isParentSeriesReady) {
       return;
     }
 
     priceScaleApiRef.current.init();
-  }, [chartIsReady, isInsidePane, isPaneReady]);
+  }, [chartIsReady, isInsidePane, isPaneReady, isParentSeriesReady]);
 
   useLayoutEffect(() => {
     return () => {

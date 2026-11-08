@@ -13,6 +13,7 @@ import {
   TimeScale,
   TimeScaleFitContentTrigger,
   Pane,
+  PriceScale,
   WatermarkText,
 } from "lightweight-charts-react-components";
 import { ohlcData, rsiData, volumeData } from "./panesData";
@@ -124,8 +125,14 @@ const Panes = () => {
                   data={volumeData}
                   options={{
                     priceLineVisible: false,
+                    priceScaleId: "volume",
                   }}
-                />
+                >
+                  <PriceScale
+                    id="volume"
+                    options={{ scaleMargins: { top: 0.2, bottom: 0 } }}
+                  />
+                </HistogramSeries>
                 <Watermark text="VOLUME" />
               </Pane>
             </>
