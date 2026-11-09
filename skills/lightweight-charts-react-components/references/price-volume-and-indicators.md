@@ -181,10 +181,10 @@ is expensive, move it into the data owner rather than mutating chart input objec
 
 Give the volume series a custom `priceScaleId` and render `PriceScale` with the
 same `id` inside that series. The overlay scale exists only after a series that
-uses it is added: a nested `PriceScale` waits for its parent series and targets
-the pane it is rendered in. A sibling `PriceScale` placed before the series runs
-too early and throws an incorrect-ID error in development builds. Keep scale
-options in stable objects so they are not reapplied on every render.
+uses it is added: a nested `PriceScale` waits for its parent
+series and targets the pane it is rendered in.
+Keep scale options in stable objects so they are not reapplied on every
+render.
 
 ```tsx
 import type { CandlestickData, HistogramData, UTCTimestamp } from "lightweight-charts";
@@ -234,15 +234,15 @@ export function PriceWithVolumeOverlay({
 }
 ```
 
-**Version note:** in `lightweight-charts-react-components` `2.6.1`, `PriceScale`
-always targets pane zero and does not wait for its parent series, so the nested
-`<PriceScale id="volume" />` above throws an incorrect-ID error. The default
-`"right"` scale in the first pane works as written. On `2.6.1`, pass
-`ref={volumeRef}` (a `useRef<SeriesApiRef<"Histogram">>(null)`) to the volume
-series instead of nesting `PriceScale`, and call
-`useSeriesScaleMargins(volumeRef, 0.8, 0)`. The series API scale always targets
-the series' actual pane; the ready loop handles the ref being assigned before
-the native series exists.
+**Version note (`2.6.1`):** the recipe target includes `2.6.1`, where
+`PriceScale` always targets pane zero and does not wait for its parent series.
+There the nested `<PriceScale id="volume" />` above throws an incorrect-ID
+error; the `"right"` scale in the first pane still works. On `2.6.1`, drop the
+nested volume `PriceScale`, pass `ref={volumeRef}` (a
+`useRef<SeriesApiRef<"Histogram">>(null)`) to the volume series, and call
+`useSeriesScaleMargins(volumeRef, 0.8, 0)`. The hook goes through the series'
+own price scale, so it always hits the series' actual pane, and retries each
+frame until the native series exists.
 
 ```tsx
 import { useEffect, type RefObject } from "react";
