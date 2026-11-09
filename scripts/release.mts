@@ -11,7 +11,8 @@
  *   check    Run the release validation suite, one line per check.
  *   commit   Stage release files and create (or amend) the single `chore: vX.Y.Z` commit.
  *   pr [--force]
- *       Push the release branch and open (or reuse) the release PR to `main`.
+ *       Push the release branch and open the release PR to `main`, or refresh the body of
+ *       the open one from the current changelog section.
  *   tag [--move]
  *       Create annotated tag `vX.Y.Z` on the pushed release commit and push it, so the
  *       `Release` workflow can run on it before the PR is merged. `--move` re-creates a tag
@@ -685,13 +686,18 @@ export const pr = (ctx: ReleaseContext, force: boolean) => {
       ".[0].url // empty",
     ])
     .trim();
+  const body = buildPrBody(
+    version,
+    readChangelogSection(readChangelog(ctx), version) ?? ""
+  );
 
   if (existing) {
-    ctx.log(`pr: ${existing} (updated)`);
+    // The body mirrors the changelog section, which may have changed since the PR opened.
+    ctx.gh(["pr", "edit", existing, "--body-file", "-"], body);
+    ctx.log(`pr: ${existing} (updated, body refreshed from ${CHANGELOG})`);
     return;
   }
 
-  const section = readChangelogSection(readChangelog(ctx), version) ?? "";
   const url = ctx
     .gh(
       [
@@ -706,7 +712,7 @@ export const pr = (ctx: ReleaseContext, force: boolean) => {
         "--body-file",
         "-",
       ],
-      buildPrBody(version, section)
+      body
     )
     .trim();
   ctx.log(`pr: ${url} (created)`);

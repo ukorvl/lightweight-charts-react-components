@@ -49,11 +49,19 @@ const setupRepos = (unreleased = "### Fixed\n- new fix\n") => {
   return { repo, remote };
 };
 
-const runRelease = (repo: string, argv: string[], published = false) => {
+const PR_URL = "https://example.test/pull/1";
+
+const runRelease = (
+  repo: string,
+  argv: string[],
+  { published = false, openPr = "" } = {}
+) => {
   const lines: string[] = [];
-  const gh = vi.fn((args: string[]) =>
-    args[1] === "create" ? "https://example.test/pull/1\n" : ""
-  );
+  const gh = vi.fn((args: string[], _input?: string) => {
+    if (args[1] === "create") return `${PR_URL}\n`;
+    if (args[1] === "list") return openPr;
+    return "";
+  });
 
   main(argv, {
     repo,
@@ -305,11 +313,21 @@ describe("release commit, pr and tag", () => {
     expect(runRelease(repo, ["commit"]).output).toContain("chore: v2.7.0 (amended)");
     expect(gitIn(repo, "rev-list", "--count", "origin/main..HEAD")).toBe("1");
     expect(() => runRelease(repo, ["pr"])).toThrow(DecisionNeeded);
-    expect(runRelease(repo, ["pr", "--force"]).output).toContain("(force-with-lease)");
+    const forced = runRelease(repo, ["pr", "--force"], { openPr: PR_URL });
+    expect(forced.output).toContain("(force-with-lease)");
+    expect(forced.output).toContain(`pr: ${PR_URL} (updated, body refreshed`);
+    expect(forced.gh).toHaveBeenCalledWith(
+      ["pr", "edit", PR_URL, "--body-file", "-"],
+      expect.stringContaining("- reworded fix")
+    );
+    expect(forced.gh).not.toHaveBeenCalledWith(
+      expect.arrayContaining(["create"]),
+      expect.anything()
+    );
 
     const amended = gitIn(repo, "rev-parse", "HEAD");
     expect(() => runRelease(repo, ["tag"])).toThrow(DecisionNeeded);
-    expect(() => runRelease(repo, ["tag", "--move"], true)).toThrow(
+    expect(() => runRelease(repo, ["tag", "--move"], { published: true })).toThrow(
       "already published on npm"
     );
     expect(remoteTag()).toBe(firstCommit);
