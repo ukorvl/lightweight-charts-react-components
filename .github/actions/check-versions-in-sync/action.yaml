@@ -1,5 +1,5 @@
 name: "Check versions in sync"
-description: "Checks that the library release version stays aligned across metadata, package-lock, and configured version-pinned references in the original library README"
+description: "Checks that the library release version stays aligned across package metadata, package-lock, and the agent skill compatibility table"
 
 inputs:
   PACKAGE_JSON:
@@ -22,10 +22,6 @@ inputs:
     description: "Key of the library package inside package-lock.json packages"
     required: false
     default: "lib"
-  README_FILES:
-    description: "Comma-separated original README files that contain version-pinned references"
-    required: false
-    default: "lib/README.md"
   SKILL_FILE:
     description: "Path to the agent skill file that contains the compatibility table"
     required: false
@@ -42,7 +38,6 @@ runs:
         VERSION_FILE: ${{ inputs.VERSION_FILE }}
         PACKAGE_LOCK: ${{ inputs.PACKAGE_LOCK }}
         LOCK_PACKAGE_KEY: ${{ inputs.LOCK_PACKAGE_KEY }}
-        README_FILES: ${{ inputs.README_FILES }}
         SKILL_FILE: ${{ inputs.SKILL_FILE }}
       run: >
         node ./scripts/check-versions-in-sync.mts
@@ -52,5 +47,4 @@ runs:
         --version-file "$VERSION_FILE"
         --package-lock "$PACKAGE_LOCK"
         --lock-package-key "$LOCK_PACKAGE_KEY"
-        --readme-files "$README_FILES"
         --skill-file "$SKILL_FILE"

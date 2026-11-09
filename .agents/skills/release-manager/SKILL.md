@@ -1,82 +1,42 @@
 ---
 name: release-manager
-description: "Prepare or finalize semver releases for this repository. Use when Codex needs to create or resume a `release-vX.Y.Z` branch from `main`, bump the library version by `major`, `minor`, or `patch`, verify `lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, the library entry in `package-lock.json`, the version references in `lib/README.md`, and the standalone sandbox dependency references in `examples/src/samples/*/sandbox/package.json` stay in sync, update release-facing docs such as `lib/CHANGELOG.md`, `MIGRATION.md`, `SECURITY.md`, and READMEs when needed, run release validation, create commit `chore: vX.Y.Z`, open a release PR, and only after maintainer confirmation create or push annotated tag `vX.Y.Z` from the reviewed release commit."
+description: Release lightweight-charts-react-components end to end. Invoke as `/release-manager <major|minor|patch>`; with no argument on a `release-vX.Y.Z` branch it resumes that release.
+argument-hint: "<major|minor|patch>"
 ---
 
 # Release Manager
 
-Use this skill to prepare a local release branch and the git artifacts needed before a maintainer runs the repository's GitHub `Release` workflow.
+Drive every step through `node scripts/release.mts <command>` from the repo root on Node 24 (`nvm use`), npm only. Commands are idempotent: after any fix, rerun the same command. Exit 1 is an error: do what stderr says. Exit 2 is a decision: ask the user with the options printed on stdout, then rerun with the chosen flag.
 
-## Inputs
+Invoking the skill authorizes steps 1–6 (branch, files, commit, push, PR, tag push). Steps 7–8 publish and merge: ask first.
 
-Collect these inputs from the request or infer them from context:
+## Input
 
-- `mode`: `prepare-release-branch` or `finalize-release-tag`; default to `prepare-release-branch`
-- `bump`: `major`, `minor`, or `patch`
-- `repo_path`: repository root; default the current workspace if it contains `lib/package.json`
-- `base_branch`: default `main`
-- `remote`: default `origin`
-- `push_and_pr`: optional; only for `prepare-release-branch`
-- `release_ref`: required for `finalize-release-tag` unless the user clearly identifies the reviewed commit or merged `main` HEAD that should be tagged
-- `push_tag`: optional; only for `finalize-release-tag` after explicit maintainer confirmation
+`$ARGUMENTS` is `major`, `minor` or `patch`. If it is empty and the current branch is `release-vX.Y.Z`, resume: the bump is whatever turns `git show origin/main:lib/package.json` into X.Y.Z. Otherwise ask for the bump; do not infer it from commits.
 
-If the worktree already contains unrelated edits, pause and ask before continuing. Release prep should start from a clean tree so the release commit does not absorb unrelated work.
+## Steps
 
-## Modes
+1. `prepare <bump>`: creates `release-vX.Y.Z` from `origin/main` or resumes it, bumps version files via `npm run version` (`lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, `package-lock.json`), moves `[Unreleased]` into `## [X.Y.Z] - <today>`, pins sandbox deps to `^MAJOR`, and runs the version sync check.
+   - On any other branch it exits 2. `--branch rename` turns that branch into the release branch, so its commits ship in this release. `--branch new` branches from `origin/main` and leaves it alone.
+   - Empty `[Unreleased]`: it prints the commits since the last tag. Write user-facing entries under `[Unreleased]` in the existing style (`### Added` / `### Changed` / `### Fixed`, short lowercase bullets, backticked API names), then rerun.
+   - Branch behind `origin/main` with its own commits: ask the user whether to merge or rebase, do it, rerun.
+2. Review docs; edit only what the release needs:
+   - Read the printed changelog section and tighten wording. Never edit past releases.
+   - Major: upgrade steps in `MIGRATION.md`, the supported versions table in `SECURITY.md`, and the library row of the compatibility table in `skills/lightweight-charts-react-components/SKILL.md`. The sync check fails until that range covers the new major; verify recipes with `npm run check:skill-recipes`.
+   - Changed peer or engine ranges: the matching rows of that table.
+   - Minor or patch: keep the skill's reference versions. They are the tested baseline, and only the ranges must cover the release.
+   - `lib/README.md`: only when install or usage changed. Badges and links carry no version.
+3. `check` (several minutes, run it in the background): versions, format, lint, typecheck, lib unit tests with the coverage gate, build, jsdoc and md links, knip, plus skill recipes when `skills/` changed. Fix failures and rerun. If `md links` fails only on external 5xx or timeouts, it is flaky: note it for the user and continue.
+4. `commit`: one commit with the exact message `chore: vX.Y.Z`. It refuses non-release files: commit those first as their own conventional commit, or stash them. It also refuses while `[Unreleased]` has entries, for example a fix added during validation; rerun `prepare`, which merges them into `[X.Y.Z]`. Rerunning after later edits amends the same commit.
+5. `pr`: pushes the branch and opens the PR `chore: vX.Y.Z` to `main` with the changelog section as body, or reuses the open one and refreshes its body from the current changelog. The `release*` branch name triggers the release-notes preview comment. After an amend it exits 2: confirm, then rerun with `--force` (force-with-lease).
+6. `tag`: creates and pushes annotated tag `vX.Y.Z` (message `release vX.Y.Z`) on the pushed release commit. Releases are tagged and published from the branch before merge. If the tag points at an older commit, it exits 2: confirm, then rerun with `--move`, which is refused once the version is on npm.
+7. Publish, after the user says yes (npm, JSR, GitHub release, examples deploy):
+   - `gh workflow run release.yaml --ref vX.Y.Z`. Add `-f dry-run=true` for a rehearsal. It must run on the tag; a branch ref fails the semver check.
+   - `gh run list --workflow release.yaml --branch vX.Y.Z --limit 1 --json databaseId,url`, then `gh run watch <id> --exit-status` in the background.
+   - Failed before the `Release` job: nothing is published. For flakes, run `gh run rerun <id> --failed`. For real problems, fix on the branch, then `commit`, `pr --force`, `tag --move`, and dispatch again.
+   - Failed after `npm publish` ran: that version is final. Do not move the tag; release a new patch.
+8. Merge, after the Release run succeeds and the user says yes: `gh pr merge <number> --merge`. Use a merge commit, never squash or rebase, so the tagged commit lands on `main` unchanged. Then `git switch main && git pull --ff-only && git branch -d release-vX.Y.Z`; the remote branch is deleted on merge.
 
-Choose the mode first and keep the semantics explicit.
+## Finish
 
-- `prepare-release-branch`: create or resume the release branch, bump files, update docs, validate, commit, and optionally open the PR. Do not create or push the release tag in this mode.
-- `finalize-release-tag`: work only from the reviewed release commit after merge approval. Create the annotated tag on that reviewed commit, push it only when the maintainer confirms, and then let the maintainer run the GitHub `Release` workflow on that tag.
-
-## Workflow
-
-1. Read `references/release-checklist.md` before changing files if the repository layout looks unfamiliar.
-2. Use the repo's required environment: `nvm use` for Node 24, and `npm` only.
-3. If `mode` is `prepare-release-branch`, run `scripts/prepare_release.sh --repo <repo_path> --bump <bump>`.
-   - It computes the target version from `lib/package.json`.
-   - It updates `main` from `origin/main` unless `--skip-fetch` is needed.
-   - It creates or resumes `release-vX.Y.Z`.
-   - It runs the repository version bump entrypoint only if the release branch still has the base version.
-   - The version bump entrypoint also updates the version-pinned README references configured for `lib/README.md` before the sync checker runs.
-   - It verifies all version touchpoints match after the branch switch and bump, including the library entry in `package-lock.json`, the package version references in the original library README, and the standalone sandbox dependency major references.
-4. If `mode` is `prepare-release-branch`, update release documentation.
-   - Always update `lib/CHANGELOG.md`.
-   - Update `MIGRATION.md` for breaking changes or new upgrade steps.
-   - Update `SECURITY.md` when supported major lines change.
-   - Inspect other markdown files such as `lib/README.md` (the repository root `README.md` is a symlink), `examples/README.md`, and `CONTRIBUTING.md` when the release changes public API, install guidance, or release workflow notes. `lib/README.md` still needs a manual pass for prose/docs changes even though the configured version-pinned references are bumped automatically.
-5. If `mode` is `prepare-release-branch`, validate the release branch.
-   - Always run `node ./scripts/check-versions-in-sync.mts --repo <repo_path>`.
-   - Choose the rest of the checks from `references/release-checklist.md` based on what changed.
-   - Before handing off a ready release branch, prefer the repo-level quality gates if feasible: `npm run build`, `npm run lint`, `npm run format`, and `npm run knip`.
-6. If `mode` is `prepare-release-branch`, create the release commit.
-   - Stage only release-related files.
-   - Create commit `chore: vX.Y.Z`.
-   - If the user wants the review flow, push `release-vX.Y.Z` and open a PR to `main`.
-   - Mention that the repository posts release-note previews on PRs whose branch name starts with `release`.
-   - Do not create or push the release tag in this mode.
-7. If `mode` is `finalize-release-tag`, work from the reviewed release commit only.
-   - Confirm the exact commit or ref to tag. Prefer the merged commit on `main` or another reviewed ref explicitly approved by the maintainer.
-   - Verify the tag does not already exist locally or on the remote.
-   - Create annotated tag `vX.Y.Z` with message `release vX.Y.Z` on that reviewed commit.
-   - Push the tag only when the maintainer confirms.
-   - Run or trigger the GitHub `Release` workflow on that tag only when the user explicitly asks.
-
-## Files To Read On Demand
-
-- `references/release-checklist.md` for repo-specific release touchpoints, docs rules, and validation commands
-- `scripts/prepare_release.sh` for branch setup and version bump orchestration
-- `scripts/check-versions-in-sync.mts` for the shared local/CI release-version sync check used by `.github/actions/check-versions-in-sync`
-
-## Guardrails
-
-- Use `npm`, not `pnpm` or `yarn`.
-- Do not rewrite or discard unrelated user changes.
-- Prefer `git switch` and `git pull --ff-only`; avoid destructive resets.
-- If the release branch already exists with the target version, reuse it instead of bumping twice.
-- Never create or push a release tag from an unreviewed local-only release branch.
-- Tag only after PR review and maintainer confirmation of the exact commit being released.
-- If documentation updates are unclear, inspect the source changes and existing changelog style before writing notes.
-- If a new major release changes supported lines, make sure `SECURITY.md` reflects the new support policy.
-- If the release crosses a major version boundary, update every `examples/src/samples/*/sandbox/package.json` reference to `lightweight-charts-react-components` so the standalone sandboxes track the new library major.
-- Keep the package version references in README files across the repo aligned with `lib/package.json` on every library release.
+Report the version, PR URL, tag, Release run URL and result, and any skipped or flaky check.

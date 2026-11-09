@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 // This script checks that release-version touchpoints stay aligned with lib/package.json.
-// It verifies package metadata, the lockfile entry, the versions in readme files, and the
-// compatibility table of the agent skill. The skill's reference versions are a tested baseline,
-// so they only have to stay inside the declared ranges instead of matching the latest release.
+// It verifies package metadata, the lockfile entry, and the compatibility table of the agent
+// skill. The skill's reference versions are a tested baseline, so they only have to stay inside
+// the declared ranges instead of matching the latest release.
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { getErrorMessage, isMainModule } from "./common.mts";
-import { assertReadmeVersionReferences } from "./readme-version-references.mts";
 
 export type CheckerOptions = {
   repo: string;
@@ -17,18 +16,16 @@ export type CheckerOptions = {
   versionFile: string;
   packageLock: string;
   lockPackageKey: string;
-  readmeFiles: string[];
   skillFile: string;
 };
 
-const defaultOptions: CheckerOptions = {
+export const defaultOptions: CheckerOptions = {
   repo: ".",
   packageJson: "lib/package.json",
   jsrJson: "lib/jsr.json",
   versionFile: "lib/src/version.ts",
   packageLock: "package-lock.json",
   lockPackageKey: "lib",
-  readmeFiles: ["lib/README.md"],
   skillFile: "skills/lightweight-charts-react-components/SKILL.md",
 };
 
@@ -142,15 +139,11 @@ Options:
   --version-file <path>
   --package-lock <path>
   --lock-package-key <key>
-  --readme-files <comma-separated paths>
   --skill-file <path>`);
 }
 
 const parseCliOptions = (argv: string[]): CheckerOptions => {
-  const options: CheckerOptions = {
-    ...defaultOptions,
-    readmeFiles: [...defaultOptions.readmeFiles],
-  };
+  const options: CheckerOptions = { ...defaultOptions };
 
   for (let index = 2; index < argv.length; index += 1) {
     const argument = argv[index];
@@ -183,14 +176,6 @@ const parseCliOptions = (argv: string[]): CheckerOptions => {
     }
     if (argument === "--lock-package-key" && value) {
       options.lockPackageKey = value;
-      index += 1;
-      continue;
-    }
-    if (argument === "--readme-files" && value) {
-      options.readmeFiles = value
-        .split(",")
-        .map((file: string) => file.trim())
-        .filter(Boolean);
       index += 1;
       continue;
     }
@@ -285,17 +270,6 @@ export const run = (options: CheckerOptions = defaultOptions) => {
     readTypescriptVersion(options.versionFile),
     packageVersion
   );
-
-  for (const readmeFile of options.readmeFiles) {
-    assertReadmeVersionReferences(
-      readRequiredFile(readmeFile),
-      readmeFile,
-      packageVersion
-    );
-    messages.push(
-      `Version-pinned README references in ${readmeFile} match ${packageVersion}.`
-    );
-  }
 
   assertSkillCompatibility(
     readRequiredFile(options.skillFile),
