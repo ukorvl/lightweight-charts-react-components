@@ -77,9 +77,9 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
    - Click "New Pull Request".
    - Select your branch and submit the PR with a clear description.
 5. **Release**:
-   When there is a need to release a new version of the library, repository maintainers should create a special commit and a tag, associated with the new version. A new version should be added to the `CHANGELOG.md` file and the version in `package.json` should be updated. The version should follow [Semantic Versioning](https://semver.org/).
-   To create a new release, run `Release` workflow in the GitHub Actions tab. This will create a new release and publish it to npm.
-   Always consider to run `Release` workflow on release branch only, to avoid potentially unsuccessful releases on the main branch.
+   Maintainers release from a `release-vX.Y.Z` branch: a single `chore: vX.Y.Z` commit with the version bump and the new `CHANGELOG.md` section, a release PR to `main`, and an annotated `vX.Y.Z` tag on that commit. The version follows [Semantic Versioning](https://semver.org/).
+   Then run the `Release` workflow in the GitHub Actions tab on the `vX.Y.Z` tag (a branch ref fails its tag check). It publishes to npm and JSR, so a failed release never reaches `main`; merge the release PR with a merge commit after it succeeds.
+   `node scripts/release.mts` automates these steps and backs the `release-manager` agent skill.
 
 ## Issues and Feature Requests
 

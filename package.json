@@ -137,6 +137,7 @@
       "scripts/check-jsdoc-links.mts",
       "scripts/check-skill-recipes.mts",
       "scripts/check-coverage-regression.mts",
+      "scripts/release.mts",
       "examples/stryker.config.json"
     ],
     "ignoreBinaries": [

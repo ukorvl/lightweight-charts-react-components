@@ -21,7 +21,7 @@ export type CheckerOptions = {
   skillFile: string;
 };
 
-const defaultOptions: CheckerOptions = {
+export const defaultOptions: CheckerOptions = {
   repo: ".",
   packageJson: "lib/package.json",
   jsrJson: "lib/jsr.json",
