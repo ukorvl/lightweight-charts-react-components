@@ -58,6 +58,9 @@ Thumbs.db
 # playwright
 playwright-report/
 
+# agent worktrees (full repo checkouts that tools must not scan)
+.claude/worktrees/
+
 # skills
 .agents/skills/*
 skills-lock.json
