@@ -115,6 +115,15 @@ describe("release helpers", () => {
     expect(cutChangelog(changelog("\n"), "2.7.0", "2026-11-09")).toBeUndefined();
   });
 
+  it("merges late unreleased entries into an already cut section", () => {
+    const tail = "## [2.6.1] - 2026-10-31\n### Fixed\n- older\n";
+    const cut = `${CHANGELOG_HEADER}## [Unreleased]\n### Fixed\n- late fix\n- old fix\n### Added\n- new api\n\n## [2.7.0] - 2026-11-09\n### Fixed\n- old fix\n\n${tail}`;
+
+    expect(cutChangelog(cut, "2.7.0", "2026-11-10")).toBe(
+      `${CHANGELOG_HEADER}## [Unreleased]\n\n## [2.7.0] - 2026-11-09\n### Fixed\n- old fix\n- late fix\n### Added\n- new api\n\n${tail}`
+    );
+  });
+
   it("cuts a changelog whose unreleased section is the last one", () => {
     expect(cutChangelog("## [Unreleased]\n- a\n", "1.0.0", "2026-01-01")).toBe(
       "## [Unreleased]\n\n## [1.0.0] - 2026-01-01\n- a\n"
@@ -201,6 +210,29 @@ describe("release prepare", () => {
     expect(output).toContain("branch: release-v2.6.2 (renamed from 'feature')");
     expect(gitIn(repo, "log", "--format=%s", "-1")).toBe("feat: feature");
     expect(gitIn(repo, "branch", "--list", "feature")).toBe("");
+  });
+
+  it("blocks commit on late unreleased entries until prepare merges them", () => {
+    const { repo } = setupRepos();
+    runRelease(repo, ["prepare", "minor"]);
+    writeTextFile(
+      path.join(repo, "lib/CHANGELOG.md"),
+      readText(repo, "lib/CHANGELOG.md").replace(
+        "## [Unreleased]\n",
+        "## [Unreleased]\n### Fixed\n- late fix\n"
+      )
+    );
+
+    expect(() => runRelease(repo, ["commit"])).toThrow(
+      "entries under [Unreleased] that would miss v2.7.0"
+    );
+    expect(runRelease(repo, ["prepare", "minor"]).output).toContain(
+      "changelog: merged new [Unreleased] entries into [2.7.0]"
+    );
+    expect(readText(repo, "lib/CHANGELOG.md")).toContain(
+      "## [Unreleased]\n\n## [2.7.0] - 2026-11-09\n### Fixed\n- new fix\n- late fix\n"
+    );
+    expect(runRelease(repo, ["commit"]).output).toContain("chore: v2.7.0 (created)");
   });
 
   it("lists commits when the unreleased section is empty", () => {

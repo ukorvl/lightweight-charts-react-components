@@ -5,7 +5,8 @@
  * Usage: node scripts/release.mts <command> [--repo <path>]
  *   prepare <major|minor|patch> [--branch rename|new]
  *       Create or resume `release-vX.Y.Z`, bump every version file through `npm run version`,
- *       move `[Unreleased]` changelog entries under `[X.Y.Z] - <today>`, pin sandbox
+ *       move `[Unreleased]` changelog entries under `[X.Y.Z] - <today>` (on resume, merge
+ *       entries added since into that section), pin sandbox
  *       dependencies to the release major, and run the version sync check.
  *   check    Run the release validation suite, one line per check.
  *   commit   Stage release files and create (or amend) the single `chore: vX.Y.Z` commit.
@@ -170,25 +171,79 @@ export const readChangelogSection = (changelog: string, version: string) => {
   return changelog.slice(start, end === -1 ? undefined : end).trim();
 };
 
-/** Moves `[Unreleased]` entries under a new version heading; undefined when there are none. */
-export const cutChangelog = (changelog: string, version: string, date: string) => {
+/** Splits the changelog around the `[Unreleased]` entries. */
+export const splitUnreleased = (changelog: string) => {
   const heading = changelog.indexOf("## [Unreleased]");
 
   if (heading === -1) {
     throw new Error(`${CHANGELOG} has no "## [Unreleased]" section.`);
   }
 
-  const bodyStart = changelog.indexOf("\n", heading) + 1;
-  const next = bodyStart === 0 ? -1 : changelog.indexOf("\n## [", bodyStart - 1);
+  const bodyStart = changelog.indexOf("\n", heading) + 1 || changelog.length;
+  const next = changelog.indexOf("\n## [", bodyStart - 1);
   const bodyEnd = next === -1 ? changelog.length : next + 1;
-  const body = bodyStart === 0 ? "" : changelog.slice(bodyStart, bodyEnd).trim();
+
+  return {
+    head: changelog.slice(0, bodyStart),
+    body: changelog.slice(bodyStart, bodyEnd).trim(),
+    rest: changelog.slice(bodyEnd),
+  };
+};
+
+/** Groups non-empty lines by their `### ` heading; lines before any heading go under "". */
+const groupByHeading = (text: string) => {
+  const groups = new Map<string, string[]>();
+  let heading = "";
+
+  for (const line of text.split("\n")) {
+    if (line.startsWith("### ")) {
+      heading = line;
+    } else if (line.trim()) {
+      groups.set(heading, [...(groups.get(heading) ?? []), line]);
+      continue;
+    }
+    if (!groups.has(heading)) groups.set(heading, []);
+  }
+
+  return groups;
+};
+
+/** Adds entries to a version section, under matching `### ` headings, skipping duplicates. */
+const mergeIntoSection = (section: string, entries: string) => {
+  const [title, ...lines] = section.split("\n");
+  const groups = groupByHeading(lines.join("\n"));
+
+  for (const [heading, added] of groupByHeading(entries)) {
+    const existing = groups.get(heading) ?? [];
+    groups.set(heading, [...existing, ...added.filter(line => !existing.includes(line))]);
+  }
+
+  const body = [...groups]
+    .filter(([heading, entryLines]) => heading || entryLines.length)
+    .map(([heading, entryLines]) => [heading, ...entryLines].filter(Boolean).join("\n"));
+
+  return [title, ...body].join("\n");
+};
+
+/**
+ * Moves `[Unreleased]` entries under the version heading: into a new section, or into the
+ * existing one when it was cut before (entries added during release validation). Returns
+ * undefined when `[Unreleased]` is empty.
+ */
+export const cutChangelog = (changelog: string, version: string, date: string) => {
+  const { head, body, rest } = splitUnreleased(changelog);
 
   if (!body) {
     return undefined;
   }
 
-  const rest = changelog.slice(bodyEnd);
-  return `${changelog.slice(0, bodyStart)}\n## [${version}] - ${date}\n${body}\n${rest ? `\n${rest}` : ""}`;
+  const section = readChangelogSection(rest, version);
+
+  if (section) {
+    return `${head}\n${rest.replace(section, () => mergeIntoSection(section, body))}`;
+  }
+
+  return `${head}\n## [${version}] - ${date}\n${body}\n${rest ? `\n${rest}` : ""}`;
 };
 
 export const pinSandboxMajor = (packageJson: string, major: number) =>
@@ -394,39 +449,32 @@ const syncWithBase = (ctx: ReleaseContext, branch: string) => {
 
 const cutUnreleased = (ctx: ReleaseContext, base: string, version: string) => {
   const changelog = readChangelog(ctx);
+  const present = Boolean(readChangelogSection(changelog, version));
+  const next = cutChangelog(changelog, version, ctx.today);
 
-  if (readChangelogSection(changelog, version)) {
+  if (next) {
+    writeFileSync(path.join(ctx.repo, CHANGELOG), next);
+    return present
+      ? `merged new [Unreleased] entries into [${version}]`
+      : `added [${version}] - ${ctx.today}`;
+  }
+  if (present) {
     return `[${version}] already present`;
   }
 
-  const next = cutChangelog(changelog, version, ctx.today);
-
-  if (!next) {
-    const since = gitSucceeds(
-      ctx,
-      "rev-parse",
-      "--quiet",
-      "--verify",
-      `refs/tags/v${base}`
-    )
-      ? `v${base}`
-      : REMOTE_BASE;
-    const commits = git(
-      ctx,
-      "log",
-      "--no-merges",
-      "-n",
-      "50",
-      "--format=- %s (%h)",
-      `${since}..HEAD`
-    );
-    throw new Error(
-      `${CHANGELOG} has nothing under [Unreleased]. Write user-facing entries there (### Added / ### Changed / ### Fixed, like earlier releases), then rerun prepare. Commits since ${since}:\n${commits || "(none)"}`
-    );
-  }
-
-  writeFileSync(path.join(ctx.repo, CHANGELOG), next);
-  return `added [${version}] - ${ctx.today}`;
+  const since = localTagCommit(ctx, `v${base}`) ? `v${base}` : REMOTE_BASE;
+  const commits = git(
+    ctx,
+    "log",
+    "--no-merges",
+    "-n",
+    "50",
+    "--format=- %s (%h)",
+    `${since}..HEAD`
+  );
+  throw new Error(
+    `${CHANGELOG} has nothing under [Unreleased]. Write user-facing entries there (### Added / ### Changed / ### Fixed, like earlier releases), then rerun prepare. Commits since ${since}:\n${commits || "(none)"}`
+  );
 };
 
 const bumpFiles = (ctx: ReleaseContext, bump: Bump, base: string, version: string) => {
@@ -535,8 +583,15 @@ export const check = (ctx: ReleaseContext) => {
 export const commit = (ctx: ReleaseContext) => {
   const { version, message } = assertOnReleaseBranch(ctx);
 
-  if (!readChangelogSection(readChangelog(ctx), version)) {
+  const changelog = readChangelog(ctx);
+
+  if (!readChangelogSection(changelog, version)) {
     throw new Error(`${CHANGELOG} has no [${version}] section. Run prepare first.`);
+  }
+  if (splitUnreleased(changelog).body) {
+    throw new Error(
+      `${CHANGELOG} has entries under [Unreleased] that would miss v${version}. Rerun prepare to merge them into [${version}].`
+    );
   }
   ctx.checkVersions();
 
