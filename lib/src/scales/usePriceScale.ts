@@ -1,13 +1,20 @@
-import { useLayoutEffect, useRef } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
+import { useLatestRef } from "@/_shared/useLatestRef";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import { usePaneContext } from "@/pane/usePaneContext";
+import { SeriesContext } from "@/series/SeriesContext";
 import type { PriceScaleProps, PriceScaleApiRef } from "./types";
 
 export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
   const { isReady: chartIsReady, chartApiRef: chart } = useSafeContext(ChartContext);
-  const { isInsidePane, isPaneReady } = usePaneContext();
+  const { isInsidePane, isPaneReady, paneApiRef } = usePaneContext();
+  // Custom (overlay) price scales exist only after a series that uses them is added,
+  // so a PriceScale nested inside a series waits for that series.
+  const { seriesApiRef: series, isReady: seriesIsReady } = useContext(SeriesContext);
+  const isParentSeriesReady = series === null || seriesIsReady;
+  const optionsRef = useLatestRef(options);
 
   const priceScaleApiRef = useRef<PriceScaleApiRef>({
     _priceScale: null,
@@ -22,9 +29,9 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
           return null;
         }
 
-        this._priceScale = chartApi.priceScale(id);
+        this._priceScale = chartApi.priceScale(id, paneApiRef?.api()?.paneIndex());
 
-        this._priceScale.applyOptions(options);
+        this._priceScale.applyOptions(optionsRef.current);
       }
 
       return this._priceScale;
@@ -34,15 +41,16 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
         return;
       }
 
-      this._priceScale = chart.api()!.priceScale(idToSet);
-      this._priceScale.applyOptions(options);
+      this._priceScale = chart.api()!.priceScale(idToSet, paneApiRef?.api()?.paneIndex());
+      this._priceScale.applyOptions(optionsRef.current);
     },
     clear() {
       this._priceScale = null;
     },
   });
 
-  useLayoutEffect(() => {
+  // Passive, so a series that switches to this custom priceScaleId while mounting it applies the switch first
+  useEffect(() => {
     if (!chartIsReady) return;
 
     if (!isInsidePane) {
@@ -56,12 +64,12 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
       );
     }
 
-    if (!isPaneReady) {
+    if (!isPaneReady || !isParentSeriesReady) {
       return;
     }
 
     priceScaleApiRef.current.init();
-  }, [chartIsReady, isInsidePane, isPaneReady]);
+  }, [chartIsReady, isInsidePane, isPaneReady, isParentSeriesReady]);
 
   useLayoutEffect(() => {
     return () => {
@@ -69,19 +77,14 @@ export const usePriceScale = ({ options = {}, id }: PriceScaleProps) => {
     };
   }, []);
 
-  useLayoutEffect(() => {
+  // Passive, so it runs after a parent series applies a new custom priceScaleId. Rebinding on
+  // every update also picks up the current pane index, which shifts when a pane above is removed.
+  // shortcut: api() keeps the old pane index until the next id or options update, re-resolve it in api() if imperative callers need it.
+  useEffect(() => {
     if (!chart) return;
 
-    priceScaleApiRef.current?.setId(id);
-  }, [id]);
-
-  useLayoutEffect(() => {
-    if (!chart) return;
-
-    if (options) {
-      priceScaleApiRef.current?.api()?.applyOptions(options);
-    }
-  }, [options]);
+    priceScaleApiRef.current.setId(id);
+  }, [id, options]);
 
   return priceScaleApiRef;
 };

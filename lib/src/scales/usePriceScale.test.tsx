@@ -1,10 +1,14 @@
 import { renderHook } from "@testing-library/react";
+import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import type { PaneApiRef } from "@/pane";
 import { usePaneContext } from "@/pane/usePaneContext";
+import { SeriesContext } from "@/series/SeriesContext";
+import type { ISeriesContext } from "@/series/types";
 import { usePriceScale } from "./usePriceScale";
+import type { ReactNode } from "react";
 
 vi.mock("@/_shared/useSafeContext");
 vi.mock("@/pane/usePaneContext");
@@ -28,6 +32,21 @@ const mockPane = {
     paneIndex: () => 0,
   }),
 } as unknown as PaneApiRef<unknown>;
+
+const createPane = (paneIndex: number) =>
+  ({
+    api: () => ({
+      paneIndex: () => paneIndex,
+    }),
+  }) as unknown as PaneApiRef<unknown>;
+
+const createSeriesWrapper = (seriesContext: ISeriesContext<unknown>) => {
+  const SeriesWrapper = ({ children }: { children: ReactNode }) => (
+    <SeriesContext.Provider value={seriesContext}>{children}</SeriesContext.Provider>
+  );
+
+  return SeriesWrapper;
+};
 
 const captureHookError = (callback: () => void) => {
   try {
@@ -164,9 +183,9 @@ describe("usePriceScale", () => {
       id: "left",
     });
 
-    expect(mockPriceScaleFactory).toHaveBeenNthCalledWith(1, "right");
-    expect(mockPriceScaleFactory).toHaveBeenNthCalledWith(2, "right");
-    expect(mockPriceScaleFactory).toHaveBeenNthCalledWith(3, "left");
+    expect(mockPriceScaleFactory).toHaveBeenNthCalledWith(1, "right", 0);
+    expect(mockPriceScaleFactory).toHaveBeenNthCalledWith(2, "right", 0);
+    expect(mockPriceScaleFactory).toHaveBeenNthCalledWith(3, "left", 0);
     expect(result.current.current.api()).toBe(mockPriceScaleApi);
     expect(result.current.current.api()).toBe(initialApi);
     expect(mockApplyOptions).toHaveBeenLastCalledWith({
@@ -291,7 +310,7 @@ describe("usePriceScale", () => {
     rerender();
 
     expect(result.current.current.api()).toBeDefined();
-    expect(mockPriceScaleFactory).toHaveBeenCalledTimes(1);
+    expect(mockPriceScaleFactory).toHaveBeenCalledWith("right", 0);
   });
 
   it("initializes once the pane becomes ready", () => {
@@ -320,7 +339,120 @@ describe("usePriceScale", () => {
     rerender();
 
     expect(result.current.current.api()).toBeDefined();
-    expect(mockPriceScaleFactory).toHaveBeenCalledTimes(1);
+    expect(mockPriceScaleFactory).toHaveBeenCalledWith("right", 0);
+  });
+
+  it("resolves the priceScale in the pane it is rendered in", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: createPane(2),
+    });
+
+    const { rerender } = renderHook(props => usePriceScale({ id: props.id }), {
+      initialProps: { id: "right" },
+    });
+
+    expect(mockPriceScaleFactory).toHaveBeenCalledWith("right", 2);
+
+    rerender({ id: "overlay" });
+
+    expect(mockPriceScaleFactory).toHaveBeenLastCalledWith("overlay", 2);
+    expect(mockPriceScaleFactory).not.toHaveBeenCalledWith(expect.any(String), 0);
+  });
+
+  it("waits for the parent series before initializing", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const seriesContext: ISeriesContext<unknown> = {
+      seriesApiRef: {} as ISeriesContext<unknown>["seriesApiRef"],
+      isReady: false,
+    };
+
+    const { result, rerender } = renderHook(
+      () => usePriceScale({ id: "overlay", options: { autoScale: true } }),
+      { wrapper: createSeriesWrapper(seriesContext) }
+    );
+
+    expect(result.current.current.api()).toBeNull();
+    expect(mockPriceScaleFactory).not.toHaveBeenCalled();
+    expect(mockApplyOptions).not.toHaveBeenCalled();
+
+    seriesContext.isReady = true;
+    rerender();
+
+    expect(result.current.current.api()).toBe(mockPriceScaleApi);
+    expect(mockPriceScaleFactory).toHaveBeenCalledWith("overlay", 0);
+    expect(mockApplyOptions).toHaveBeenCalledWith({ autoScale: true });
+  });
+
+  it("applies the latest options when the id changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: mockPane,
+    });
+
+    const initialOptions = { autoScale: true };
+    const nextOptions = { autoScale: false };
+    const { rerender } = renderHook(props => usePriceScale(props), {
+      initialProps: { id: "right", options: initialOptions },
+    });
+
+    rerender({ id: "right", options: nextOptions });
+    rerender({ id: "left", options: nextOptions });
+
+    expect(mockPriceScaleFactory).toHaveBeenLastCalledWith("left", 0);
+    expect(mockApplyOptions).toHaveBeenLastCalledWith(nextOptions);
+  });
+
+  it("uses the current pane index when options change", () => {
+    let paneIndex = 1;
+    vi.mocked(useSafeContext).mockReturnValue({
+      isReady: true,
+      chartApiRef: mockChart,
+    });
+
+    vi.mocked(usePaneContext).mockReturnValue({
+      isPaneReady: true,
+      isInsidePane: true,
+      paneApiRef: {
+        api: () => ({ paneIndex: () => paneIndex }),
+      } as unknown as PaneApiRef<unknown>,
+    });
+
+    const { rerender } = renderHook(
+      props => usePriceScale({ id: "right", options: props }),
+      {
+        initialProps: { autoScale: true },
+      }
+    );
+
+    // A pane above was removed
+    paneIndex = 0;
+    rerender({ autoScale: false });
+
+    expect(mockPriceScaleFactory).toHaveBeenLastCalledWith("right", 0);
+    expect(mockApplyOptions).toHaveBeenLastCalledWith({ autoScale: false });
   });
 
   it("clears the priceScale ref on unmount", () => {

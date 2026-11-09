@@ -14,7 +14,7 @@ const PriceScaleRenderFunction = (
 };
 
 /**
- * PriceScale component that can be used to create/customize price scale in a chart.
+ * PriceScale component that can be used to customize a price scale of the pane it is rendered in.
  *
  * @param props - The properties for the price scale.
  * @param ref - The ref to access the price scale API.
@@ -24,6 +24,11 @@ const PriceScaleRenderFunction = (
  * @example
  * ```tsx
  * <PriceScale id="right" options={{}} />
+ *
+ * // Custom overlay price scale used by the parent series
+ * <HistogramSeries data={volume} options={{ priceScaleId: "volume" }}>
+ *   <PriceScale id="volume" options={{ scaleMargins: { top: 0.8, bottom: 0 } }} />
+ * </HistogramSeries>
  * ```
  */
 export const PriceScale: ForwardRefExoticComponent<

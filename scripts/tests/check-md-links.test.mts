@@ -8,6 +8,27 @@ describe("check-md-links", () => {
     expect(checker.isSkippableLink("vbscript:alert(1)")).toBe(true);
   });
 
+  it("reports the markdown line of each link", () => {
+    const checker = new LinkChecker();
+    const content = [
+      "# Title",
+      "",
+      "Intro with [first](https://example.com/first) link",
+      "continued with [second](./second.md) on the next line.",
+      "",
+      "- item",
+      "- item with [third](#title)",
+    ].join("\n");
+
+    expect(
+      checker.extractLinks(content, "README.md").map(({ href, line }) => ({ href, line }))
+    ).toEqual([
+      { href: "https://example.com/first", line: 3 },
+      { href: "./second.md", line: 4 },
+      { href: "#title", line: 7 },
+    ]);
+  });
+
   it("checks links to this repo's main branch against the checkout", async () => {
     const fetchImpl = vi.fn<typeof fetch>();
     const checker = new LinkChecker(undefined, fetchImpl);

@@ -55,21 +55,31 @@ export class LinkChecker {
     const links: Array<Link> = [];
     const tokens = md.parse(content, {});
 
-    const extractFromTokens = (tks: ReturnType<typeof md.parse>) => {
+    // Inline tokens (links included) have no `map`, so their line is counted from the
+    // parent block's first line plus the line breaks before them.
+    const extractFromTokens = (tks: ReturnType<typeof md.parse>, blockLine = 0) => {
+      let line = blockLine;
+
       for (const token of tks) {
+        if (token.map) {
+          line = token.map[0] + 1;
+        } else if (token.type === "softbreak" || token.type === "hardbreak") {
+          line += 1;
+        }
+
         if (token.type === "link_open") {
           const href = token.attrGet("href");
 
           if (href) {
             links.push({
               href,
-              line: token.map ? token.map[0] + 1 : 0,
+              line,
               file: filePath,
             });
           }
         }
         if (token.children) {
-          extractFromTokens(token.children);
+          extractFromTokens(token.children, line);
         }
       }
     };
