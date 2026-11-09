@@ -478,11 +478,31 @@ const cutUnreleased = (ctx: ReleaseContext, base: string, version: string) => {
   );
 };
 
+/** Rewrites only the top-level `version` field, keeping the file's formatting. */
+const setPackageVersion = (ctx: ReleaseContext, version: string) => {
+  const file = path.join(ctx.repo, "lib/package.json");
+  const next = readFileSync(file, "utf8").replace(
+    /^( {2}"version":\s*")[^"]*"/m,
+    `$1${version}"`
+  );
+
+  writeFileSync(file, next);
+};
+
 const bumpFiles = (ctx: ReleaseContext, bump: Bump, base: string, version: string) => {
   const current = workingVersion(ctx);
 
   if (current === version) {
-    return `already ${version}`;
+    try {
+      ctx.checkVersions();
+      return `already ${version}`;
+    } catch {
+      // `npm run version` writes lib/package.json first, so an interrupted run leaves the
+      // other version files behind. Re-run the whole bump from the base version.
+      setPackageVersion(ctx, base);
+      ctx.bumpVersionFiles(bump);
+      return `${base} -> ${version} re-applied (version files were out of sync)`;
+    }
   }
   if (current !== base) {
     throw new Error(

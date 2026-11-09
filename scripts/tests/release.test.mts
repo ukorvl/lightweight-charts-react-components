@@ -13,6 +13,7 @@ import {
   readChangelogSection,
 } from "../release.mts";
 import { createTempDir, writeJsonFile, writeTextFile } from "./test-helpers.mts";
+import type { ReleaseContext } from "../release.mts";
 
 const CHANGELOG_HEADER = "# Changelog\n\n";
 const SANDBOX = "examples/src/samples/Demo/sandbox/package.json";
@@ -34,6 +35,7 @@ const setupRepos = (unreleased = "### Fixed\n- new fix\n") => {
   gitIn(root, "init", "--quiet", "--bare", "-b", "main", remote);
   gitIn(root, "init", "--quiet", "-b", "main", repo);
   writeJsonFile(path.join(repo, "lib/package.json"), { version: "2.6.1" });
+  writeJsonFile(path.join(repo, "lib/jsr.json"), { version: "2.6.1" });
   writeTextFile(path.join(repo, "lib/CHANGELOG.md"), changelog(unreleased));
   writeJsonFile(path.join(repo, SANDBOX), {
     name: "lightweight-charts-react-components-demo",
@@ -51,10 +53,17 @@ const setupRepos = (unreleased = "### Fixed\n- new fix\n") => {
 
 const PR_URL = "https://example.test/pull/1";
 
+const readVersionOf = (repo: string, file: string) =>
+  (JSON.parse(readText(repo, file)) as { version: string }).version;
+
 const runRelease = (
   repo: string,
   argv: string[],
-  { published = false, openPr = "" } = {}
+  {
+    published = false,
+    openPr = "",
+    overrides = {},
+  }: { published?: boolean; openPr?: string; overrides?: Partial<ReleaseContext> } = {}
 ) => {
   const lines: string[] = [];
   const gh = vi.fn((args: string[], _input?: string) => {
@@ -75,6 +84,7 @@ const runRelease = (
       writeJsonFile(file, { ...pkg, version: bumpVersion(pkg.version, bump) });
     },
     gh,
+    ...overrides,
   });
 
   return { output: lines.join("\n"), gh };
@@ -241,6 +251,45 @@ describe("release prepare", () => {
       "## [Unreleased]\n\n## [2.7.0] - 2026-11-09\n### Fixed\n- new fix\n- late fix\n"
     );
     expect(runRelease(repo, ["commit"]).output).toContain("chore: v2.7.0 (created)");
+  });
+
+  it("re-applies a version bump that was interrupted after lib/package.json", () => {
+    const { repo } = setupRepos();
+    let runs = 0;
+    const overrides: Partial<ReleaseContext> = {
+      // Mimics `npm run version`: lib/package.json first, then the other version files.
+      bumpVersionFiles: bump => {
+        runs += 1;
+        const next = bumpVersion(readVersionOf(repo, "lib/package.json"), bump);
+        writeJsonFile(path.join(repo, "lib/package.json"), { version: next });
+        if (runs === 1) throw new Error("prettier: command not found");
+        writeJsonFile(path.join(repo, "lib/jsr.json"), { version: next });
+      },
+      checkVersions: () => {
+        if (
+          readVersionOf(repo, "lib/jsr.json") !== readVersionOf(repo, "lib/package.json")
+        ) {
+          throw new Error("lib/jsr.json does not match package.json version");
+        }
+      },
+    };
+
+    expect(() => runRelease(repo, ["prepare", "minor"], { overrides })).toThrow(
+      "prettier: command not found"
+    );
+    expect(readVersionOf(repo, "lib/package.json")).toBe("2.7.0");
+    expect(readVersionOf(repo, "lib/jsr.json")).toBe("2.6.1");
+
+    expect(runRelease(repo, ["prepare", "minor"], { overrides }).output).toContain(
+      "version files: 2.6.1 -> 2.7.0 re-applied"
+    );
+    expect(readVersionOf(repo, "lib/package.json")).toBe("2.7.0");
+    expect(readVersionOf(repo, "lib/jsr.json")).toBe("2.7.0");
+
+    expect(runRelease(repo, ["prepare", "minor"], { overrides }).output).toContain(
+      "version files: already 2.7.0"
+    );
+    expect(runs).toBe(2);
   });
 
   it("lists commits when the unreleased section is empty", () => {
