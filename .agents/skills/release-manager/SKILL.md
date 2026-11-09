@@ -16,7 +16,7 @@ Invoking the skill authorizes steps 1–6 (branch, files, commit, push, PR, tag 
 
 ## Steps
 
-1. `prepare <bump>`: creates `release-vX.Y.Z` from `origin/main` or resumes it, bumps version files via `npm run version` (`lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, `package-lock.json`, pinned links in `lib/README.md`), moves `[Unreleased]` into `## [X.Y.Z] - <today>`, pins sandbox deps to `^MAJOR`, and runs the version sync check.
+1. `prepare <bump>`: creates `release-vX.Y.Z` from `origin/main` or resumes it, bumps version files via `npm run version` (`lib/package.json`, `lib/jsr.json`, `lib/src/version.ts`, `package-lock.json`), moves `[Unreleased]` into `## [X.Y.Z] - <today>`, pins sandbox deps to `^MAJOR`, and runs the version sync check.
    - On any other branch it exits 2. `--branch rename` turns that branch into the release branch, so its commits ship in this release. `--branch new` branches from `origin/main` and leaves it alone.
    - Empty `[Unreleased]`: it prints the commits since the last tag. Write user-facing entries under `[Unreleased]` in the existing style (`### Added` / `### Changed` / `### Fixed`, short lowercase bullets, backticked API names), then rerun.
    - Branch behind `origin/main` with its own commits: ask the user whether to merge or rebase, do it, rerun.
@@ -25,7 +25,7 @@ Invoking the skill authorizes steps 1–6 (branch, files, commit, push, PR, tag 
    - Major: upgrade steps in `MIGRATION.md`, the supported versions table in `SECURITY.md`, and the library row of the compatibility table in `skills/lightweight-charts-react-components/SKILL.md`. The sync check fails until that range covers the new major; verify recipes with `npm run check:skill-recipes`.
    - Changed peer or engine ranges: the matching rows of that table.
    - Minor or patch: keep the skill's reference versions. They are the tested baseline, and only the ranges must cover the release.
-   - `lib/README.md`: prose only when install or usage changed; pinned links are already done.
+   - `lib/README.md`: only when install or usage changed. Badges and links carry no version.
 3. `check` (several minutes, run it in the background): versions, format, lint, typecheck, lib unit tests with the coverage gate, build, jsdoc and md links, knip, plus skill recipes when `skills/` changed. Fix failures and rerun. If `md links` fails only on external 5xx or timeouts, it is flaky: note it for the user and continue.
 4. `commit`: one commit with the exact message `chore: vX.Y.Z`. It refuses non-release files: commit those first as their own conventional commit, or stash them. It also refuses while `[Unreleased]` has entries, for example a fix added during validation; rerun `prepare`, which merges them into `[X.Y.Z]`. Rerunning after later edits amends the same commit.
 5. `pr`: pushes the branch and opens the PR `chore: vX.Y.Z` to `main` with the changelog section as body, or reuses the open one and refreshes its body from the current changelog. The `release*` branch name triggers the release-notes preview comment. After an amend it exits 2: confirm, then rerun with `--force` (force-with-lease).

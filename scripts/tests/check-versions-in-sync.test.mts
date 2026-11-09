@@ -1,10 +1,6 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { run } from "../check-versions-in-sync.mts";
-import {
-  README_VERSION_REFERENCES,
-  resolveReadmeVersionReference,
-} from "../readme-version-references.mts";
 import { createTempDir, writeJsonFile, writeTextFile } from "./test-helpers.mts";
 
 const createCheckerOptions = (repo: string) => ({
@@ -14,7 +10,6 @@ const createCheckerOptions = (repo: string) => ({
   versionFile: "lib/src/version.ts",
   packageLock: "package-lock.json",
   lockPackageKey: "lib",
-  readmeFiles: ["lib/README.md"],
   skillFile: "skills/demo/SKILL.md",
 });
 
@@ -51,10 +46,6 @@ const writeFixtureRepo = (repo: string, version = "2.6.0") => {
     path.join(repo, "lib/src/version.ts"),
     `export const version = "${version}";\n`
   );
-  writeTextFile(
-    path.join(repo, "lib/README.md"),
-    `${README_VERSION_REFERENCES.map(reference => resolveReadmeVersionReference(reference, version)).join("\n")}\n`
-  );
 };
 
 describe("check-versions-in-sync", () => {
@@ -66,7 +57,6 @@ describe("check-versions-in-sync", () => {
       "lib/jsr.json (2.6.0) matches package.json version (2.6.0).",
       "package-lock.json (2.6.0) matches package.json version (2.6.0).",
       "lib/src/version.ts (2.6.0) matches package.json version (2.6.0).",
-      "Version-pinned README references in lib/README.md match 2.6.0.",
       `Compatibility table in ${SKILL_FILE} matches package.json.`,
       "All release version files are in sync at v2.6.0.",
     ]);
