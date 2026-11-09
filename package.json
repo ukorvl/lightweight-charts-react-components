@@ -52,6 +52,7 @@
     "@testing-library/react": "^16.3.2",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.10.9",
+    "@vitest/eslint-plugin": "1.6.27",
     "baseline-browser-mapping": "^2.10.21",
     "bats": "^1.13.0",
     "chalk": "^5.5.0",
@@ -66,7 +67,6 @@
     "eslint-plugin-playwright": "^2.10.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-vitest": "^0.5.4",
     "glob": "^11.0.3",
     "globals": "^16.2.0",
     "jsdom": "^26.1.0",
@@ -130,13 +130,12 @@
       "scripts/tests/test-helpers.mts",
       "scripts/compare-benchmarks.mts",
       "scripts/check-versions-in-sync.mts",
-      "scripts/readme-version-references.mts",
-      "scripts/update-readme-version-references.mts",
       "scripts/check-md-links.mts",
       "examples/scripts/prelhci.ts",
       "scripts/check-jsdoc-links.mts",
       "scripts/check-skill-recipes.mts",
       "scripts/check-coverage-regression.mts",
+      "scripts/release.mts",
       "examples/stryker.config.json"
     ],
     "ignoreBinaries": [
@@ -152,5 +151,13 @@
     "@rspack/binding-darwin-arm64": "1.7.11",
     "@rspack/binding-darwin-x64": "1.6.4",
     "@rspack/binding-linux-x64-gnu": "1.7.12"
+  },
+  "allowScripts": {
+    "core-js": false,
+    "deno": false,
+    "esbuild": false,
+    "fsevents": false,
+    "simple-git-hooks": false,
+    "unrs-resolver": false
   }
 }
