@@ -1,4 +1,4 @@
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, type RenderResult } from "@testing-library/react";
 import React from "react";
 import { afterEach, bench, describe } from "vitest";
 import {
@@ -9,7 +9,8 @@ import {
   TimeScale,
   TimeScaleFitContentTrigger,
 } from "lightweight-charts-react-components";
-import { generateLineData } from "./utils";
+import { createLineDataFeed, generateLineData } from "./utils";
+import type { LineData } from "lightweight-charts";
 
 const lineData = generateLineData(500);
 const newLineData = generateLineData(500);
@@ -83,4 +84,48 @@ describe("Chart Rendering Performance", () => {
     );
     unmount();
   });
+});
+
+// Each iteration rerenders a mounted chart with new `data`, like a live feed does on every tick.
+describe("Reactive series data updates", () => {
+  for (const size of [10_000, 100_000]) {
+    let data: LineData<string>[] = [];
+    let nextPoint: () => LineData<string> = () => {
+      throw new Error("Benchmark setup did not run");
+    };
+    let view: RenderResult | null = null;
+
+    const renderSeries = () => (
+      <Chart>
+        <LineSeries data={data} />
+      </Chart>
+    );
+    const setup = () => {
+      ({ data, nextPoint } = createLineDataFeed(size));
+      view = render(renderSeries());
+    };
+    const teardown = () => {
+      view?.unmount();
+      view = null;
+    };
+
+    bench(
+      `append one point to ${size} points`,
+      () => {
+        data = [...data, nextPoint()];
+        view?.rerender(renderSeries());
+      },
+      { setup, teardown }
+    );
+
+    bench(
+      `replace the last point of ${size} points`,
+      () => {
+        const lastPoint = data[data.length - 1];
+        data = [...data.slice(0, -1), { ...lastPoint, value: lastPoint.value + 1 }];
+        view?.rerender(renderSeries());
+      },
+      { setup, teardown }
+    );
+  }
 });
