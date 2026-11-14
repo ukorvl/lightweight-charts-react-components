@@ -5,7 +5,6 @@ import {
   AreaSeries,
   BaselineSeries,
   BarSeries,
-  isBusinessDay,
   type BusinessDay,
   type IChartApiBase,
   type SeriesDataItemTypeMap,
@@ -13,6 +12,7 @@ import {
 } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
+import { useLatestRef } from "@/_shared/useLatestRef";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { IChartContext } from "@/chart/types";
@@ -45,6 +45,12 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
   >;
   const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext<HorzScaleItem>();
   const [isReady, setIsReady] = useState(false);
+  const dataRef = useLatestRef(data);
+  const reactiveRef = useLatestRef(reactive);
+  // The `data` prop the native series was last synced with. Reactive updates are diffed against
+  // it instead of `seriesApi.data()`, which copies every point into new objects on each call.
+  // `null` means the native data is unknown: no series yet, or `reactive` is off.
+  const syncedDataRef = useRef<readonly SeriesDataPoint<T, HorzScaleItem>[] | null>(null);
 
   const seriesApiRef = useRef<SeriesApiRef<T, HorzScaleItem>>({
     _series: null,
@@ -89,7 +95,9 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
           );
         }
 
-        this._series?.setData(data);
+        const initialData = dataRef.current;
+        this._series?.setData(initialData);
+        syncedDataRef.current = reactiveRef.current ? initialData : null;
         if (seriesOrder !== undefined) {
           this._series?.setSeriesOrder(seriesOrder);
         }
@@ -104,6 +112,7 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
           chart?.api()?.removeSeries(this._series);
         }
         this._series = null;
+        syncedDataRef.current = null;
         setIsReady(false);
       }
     },
@@ -126,27 +135,39 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
   }, []);
 
   useLayoutEffect(() => {
-    if (!chart) return;
-
-    if (data && reactive) {
-      const seriesApi = seriesApiRef.current.api();
-
-      if (!seriesApi) {
-        return;
-      }
-
-      const currentData = seriesApi.data();
-      const shouldReplaceData =
-        alwaysReplaceData || !canUseIncrementalUpdate(currentData, data);
-
-      if (shouldReplaceData) {
-        seriesApi.setData(data);
-        return;
-      }
-
-      const lastDataPoint = data[data.length - 1];
-      seriesApi.update(lastDataPoint);
+    if (!reactive) {
+      // The series may now be updated imperatively, so its native data is no longer known.
+      syncedDataRef.current = null;
+      return;
     }
+
+    const seriesApi = seriesApiRef.current.api();
+
+    if (!data || !seriesApi) {
+      return;
+    }
+
+    const syncedData = syncedDataRef.current;
+
+    if (syncedData === data) {
+      return;
+    }
+
+    syncedDataRef.current = data;
+
+    const shouldReplaceData =
+      alwaysReplaceData ||
+      syncedData === null ||
+      !canUseIncrementalUpdate(syncedData, data);
+
+    if (shouldReplaceData) {
+      seriesApi.setData(data);
+      return;
+    }
+
+    // update() writes into the point it receives (it stores the original time and converts string
+    // times), so it gets a copy: `data` belongs to React and can be frozen, for example by Immer.
+    seriesApi.update({ ...data[data.length - 1] });
   }, [data, reactive, alwaysReplaceData]);
 
   useLayoutEffect(() => {
@@ -195,22 +216,25 @@ const canUseIncrementalUpdate = <T extends SeriesType, HorzScaleItem = Time>(
     return false;
   }
 
+  const lastPointHasSameTime = hasSameTime(
+    currentData[currentData.length - 1].time,
+    nextData[nextData.length - 1].time
+  );
+
+  if (lastPointHasSameTime === null) {
+    return false;
+  }
+
   if (dataLengthDifference === 0) {
     return (
-      hasSameDataPointRefs(currentData, nextData, currentData.length - 1) &&
-      hasSameDataPointTime(
-        currentData[currentData.length - 1],
-        nextData[nextData.length - 1]
-      )
+      lastPointHasSameTime &&
+      hasSameDataPointRefs(currentData, nextData, currentData.length - 1)
     );
   }
 
   return (
-    hasSameDataPointRefs(currentData, nextData, currentData.length) &&
-    !hasSameDataPointTime(
-      currentData[currentData.length - 1],
-      nextData[nextData.length - 1]
-    )
+    !lastPointHasSameTime &&
+    hasSameDataPointRefs(currentData, nextData, currentData.length)
   );
 };
 
@@ -228,28 +252,53 @@ const hasSameDataPointRefs = <TData>(
   return true;
 };
 
-const hasSameDataPointTime = <TData extends { time: unknown }>(
-  currentDataPoint: TData,
-  nextDataPoint: TData
-) => {
-  const currentTime = currentDataPoint.time;
-  const nextTime = nextDataPoint.time;
+// Compares two data point times. Returns `null` when they cannot be compared, for example custom
+// horizontal scale items, so the caller falls back to `setData()`.
+const hasSameTime = (currentTime: unknown, nextTime: unknown): boolean | null => {
+  if (currentTime === nextTime) {
+    return true;
+  }
 
-  return (
-    currentTime === nextTime ||
-    (isBusinessDayTime(currentTime) &&
-      isBusinessDayTime(nextTime) &&
-      isSameBusinessDay(currentTime, nextTime))
-  );
+  const currentTimeKey = getTimeKey(currentTime);
+  const nextTimeKey = getTimeKey(nextTime);
+
+  if (currentTimeKey === null || nextTimeKey === null) {
+    return null;
+  }
+
+  return currentTimeKey === nextTimeKey;
 };
 
-const isBusinessDayTime = (time: unknown): time is BusinessDay =>
-  isBusinessDay(time as Time);
+const BUSINESS_DAY_STRING_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-const isSameBusinessDay = (
-  currentBusinessDay: BusinessDay,
-  nextBusinessDay: BusinessDay
-) =>
-  currentBusinessDay.year === nextBusinessDay.year &&
-  currentBusinessDay.month === nextBusinessDay.month &&
-  currentBusinessDay.day === nextBusinessDay.day;
+// A day can be given as a `yyyy-mm-dd` string or as a BusinessDay object, for example history as
+// BusinessDay objects and live points as strings, so both forms map to the same key.
+const getTimeKey = (time: unknown): number | string | null => {
+  if (typeof time === "number") {
+    return time;
+  }
+
+  if (typeof time === "string") {
+    const match = BUSINESS_DAY_STRING_PATTERN.exec(time);
+
+    return match
+      ? toBusinessDayKey(Number(match[1]), Number(match[2]), Number(match[3]))
+      : null;
+  }
+
+  if (isBusinessDay(time)) {
+    return toBusinessDayKey(time.year, time.month, time.day);
+  }
+
+  return null;
+};
+
+const toBusinessDayKey = (year: number, month: number, day: number) =>
+  `${year}-${month}-${day}`;
+
+const isBusinessDay = (time: unknown): time is BusinessDay =>
+  typeof time === "object" &&
+  time !== null &&
+  typeof (time as BusinessDay).year === "number" &&
+  typeof (time as BusinessDay).month === "number" &&
+  typeof (time as BusinessDay).day === "number";

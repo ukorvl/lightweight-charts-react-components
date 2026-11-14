@@ -34,11 +34,18 @@ type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {
    * In every other case, the wrapper calls `series.setData(data)` so the chart matches the new
    * array exactly. Which is slower but does not leave the stale data on the chart.
    *
+   * The wrapper compares the new array with the previous `data` prop, not with the chart's own
+   * copy of the data, so the check costs one reference comparison per item and does not allocate.
+   * Data points are never modified: `update()` receives a shallow copy of the last item, so frozen
+   * arrays (for example Immer or Redux Toolkit state) are fine.
+   *
    * Practical rule of thumb:
    * - if you want the fastest realtime updates, keep earlier items by reference and only replace or
    * append the last item
    * - if you replace history, refetch data, or build a fresh array from scratch, that is fine too;
    * the wrapper will fall back to `setData()` for correctness.
+   * - do not call `update()` or `setData()` through the series API ref while `reactive` is `true`:
+   * the wrapper does not see those calls and keeps diffing against the previous `data` prop.
    *
    * If you want to skip the optimization and always replace the full dataset, use
    * `alwaysReplaceData`.
@@ -48,7 +55,10 @@ type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {
    * Whether the series should react to `data` prop changes.
    *
    * Defaults to `true`. Set this to `false` if you want to manage data updates imperatively
-   * through the series API ref instead of syncing from React props.
+   * through the series API ref instead of syncing from React props, for example for
+   * high-frequency feeds where re-rendering React on every tick is too costly. `data` is still
+   * used to initialize the series. When `reactive` is switched back to `true`, the next `data`
+   * change replaces the whole dataset with `setData()`.
    */
   reactive?: boolean;
   options?: SeriesOptions<T>;

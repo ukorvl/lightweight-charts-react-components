@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- use `series.update()` again for reactive appends and last-bar replaces: the check compared `data` with `series.data()`, which returns new objects on every call, so every update fell back to a full `setData()`
+- pass a copy of the last data point to `series.update()` so reactive `data` is never modified and frozen arrays work
+- create a series with its latest `data` when it becomes ready after `data` changed, and stop calling `setData()` twice on mount
 
 ## [2.7.0] - 2026-11-09
 ### Fixed
