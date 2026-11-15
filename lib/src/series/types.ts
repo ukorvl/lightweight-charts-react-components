@@ -34,7 +34,8 @@ type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {
    *
    * Times are compared the way the chart compares them, so a `yyyy-mm-dd` string and a
    * `BusinessDay` for the same day are the same time, and custom horizontal scales use their own
-   * keys. The new last item must also be a plain object; class instances always use `setData()`.
+   * keys. The new last item must also be a plain object whose own fields are all enumerable; class
+   * instances and items with fields added through `Object.defineProperty` use `setData()`.
    *
    * In every other case, the wrapper calls `series.setData(data)` so the chart matches the new
    * array exactly. Which is slower but does not leave the stale data on the chart.

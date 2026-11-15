@@ -1115,6 +1115,33 @@ describe("useSeries", () => {
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 
+  it("uses setData() when the new last point has a non-enumerable field", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    // A spread would drop `value`, which is an own but non-enumerable field.
+    const existingData = [{ time: "2023-01-01", value: 100 }];
+    const appendedDataPoint = Object.defineProperty({ time: "2023-01-02" }, "value", {
+      value: 200,
+      enumerable: false,
+    });
+    const nextData = [...existingData, appendedDataPoint];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData as never });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
   it("passes a copy of the last point to update()", () => {
     vi.mocked(useSafeContext).mockReturnValue({
       chartApiRef: mockChart,

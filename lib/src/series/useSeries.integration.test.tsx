@@ -190,6 +190,23 @@ describe("Series reactive data with a real chart", () => {
     expect(series.nativeValues().at(-1)).toBe(42);
   });
 
+  it("plots an appended frozen point with a non-enumerable value", () => {
+    const data = [createPoint(0, 10), createPoint(1, 20)];
+    const series = renderSeries(data);
+    const appendedPoint = Object.freeze(
+      Object.defineProperty({ time: createPoint(2).time }, "value", {
+        value: 30,
+        enumerable: false,
+      })
+    ) as LineData<Time>;
+
+    series.rerender([...data, appendedPoint]);
+
+    expect(series.spies.setData).toHaveBeenCalledTimes(1);
+    expect(series.spies.update).not.toHaveBeenCalled();
+    expect(series.nativeValues()).toEqual([10, 20, 30]);
+  });
+
   it("picks up points changed in place when alwaysReplaceData is set", () => {
     const data = [createPoint(0, 10), createPoint(1, 20)];
     const series = renderSeries(data, true);

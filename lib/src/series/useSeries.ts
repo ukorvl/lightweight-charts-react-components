@@ -160,7 +160,7 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
       alwaysReplaceData ||
       syncedData === null ||
       !canUseIncrementalUpdate(syncedData, data, chartApi.horzBehaviour()) ||
-      !isPlainObject(data[data.length - 1]);
+      !canCopyWithSpread(data[data.length - 1]);
 
     if (shouldReplaceData) {
       seriesApi.setData(data);
@@ -250,7 +250,9 @@ const hasSameDataPointRefs = <TData>(
   return true;
 };
 
-// Only a plain object can be copied with a spread without losing what the chart reads from it:
-// a class instance can plot from getters on its prototype.
-const isPlainObject = (value: object) =>
-  Object.getPrototypeOf(value) === Object.prototype;
+// A spread copies only own enumerable properties, so it is safe only for a plain object without
+// non-enumerable own fields: a class instance can plot from getters on its prototype, and
+// `Object.defineProperty` can add a field the spread skips. Other points go through setData().
+const canCopyWithSpread = (value: object) =>
+  Object.getPrototypeOf(value) === Object.prototype &&
+  Object.getOwnPropertyNames(value).length === Object.keys(value).length;
