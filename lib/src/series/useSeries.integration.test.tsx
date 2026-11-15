@@ -2,7 +2,7 @@ import "vitest-canvas-mock";
 import { render } from "@testing-library/react";
 import { createRef } from "react";
 import React from "react";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Chart, OptionsChart } from "@/chart";
 import { LineSeries } from "./LineSeries";
 import type { SeriesApiRef } from "./types";
@@ -59,15 +59,6 @@ const spySeries = <HorzScaleItem,>(seriesApi: ISeriesApi<"Line", HorzScaleItem>)
 };
 
 describe("Series reactive data with a real chart", () => {
-  beforeAll(() => {
-    // jsdom has no matchMedia, which lightweight-charts uses to watch the device pixel ratio
-    window.matchMedia = vi.fn().mockReturnValue({
-      matches: false,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    });
-  });
-
   it("uses update() to append a point without reading native data", () => {
     const data = createData(1000);
     const series = renderSeries(data);

@@ -2,7 +2,7 @@ import "vitest-canvas-mock";
 import { render } from "@testing-library/react";
 import { createRef } from "react";
 import React from "react";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { Chart } from "@/chart";
 import type { ChartApiRef } from "@/chart/types";
 import { Pane } from "@/pane";
@@ -21,15 +21,6 @@ const chartOptions = { width: 400, height: 300 };
 const overlayOptions = { scaleMargins: { top: 0.8, bottom: 0 } };
 
 describe("PriceScale with a real chart", () => {
-  beforeAll(() => {
-    // jsdom has no matchMedia, which lightweight-charts uses to watch the device pixel ratio
-    window.matchMedia = vi.fn().mockReturnValue({
-      matches: false,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    });
-  });
-
   it("applies options to an overlay price scale declared inside its series", () => {
     const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
 
