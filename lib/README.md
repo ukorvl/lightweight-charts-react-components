@@ -141,6 +141,16 @@ Install the latest published version from npm:
 npm install lightweight-charts-react-components lightweight-charts
 ```
 
+The npm package supports `react` and `react-dom` versions `>=18.2 <20`.
+The [JSR package](https://jsr.io/@ukorvl/lightweight-charts-react-components) requires
+`react` and `react-dom` `^19.1.0` (19.1.0 or later within major version 19).
+
+For a Deno project using React 18, install the npm package:
+
+```bash
+deno add npm:lightweight-charts-react-components npm:lightweight-charts
+```
+
 ### Preview builds
 
 To test the latest unreleased version from `main`, install the preview build published via `pkg.pr.new`:
