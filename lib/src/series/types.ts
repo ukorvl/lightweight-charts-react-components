@@ -27,18 +27,33 @@ type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {
    * the last point.
    *
    * For performance, the wrapper will use `series.update()` only in the two safe cases below:
-   * - you append exactly one new last item and every earlier item is the same object as before
+   * - you append exactly one new last item with a later `time`, and every earlier item is the same
+   * object as before
    * - the array length stays the same, only the last item changes, and that last item has the same
    * `time` as before.
    *
+   * Times are compared the way the chart compares them, so a `yyyy-mm-dd` string and a
+   * `BusinessDay` for the same day are the same time, and custom horizontal scales use their own
+   * keys. The new last item must also be a plain object whose own fields are all enumerable; class
+   * instances and items with fields added through `Object.defineProperty` use `setData()`.
+   *
    * In every other case, the wrapper calls `series.setData(data)` so the chart matches the new
    * array exactly. Which is slower but does not leave the stale data on the chart.
+   *
+   * The wrapper compares the new array with the previous `data` prop, not with the chart's own
+   * copy of the data, so the check costs one reference comparison per item and does not allocate.
+   * Treat data items as immutable: an earlier item changed in place keeps its reference, so the
+   * change is not detected. Use `alwaysReplaceData` if your feed changes items in place.
+   * Data items are never modified: `update()` receives a shallow copy of the last item, so frozen
+   * arrays (for example Immer or Redux Toolkit state) are fine.
    *
    * Practical rule of thumb:
    * - if you want the fastest realtime updates, keep earlier items by reference and only replace or
    * append the last item
    * - if you replace history, refetch data, or build a fresh array from scratch, that is fine too;
    * the wrapper will fall back to `setData()` for correctness.
+   * - do not call `update()` or `setData()` through the series API ref while `reactive` is `true`:
+   * the wrapper does not see those calls and keeps diffing against the previous `data` prop.
    *
    * If you want to skip the optimization and always replace the full dataset, use
    * `alwaysReplaceData`.
@@ -48,13 +63,18 @@ type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {
    * Whether the series should react to `data` prop changes.
    *
    * Defaults to `true`. Set this to `false` if you want to manage data updates imperatively
-   * through the series API ref instead of syncing from React props.
+   * through the series API ref instead of syncing from React props, for example for
+   * high-frequency feeds where re-rendering React on every tick is too costly. `data` is still
+   * used to initialize the series. Switching `reactive` back to `true` immediately replaces the
+   * whole dataset with the current `data` through `setData()`, even if the array is unchanged, so
+   * points added imperatively in the meantime are dropped.
    */
   reactive?: boolean;
   options?: SeriesOptions<T>;
   seriesOrder?: ReturnType<ISeriesApi<T>["seriesOrder"]>;
   /**
    * If true, the series will replace its data on every reactive update by calling `setData(data)`.
+   * Use it when your feed changes data items in place, which the incremental check cannot detect.
    *
    * If false, the wrapper follows the incremental update rules documented on `data` and uses
    * `update()` only for a safe last-bar replace or a pure append.

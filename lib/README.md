@@ -122,6 +122,7 @@ Check out the [Demo](https://ukorvl.github.io/lightweight-charts-react-component
   - [Preview builds](#preview-builds)
   - [Standalone browser build](#standalone-browser-build)
 - [Usage](#usage)
+  - [Updating Series Data](#updating-series-data)
   - [Chart Container Sizing](#chart-container-sizing)
 - [Agent skill](#agent-skill)
 - [Examples](#examples)
@@ -308,6 +309,12 @@ export { App };
 ```
 
 Pane-wide overlays that belong to a whole pane rather than a single series can be mounted declaratively with `PanePrimitive` inside `Pane`. This works well for session bands, pane-scoped annotations, and background highlights that need access to both the chart and the target pane. See the `PanePrimitives` sample in the examples app for a full working example, and the upstream [pane primitives documentation](https://tradingview.github.io/lightweight-charts/docs/plugins/pane-primitives) for the underlying Lightweight Charts plugin contract.
+
+### Updating Series Data
+
+By default, series components are reactive: `data` is the complete dataset, and every new array is synced to the chart. To keep live updates cheap, the wrapper calls `series.update()` instead of `series.setData()` when the new array only appends one item with a later `time` or replaces the last item with one of the same `time`, and every earlier item keeps the same object reference. Anything else, such as a refetch, a historical correction, or an array rebuilt from new objects, replaces the whole dataset with `setData()`. Treat data items as immutable: an item changed in place keeps its reference, so the change is not detected. If your feed changes items in place, set `alwaysReplaceData`.
+
+For high-frequency feeds where re-rendering React on every tick is too costly, pass `reactive={false}`, which uses `data` only to initialize the series, and push ticks through the series API ref with `ref.current?.api()?.update(bar)`. Do not mix both approaches on the same series. See the agent skill's [live updates guide](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/skills/lightweight-charts-react-components/references/market-data-and-live-updates.md) for complete recipes.
 
 ### Chart Container Sizing
 

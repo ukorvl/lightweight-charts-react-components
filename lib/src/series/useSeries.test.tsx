@@ -1,4 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
+import { defaultHorzScaleBehavior } from "lightweight-charts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BaseInternalError } from "@/_shared/InternalError";
 import { useSafeContext } from "@/_shared/useSafeContext";
@@ -42,7 +43,8 @@ const mockUpdate = vi.fn((dataPoint: (typeof currentSeriesData)[number]) => {
 
   currentSeriesData = [...currentSeriesData.slice(0, -1), dataPoint];
 });
-const mockGetData = vi.fn(() => currentSeriesData);
+// Like lightweight-charts, data() copies every point into a new object on each call.
+const mockGetData = vi.fn(() => currentSeriesData.map(dataPoint => ({ ...dataPoint })));
 const mockAddSeries = vi.fn().mockReturnValue({
   update: mockUpdate,
   data: mockGetData,
@@ -58,12 +60,17 @@ const mockAddCustomSeries = vi.fn().mockReturnValue({
   setSeriesOrder: mockSetSeriesOrder,
 });
 
+// The real time scale behavior, so reactive updates compare times the way the chart does.
+const timeScaleBehavior = new (defaultHorzScaleBehavior())();
+const mockChartApi = {
+  addSeries: mockAddSeries,
+  removeSeries: mockRemoveSeries,
+  addCustomSeries: mockAddCustomSeries,
+  horzBehaviour: () => timeScaleBehavior,
+};
+
 const mockChart = {
-  api: () => ({
-    addSeries: mockAddSeries,
-    removeSeries: mockRemoveSeries,
-    addCustomSeries: mockAddCustomSeries,
-  }),
+  api: () => mockChartApi,
 };
 
 const captureHookError = (callback: () => void) => {
@@ -225,6 +232,17 @@ describe("useSeries", () => {
     const api = result.current.seriesApiRef.current.api();
     expect(api).toBeNull();
     expect(mockAddSeries).not.toHaveBeenCalled();
+  });
+
+  it("does not apply null options from JavaScript consumers", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    renderHook(() => useSeries({ type: "Line", data: [], options: null as never }));
+
+    expect(mockApplyOptions).not.toHaveBeenCalled();
   });
 
   it("should apply options to the series", () => {
@@ -933,6 +951,464 @@ describe("useSeries", () => {
       expect(mockUpdate).not.toHaveBeenCalled();
     }
   );
+
+  it("uses update() when a string time replaces a BusinessDay for the same day", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const sharedFirstDataPoint = { time: { year: 2023, month: 1, day: 1 }, value: 100 };
+    const existingData = [
+      sharedFirstDataPoint,
+      { time: { year: 2023, month: 1, day: 2 }, value: 200 },
+    ];
+    const updatedLastDataPoint = { time: "2023-01-02", value: 250 };
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: [sharedFirstDataPoint, updatedLastDataPoint] });
+
+    expect(mockUpdate).toHaveBeenCalledWith(updatedLastDataPoint);
+    expect(mockSetData).not.toHaveBeenCalled();
+  });
+
+  it("uses setData() when an appended string time matches the previous BusinessDay", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [{ time: { year: 2023, month: 1, day: 1 }, value: 100 }];
+    const nextData = [...existingData, { time: "2023-01-01", value: 150 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("uses setData() when an appended point is older than the last one", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [{ time: "2023-01-02", value: 100 }];
+    const nextData = [...existingData, { time: "2023-01-01", value: 150 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  describe("with a custom horizontal scale", () => {
+    // Items look like BusinessDay objects, but the scale keys them by slot.
+    type SlotTime = { year: number; month: number; day: number; slot: number };
+    const createSlotPoint = (slot: number, value = slot) => ({
+      time: { year: 2023, month: 1, day: 1, slot },
+      value,
+    });
+    const slotChart = {
+      api: () => ({
+        ...mockChartApi,
+        horzBehaviour: () => ({ key: (time: SlotTime) => time.slot }),
+      }),
+    };
+
+    type SlotPoint = ReturnType<typeof createSlotPoint>;
+
+    it.each([
+      [
+        "replaces the last slot with another slot",
+        ([first]: SlotPoint[]) => [first, createSlotPoint(300)],
+        "setData",
+      ],
+      [
+        "replaces the last slot with the same slot",
+        ([first]: SlotPoint[]) => [first, createSlotPoint(200, 250)],
+        "update",
+      ],
+      [
+        "appends a later slot",
+        (data: SlotPoint[]) => [...data, createSlotPoint(300)],
+        "update",
+      ],
+    ] as const)("%s", (_label, getNextData, expectedCall) => {
+      vi.mocked(useSafeContext).mockReturnValue({
+        chartApiRef: slotChart,
+        isReady: true,
+      });
+
+      const existingData = [createSlotPoint(100), createSlotPoint(200)];
+      const nextData = getNextData(existingData);
+
+      const { rerender } = renderHook(
+        (props: SeriesTemplateProps<"Line", SlotTime>) => useSeries(props),
+        { initialProps: { type: "Line", data: existingData } }
+      );
+
+      mockSetData.mockClear();
+
+      rerender({ type: "Line", data: nextData });
+
+      const usesUpdate = expectedCall === "update";
+
+      expect(mockUpdate.mock.calls).toEqual(
+        usesUpdate ? [[nextData[nextData.length - 1]]] : []
+      );
+      expect(mockSetData.mock.calls).toEqual(usesUpdate ? [] : [[nextData]]);
+    });
+  });
+
+  it("uses setData() when the new last point is not a plain object", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    // A spread would drop `value`, which this point plots from a prototype getter.
+    class PointWithGetter {
+      constructor(
+        public time: string,
+        private readonly rawValue: number
+      ) {}
+
+      get value() {
+        return this.rawValue;
+      }
+    }
+
+    const existingData = [new PointWithGetter("2023-01-01", 100)];
+    const nextData = [...existingData, new PointWithGetter("2023-01-02", 200)];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("uses setData() when the new last point has a non-enumerable field", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    // A spread would drop `value`, which is an own but non-enumerable field.
+    const existingData = [{ time: "2023-01-01", value: 100 }];
+    const appendedDataPoint = Object.defineProperty({ time: "2023-01-02" }, "value", {
+      value: 200,
+      enumerable: false,
+    });
+    const nextData = [...existingData, appendedDataPoint];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData as never });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("passes a copy of the last point to update()", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [{ time: "2023-01-01", value: 100 }];
+    const appendedDataPoint = { time: "2023-01-02", value: 200 };
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    rerender({ type: "Line", data: [...existingData, appendedDataPoint] });
+
+    expect(mockUpdate).toHaveBeenCalledWith(appendedDataPoint);
+    expect(mockUpdate.mock.calls[0][0]).not.toBe(appendedDataPoint);
+  });
+
+  it("skips reactive updates while the chart api is gone", () => {
+    const chartContext = {
+      chartApiRef: { api: vi.fn(mockChart.api) },
+      isReady: true,
+    };
+    vi.mocked(useSafeContext).mockImplementation(() => chartContext);
+
+    const existingData = [{ time: "2023-01-01", value: 100 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    chartContext.chartApiRef.api.mockReturnValue(null as never);
+    mockSetData.mockClear();
+
+    expect(() =>
+      rerender({
+        type: "Line",
+        data: [...existingData, { time: "2023-01-02", value: 200 }],
+      })
+    ).not.toThrow();
+    expect(mockSetData).not.toHaveBeenCalled();
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("does not read native series data on reactive updates", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [
+      { time: "2023-01-01", value: 100 },
+      { time: "2023-01-02", value: 200 },
+    ];
+    const appendedData = [...existingData, { time: "2023-01-03", value: 300 }];
+    const replacedData = [
+      { time: "2023-01-01", value: 150 },
+      { time: "2023-01-02", value: 250 },
+      { time: "2023-01-03", value: 350 },
+    ];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    rerender({ type: "Line", data: appendedData });
+    rerender({ type: "Line", data: replacedData });
+
+    expect(mockGetData).not.toHaveBeenCalled();
+  });
+
+  it("sets data once when the series is created", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const data = [{ time: "2023-01-01", value: 100 }];
+
+    renderHook(() => useSeries({ type: "Line", data }));
+
+    expect(mockSetData).toHaveBeenCalledTimes(1);
+    expect(mockSetData).toHaveBeenCalledWith(data);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("creates the series with the latest data when the chart becomes ready", () => {
+    const chartContext = {
+      chartApiRef: mockChart,
+      isReady: false,
+    };
+
+    vi.mocked(useSafeContext).mockImplementation(() => chartContext);
+
+    const initialData = [{ time: "2023-01-01", value: 100 }];
+    const latestData = [...initialData, { time: "2023-01-02", value: 200 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: initialData } }
+    );
+
+    rerender({ type: "Line", data: latestData });
+    chartContext.isReady = true;
+    rerender({ type: "Line", data: latestData });
+
+    expect(mockSetData).toHaveBeenCalledTimes(1);
+    expect(mockSetData).toHaveBeenCalledWith(latestData);
+  });
+
+  it("uses update() for consecutive appends", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const firstData = [{ time: "2023-01-01", value: 100 }];
+    const secondData = [...firstData, { time: "2023-01-02", value: 200 }];
+    const thirdData = [...secondData, { time: "2023-01-03", value: 300 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: firstData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: secondData });
+    rerender({ type: "Line", data: thirdData });
+
+    expect(mockUpdate).toHaveBeenNthCalledWith(1, secondData[1]);
+    expect(mockUpdate).toHaveBeenNthCalledWith(2, thirdData[2]);
+    expect(mockSetData).not.toHaveBeenCalled();
+  });
+
+  it("uses setData() when a middle item changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const firstDataPoint = { time: "2023-01-01", value: 100 };
+    const lastDataPoint = { time: "2023-01-03", value: 300 };
+    const existingData = [
+      firstDataPoint,
+      { time: "2023-01-02", value: 200 },
+      lastDataPoint,
+    ];
+    const nextData = [firstDataPoint, { time: "2023-01-02", value: 250 }, lastDataPoint];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("uses setData() for an append when alwaysReplaceData is set", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [{ time: "2023-01-01", value: 100 }];
+    const nextData = [...existingData, { time: "2023-01-02", value: 200 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData, alwaysReplaceData: true } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData, alwaysReplaceData: true });
+
+    expect(mockSetData).toHaveBeenCalledWith(nextData);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("does not resync unchanged data when alwaysReplaceData changes", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const data = [{ time: "2023-01-01", value: 100 }];
+
+    const { rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data } }
+    );
+
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data, alwaysReplaceData: true });
+
+    expect(mockSetData).not.toHaveBeenCalled();
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["reactive", true],
+    ["non-reactive", false],
+  ] as const)(
+    "replaces data after reactive is turned back on in a %s mount",
+    (_label, initialReactive) => {
+      vi.mocked(useSafeContext).mockReturnValue({
+        chartApiRef: mockChart,
+        isReady: true,
+      });
+
+      const existingData = [{ time: "2023-01-01", value: 100 }];
+      const nextData = [...existingData, { time: "2023-01-02", value: 200 }];
+
+      const { rerender } = renderHook(
+        (props: SeriesTemplateProps<"Line">) => useSeries(props),
+        { initialProps: { type: "Line", data: existingData, reactive: initialReactive } }
+      );
+
+      rerender({ type: "Line", data: existingData, reactive: false });
+      mockSetData.mockClear();
+      mockUpdate.mockClear();
+
+      rerender({ type: "Line", data: nextData, reactive: true });
+
+      expect(mockSetData).toHaveBeenCalledWith(nextData);
+      expect(mockUpdate).not.toHaveBeenCalled();
+    }
+  );
+
+  it("diffs against the data a recreated series was initialized with", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      chartApiRef: mockChart,
+      isReady: true,
+    });
+
+    const existingData = [{ time: "2023-01-01", value: 100 }];
+    const nextData = [...existingData, { time: "2023-01-02", value: 200 }];
+
+    const { result, rerender } = renderHook(
+      (props: SeriesTemplateProps<"Line">) => useSeries(props),
+      { initialProps: { type: "Line", data: existingData } }
+    );
+
+    act(() => {
+      result.current.seriesApiRef.current.clear();
+    });
+    act(() => {
+      result.current.seriesApiRef.current.init();
+    });
+    mockSetData.mockClear();
+
+    rerender({ type: "Line", data: nextData });
+
+    expect(mockUpdate).toHaveBeenCalledWith(nextData[1]);
+    expect(mockSetData).not.toHaveBeenCalled();
+  });
 
   it("does not touch the chart when no series was created", () => {
     vi.mocked(useSafeContext).mockReturnValue({

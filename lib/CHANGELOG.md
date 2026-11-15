@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- reactive series updates detect changes by reference again, so a data item changed in place is no longer picked up; treat `data` items as immutable or set `alwaysReplaceData`
+
+### Fixed
+- use `series.update()` again for reactive appends and last-bar replaces: the check compared `data` with `series.data()`, which returns new objects on every call, so every update fell back to a full `setData()`
+- compare reactive data times with the chart's horizontal scale key, so custom horizontal scales and mixed string and `BusinessDay` times are handled like the chart handles them
+- pass a copy of the last data point to `series.update()` so reactive `data` is never modified and frozen arrays work; points that a spread cannot copy, such as class instances or objects with non-enumerable fields, use `setData()`
+- create a series with its latest `data` when it becomes ready after `data` changed, and stop calling `setData()` twice on mount
 
 ## [2.7.0] - 2026-11-09
 ### Fixed

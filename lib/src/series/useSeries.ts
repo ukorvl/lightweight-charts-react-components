@@ -5,14 +5,14 @@ import {
   AreaSeries,
   BaselineSeries,
   BarSeries,
-  isBusinessDay,
-  type BusinessDay,
   type IChartApiBase,
+  type IHorzScaleBehavior,
   type SeriesDataItemTypeMap,
   type Time,
 } from "lightweight-charts";
 import { useLayoutEffect, useRef, useState } from "react";
 import { BaseInternalError } from "@/_shared/InternalError";
+import { useLatestRef } from "@/_shared/useLatestRef";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { ChartContext } from "@/chart/ChartContext";
 import type { IChartContext } from "@/chart/types";
@@ -45,6 +45,12 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
   >;
   const { isPaneReady, isInsidePane, paneApiRef } = usePaneContext<HorzScaleItem>();
   const [isReady, setIsReady] = useState(false);
+  const dataRef = useLatestRef(data);
+  const reactiveRef = useLatestRef(reactive);
+  // The `data` prop the native series was last synced with. Reactive updates are diffed against
+  // it instead of `seriesApi.data()`, which copies every point into new objects on each call.
+  // `null` means the native data is unknown: no series yet, or `reactive` is off.
+  const syncedDataRef = useRef<readonly SeriesDataPoint<T, HorzScaleItem>[] | null>(null);
 
   const seriesApiRef = useRef<SeriesApiRef<T, HorzScaleItem>>({
     _series: null,
@@ -89,7 +95,9 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
           );
         }
 
-        this._series?.setData(data);
+        const initialData = dataRef.current;
+        this._series?.setData(initialData);
+        syncedDataRef.current = reactiveRef.current ? initialData : null;
         if (seriesOrder !== undefined) {
           this._series?.setSeriesOrder(seriesOrder);
         }
@@ -104,6 +112,7 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
           chart?.api()?.removeSeries(this._series);
         }
         this._series = null;
+        syncedDataRef.current = null;
         setIsReady(false);
       }
     },
@@ -126,27 +135,41 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
   }, []);
 
   useLayoutEffect(() => {
-    if (!chart) return;
-
-    if (data && reactive) {
-      const seriesApi = seriesApiRef.current.api();
-
-      if (!seriesApi) {
-        return;
-      }
-
-      const currentData = seriesApi.data();
-      const shouldReplaceData =
-        alwaysReplaceData || !canUseIncrementalUpdate(currentData, data);
-
-      if (shouldReplaceData) {
-        seriesApi.setData(data);
-        return;
-      }
-
-      const lastDataPoint = data[data.length - 1];
-      seriesApi.update(lastDataPoint);
+    if (!reactive) {
+      // The series may now be updated imperatively, so its native data is no longer known.
+      syncedDataRef.current = null;
+      return;
     }
+
+    const seriesApi = seriesApiRef.current.api();
+    const chartApi = chart?.api();
+
+    if (!data || !seriesApi || !chartApi) {
+      return;
+    }
+
+    const syncedData = syncedDataRef.current;
+
+    if (syncedData === data) {
+      return;
+    }
+
+    syncedDataRef.current = data;
+
+    const shouldReplaceData =
+      alwaysReplaceData ||
+      syncedData === null ||
+      !canUseIncrementalUpdate(syncedData, data, chartApi.horzBehaviour()) ||
+      !canCopyWithSpread(data[data.length - 1]);
+
+    if (shouldReplaceData) {
+      seriesApi.setData(data);
+      return;
+    }
+
+    // update() writes into the point it receives (it stores the original time and converts string
+    // times), so it gets a copy: `data` belongs to React and can be frozen, for example by Immer.
+    seriesApi.update({ ...data[data.length - 1] });
   }, [data, reactive, alwaysReplaceData]);
 
   useLayoutEffect(() => {
@@ -182,35 +205,34 @@ const seriesMap: Record<
 
 const canUseIncrementalUpdate = <T extends SeriesType, HorzScaleItem = Time>(
   currentData: readonly SeriesDataPoint<T, HorzScaleItem>[],
-  nextData: readonly SeriesDataPoint<T, HorzScaleItem>[]
+  nextData: readonly SeriesDataPoint<T, HorzScaleItem>[],
+  horzBehavior: IHorzScaleBehavior<HorzScaleItem>
 ) => {
   const dataLengthDifference = nextData.length - currentData.length;
 
   if (
     currentData.length === 0 ||
-    nextData.length === 0 ||
-    dataLengthDifference < 0 ||
-    dataLengthDifference > 1
+    (dataLengthDifference !== 0 && dataLengthDifference !== 1)
   ) {
     return false;
   }
 
+  // Times are compared with the chart's horizontal scale key, the same way the chart matches
+  // points: a `yyyy-mm-dd` string and a BusinessDay for the same day are equal, and custom
+  // horizontal scale items follow their own behavior.
+  const currentLastKey = horzBehavior.key(currentData[currentData.length - 1].time);
+  const nextLastKey = horzBehavior.key(nextData[nextData.length - 1].time);
+
   if (dataLengthDifference === 0) {
     return (
-      hasSameDataPointRefs(currentData, nextData, currentData.length - 1) &&
-      hasSameDataPointTime(
-        currentData[currentData.length - 1],
-        nextData[nextData.length - 1]
-      )
+      currentLastKey === nextLastKey &&
+      hasSameDataPointRefs(currentData, nextData, currentData.length - 1)
     );
   }
 
   return (
-    hasSameDataPointRefs(currentData, nextData, currentData.length) &&
-    !hasSameDataPointTime(
-      currentData[currentData.length - 1],
-      nextData[nextData.length - 1]
-    )
+    nextLastKey > currentLastKey &&
+    hasSameDataPointRefs(currentData, nextData, currentData.length)
   );
 };
 
@@ -228,28 +250,9 @@ const hasSameDataPointRefs = <TData>(
   return true;
 };
 
-const hasSameDataPointTime = <TData extends { time: unknown }>(
-  currentDataPoint: TData,
-  nextDataPoint: TData
-) => {
-  const currentTime = currentDataPoint.time;
-  const nextTime = nextDataPoint.time;
-
-  return (
-    currentTime === nextTime ||
-    (isBusinessDayTime(currentTime) &&
-      isBusinessDayTime(nextTime) &&
-      isSameBusinessDay(currentTime, nextTime))
-  );
-};
-
-const isBusinessDayTime = (time: unknown): time is BusinessDay =>
-  isBusinessDay(time as Time);
-
-const isSameBusinessDay = (
-  currentBusinessDay: BusinessDay,
-  nextBusinessDay: BusinessDay
-) =>
-  currentBusinessDay.year === nextBusinessDay.year &&
-  currentBusinessDay.month === nextBusinessDay.month &&
-  currentBusinessDay.day === nextBusinessDay.day;
+// A spread copies only own enumerable properties, so it is safe only for a plain object without
+// non-enumerable own fields: a class instance can plot from getters on its prototype, and
+// `Object.defineProperty` can add a field the spread skips. Other points go through setData().
+const canCopyWithSpread = (value: object) =>
+  Object.getPrototypeOf(value) === Object.prototype &&
+  Object.getOwnPropertyNames(value).length === Object.keys(value).length;
