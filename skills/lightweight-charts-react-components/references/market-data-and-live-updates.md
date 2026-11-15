@@ -14,14 +14,17 @@ keeps zooming out while the user reads history.
 | Frequent ticks; chart does not need to render React per tick | `reactive={false}`, then `ref.current.api()?.update(bar)` | The chart owns ongoing updates; React owns its lifetime |
 
 Reactive `data` always means the **entire desired dataset**. Passing `[latestBar]`
-replaces history. The wrapper attempts `update()` only for a one-item append or a
-same-time last-item replacement when all earlier item references match the
-upstream API's current data. Other changes use `setData()`. Preserving references
+replaces history. The wrapper attempts `update()` only for a one-item append with a
+later time or a same-time last-item replacement when all earlier item references
+match the previous `data` prop. Other changes use `setData()`. Preserving references
 allows the optimization; do not promise it for every upstream data representation.
+Items changed in place keep their references and are not detected, so treat items as
+immutable or set `alwaysReplaceData` for a feed that mutates them.
 
 `reactive={false}` still calls `setData(data)` during initialization. It ignores
-subsequent data prop changes. Do not combine imperative ticks with a reactive
-snapshot that can overwrite them.
+subsequent data prop changes. Switching it back to `true` immediately replaces the
+series with the current `data`, dropping imperative ticks. Do not combine imperative
+ticks with a reactive snapshot that can overwrite them.
 
 ## Normalize the feed at the boundary
 

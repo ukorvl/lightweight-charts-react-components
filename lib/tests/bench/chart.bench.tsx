@@ -87,6 +87,17 @@ describe("Chart Rendering Performance", () => {
 });
 
 // Each iteration rerenders a mounted chart with new `data`, like a live feed does on every tick.
+// `setup` runs once per warmup and once per measured run, not per iteration, so every append grows
+// the history. A fixed iteration count keeps that growth identical for every implementation:
+// each measured run starts at `size` points and ends at `size + ITERATIONS` points.
+const ITERATIONS = 100;
+const fixedIterations = {
+  time: 0,
+  iterations: ITERATIONS,
+  warmupTime: 0,
+  warmupIterations: 5,
+};
+
 describe("Reactive series data updates", () => {
   for (const size of [10_000, 100_000]) {
     let data: LineData<string>[] = [];
@@ -115,7 +126,7 @@ describe("Reactive series data updates", () => {
         data = [...data, nextPoint()];
         view?.rerender(renderSeries());
       },
-      { setup, teardown }
+      { ...fixedIterations, setup, teardown }
     );
 
     bench(
@@ -125,7 +136,7 @@ describe("Reactive series data updates", () => {
         data = [...data.slice(0, -1), { ...lastPoint, value: lastPoint.value + 1 }];
         view?.rerender(renderSeries());
       },
-      { setup, teardown }
+      { ...fixedIterations, setup, teardown }
     );
   }
 });

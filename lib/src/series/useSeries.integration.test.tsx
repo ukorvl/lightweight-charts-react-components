@@ -3,10 +3,10 @@ import { render } from "@testing-library/react";
 import { createRef } from "react";
 import React from "react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import { Chart } from "@/chart";
+import { Chart, OptionsChart } from "@/chart";
 import { LineSeries } from "./LineSeries";
 import type { SeriesApiRef } from "./types";
-import type { LineData, Time, UTCTimestamp } from "lightweight-charts";
+import type { ISeriesApi, LineData, Time, UTCTimestamp } from "lightweight-charts";
 
 // Renders a real lightweight-charts instance: unlike the mocked unit tests, its `data()` returns
 // new objects on every call, so reactive diffing must not depend on native data references.
@@ -30,7 +30,14 @@ const renderSeries = (data: LineData<Time>[], alwaysReplaceData?: boolean) => {
     </Chart>
   );
   const { rerender } = render(renderChart(data));
-  const seriesApi = seriesRef.current!.api()!;
+
+  return {
+    ...spySeries(seriesRef.current!.api()!),
+    rerender: (nextData: LineData<Time>[]) => rerender(renderChart(nextData)),
+  };
+};
+
+const spySeries = <HorzScaleItem,>(seriesApi: ISeriesApi<"Line", HorzScaleItem>) => {
   const spies = {
     update: vi.spyOn(seriesApi, "update"),
     setData: vi.spyOn(seriesApi, "setData"),
@@ -39,11 +46,12 @@ const renderSeries = (data: LineData<Time>[], alwaysReplaceData?: boolean) => {
 
   return {
     spies,
-    rerender: (nextData: LineData<Time>[]) => rerender(renderChart(nextData)),
     // Reads the native data without counting as a call made by the wrapper.
     nativeValues: () => {
       spies.data.mockClear();
-      const values = seriesApi.data().map(point => (point as LineData<Time>).value);
+      const values = seriesApi
+        .data()
+        .map(point => (point as LineData<HorzScaleItem>).value);
       spies.data.mockClear();
       return values;
     },
@@ -157,6 +165,62 @@ describe("Series reactive data with a real chart", () => {
     expect(series.spies.setData).not.toHaveBeenCalled();
     expect(Object.keys(appendedPoint)).toEqual(["time", "value"]);
     expect(series.nativeValues().slice(-2)).toEqual([42, 43]);
+  });
+
+  it("plots an appended point that reads its value from a prototype getter", () => {
+    class PointWithGetter {
+      constructor(
+        public time: Time,
+        private readonly rawValue: number
+      ) {}
+
+      get value() {
+        return this.rawValue;
+      }
+    }
+
+    const data = createData(10);
+    const series = renderSeries(data);
+    const appendedPoint = new PointWithGetter(createPoint(10).time, 42);
+
+    series.rerender([...data, appendedPoint]);
+
+    expect(series.spies.setData).toHaveBeenCalledTimes(1);
+    expect(series.spies.update).not.toHaveBeenCalled();
+    expect(series.nativeValues().at(-1)).toBe(42);
+  });
+
+  it("picks up points changed in place when alwaysReplaceData is set", () => {
+    const data = [createPoint(0, 10), createPoint(1, 20)];
+    const series = renderSeries(data, true);
+
+    data[0].value = 11;
+    series.rerender([...data, createPoint(2, 30)]);
+
+    expect(series.nativeValues()).toEqual([11, 20, 30]);
+  });
+
+  it("uses update() on a price-based horizontal scale", () => {
+    const seriesRef = createRef<SeriesApiRef<"Line", number>>();
+    const data = [
+      { time: 95, value: 1.2 },
+      { time: 100, value: 2.8 },
+    ];
+    const renderOptionsChart = (nextData: LineData<number>[]) => (
+      <OptionsChart options={chartOptions}>
+        <LineSeries ref={seriesRef} data={nextData} />
+      </OptionsChart>
+    );
+    const { rerender } = render(renderOptionsChart(data));
+    const series = spySeries(seriesRef.current!.api()!);
+    const replacedData = [data[0], { time: 100, value: 3.1 }];
+
+    rerender(renderOptionsChart(replacedData));
+    rerender(renderOptionsChart([...replacedData, { time: 105, value: 4.2 }]));
+
+    expect(series.spies.update).toHaveBeenCalledTimes(2);
+    expect(series.spies.setData).not.toHaveBeenCalled();
+    expect(series.nativeValues()).toEqual([1.2, 3.1, 4.2]);
   });
 
   it("uses setData() to append a point when alwaysReplaceData is set", () => {

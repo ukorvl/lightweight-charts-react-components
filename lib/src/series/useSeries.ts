@@ -5,8 +5,8 @@ import {
   AreaSeries,
   BaselineSeries,
   BarSeries,
-  type BusinessDay,
   type IChartApiBase,
+  type IHorzScaleBehavior,
   type SeriesDataItemTypeMap,
   type Time,
 } from "lightweight-charts";
@@ -142,8 +142,9 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
     }
 
     const seriesApi = seriesApiRef.current.api();
+    const chartApi = chart?.api();
 
-    if (!data || !seriesApi) {
+    if (!data || !seriesApi || !chartApi) {
       return;
     }
 
@@ -158,7 +159,8 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
     const shouldReplaceData =
       alwaysReplaceData ||
       syncedData === null ||
-      !canUseIncrementalUpdate(syncedData, data);
+      !canUseIncrementalUpdate(syncedData, data, chartApi.horzBehaviour()) ||
+      !isPlainObject(data[data.length - 1]);
 
     if (shouldReplaceData) {
       seriesApi.setData(data);
@@ -203,37 +205,33 @@ const seriesMap: Record<
 
 const canUseIncrementalUpdate = <T extends SeriesType, HorzScaleItem = Time>(
   currentData: readonly SeriesDataPoint<T, HorzScaleItem>[],
-  nextData: readonly SeriesDataPoint<T, HorzScaleItem>[]
+  nextData: readonly SeriesDataPoint<T, HorzScaleItem>[],
+  horzBehavior: IHorzScaleBehavior<HorzScaleItem>
 ) => {
   const dataLengthDifference = nextData.length - currentData.length;
 
   if (
     currentData.length === 0 ||
-    nextData.length === 0 ||
-    dataLengthDifference < 0 ||
-    dataLengthDifference > 1
+    (dataLengthDifference !== 0 && dataLengthDifference !== 1)
   ) {
     return false;
   }
 
-  const lastPointHasSameTime = hasSameTime(
-    currentData[currentData.length - 1].time,
-    nextData[nextData.length - 1].time
-  );
-
-  if (lastPointHasSameTime === null) {
-    return false;
-  }
+  // Times are compared with the chart's horizontal scale key, the same way the chart matches
+  // points: a `yyyy-mm-dd` string and a BusinessDay for the same day are equal, and custom
+  // horizontal scale items follow their own behavior.
+  const currentLastKey = horzBehavior.key(currentData[currentData.length - 1].time);
+  const nextLastKey = horzBehavior.key(nextData[nextData.length - 1].time);
 
   if (dataLengthDifference === 0) {
     return (
-      lastPointHasSameTime &&
+      currentLastKey === nextLastKey &&
       hasSameDataPointRefs(currentData, nextData, currentData.length - 1)
     );
   }
 
   return (
-    !lastPointHasSameTime &&
+    nextLastKey > currentLastKey &&
     hasSameDataPointRefs(currentData, nextData, currentData.length)
   );
 };
@@ -252,53 +250,7 @@ const hasSameDataPointRefs = <TData>(
   return true;
 };
 
-// Compares two data point times. Returns `null` when they cannot be compared, for example custom
-// horizontal scale items, so the caller falls back to `setData()`.
-const hasSameTime = (currentTime: unknown, nextTime: unknown): boolean | null => {
-  if (currentTime === nextTime) {
-    return true;
-  }
-
-  const currentTimeKey = getTimeKey(currentTime);
-  const nextTimeKey = getTimeKey(nextTime);
-
-  if (currentTimeKey === null || nextTimeKey === null) {
-    return null;
-  }
-
-  return currentTimeKey === nextTimeKey;
-};
-
-const BUSINESS_DAY_STRING_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-
-// A day can be given as a `yyyy-mm-dd` string or as a BusinessDay object, for example history as
-// BusinessDay objects and live points as strings, so both forms map to the same key.
-const getTimeKey = (time: unknown): number | string | null => {
-  if (typeof time === "number") {
-    return time;
-  }
-
-  if (typeof time === "string") {
-    const match = BUSINESS_DAY_STRING_PATTERN.exec(time);
-
-    return match
-      ? toBusinessDayKey(Number(match[1]), Number(match[2]), Number(match[3]))
-      : null;
-  }
-
-  if (isBusinessDay(time)) {
-    return toBusinessDayKey(time.year, time.month, time.day);
-  }
-
-  return null;
-};
-
-const toBusinessDayKey = (year: number, month: number, day: number) =>
-  `${year}-${month}-${day}`;
-
-const isBusinessDay = (time: unknown): time is BusinessDay =>
-  typeof time === "object" &&
-  time !== null &&
-  typeof (time as BusinessDay).year === "number" &&
-  typeof (time as BusinessDay).month === "number" &&
-  typeof (time as BusinessDay).day === "number";
+// Only a plain object can be copied with a spread without losing what the chart reads from it:
+// a class instance can plot from getters on its prototype.
+const isPlainObject = (value: object) =>
+  Object.getPrototypeOf(value) === Object.prototype;
