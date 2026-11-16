@@ -128,6 +128,36 @@ describe("ChartWrapper", () => {
     expect(ref).toHaveBeenCalledTimes(1);
   });
 
+  it("keeps the chart and refs attached after StrictMode replays the ref", () => {
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+    const containerRef = createRef<HTMLDivElement>();
+    const callbackRef = vi.fn((node: HTMLDivElement | null) => node);
+    const containerProps = { className: "chart", ref: callbackRef };
+
+    const { unmount } = render(
+      <React.StrictMode>
+        <ChartWrapper
+          ref={chartRef}
+          containerProps={containerProps}
+          containerRef={containerRef}
+        />
+      </React.StrictMode>
+    );
+
+    const node = containerRef.current;
+    expect(node).toBeInstanceOf(HTMLDivElement);
+    expect(callbackRef.mock.calls).toEqual([[node], [null], [node]]);
+    expect(chartRef.current?.api()).toBe(mockChart);
+    expect(createChart).toHaveBeenCalledTimes(2);
+    expect(mockChart.remove).toHaveBeenCalledTimes(1);
+
+    unmount();
+
+    expect(callbackRef).toHaveBeenLastCalledWith(null);
+    expect(containerRef.current).toBeNull();
+    expect(mockChart.remove).toHaveBeenCalledTimes(2);
+  });
+
   it("renders children when container is set", () => {
     const { getByText } = render(
       <ChartWrapper>
@@ -193,9 +223,10 @@ describe("ChartWrapper", () => {
   it("updates function container refs when the ChartWrapper ref prop changes", () => {
     const firstContainerRef = vi.fn();
     const secondContainerRef = vi.fn();
+    const containerProps = { className: "chart" };
 
     const { rerender } = render(
-      <ChartWrapper containerRef={firstContainerRef}>
+      <ChartWrapper containerProps={containerProps} containerRef={firstContainerRef}>
         <div>Child</div>
       </ChartWrapper>
     );
@@ -204,13 +235,14 @@ describe("ChartWrapper", () => {
     expect(node).toBeInstanceOf(HTMLDivElement);
 
     rerender(
-      <ChartWrapper containerRef={secondContainerRef}>
+      <ChartWrapper containerProps={containerProps} containerRef={secondContainerRef}>
         <div>Child</div>
       </ChartWrapper>
     );
 
     expect(firstContainerRef).toHaveBeenLastCalledWith(null);
     expect(secondContainerRef).toHaveBeenCalledWith(node);
+    expect(createChart).toHaveBeenCalledTimes(1);
   });
 
   it("handles containerProps correctly", () => {
