@@ -53,6 +53,7 @@ export type GenericChartProps<
   containerProps?: Omit<JSX.IntrinsicElements["div"], "ref">;
   /**
    * Ref for the container element rendered by the chart wrapper component.
+   * The element is available in a parent layout effect on mount.
    */
   containerRef?: Ref<HTMLDivElement>;
   /**
