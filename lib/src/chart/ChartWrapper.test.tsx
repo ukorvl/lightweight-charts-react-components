@@ -93,6 +93,23 @@ describe("ChartWrapper", () => {
     }
   );
 
+  it("mounts with the dedicated ref when containerProps contains a string ref", () => {
+    const containerProps = { className: "chart", ref: "legacy" };
+    const containerRef = createRef<HTMLDivElement>();
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+
+    render(
+      <ChartWrapper
+        ref={chartRef}
+        containerProps={containerProps}
+        containerRef={containerRef}
+      />
+    );
+
+    expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(chartRef.current?.api()).toBe(mockChart);
+  });
+
   it("runs callback ref cleanup once when the same ref is passed in both props", () => {
     const cleanup = vi.fn();
     const ref = vi.fn<React.RefCallback<HTMLDivElement>>(() => cleanup);
