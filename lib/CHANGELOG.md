@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- initialize all chart types when a ref is passed through `containerProps` at runtime. Use `containerRef` in TypeScript
+
 ## [2.8.0] - 2026-11-16
 ### Changed
 - reactive series updates detect changes by object reference again. Use immutable `data` items or enable `alwaysReplaceData` for in-place edits

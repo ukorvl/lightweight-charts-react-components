@@ -11,12 +11,12 @@ import {
 } from "lightweight-charts";
 import { createRef } from "react";
 import React from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
 import { ChartWrapper } from "./ChartWrapper";
 import { CustomChart } from "./CustomChart";
 import { OptionsChart } from "./OptionsChart";
 import { YieldCurveChart } from "./YieldCurveChart";
-import type { ChartApiRef } from "./types";
+import type { ChartApiRef, ChartProps } from "./types";
 
 vi.mock("lightweight-charts", () => ({
   createChart: vi.fn(),
@@ -46,6 +46,69 @@ describe("ChartWrapper", () => {
     vi.mocked(createOptionsChart).mockReturnValue(mockOptionsChart);
     vi.mocked(createYieldCurveChart).mockReturnValue(mockYieldCurveChart);
     vi.mocked(createChartEx).mockReturnValue(mockCustomChart);
+  });
+
+  const customScaleBehavior = {} as never;
+
+  it.each([
+    { name: "ChartWrapper", Chart: ChartWrapper, create: createChart },
+    { name: "OptionsChart", Chart: OptionsChart, create: createOptionsChart },
+    { name: "YieldCurveChart", Chart: YieldCurveChart, create: createYieldCurveChart },
+    {
+      name: "CustomChart",
+      Chart: (props: Pick<ChartProps, "containerProps" | "containerRef">) => (
+        <CustomChart {...props} horzScaleBehavior={customScaleBehavior} />
+      ),
+      create: createChartEx,
+    },
+  ])(
+    "mounts $name and forwards refs passed through containerProps",
+    ({ Chart, create }) => {
+      const containerRef = createRef<HTMLDivElement>();
+      const objectRef = createRef<HTMLDivElement>();
+      const callbackRef = vi.fn();
+      const firstProps = { className: "chart", ref: objectRef };
+      const secondProps = { className: "chart", ref: callbackRef };
+
+      const { rerender, unmount } = render(
+        <Chart containerProps={firstProps} containerRef={containerRef} />
+      );
+      const node = containerRef.current;
+
+      expect(node).toBeInstanceOf(HTMLDivElement);
+      expect(objectRef.current).toBe(node);
+      expect(vi.mocked(create).mock.calls[0]?.[0]).toBe(node);
+
+      rerender(<Chart containerProps={secondProps} containerRef={containerRef} />);
+
+      expect(objectRef.current).toBeNull();
+      expect(callbackRef).toHaveBeenCalledExactlyOnceWith(node);
+      expect(containerRef.current).toBe(node);
+      expect(create).toHaveBeenCalledTimes(1);
+
+      unmount();
+
+      expect(callbackRef).toHaveBeenLastCalledWith(null);
+      expect(containerRef.current).toBeNull();
+    }
+  );
+
+  it("runs callback ref cleanup once when the same ref is passed in both props", () => {
+    const cleanup = vi.fn();
+    const ref = vi.fn<React.RefCallback<HTMLDivElement>>(() => cleanup);
+    const containerProps = { className: "chart", ref };
+
+    const { rerender } = render(
+      <ChartWrapper containerProps={containerProps} containerRef={ref} />
+    );
+
+    expect(ref).toHaveBeenCalledExactlyOnceWith(expect.any(HTMLDivElement));
+    expect(cleanup).not.toHaveBeenCalled();
+
+    rerender(<ChartWrapper />);
+
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    expect(ref).toHaveBeenCalledTimes(1);
   });
 
   it("renders children when container is set", () => {
@@ -134,6 +197,8 @@ describe("ChartWrapper", () => {
   });
 
   it("handles containerProps correctly", () => {
+    expectTypeOf<NonNullable<ChartProps["containerProps"]>>().not.toHaveProperty("ref");
+
     const { getByRole } = render(
       <ChartWrapper containerProps={{ role: "main" }}>
         <div>Child</div>

@@ -4,10 +4,10 @@ import {
   type IChartApiBase,
   type IHorzScaleBehavior,
 } from "lightweight-charts";
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef, useCallback } from "react";
 import React from "react";
-import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
+import { ChartContainer } from "./ChartContainer";
 import type { ChartApiRef, CustomChartProps } from "./types";
 import type { ForwardedRef, JSX, RefAttributes } from "react";
 
@@ -34,15 +34,6 @@ const CustomChartRenderFunction = <
   }: CustomChartProps<HorzScaleItem, THorzScaleBehavior>,
   ref: ForwardedRef<ChartApiRef<HorzScaleItem, IChartApiBase<HorzScaleItem>>>
 ): JSX.Element => {
-  const [container, setContainer] = useState<HTMLDivElement>();
-  const handleContainerRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      setContainer(node ?? undefined);
-      assignRef(containerRef, node);
-    },
-    [containerRef]
-  );
-
   const createCustomChart = useCallback(
     (
       chartContainer: HTMLElement,
@@ -58,12 +49,8 @@ const CustomChartRenderFunction = <
   );
 
   return (
-    <div
-      ref={handleContainerRef}
-      aria-hidden={containerProps?.["aria-hidden"] ?? true}
-      {...containerProps}
-    >
-      {!!container && (
+    <ChartContainer containerProps={containerProps} containerRef={containerRef}>
+      {container => (
         <ChartComponent<
           HorzScaleItem,
           IChartApiBase<HorzScaleItem>,
@@ -78,7 +65,7 @@ const CustomChartRenderFunction = <
           {children}
         </ChartComponent>
       )}
-    </div>
+    </ChartContainer>
   );
 };
 

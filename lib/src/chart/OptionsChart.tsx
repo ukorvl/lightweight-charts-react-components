@@ -3,10 +3,10 @@ import {
   type IChartApiBase,
   type PriceChartOptions,
 } from "lightweight-charts";
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef } from "react";
 import React from "react";
-import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
+import { ChartContainer } from "./ChartContainer";
 import type { ChartApiRef, OptionsChartProps } from "./types";
 import type {
   ForwardRefExoticComponent,
@@ -18,22 +18,9 @@ const OptionsChartRenderFunction: ForwardRefRenderFunction<
   ChartApiRef<number, IChartApiBase<number>>,
   OptionsChartProps
 > = ({ children, containerProps, containerRef, ...rest }, ref) => {
-  const [container, setContainer] = useState<HTMLDivElement>();
-  const handleContainerRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      setContainer(node ?? undefined);
-      assignRef(containerRef, node);
-    },
-    [containerRef]
-  );
-
   return (
-    <div
-      ref={handleContainerRef}
-      aria-hidden={containerProps?.["aria-hidden"] ?? true}
-      {...containerProps}
-    >
-      {!!container && (
+    <ChartContainer containerProps={containerProps} containerRef={containerRef}>
+      {container => (
         <ChartComponent<number, IChartApiBase<number>, PriceChartOptions>
           ref={ref}
           container={container}
@@ -44,7 +31,7 @@ const OptionsChartRenderFunction: ForwardRefRenderFunction<
           {children}
         </ChartComponent>
       )}
-    </div>
+    </ChartContainer>
   );
 };
 
