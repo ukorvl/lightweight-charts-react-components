@@ -1,11 +1,40 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import React from "react";
 import { assignRef } from "@/_shared/assignRef";
 import type { GenericChartProps } from "./types";
-import type { JSX, ReactNode } from "react";
+import type { JSX, ReactNode, Ref } from "react";
 
 type ChartContainerProps = Pick<GenericChartProps, "containerProps" | "containerRef"> & {
   children: (container: HTMLDivElement) => ReactNode;
+};
+
+/**
+ * Attaches a ref to the container node for as long as both stay the same.
+ * Each ref gets its own effect, so replacing one ref never detaches another,
+ * and a throwing cleanup cannot keep other refs attached.
+ *
+ * @param ref - The ref to attach.
+ * @param node - The container node, or null before it mounts.
+ * @example
+ * ```ts
+ * useAttachedRef(containerRef, container);
+ * ```
+ */
+const useAttachedRef = (
+  ref: Ref<HTMLDivElement> | undefined,
+  node: HTMLDivElement | null
+): void => {
+  useLayoutEffect(() => {
+    if (!ref || !node) return;
+
+    const cleanup = assignRef(ref, node);
+
+    return typeof cleanup === "function"
+      ? cleanup
+      : () => {
+          assignRef(ref, null);
+        };
+  }, [ref, node]);
 };
 
 /**
@@ -31,32 +60,12 @@ export const ChartContainer = ({
   const { ref: legacyRef, ...divProps } = (containerProps ??
     {}) as JSX.IntrinsicElements["div"];
 
-  const handleContainerRef = useMemo(() => {
-    let cleanups: (() => void)[] = [];
-
-    // A void return keeps the DOM ref compatible with React 18.
-    return (node: HTMLDivElement | null) => {
-      setContainer(node);
-
-      if (node === null) {
-        cleanups.forEach(cleanup => cleanup());
-        cleanups = [];
-        return;
-      }
-
-      new Set([containerRef, legacyRef]).forEach(ref => {
-        if (!ref) return;
-
-        const cleanup = assignRef(ref, node);
-        cleanups.push(
-          typeof cleanup === "function" ? cleanup : () => assignRef(ref, null)
-        );
-      });
-    };
-  }, [containerRef, legacyRef]);
+  useAttachedRef(containerRef, container);
+  // The same ref passed through both props is attached only once.
+  useAttachedRef(legacyRef === containerRef ? undefined : legacyRef, container);
 
   return (
-    <div aria-hidden={true} {...divProps} ref={handleContainerRef}>
+    <div aria-hidden={true} {...divProps} ref={setContainer}>
       {container && children(container)}
     </div>
   );
