@@ -50,6 +50,10 @@ describe("ChartWrapper", () => {
 
   const customScaleBehavior = {} as never;
 
+  // Runtime JS callers can still pass `ref` through containerProps.
+  const withRef = (ref: unknown) =>
+    ({ ref }) as NonNullable<ChartProps["containerProps"]>;
+
   it.each([
     { name: "ChartWrapper", Chart: ChartWrapper, create: createChart },
     { name: "OptionsChart", Chart: OptionsChart, create: createOptionsChart },
@@ -128,6 +132,70 @@ describe("ChartWrapper", () => {
     expect(ref).toHaveBeenCalledTimes(1);
   });
 
+  it("keeps a stable ref attached when only the other ref changes", () => {
+    const stableCleanup = vi.fn();
+    const stableRef = vi.fn<React.RefCallback<HTMLDivElement>>(() => stableCleanup);
+    const firstRef = vi.fn();
+    const secondRef = vi.fn();
+
+    const { rerender } = render(
+      <ChartWrapper containerProps={withRef(firstRef)} containerRef={stableRef} />
+    );
+    const node = stableRef.mock.calls[0]?.[0];
+
+    rerender(
+      <ChartWrapper containerProps={withRef(secondRef)} containerRef={stableRef} />
+    );
+
+    expect(stableRef).toHaveBeenCalledExactlyOnceWith(node);
+    expect(stableCleanup).not.toHaveBeenCalled();
+    expect(firstRef).toHaveBeenLastCalledWith(null);
+    expect(secondRef).toHaveBeenCalledExactlyOnceWith(node);
+
+    rerender(
+      <ChartWrapper containerProps={withRef(secondRef)} containerRef={undefined} />
+    );
+
+    expect(stableCleanup).toHaveBeenCalledTimes(1);
+    expect(secondRef).toHaveBeenCalledTimes(1);
+    expect(createChart).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not loop when a stable ref stores layout in parent state", () => {
+    const Parent = () => {
+      const [, setWidth] = React.useState(0);
+      const stableRef = React.useCallback((node: HTMLDivElement | null) => {
+        setWidth(Math.random());
+        void node;
+      }, []);
+
+      return (
+        <ChartWrapper
+          containerProps={withRef((node: HTMLDivElement | null) => void node)}
+          containerRef={stableRef}
+        />
+      );
+    };
+
+    expect(() => render(<Parent />)).not.toThrow();
+    expect(createChart).toHaveBeenCalledTimes(1);
+  });
+
+  it("clears the other ref when a callback ref cleanup throws", () => {
+    const error = new Error("cleanup failed");
+    const throwingRef = vi.fn<React.RefCallback<HTMLDivElement>>(() => () => {
+      throw error;
+    });
+    const objectRef = createRef<HTMLDivElement>();
+    const { unmount } = render(
+      <ChartWrapper containerProps={withRef(objectRef)} containerRef={throwingRef} />
+    );
+
+    expect(objectRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(() => unmount()).toThrow(error);
+    expect(objectRef.current).toBeNull();
+  });
+
   it("keeps the chart and refs attached after StrictMode replays the ref", () => {
     const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
     const containerRef = createRef<HTMLDivElement>();
@@ -146,7 +214,7 @@ describe("ChartWrapper", () => {
 
     const node = containerRef.current;
     expect(node).toBeInstanceOf(HTMLDivElement);
-    expect(callbackRef.mock.calls).toEqual([[node], [null], [node]]);
+    expect(callbackRef.mock.calls).toEqual([[node]]);
     expect(chartRef.current?.api()).toBe(mockChart);
     expect(createChart).toHaveBeenCalledTimes(2);
     expect(mockChart.remove).toHaveBeenCalledTimes(1);
