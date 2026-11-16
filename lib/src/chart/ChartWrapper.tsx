@@ -1,8 +1,8 @@
 import { createChart, type IChartApi, type Time } from "lightweight-charts";
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef } from "react";
 import React from "react";
-import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
+import { ChartContainer } from "./ChartContainer";
 import type { ChartApiRef, ChartProps } from "./types";
 import type {
   ForwardRefExoticComponent,
@@ -14,22 +14,9 @@ const ChartRenderFunction: ForwardRefRenderFunction<
   ChartApiRef<Time, IChartApi>,
   ChartProps
 > = ({ children, containerProps, containerRef, ...rest }, ref) => {
-  const [container, setContainer] = useState<HTMLDivElement>();
-  const handleContainerRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      setContainer(node ?? undefined);
-      assignRef(containerRef, node);
-    },
-    [containerRef]
-  );
-
   return (
-    <div
-      ref={handleContainerRef}
-      aria-hidden={containerProps?.["aria-hidden"] ?? true}
-      {...containerProps}
-    >
-      {!!container && (
+    <ChartContainer containerProps={containerProps} containerRef={containerRef}>
+      {container => (
         <ChartComponent
           ref={ref}
           container={container}
@@ -40,7 +27,7 @@ const ChartRenderFunction: ForwardRefRenderFunction<
           {children}
         </ChartComponent>
       )}
-    </div>
+    </ChartContainer>
   );
 };
 
