@@ -1,8 +1,8 @@
-import { useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import React from "react";
 import { assignRef } from "@/_shared/assignRef";
 import type { GenericChartProps } from "./types";
-import type { JSX, ReactNode, Ref } from "react";
+import type { JSX, ReactNode, Ref, RefObject } from "react";
 
 type ChartContainerProps = Pick<GenericChartProps, "containerProps" | "containerRef"> & {
   children: (container: HTMLDivElement) => ReactNode;
@@ -14,17 +14,20 @@ type ChartContainerProps = Pick<GenericChartProps, "containerProps" | "container
  * and a throwing cleanup cannot keep other refs attached.
  *
  * @param ref - The ref to attach.
- * @param node - The container node, or null before it mounts.
+ * @param nodeRef - The container node assigned during DOM attachment.
+ * @param containerKey - The React key that determines when the div is replaced.
  * @example
  * ```ts
- * useAttachedRef(containerRef, container);
+ * useAttachedRef(containerRef, nodeRef, containerKey);
  * ```
  */
 const useAttachedRef = (
   ref: Ref<HTMLDivElement> | undefined,
-  node: HTMLDivElement | null
+  nodeRef: RefObject<HTMLDivElement | null>,
+  containerKey: string | undefined
 ): void => {
   useLayoutEffect(() => {
+    const node = nodeRef.current;
     if (!ref || !node) return;
 
     const cleanup = assignRef(ref, node);
@@ -34,7 +37,7 @@ const useAttachedRef = (
       : () => {
           assignRef(ref, null);
         };
-  }, [ref, node]);
+  }, [ref, nodeRef, containerKey]);
 };
 
 /**
@@ -57,15 +60,30 @@ export const ChartContainer = ({
   containerRef,
 }: ChartContainerProps) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const { ref: legacyRef, ...divProps } = (containerProps ??
-    {}) as JSX.IntrinsicElements["div"];
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const {
+    key,
+    ref: legacyRef,
+    ...divProps
+  } = (containerProps ?? {}) as JSX.IntrinsicElements["div"];
+  const containerKey = key === undefined ? undefined : String(key);
 
-  useAttachedRef(containerRef, container);
+  const attachContainer = useCallback((node: HTMLDivElement | null) => {
+    nodeRef.current = node;
+    setContainer(node);
+  }, []);
+
+  // Read the node in this commit so parent layout effects can use the refs.
+  useAttachedRef(containerRef, nodeRef, containerKey);
   // The same ref passed through both props is attached only once.
-  useAttachedRef(legacyRef === containerRef ? undefined : legacyRef, container);
+  useAttachedRef(
+    legacyRef === containerRef ? undefined : legacyRef,
+    nodeRef,
+    containerKey
+  );
 
   return (
-    <div aria-hidden={true} {...divProps} ref={setContainer}>
+    <div key={containerKey} aria-hidden={true} {...divProps} ref={attachContainer}>
       {container && children(container)}
     </div>
   );

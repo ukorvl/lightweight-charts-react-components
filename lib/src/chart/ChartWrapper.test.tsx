@@ -132,6 +132,36 @@ describe("ChartWrapper", () => {
     expect(ref).toHaveBeenCalledTimes(1);
   });
 
+  it("forwards container refs before parent layout effects run", () => {
+    const containerRef = createRef<HTMLDivElement>();
+    const legacyRef = createRef<HTMLDivElement>();
+    const readRefs = vi.fn();
+
+    const Parent = ({ containerKey }: { containerKey: string }) => {
+      React.useLayoutEffect(() => {
+        readRefs(containerRef.current, legacyRef.current);
+      }, [containerKey]);
+
+      return (
+        <ChartWrapper
+          containerProps={{ ...withRef(legacyRef), key: containerKey }}
+          containerRef={containerRef}
+        />
+      );
+    };
+
+    const { rerender } = render(<Parent containerKey="first" />);
+    const firstNode = containerRef.current;
+    expect(firstNode).toBeInstanceOf(HTMLDivElement);
+    expect(readRefs).toHaveBeenCalledExactlyOnceWith(firstNode, firstNode);
+
+    rerender(<Parent containerKey="second" />);
+    const secondNode = containerRef.current;
+    expect(secondNode).toBeInstanceOf(HTMLDivElement);
+    expect(secondNode).not.toBe(firstNode);
+    expect(readRefs).toHaveBeenLastCalledWith(secondNode, secondNode);
+  });
+
   it("keeps a stable ref attached when only the other ref changes", () => {
     const stableCleanup = vi.fn();
     const stableRef = vi.fn<React.RefCallback<HTMLDivElement>>(() => stableCleanup);
@@ -214,7 +244,7 @@ describe("ChartWrapper", () => {
 
     const node = containerRef.current;
     expect(node).toBeInstanceOf(HTMLDivElement);
-    expect(callbackRef.mock.calls).toEqual([[node]]);
+    expect(callbackRef.mock.calls).toEqual([[node], [null], [node]]);
     expect(chartRef.current?.api()).toBe(mockChart);
     expect(createChart).toHaveBeenCalledTimes(2);
     expect(mockChart.remove).toHaveBeenCalledTimes(1);
