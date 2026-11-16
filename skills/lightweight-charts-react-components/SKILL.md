@@ -92,11 +92,15 @@ for it. Then build the solution from the public components and the upstream
 
 ### Skill compatibility
 
-The recipes are verified against the reference versions below. These are the
-tested baseline, not the latest available releases.
+The reference versions below are the baseline for recipe checks against the
+library source. Release CI also typechecks the packed npm declarations and
+renders a chart, pane, series, and markers in jsdom with React 18.2 and
+`lightweight-charts` 5.0.8, and with React 19 and the latest
+`lightweight-charts`. React DOM and the React type packages use the corresponding
+React major in each smoke test.
 
 If an installed version differs from the reference version, compare it with the
-compatibility range. Inside the range, recipes apply as written. Outside it,
+compatibility range and typecheck the adapted recipe in the app. Outside the range,
 tell the user about the mismatch before writing code, because breaking API
 changes can affect the recipes, and verify every API the recipe uses against
 the installed package.
