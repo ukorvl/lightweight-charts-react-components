@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import "mock-match-media/polyfill";
 import "vitest-canvas-mock";
 import { createRef } from "react";
 import { flushSync } from "react-dom";
@@ -16,16 +17,6 @@ import {
   type SeriesApiRef,
 } from "lightweight-charts-react-components";
 import type { IChartApi, LineData, SeriesMarker, Time } from "lightweight-charts";
-
-// The native chart subscribes to device pixel ratio changes. jsdom keeps the ratio fixed.
-window.matchMedia ??= media =>
-  Object.assign(new EventTarget(), {
-    matches: false,
-    media,
-    onchange: null,
-    addListener() {},
-    removeListener() {},
-  });
 
 test("renders and updates a chart from the packed package", () => {
   const host = document.createElement("div");
