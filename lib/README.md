@@ -334,6 +334,9 @@ The `Chart` component needs a nonzero container size. Set fixed dimensions throu
 `options`, or enable `options={{ autoSize: true }}` and size the container through
 `containerProps`. Automatic resizing requires `autoSize: true`.
 
+Use `containerRef` to access the wrapper div of `Chart`, `OptionsChart`,
+`YieldCurveChart`, or `CustomChart`. It accepts an object ref or a callback ref.
+
 There may be cases where the chart's parent HTML element has no size defined (for example, when the parent is a flex container with no defined height). In such cases, you need to ensure that the parent element has a defined size (width and height) for the chart to render properly.
 
 ## Agent skill

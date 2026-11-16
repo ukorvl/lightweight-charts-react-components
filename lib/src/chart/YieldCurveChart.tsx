@@ -3,10 +3,10 @@ import {
   type IYieldCurveChartApi,
   type YieldCurveChartOptions,
 } from "lightweight-charts";
-import { forwardRef, useCallback, useState } from "react";
+import { forwardRef } from "react";
 import React from "react";
-import { assignRef } from "@/_shared/assignRef";
 import { ChartComponent } from "./ChartComponent";
+import { ChartContainer } from "./ChartContainer";
 import type { ChartApiRef, YieldCurveChartProps } from "./types";
 import type {
   ForwardRefExoticComponent,
@@ -18,22 +18,9 @@ const YieldCurveChartRenderFunction: ForwardRefRenderFunction<
   ChartApiRef<number, IYieldCurveChartApi>,
   YieldCurveChartProps
 > = ({ children, containerProps, containerRef, ...rest }, ref) => {
-  const [container, setContainer] = useState<HTMLDivElement>();
-  const handleContainerRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      setContainer(node ?? undefined);
-      assignRef(containerRef, node);
-    },
-    [containerRef]
-  );
-
   return (
-    <div
-      ref={handleContainerRef}
-      aria-hidden={containerProps?.["aria-hidden"] ?? true}
-      {...containerProps}
-    >
-      {!!container && (
+    <ChartContainer containerProps={containerProps} containerRef={containerRef}>
+      {container => (
         <ChartComponent<number, IYieldCurveChartApi, YieldCurveChartOptions>
           ref={ref}
           container={container}
@@ -44,7 +31,7 @@ const YieldCurveChartRenderFunction: ForwardRefRenderFunction<
           {children}
         </ChartComponent>
       )}
-    </div>
+    </ChartContainer>
   );
 };
 
