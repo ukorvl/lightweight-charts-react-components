@@ -15,7 +15,11 @@ type ChartContainerProps = Pick<GenericChartProps, "containerProps" | "container
  * @returns The wrapper div.
  * @example
  * ```tsx
- * <ChartContainer>{container => <ChartComponent container={container} />}</ChartContainer>
+ * const containerRef = React.createRef<HTMLDivElement>();
+ *
+ * <ChartContainer containerProps={{ className: "chart" }} containerRef={containerRef}>
+ *   {container => <ChartComponent container={container} />}
+ * </ChartContainer>
  * ```
  */
 export const ChartContainer = ({
