@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- remove `ref` from the TypeScript type for `containerProps`. Pass the wrapper div ref through `containerRef`
+
 ### Fixed
-- initialize all chart types when a ref is passed through `containerProps` at runtime. Use `containerRef` in TypeScript
+- initialize all chart types when an object or callback ref is passed through `containerProps` at runtime
 
 ## [2.8.0] - 2026-11-16
 ### Changed
