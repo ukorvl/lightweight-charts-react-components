@@ -57,6 +57,7 @@ const CHECKS: Array<[name: string, npmArgs: string[]]> = [
   ["typecheck", ["run", "typecheck"]],
   ["lib unit tests", ["run", "test:unit", "-w", "lib", "--", "--run"]],
   ["build", ["run", "build"]],
+  ["packed consumer", ["run", "test:packed-consumer"]],
   ["jsdoc links", ["run", "check:jsdoc-links"]],
   ["md links", ["run", "check:md-links"]],
   ["knip", ["run", "knip"]],
