@@ -2,6 +2,8 @@
 
 // Packs the built lib workspace and checks its declarations and runtime in two
 // isolated npm installs. Run npm run build -w lib first. Failures propagate to CI.
+// The installs live outside the repo and resolve from the registry, so each one
+// gets a copy of the repo .npmrc to keep its install policy (min-release-age).
 
 import { execFileSync } from "node:child_process";
 import { copyFileSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
@@ -11,7 +13,7 @@ import { getRepoRoot, isMainModule } from "./common.mts";
 
 const scenarios = [
   { react: "18.2.0", reactMajor: "18", charts: "5.0.8" },
-  { react: "19", reactMajor: "19", charts: "latest" },
+  { react: "19", reactMajor: "19", charts: "5" },
 ];
 
 export const testPackedConsumer = (repoRoot = getRepoRoot(import.meta.url)) => {
@@ -41,6 +43,7 @@ export const testPackedConsumer = (repoRoot = getRepoRoot(import.meta.url)) => {
       for (const file of ["package.json", "tsconfig.json", "smoke.test.tsx"]) {
         copyFileSync(path.join(fixture, file), path.join(cwd, file));
       }
+      copyFileSync(path.join(repoRoot, ".npmrc"), path.join(cwd, ".npmrc"));
       process.stdout.write(`\nReact ${react} + lightweight-charts ${charts}\n`);
 
       const options = { cwd, stdio: "inherit" } as const;

@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { testPackedConsumer } from "../test-packed-consumer.mts";
@@ -24,6 +24,9 @@ describe("packed consumer smoke test", () => {
       expect(existsSync(path.join(cwd, "package.json"))).toBe(true);
       expect(existsSync(path.join(cwd, "tsconfig.json"))).toBe(true);
       expect(existsSync(path.join(cwd, "smoke.test.tsx"))).toBe(true);
+      expect(readFileSync(path.join(cwd, ".npmrc"), "utf8")).toBe(
+        readFileSync(path.join(repoRoot, ".npmrc"), "utf8")
+      );
       return "";
     });
 
@@ -60,7 +63,7 @@ describe("packed consumer smoke test", () => {
         "--strict-peer-deps",
         "react@19",
         "react-dom@19",
-        "lightweight-charts@latest",
+        "lightweight-charts@5",
         "@types/react@19",
         "@types/react-dom@19",
       ])
