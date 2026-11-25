@@ -10,7 +10,7 @@
     "jsdom": "26.1.0",
     "mock-match-media": "1.0.3",
     "typescript": "5.9.3",
-    "vitest": "4.1.3",
+    "vitest": "4.1.11",
     "vitest-canvas-mock": "0.3.3"
   }
 }
