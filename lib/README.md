@@ -320,6 +320,8 @@ export { App };
 
 Pane-wide overlays that belong to a whole pane rather than a single series can be mounted declaratively with `PanePrimitive` inside `Pane`. This works well for session bands, pane-scoped annotations, and background highlights that need access to both the chart and the target pane. See the `PanePrimitives` sample in the examples app for a full working example, and the upstream [pane primitives documentation](https://tradingview.github.io/lightweight-charts/docs/plugins/pane-primitives) for the underlying Lightweight Charts plugin contract.
 
+`CustomSeries` requires a `plugin` instance implementing `ICustomSeriesPaneView` from `lightweight-charts`; an empty object is not a valid plugin. Omitting it is a TypeScript error and throws at runtime for JavaScript consumers. Built-in series do not require a plugin. See the [Custom series demo and plugin source](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/CustomSeries) for a working grouped-bars renderer.
+
 ### Updating Series Data
 
 Use `YYYY-MM-DD` with a zero-padded month and day for string dates, or pass a `BusinessDay` object. Lightweight Charts 5.3 and later also enforce this format in production builds.

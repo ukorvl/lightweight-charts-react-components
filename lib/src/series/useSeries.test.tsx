@@ -352,6 +352,7 @@ describe("useSeries", () => {
 
     expect(() =>
       renderHook(() =>
+        // @ts-expect-error JavaScript consumers can omit the required plugin at runtime.
         useSeries({
           type: "Custom",
           data: [],

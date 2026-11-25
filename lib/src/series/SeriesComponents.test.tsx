@@ -9,6 +9,7 @@ import { CandlestickSeries } from "./CandlestickSeries";
 import { CustomSeries } from "./CustomSeries";
 import { HistogramSeries } from "./HistogramSeries";
 import { LineSeries } from "./LineSeries";
+import type { ICustomSeriesPaneView } from "lightweight-charts";
 
 const mockSeriesTemplate = vi.fn(({ _props }) => <div>Mocked Series Template</div>);
 
@@ -23,7 +24,6 @@ const seriesTypesMap = {
   BarSeries: BarSeries,
   CandlestickSeries: CandlestickSeries,
   BaselineSeries: BaselineSeries,
-  CustomSeries: CustomSeries,
 } as const;
 
 Object.keys(seriesTypesMap).forEach(seriesComponentName => {
@@ -50,5 +50,17 @@ Object.keys(seriesTypesMap).forEach(seriesComponentName => {
         })
       );
     });
+  });
+});
+
+describe("CustomSeries", () => {
+  it("forwards the required plugin to the series template", () => {
+    const plugin = {} as ICustomSeriesPaneView;
+    render(<CustomSeries data={[]} plugin={plugin} />);
+
+    expect(CustomSeries.displayName).toBe("CustomSeries");
+    expect(mockSeriesTemplate).toHaveBeenCalledWith(
+      expect.objectContaining({ data: [], type: "Custom", plugin })
+    );
   });
 });
