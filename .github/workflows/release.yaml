@@ -104,6 +104,9 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
 
+      - name: Smoke test packed npm package
+        run: npm run test:packed-consumer
+
       - name: Test lib
         uses: ./.github/actions/test-lib
         with:
