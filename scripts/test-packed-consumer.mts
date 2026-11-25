@@ -12,8 +12,8 @@ import path from "node:path";
 import { getRepoRoot, isMainModule } from "./common.mts";
 
 const scenarios = [
-  { react: "18.2.0", reactMajor: "18", charts: "5.0.8" },
-  { react: "19", reactMajor: "19", charts: "5" },
+  { name: "minimum", react: "18.2.0", reactTypes: "18", charts: "5.0.8" },
+  { name: "latest", react: "latest", reactTypes: "latest", charts: "5" },
 ];
 
 export const testPackedConsumer = (repoRoot = getRepoRoot(import.meta.url)) => {
@@ -37,8 +37,8 @@ export const testPackedConsumer = (repoRoot = getRepoRoot(import.meta.url)) => {
     const tarball = path.join(tempDir, filename);
     const fixture = path.join(repoRoot, "scripts", "fixtures", "packed-consumer");
 
-    for (const { react, reactMajor, charts } of scenarios) {
-      const cwd = path.join(tempDir, `react-${reactMajor}`);
+    for (const { name, react, reactTypes, charts } of scenarios) {
+      const cwd = path.join(tempDir, name);
       mkdirSync(cwd);
       for (const file of ["package.json", "tsconfig.json", "smoke.test.tsx"]) {
         copyFileSync(path.join(fixture, file), path.join(cwd, file));
@@ -59,8 +59,8 @@ export const testPackedConsumer = (repoRoot = getRepoRoot(import.meta.url)) => {
           `react@${react}`,
           `react-dom@${react}`,
           `lightweight-charts@${charts}`,
-          `@types/react@${reactMajor}`,
-          `@types/react-dom@${reactMajor}`,
+          `@types/react@${reactTypes}`,
+          `@types/react-dom@${reactTypes}`,
         ],
         options
       );

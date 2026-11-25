@@ -61,15 +61,15 @@ describe("packed consumer smoke test", () => {
       expect.arrayContaining([
         path.join(packDir, filename),
         "--strict-peer-deps",
-        "react@19",
-        "react-dom@19",
+        "react@latest",
+        "react-dom@latest",
         "lightweight-charts@5",
-        "@types/react@19",
-        "@types/react-dom@19",
+        "@types/react@latest",
+        "@types/react-dom@latest",
       ])
     );
-    expect(calls[3][2].cwd).toBe(path.join(packDir, "react-18"));
-    expect(calls[6][2].cwd).toBe(path.join(packDir, "react-19"));
+    expect(calls[3][2].cwd).toBe(path.join(packDir, "minimum"));
+    expect(calls[6][2].cwd).toBe(path.join(packDir, "latest"));
     expect(existsSync(packDir)).toBe(false);
   });
 
