@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.1] - 2026-11-27
 ### Fixed
-- synchronize `Markers` options after creation regardless of `reactive`, preserving marker data, and initialize the plugin with the latest markers and options when the series becomes ready
-- require `CustomSeries.plugin` in TypeScript to match the existing runtime requirement, and correct the custom series documentation example
+- apply `Markers.options` updates regardless of `reactive` without replacing marker data
+- initialize `Markers` with the latest markers and options when the series becomes ready
+- require `CustomSeries.plugin` in TypeScript to match the runtime requirement and correct its documentation example
 
 ## [2.8.0] - 2026-11-16
 ### Changed
