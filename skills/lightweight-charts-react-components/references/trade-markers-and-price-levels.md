@@ -54,6 +54,9 @@ type Execution = {
 };
 type Level = { id: string; price: number; title: string; color: string };
 
+// Module scope keeps the options object stable, so re-renders do not reapply it.
+const markerOptions = { zOrder: "normal" } as const;
+
 const quantize = (rawPrice: number, tickSize: number, precision: number) =>
   Number((Math.round(rawPrice / tickSize) * tickSize).toFixed(precision));
 
@@ -171,7 +174,7 @@ export function TradeAnnotations({
               priceFormat: { type: "price", minMove: tickSize, precision },
             }}
           >
-            <Markers markers={markers} options={{ zOrder: "normal" }} />
+            <Markers markers={markers} options={markerOptions} />
             {levels.map(level => (
               <PriceLine
                 key={level.id}
@@ -234,8 +237,8 @@ price line reduces visual confusion with domain levels.
 `Markers` updates marker lists reactively. Showing/hiding the list uses
 `markers={[]}` without recreating the plugin.
 
-With the marker-options synchronization fix, the plugin initializes with the
-latest `markers` and `options` once its series is ready. Later `options` changes
+In versions after `2.8.0`, the plugin initializes with the latest `markers` and
+`options` once its series is ready. Later `options` changes
 update the existing plugin regardless of `reactive`, which controls marker data
 only. Options are merged: omitted keys retain their current values; pass a key's
 default explicitly to reset it. Keep the options object stable when its values
@@ -266,7 +269,7 @@ an alert on a server. Add the application's explicit save/submit flow if request
   line disappears. Change instrument and verify annotations do not leak across it.
 - In placement mode, click the price pane at a known price. Verify tick rounding.
   Add another pane and verify clicks there do not create levels on the price series.
-- On builds containing the marker-options synchronization fix, change `options`
-  with `reactive` both enabled and disabled; verify options update without
+- On versions after `2.8.0`, change `options` with `reactive` both enabled and
+  disabled; verify options update without
   replacing marker data or recreating the plugin. For versions `2.6.1` through
   `2.8.0`, verify the remount/API workaround instead.
