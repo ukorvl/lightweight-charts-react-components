@@ -328,8 +328,6 @@ By default, series components are reactive: `data` is the complete dataset, and 
 
 For high-frequency feeds where re-rendering React on every tick is too costly, pass `reactive={false}`, which uses `data` only to initialize the series, and push ticks through the series API ref with `ref.current?.api()?.update(bar)`. Do not mix both approaches on the same series. See the agent skill's [live updates guide](https://github.com/ukorvl/lightweight-charts-react-components/blob/main/skills/lightweight-charts-react-components/references/market-data-and-live-updates.md) for complete recipes.
 
-For `Markers`, `reactive` controls only marker data updates. Changes to `options` always update the existing plugin.
-
 ### Chart Container Sizing
 
 The `Chart` component needs a nonzero container size. Set fixed dimensions through
