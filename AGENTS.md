@@ -19,8 +19,9 @@ The examples app is deployed and hosted on GitHub Pages as a static site.
 
 ## Main working principles
 
-- Make sure to update the documentation (`lib/README.md` and JSDoc comments) if you are adding new features or changing existing ones in the library. Ensure all documentation is synced with the code and up-to-date. Pay special attention to JSDoc code snippets, as they can become outdated easily.
-- Keep README concise and focused on essentials for people and agents; put API details and edge cases in JSDoc, examples, or dedicated guides.
+- Keep documentation affected by a library change in sync with the code. Update the relevant JSDoc, examples, or dedicated guides, including their code snippets. A feature or bug fix does not automatically require a README edit.
+- Keep `lib/README.md` as a concise project overview and starting point: what the library provides, installation, basic usage, and essential project-wide requirements. Default to leaving it unchanged. Edit it only when a change makes that overview or the getting-started instructions inaccurate or materially incomplete.
+- Before adding README text, identify what essential information a new user would miss or misunderstand without it. If there is none, leave README unchanged. Put individual prop and option semantics, lifecycle details, and edge cases in JSDoc, examples, or dedicated guides; record fixes and release notes in `lib/CHANGELOG.md`. Do not add a README note merely because a PR changes user-visible behavior.
 - Be aware of repository symlinks when editing docs or agent config. Update the canonical target once instead of editing through multiple aliases: `README.md -> ./lib/README.md`, `LICENSE -> ./lib/LICENSE`, and `.claude/skills` plus `.cursor/skills` both point to `../.agents/skills`.
 - If you encounter docs that are outdated or incorrect, explicitly report it to developer or mention in the PR description.
 - If applicable (when some public user-facing interface or behavior changes), update the changelog (`lib/CHANGELOG.md`) after making changes to `lib` files with a brief description of the changes made. Keep changelog entries concise and informative, following the format of previous entries. Always place new entries under the "Unreleased" section and update the version and date only when preparing for a release.
