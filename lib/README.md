@@ -355,7 +355,6 @@ We welcome contributions of all kinds! Whether it's fixing bugs, adding new feat
 
 1. Fork the repository and create a new branch for your changes.
 2. Make your changes following the project guidelines.
-   - Keep README focused on essential library information and easy to scan for people and agents; put API details and edge cases in JSDoc, examples, or dedicated guides.
 3. Test your changes to ensure everything works as expected.
 4. Submit a pull request.
 
