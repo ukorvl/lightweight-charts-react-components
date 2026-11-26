@@ -101,30 +101,70 @@ describe("useMarkers", () => {
     }
   );
 
-  it("applies the latest options once the series becomes ready", () => {
-    const seriesContext = {
-      seriesApiRef: mockSeries,
-      isReady: false,
-    };
-    vi.mocked(useSafeContext).mockImplementation(() => seriesContext);
+  it.each([true, false])(
+    "initializes with the latest markers and options when reactive is %s",
+    reactive => {
+      const seriesContext = {
+        seriesApiRef: mockSeries,
+        isReady: false,
+      };
+      vi.mocked(useSafeContext).mockImplementation(() => seriesContext);
 
-    const markers: MarkersProps["markers"] = [];
-    const { rerender } = renderHook((props: MarkersProps) => useMarkers(props), {
-      initialProps: { markers, options: { zOrder: "normal" } },
-    });
-    const options: MarkersProps["options"] = { zOrder: "top" };
+      const initialProps: MarkersProps = {
+        markers: [],
+        reactive,
+        options: { zOrder: "normal", autoScale: false },
+      };
+      const { rerender } = renderHook((props: MarkersProps) => useMarkers(props), {
+        initialProps,
+      });
+      const markers: MarkersProps["markers"] = [
+        {
+          time: "2026-11-01",
+          shape: "circle",
+          position: "aboveBar",
+          color: "red",
+        },
+      ];
+      const options: MarkersProps["options"] = { zOrder: "top" };
 
-    rerender({ markers, options });
+      rerender({ markers, reactive, options });
 
-    expect(mockApplyOptions).not.toHaveBeenCalled();
-    expect(createSeriesMarkers).not.toHaveBeenCalled();
+      expect(mockApplyOptions).not.toHaveBeenCalled();
+      expect(createSeriesMarkers).not.toHaveBeenCalled();
 
-    seriesContext.isReady = true;
-    rerender({ markers, options });
+      seriesContext.isReady = true;
+      rerender({ markers, reactive, options });
 
-    expect(mockApplyOptions).toHaveBeenCalledExactlyOnceWith(options);
-    expect(createSeriesMarkers).toHaveBeenCalledTimes(1);
-  });
+      expect(createSeriesMarkers).toHaveBeenCalledExactlyOnceWith({}, markers, options);
+      expect(mockSetMarkers).not.toHaveBeenCalled();
+      expect(mockApplyOptions).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each([undefined, {}])(
+    "does not initialize with obsolete options when the latest options are %j",
+    options => {
+      const seriesContext = {
+        seriesApiRef: mockSeries,
+        isReady: false,
+      };
+      vi.mocked(useSafeContext).mockImplementation(() => seriesContext);
+
+      const markers: MarkersProps["markers"] = [];
+      const initialProps: MarkersProps = { markers, options: { autoScale: false } };
+      const { rerender } = renderHook((props: MarkersProps) => useMarkers(props), {
+        initialProps,
+      });
+
+      rerender({ markers, options });
+      seriesContext.isReady = true;
+      rerender({ markers, options });
+
+      expect(createSeriesMarkers).toHaveBeenCalledExactlyOnceWith({}, markers, options);
+      expect(mockApplyOptions).not.toHaveBeenCalled();
+    }
+  );
 
   it("does not apply options when they become undefined", () => {
     vi.mocked(useSafeContext).mockReturnValue({

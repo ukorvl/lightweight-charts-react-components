@@ -231,12 +231,21 @@ line when unmounted. The explicit `price` prop is separate from `options`; do
 not put the price only inside options. Disabling the candle series' default last
 price line reduces visual confusion with domain levels.
 
-`Markers` creates the upstream plugin and updates marker lists reactively, but
-the current hook does not apply new `options` after creation. To change a plugin
-option such as `zOrder`, remount `Markers` with a key identifying that option or
-call `markersRef.current?.api()?.applyOptions(...)`. The latter requires a
-`MarkersApiRef` and initialized API. Showing/hiding the list uses `markers={[]}`
-without recreating the plugin.
+`Markers` updates marker lists reactively. Showing/hiding the list uses
+`markers={[]}` without recreating the plugin.
+
+With the marker-options synchronization fix, the plugin initializes with the
+latest `markers` and `options` once its series is ready. Later `options` changes
+update the existing plugin regardless of `reactive`, which controls marker data
+only. Options are merged: omitted keys retain their current values; pass a key's
+default explicitly to reset it. Keep the options object stable when its values
+have not changed to avoid reapplying it on unrelated renders. Avoid controlling
+the same option through both props and the imperative API.
+
+Published releases `2.6.1` through `2.8.0` ignore later `options` changes.
+For those versions, remount `Markers` with a key identifying the option or call
+`markersRef.current?.api()?.applyOptions?.(...)` with a `MarkersApiRef` and an
+initialized API.
 
 For marker click details, `MouseEventParams.hoveredObjectId` can identify a marker
 whose `id` was supplied. Resolve it against application execution IDs. For
@@ -257,5 +266,7 @@ an alert on a server. Add the application's explicit save/submit flow if request
   line disappears. Change instrument and verify annotations do not leak across it.
 - In placement mode, click the price pane at a known price. Verify tick rounding.
   Add another pane and verify clicks there do not create levels on the price series.
-- Change marker options and verify the chosen remount/API path actually applies
-  them; simply changing the options prop is insufficient in the current hook.
+- On builds containing the marker-options synchronization fix, change `options`
+  with `reactive` both enabled and disabled; verify options update without
+  replacing marker data or recreating the plugin. For versions `2.6.1` through
+  `2.8.0`, verify the remount/API workaround instead.
