@@ -10,6 +10,7 @@ vi.mock("lightweight-charts");
 
 const mockDetach = vi.fn();
 const mockSetMarkers = vi.fn();
+const mockApplyOptions = vi.fn();
 
 const mockSeries = {
   api: () => ({}),
@@ -17,6 +18,7 @@ const mockSeries = {
 
 vi.mocked(createSeriesMarkers).mockReturnValue({
   setMarkers: mockSetMarkers,
+  applyOptions: mockApplyOptions,
   detach: mockDetach,
   markers: vi.fn(),
   getSeries: vi.fn(),
@@ -61,6 +63,84 @@ describe("useMarkers", () => {
 
     expect(api).toBe(result.current.current.api());
     expect(createSeriesMarkers).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([true, false])(
+    "updates options without replacing markers or recreating the plugin when reactive is %s",
+    reactive => {
+      vi.mocked(useSafeContext).mockReturnValue({
+        seriesApiRef: mockSeries,
+        isReady: true,
+      });
+
+      const markers: MarkersProps["markers"] = [
+        {
+          time: "2026-11-01",
+          shape: "circle",
+          position: "aboveBar",
+          color: "red",
+        },
+      ];
+      const { result, rerender } = renderHook(
+        (props: MarkersProps) => useMarkers(props),
+        { initialProps: { markers, reactive, options: { zOrder: "normal" } } }
+      );
+      const api = result.current.current.api();
+
+      mockApplyOptions.mockClear();
+      mockSetMarkers.mockClear();
+      rerender({ markers, reactive, options: { zOrder: "top" } });
+
+      expect(mockApplyOptions).toHaveBeenCalledExactlyOnceWith({ zOrder: "top" });
+      expect(mockSetMarkers).not.toHaveBeenCalled();
+      expect(result.current.current.api()).toBe(api);
+      expect(createSeriesMarkers).toHaveBeenCalledExactlyOnceWith({}, markers, {
+        zOrder: "normal",
+      });
+      expect(mockDetach).not.toHaveBeenCalled();
+    }
+  );
+
+  it("applies the latest options once the series becomes ready", () => {
+    const seriesContext = {
+      seriesApiRef: mockSeries,
+      isReady: false,
+    };
+    vi.mocked(useSafeContext).mockImplementation(() => seriesContext);
+
+    const markers: MarkersProps["markers"] = [];
+    const { rerender } = renderHook((props: MarkersProps) => useMarkers(props), {
+      initialProps: { markers, options: { zOrder: "normal" } },
+    });
+    const options: MarkersProps["options"] = { zOrder: "top" };
+
+    rerender({ markers, options });
+
+    expect(mockApplyOptions).not.toHaveBeenCalled();
+    expect(createSeriesMarkers).not.toHaveBeenCalled();
+
+    seriesContext.isReady = true;
+    rerender({ markers, options });
+
+    expect(mockApplyOptions).toHaveBeenCalledExactlyOnceWith(options);
+    expect(createSeriesMarkers).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not apply options when they become undefined", () => {
+    vi.mocked(useSafeContext).mockReturnValue({
+      seriesApiRef: mockSeries,
+      isReady: true,
+    });
+
+    const markers: MarkersProps["markers"] = [];
+    const { rerender } = renderHook((props: MarkersProps) => useMarkers(props), {
+      initialProps: { markers, options: { zOrder: "top" } },
+    });
+
+    mockApplyOptions.mockClear();
+    rerender({ markers });
+
+    expect(mockApplyOptions).not.toHaveBeenCalled();
   });
 
   it("should detach markers on unmount", () => {

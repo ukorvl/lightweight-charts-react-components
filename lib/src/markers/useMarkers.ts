@@ -61,5 +61,11 @@ export const useMarkers = <HorzScaleItem = Time>({
     }
   }, [markers, reactive]);
 
+  useLayoutEffect(() => {
+    if (options) {
+      markersApiRef.current.api()?.applyOptions?.(options);
+    }
+  }, [options, seriesIsReady]);
+
   return markersApiRef;
 };
