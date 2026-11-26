@@ -53,6 +53,7 @@ Thank you for your interest in contributing to **Lightweight Charts React Compon
 ### Code Guidelines
 
 - Follow the existing code style and conventions.
+- Keep README focused on essential library information and easy to scan for people and agents; put API details and edge cases in JSDoc, examples, or dedicated guides.
 - Ensure your changes pass ESLint, Prettier and TypeScript checks:
   ```sh
   npm run lint

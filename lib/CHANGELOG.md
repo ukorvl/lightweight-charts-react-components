@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- require `CustomSeries.plugin` in TypeScript to match the existing runtime requirement, and correct the custom series documentation example
+
 ## [2.8.0] - 2026-11-16
 ### Changed
 - reactive series updates detect changes by object reference again. Use immutable `data` items or enable `alwaysReplaceData` for in-place edits
