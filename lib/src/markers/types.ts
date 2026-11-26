@@ -37,11 +37,11 @@ export type MarkersProps<HorzScaleItem = Time> = {
    */
   markers: SeriesMarker<HorzScaleItem>[];
   /**
-   * Options for the markers.
+   * Options for the markers. Changes are applied to the existing plugin regardless of `reactive`.
    */
   options?: DeepPartial<SeriesMarkersOptions>;
   /**
-   * Whether markers should update reactively when marker list changes.
+   * Whether the marker list should update reactively. Defaults to true. Does not affect options updates.
    */
   reactive?: boolean;
 };

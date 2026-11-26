@@ -1,5 +1,6 @@
 import { createSeriesMarkers } from "lightweight-charts";
 import { useLayoutEffect, useRef } from "react";
+import { useLatestRef } from "@/_shared/useLatestRef";
 import { useSafeContext } from "@/_shared/useSafeContext";
 import { SeriesContext } from "@/series/SeriesContext";
 import type { ISeriesContext } from "@/series/types";
@@ -14,6 +15,8 @@ export const useMarkers = <HorzScaleItem = Time>({
   const { isReady: seriesIsReady, seriesApiRef: series } = useSafeContext(
     SeriesContext
   ) as ISeriesContext<HorzScaleItem>;
+  const markersRef = useLatestRef(markers);
+  const optionsRef = useLatestRef(options);
 
   const markersApiRef = useRef<MarkersApiRef<HorzScaleItem>>({
     _markers: null,
@@ -28,7 +31,11 @@ export const useMarkers = <HorzScaleItem = Time>({
           return null;
         }
 
-        this._markers = createSeriesMarkers(seriesApi, markers, options);
+        this._markers = createSeriesMarkers(
+          seriesApi,
+          markersRef.current,
+          optionsRef.current
+        );
       }
 
       return this._markers;
@@ -60,6 +67,12 @@ export const useMarkers = <HorzScaleItem = Time>({
       markersApiRef.current.api()?.setMarkers(markers);
     }
   }, [markers, reactive]);
+
+  useLayoutEffect(() => {
+    if (options) {
+      markersApiRef.current.api()?.applyOptions?.(options);
+    }
+  }, [options]);
 
   return markersApiRef;
 };
