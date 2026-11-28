@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - initialize all chart types when an object or callback ref is passed through `containerProps` at runtime
 - make chart container refs available to parent layout effects on mount
 
+## [2.8.1] - 2026-11-27
+### Fixed
+- apply `Markers.options` updates regardless of `reactive` without replacing marker data
+- initialize `Markers` with the latest markers and options when the series becomes ready
+- require `CustomSeries.plugin` in TypeScript to match the runtime requirement and correct its documentation example
+
 ## [2.8.0] - 2026-11-16
 ### Changed
 - reactive series updates detect changes by object reference again. Use immutable `data` items or enable `alwaysReplaceData` for in-place edits

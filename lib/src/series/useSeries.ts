@@ -68,7 +68,7 @@ export const useSeries = <T extends SeriesType, HorzScaleItem = Time>({
         const paneIndex = isInsidePane ? paneApiRef?.api()?.paneIndex() : undefined;
 
         if (type === "Custom") {
-          const plugin = (rest as CustomSeriesUniqueProps<HorzScaleItem>).plugin;
+          const plugin = (rest as Partial<CustomSeriesUniqueProps<HorzScaleItem>>).plugin;
           if (!plugin) {
             // TODO: Link this error to docs covering custom series plugin requirements.
             throw new BaseInternalError("Custom series requires a plugin to be defined");

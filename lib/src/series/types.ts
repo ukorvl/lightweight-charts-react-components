@@ -13,9 +13,9 @@ import type { ReactElement, ReactNode, RefAttributes } from "react";
  */
 export type CustomSeriesUniqueProps<HorzScaleItem = Time> = {
   /**
-   * Custom pane view plugin instance that can be used to render custom series.
+   * Required custom pane view plugin instance used to render the custom series.
    */
-  plugin?: ICustomSeriesPaneView<HorzScaleItem>;
+  plugin: ICustomSeriesPaneView<HorzScaleItem>;
 };
 
 type SeriesParameters<T extends SeriesType, HorzScaleItem = Time> = {

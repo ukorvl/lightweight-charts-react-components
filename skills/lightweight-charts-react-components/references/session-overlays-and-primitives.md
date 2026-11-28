@@ -218,6 +218,32 @@ autoscaling. Keep custom payloads in `customValues` and preserve
 the custom data shape when updating. `CustomSeries` requires a plugin instance;
 `CustomChart` instead changes the horizontal scale and is a different extension.
 
+Pass an implemented plugin instance from your application, typed with the upstream
+interface. An empty object is not a valid plugin, and omitting `plugin` is a
+TypeScript error (or a runtime error for JavaScript consumers). The
+[grouped-bars demo](https://github.com/ukorvl/lightweight-charts-react-components/tree/main/examples/src/samples/CustomSeries)
+includes a complete renderer implementation. This component accepts that plugin
+and data matching its expected `customValues` shape:
+
+```tsx
+import type { CustomData, ICustomSeriesPaneView } from "lightweight-charts";
+import { Chart, CustomSeries } from "lightweight-charts-react-components";
+
+export function CustomSeriesChart({
+  plugin,
+  data,
+}: {
+  plugin: ICustomSeriesPaneView;
+  data: CustomData[];
+}) {
+  return (
+    <Chart options={{ width: 600, height: 300 }}>
+      <CustomSeries plugin={plugin} data={data} />
+    </Chart>
+  );
+}
+```
+
 ## Acceptance checks
 
 - Pan, zoom, resize, and change device pixel ratio: bands remain attached to
