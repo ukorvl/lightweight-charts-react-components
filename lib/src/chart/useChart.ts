@@ -46,9 +46,7 @@ export const useChart = <
         this._chart = chart;
       }
 
-      if (!isReady) {
-        setIsReady(true);
-      }
+      setIsReady(true);
 
       return this._chart;
     },

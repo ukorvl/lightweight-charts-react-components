@@ -11,12 +11,12 @@ import {
 } from "lightweight-charts";
 import { createRef } from "react";
 import React from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
 import { ChartWrapper } from "./ChartWrapper";
 import { CustomChart } from "./CustomChart";
 import { OptionsChart } from "./OptionsChart";
 import { YieldCurveChart } from "./YieldCurveChart";
-import type { ChartApiRef } from "./types";
+import type { ChartApiRef, ChartProps } from "./types";
 
 vi.mock("lightweight-charts", () => ({
   createChart: vi.fn(),
@@ -46,6 +46,214 @@ describe("ChartWrapper", () => {
     vi.mocked(createOptionsChart).mockReturnValue(mockOptionsChart);
     vi.mocked(createYieldCurveChart).mockReturnValue(mockYieldCurveChart);
     vi.mocked(createChartEx).mockReturnValue(mockCustomChart);
+  });
+
+  const customScaleBehavior = {} as never;
+
+  // Runtime JS callers can still pass `ref` through containerProps.
+  const withRef = (ref: unknown) =>
+    ({ ref }) as NonNullable<ChartProps["containerProps"]>;
+
+  it.each([
+    { name: "ChartWrapper", Chart: ChartWrapper, create: createChart },
+    { name: "OptionsChart", Chart: OptionsChart, create: createOptionsChart },
+    { name: "YieldCurveChart", Chart: YieldCurveChart, create: createYieldCurveChart },
+    {
+      name: "CustomChart",
+      Chart: (props: Pick<ChartProps, "containerProps" | "containerRef">) => (
+        <CustomChart {...props} horzScaleBehavior={customScaleBehavior} />
+      ),
+      create: createChartEx,
+    },
+  ])(
+    "mounts $name and forwards refs passed through containerProps",
+    ({ Chart, create }) => {
+      const containerRef = createRef<HTMLDivElement>();
+      const objectRef = createRef<HTMLDivElement>();
+      const callbackRef = vi.fn();
+      const firstProps = { className: "chart", ref: objectRef };
+      const secondProps = { className: "chart", ref: callbackRef };
+
+      const { rerender, unmount } = render(
+        <Chart containerProps={firstProps} containerRef={containerRef} />
+      );
+      const node = containerRef.current;
+
+      expect(node).toBeInstanceOf(HTMLDivElement);
+      expect(objectRef.current).toBe(node);
+      expect(vi.mocked(create).mock.calls[0]?.[0]).toBe(node);
+
+      rerender(<Chart containerProps={secondProps} containerRef={containerRef} />);
+
+      expect(objectRef.current).toBeNull();
+      expect(callbackRef).toHaveBeenCalledExactlyOnceWith(node);
+      expect(containerRef.current).toBe(node);
+      expect(create).toHaveBeenCalledTimes(1);
+
+      unmount();
+
+      expect(callbackRef).toHaveBeenLastCalledWith(null);
+      expect(containerRef.current).toBeNull();
+    }
+  );
+
+  it("mounts with the dedicated ref when containerProps contains a string ref", () => {
+    const containerProps = { className: "chart", ref: "legacy" };
+    const containerRef = createRef<HTMLDivElement>();
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+
+    render(
+      <ChartWrapper
+        ref={chartRef}
+        containerProps={containerProps}
+        containerRef={containerRef}
+      />
+    );
+
+    expect(containerRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(chartRef.current?.api()).toBe(mockChart);
+  });
+
+  it("runs callback ref cleanup once when the same ref is passed in both props", () => {
+    const cleanup = vi.fn();
+    const ref = vi.fn<React.RefCallback<HTMLDivElement>>(() => cleanup);
+    const containerProps = { className: "chart", ref };
+
+    const { rerender } = render(
+      <ChartWrapper containerProps={containerProps} containerRef={ref} />
+    );
+
+    expect(ref).toHaveBeenCalledExactlyOnceWith(expect.any(HTMLDivElement));
+    expect(cleanup).not.toHaveBeenCalled();
+
+    rerender(<ChartWrapper />);
+
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    expect(ref).toHaveBeenCalledTimes(1);
+  });
+
+  it("forwards container refs before parent layout effects run", () => {
+    const containerRef = createRef<HTMLDivElement>();
+    const legacyRef = createRef<HTMLDivElement>();
+    const readRefs = vi.fn();
+
+    const Parent = ({ containerKey }: { containerKey: string }) => {
+      React.useLayoutEffect(() => {
+        readRefs(containerRef.current, legacyRef.current);
+      }, [containerKey]);
+
+      return (
+        <ChartWrapper
+          containerProps={{ ...withRef(legacyRef), key: containerKey }}
+          containerRef={containerRef}
+        />
+      );
+    };
+
+    const { rerender } = render(<Parent containerKey="first" />);
+    const firstNode = containerRef.current;
+    expect(firstNode).toBeInstanceOf(HTMLDivElement);
+    expect(readRefs).toHaveBeenCalledExactlyOnceWith(firstNode, firstNode);
+
+    rerender(<Parent containerKey="second" />);
+    const secondNode = containerRef.current;
+    expect(secondNode).toBeInstanceOf(HTMLDivElement);
+    expect(secondNode).not.toBe(firstNode);
+    expect(readRefs).toHaveBeenLastCalledWith(secondNode, secondNode);
+  });
+
+  it("keeps a stable ref attached when only the other ref changes", () => {
+    const stableCleanup = vi.fn();
+    const stableRef = vi.fn<React.RefCallback<HTMLDivElement>>(() => stableCleanup);
+    const firstRef = vi.fn();
+    const secondRef = vi.fn();
+
+    const { rerender } = render(
+      <ChartWrapper containerProps={withRef(firstRef)} containerRef={stableRef} />
+    );
+    const node = stableRef.mock.calls[0]?.[0];
+
+    rerender(
+      <ChartWrapper containerProps={withRef(secondRef)} containerRef={stableRef} />
+    );
+
+    expect(stableRef).toHaveBeenCalledExactlyOnceWith(node);
+    expect(stableCleanup).not.toHaveBeenCalled();
+    expect(firstRef).toHaveBeenLastCalledWith(null);
+    expect(secondRef).toHaveBeenCalledExactlyOnceWith(node);
+
+    rerender(
+      <ChartWrapper containerProps={withRef(secondRef)} containerRef={undefined} />
+    );
+
+    expect(stableCleanup).toHaveBeenCalledTimes(1);
+    expect(secondRef).toHaveBeenCalledTimes(1);
+    expect(createChart).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not loop when a stable ref stores layout in parent state", () => {
+    const Parent = () => {
+      const [, setWidth] = React.useState(0);
+      const stableRef = React.useCallback((node: HTMLDivElement | null) => {
+        setWidth(Math.random());
+        void node;
+      }, []);
+
+      return (
+        <ChartWrapper
+          containerProps={withRef((node: HTMLDivElement | null) => void node)}
+          containerRef={stableRef}
+        />
+      );
+    };
+
+    expect(() => render(<Parent />)).not.toThrow();
+    expect(createChart).toHaveBeenCalledTimes(1);
+  });
+
+  it("clears the other ref when a callback ref cleanup throws", () => {
+    const error = new Error("cleanup failed");
+    const throwingRef = vi.fn<React.RefCallback<HTMLDivElement>>(() => () => {
+      throw error;
+    });
+    const objectRef = createRef<HTMLDivElement>();
+    const { unmount } = render(
+      <ChartWrapper containerProps={withRef(objectRef)} containerRef={throwingRef} />
+    );
+
+    expect(objectRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(() => unmount()).toThrow(error);
+    expect(objectRef.current).toBeNull();
+  });
+
+  it("keeps the chart and refs attached after StrictMode replays the ref", () => {
+    const chartRef = createRef<ChartApiRef<Time, IChartApi>>();
+    const containerRef = createRef<HTMLDivElement>();
+    const callbackRef = vi.fn((node: HTMLDivElement | null) => node);
+    const containerProps = { className: "chart", ref: callbackRef };
+
+    const { unmount } = render(
+      <React.StrictMode>
+        <ChartWrapper
+          ref={chartRef}
+          containerProps={containerProps}
+          containerRef={containerRef}
+        />
+      </React.StrictMode>
+    );
+
+    const node = containerRef.current;
+    expect(node).toBeInstanceOf(HTMLDivElement);
+    expect(callbackRef.mock.calls).toEqual([[node], [null], [node]]);
+    expect(chartRef.current?.api()).toBe(mockChart);
+    expect(createChart).toHaveBeenCalledTimes(2);
+    expect(mockChart.remove).toHaveBeenCalledTimes(1);
+
+    unmount();
+
+    expect(callbackRef).toHaveBeenLastCalledWith(null);
+    expect(containerRef.current).toBeNull();
+    expect(mockChart.remove).toHaveBeenCalledTimes(2);
   });
 
   it("renders children when container is set", () => {
@@ -113,9 +321,10 @@ describe("ChartWrapper", () => {
   it("updates function container refs when the ChartWrapper ref prop changes", () => {
     const firstContainerRef = vi.fn();
     const secondContainerRef = vi.fn();
+    const containerProps = { className: "chart" };
 
     const { rerender } = render(
-      <ChartWrapper containerRef={firstContainerRef}>
+      <ChartWrapper containerProps={containerProps} containerRef={firstContainerRef}>
         <div>Child</div>
       </ChartWrapper>
     );
@@ -124,16 +333,19 @@ describe("ChartWrapper", () => {
     expect(node).toBeInstanceOf(HTMLDivElement);
 
     rerender(
-      <ChartWrapper containerRef={secondContainerRef}>
+      <ChartWrapper containerProps={containerProps} containerRef={secondContainerRef}>
         <div>Child</div>
       </ChartWrapper>
     );
 
     expect(firstContainerRef).toHaveBeenLastCalledWith(null);
     expect(secondContainerRef).toHaveBeenCalledWith(node);
+    expect(createChart).toHaveBeenCalledTimes(1);
   });
 
   it("handles containerProps correctly", () => {
+    expectTypeOf<NonNullable<ChartProps["containerProps"]>>().not.toHaveProperty("ref");
+
     const { getByRole } = render(
       <ChartWrapper containerProps={{ role: "main" }}>
         <div>Child</div>

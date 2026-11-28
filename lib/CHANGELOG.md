@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- remove `ref` from the TypeScript type for `containerProps`. Pass the wrapper div ref through `containerRef`
+
+### Fixed
+- initialize all chart types when an object or callback ref is passed through `containerProps` at runtime
+- make chart container refs available to parent layout effects on mount
+
 ## [2.8.1] - 2026-11-27
 ### Fixed
 - apply `Markers.options` updates regardless of `reactive` without replacing marker data
